@@ -1,5 +1,6 @@
 package io.openapiparser;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 
@@ -15,6 +16,6 @@ public interface Reader {
      * @return stream of the description.
      */
 
-    InputStream read(URI uri);
+    InputStream read(URI uri) throws IOException;
 
 }
