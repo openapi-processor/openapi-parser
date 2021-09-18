@@ -14,15 +14,13 @@ class ReferenceResolverSpec : StringSpec({
 
     "reads OpenAPI document" {
         val resolver = ReferenceResolver(
-            URI("file:///any"),
             StringReader("""
                 openapi: 3.0.3
             """.trimIndent()),
-            JacksonConverter(),
-            null
+            JacksonConverter()
         )
 
-        resolver.resolve()
+        resolver.resolve(URI("file:///any"))
 
         val node = resolver.baseNode
         node.size shouldBe 1
@@ -35,11 +33,9 @@ class ReferenceResolverSpec : StringSpec({
 
         shouldThrow<ResolverException> {
             val resolver = ReferenceResolver(
-                null,
                 reader,
-                null,
                 null)
-            resolver.resolve()
+            resolver.resolve(URI("file:///any"))
         }
     }
 
@@ -49,11 +45,9 @@ class ReferenceResolverSpec : StringSpec({
 
         shouldThrow<ResolverException> {
             val resolver = ReferenceResolver(
-                null,
                 StringReader("openapi: 3.0.3"),
-                converter,
-                null)
-            resolver.resolve()
+                converter)
+            resolver.resolve(URI("file:///any"))
         }
     }
 

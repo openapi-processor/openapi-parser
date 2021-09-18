@@ -8,19 +8,17 @@ import java.util.Map;
 public class ReferenceResolver {
     private static final String RESOLVE_ERROR = "failed to resolve %s.";
 
-    private final URI baseUri;
     private final Reader reader;
     private final Converter converter;
 
     private Map<String, Object> baseNode;
 
-    public ReferenceResolver (URI baseUri, Reader reader, Converter converter) {
-        this.baseUri = baseUri;
+    public ReferenceResolver (Reader reader, Converter converter) {
         this.reader = reader;
         this.converter = converter;
     }
 
-    public void resolve() throws ResolverException {
+    public void resolve(URI baseUri) throws ResolverException {
         try {
             baseNode = converter.convert (Strings.of (reader.read (baseUri)));
 
