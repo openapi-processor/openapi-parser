@@ -13,9 +13,10 @@ repositories {
 }
 
 dependencies {
-    testImplementation ("org.junit.jupiter:junit-jupiter-api:5.7.2")
-    testImplementation ("org.junit.jupiter:junit-jupiter-params:5.7.2")
-    testRuntimeOnly ("org.junit.jupiter:junit-jupiter-engine:5.7.2")
+    testImplementation (platform("org.junit:junit-bom:5.7.2"))
+    testImplementation ("org.junit.jupiter:junit-jupiter-api")
+    testImplementation ("org.junit.jupiter:junit-jupiter-params")
+    testRuntimeOnly ("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("io.kotest:kotest-runner-junit5:4.6.1")
     testImplementation("io.mockk:mockk:1.12.0")
 }
