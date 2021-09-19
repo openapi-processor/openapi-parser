@@ -3,6 +3,7 @@ package io.openapiparser.validations
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
+import io.openapiparser.Node
 import io.openapiparser.ValidationContext
 import java.net.URI
 
@@ -12,9 +13,9 @@ class VersionValidationSpec : StringSpec({
         val ctx = ValidationContext(URI("file:///any"))
         val version = VersionValidation()
 
-        val messages = version.validate(ctx, mapOf<String, Any>(
+        val messages = version.validate(ctx, Node(mapOf<String, Any>(
             "openapi" to "3.0.0"
-        ))
+        )))
 
         messages.isEmpty() shouldBe true
     }
@@ -26,7 +27,7 @@ class VersionValidationSpec : StringSpec({
 
         val ctx = ValidationContext(URI("file:///any"))
         val version = VersionValidation()
-        val messages = version.validate(ctx, api)
+        val messages = version.validate(ctx, Node(api))
 
         messages.size shouldBe 1
         val message = messages.first()
@@ -41,7 +42,7 @@ class VersionValidationSpec : StringSpec({
 
         val ctx = ValidationContext(URI("file:///any"))
         val version = VersionValidation()
-        val messages = version.validate(ctx, api)
+        val messages = version.validate(ctx, Node(api))
 
         messages.size shouldBe 1
         val message = messages.first()
@@ -56,12 +57,12 @@ class VersionValidationSpec : StringSpec({
 
         val ctx = ValidationContext(URI("file:///any"))
         val version = VersionValidation()
-        val messages = version.validate(ctx, api)
+        val messages = version.validate(ctx, Node(api))
 
         messages.size shouldBe 1
         val message = messages.first()
         message.text shouldContain "'5'"
         message.path shouldBe "$.openapi"
     }
-    
+
 })

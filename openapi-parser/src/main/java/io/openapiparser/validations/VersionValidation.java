@@ -1,8 +1,6 @@
 package io.openapiparser.validations;
 
-import io.openapiparser.Validation;
-import io.openapiparser.ValidationContext;
-import io.openapiparser.ValidationMessage;
+import io.openapiparser.*;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -31,7 +29,7 @@ public class VersionValidation implements Validation {
     private static final Pattern VERSION = Pattern.compile ("\\d\\.\\d\\.\\d");
 
     @Override
-    public Collection<ValidationMessage> validate (ValidationContext context, Map<String, Object> node) {
+    public Collection<ValidationMessage> validate (ValidationContext context, Node node) {
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
         Object version = node.get (OPENAPI);
