@@ -11,4 +11,12 @@ public class ValidationMessage {
         this.path = path;
         this.text = text;
     }
+
+    public String getPath () {
+        return path;
+    }
+
+    public String getText () {
+        return text;
+    }
 }
