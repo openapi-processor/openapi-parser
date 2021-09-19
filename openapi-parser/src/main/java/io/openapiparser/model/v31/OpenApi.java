@@ -1,7 +1,7 @@
 package io.openapiparser.model.v31;
 
 import io.openapiparser.Context;
-import io.openapiparser.support.Node;
+import io.openapiparser.Node;
 
 import java.util.Collection;
 import java.util.Map;

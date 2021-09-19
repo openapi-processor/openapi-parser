@@ -1,4 +1,4 @@
-package io.openapiparser.support;
+package io.openapiparser;
 
 import java.util.Map;
 
@@ -9,12 +9,16 @@ public class Node {
         this.node = node;
     }
 
-    public String getString(String key) {
+    public Object get (String key) {
+        return node.get (key);
+    }
+
+    public String getString (String key) {
         return (String) node.get (key);
     }
 
     @SuppressWarnings ("unchecked")
     public Node getChildNode (String key) {
-        return new Node((Map<String, Object>) node.get (key));
+        return new Node ((Map<String, Object>) node.get (key));
     }
 }

@@ -1,7 +1,6 @@
 package io.openapiparser;
 
 import io.openapiparser.model.v31.OpenApi;
-import io.openapiparser.support.Node;
 
 public class OpenApiResult31 implements OpenApiResult {
     private final Context context;

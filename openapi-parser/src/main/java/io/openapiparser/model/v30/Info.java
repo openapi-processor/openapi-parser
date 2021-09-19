@@ -1,7 +1,7 @@
 package io.openapiparser.model.v30;
 
 import io.openapiparser.Context;
-import io.openapiparser.support.Node;
+import io.openapiparser.Node;
 
 /**
  * the <em>Info</em> object.

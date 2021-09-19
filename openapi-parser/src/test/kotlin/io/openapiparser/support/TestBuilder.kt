@@ -1,6 +1,7 @@
 package io.openapiparser.support
 
 import io.openapiparser.Context
+import io.openapiparser.Node
 import io.openapiparser.OpenApiParser
 import io.openapiparser.ReferenceResolver
 import io.openapiparser.model.v30.OpenApi as OpenApi30
