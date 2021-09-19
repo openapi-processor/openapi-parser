@@ -1,4 +1,12 @@
 package io.openapiparser.model.v31;
 
-public class ExternalDocumentation {
+/**
+ * the <em>External Documentation</em> object.
+ *
+ * <p>See specification:
+ * <a href="https://spec.openapis.org/oas/v3.1.0.html#external-documentation-object">
+ *  4.8.11 External Documentation Object
+ * </a>
+ */
+public class ExternalDocumentation implements Extensions {
 }

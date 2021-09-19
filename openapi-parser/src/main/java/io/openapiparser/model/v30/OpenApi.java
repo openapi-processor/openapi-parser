@@ -1,22 +1,17 @@
 package io.openapiparser.model.v30;
 
 import io.openapiparser.Context;
-import io.openapiparser.model.v31.Path;
 
 import java.util.Collection;
 import java.util.Map;
 
 /**
- * the {@code openapi} object.
+ * the <em>OpenAPI</em> object.
  *
  * <p>See specification:
- * <ul>
- * <li>
- *  <a href="https://spec.openapis.org/oas/v3.0.3.html#openapi-object">4.7.1 OpenAPI Object</a>
- * </li>
- * </ul>
+ * <a href="https://spec.openapis.org/oas/v3.0.3.html#openapi-object">4.7.1 OpenAPI Object</a>
  */
-public class OpenApi {
+public class OpenApi implements Extensions {
     private final Context context;
 
     public OpenApi (Context context) {
@@ -33,7 +28,7 @@ public class OpenApi {
         return null;
     }
 
-    public Map<String, Path> getPaths () {
+    public Paths getPaths () {
         return null;
     }
 
