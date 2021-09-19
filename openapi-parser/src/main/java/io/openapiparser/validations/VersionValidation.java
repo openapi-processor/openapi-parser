@@ -8,7 +8,23 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 /**
- * validate openapi version
+ * validate {@code "openapi"} version number property.
+ *
+ * <p>See specification:
+ * <ul>
+ * <li>4.1 Versions
+ *   <ul>
+ *     <li><a href="https://spec.openapis.org/oas/v3.1.0.html#versions">3.1.0</a></li>
+ *     <li><a href="https://spec.openapis.org/oas/v3.0.3.html#versions">3.0.3</a></li>
+ *   </ul>
+ * </li>
+ * <li>4.7.1 OpenAPI Object
+ *   <ul>
+ *     <li><a href="https://spec.openapis.org/oas/v3.1.0.html#openapi-object">3.1.0</a></li>
+ *     <li><a href="https://spec.openapis.org/oas/v3.0.3.html#openapi-object">3.0.3</a></li>
+ *   </ul>
+ * </li>
+ * </ul>
  */
 public class VersionValidation implements Validation {
     private static final String OPENAPI = "openapi";
