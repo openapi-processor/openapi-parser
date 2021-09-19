@@ -2,15 +2,16 @@ package io.openapiparser
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
+import io.openapiparser.support.TestBuilder
 
 class OpenApiParserSpec: StringSpec({
 
     "detects openapi 3.0" {
-        val parser = TestParserBuilder()
+        val parser = TestBuilder()
             .withApi("""
                 openapi: 3.0.3
             """.trimIndent())
-            .build()
+            .buildParser()
 
         val result = parser.parse()
 
@@ -18,11 +19,11 @@ class OpenApiParserSpec: StringSpec({
     }
 
     "detects openapi 3.1" {
-        val parser = TestParserBuilder()
+        val parser = TestBuilder()
             .withApi("""
                 openapi: 3.1.0                
             """.trimIndent())
-            .build()
+            .buildParser()
 
         val result = parser.parse()
 

@@ -22,7 +22,7 @@ public class Context {
     public void read () throws ContextException {
         try {
             resolver.resolve (baseUri);
-             baseNode = resolver.getBaseNode();
+            baseNode = resolver.getBaseNode ();
         } catch (Exception e) {
             throw new ContextException (String.format (READ_ERROR, baseUri), e);
         }

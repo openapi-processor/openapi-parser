@@ -1,10 +1,7 @@
 package io.openapiparser.model.v31;
 
 import io.openapiparser.Context;
-import io.openapiparser.model.v30.Components;
-import io.openapiparser.model.v30.ExternalDocumentation;
-import io.openapiparser.model.v30.SecurityRequirement;
-import io.openapiparser.model.v30.Tag;
+import io.openapiparser.support.Node;
 
 import java.util.Collection;
 import java.util.Map;
@@ -17,9 +14,11 @@ import java.util.Map;
  */
 public class OpenApi implements Extensions {
     private final Context context;
+    private final Node node;
 
-    public OpenApi (Context context) {
+    public OpenApi (Context context, Node node) {
         this.context = context;
+        this.node = node;
     }
 
     public String getOpenapi () {
