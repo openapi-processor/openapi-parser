@@ -5,6 +5,9 @@ import io.openapiparser.Node;
 
 import java.util.Collection;
 
+import static io.openapiparser.Keywords.INFO;
+import static io.openapiparser.Keywords.OPENAPI;
+
 /**
  * the <em>OpenAPI</em> object.
  *
@@ -21,11 +24,11 @@ public class OpenApi implements Extensions {
     }
 
     public String getOpenapi () {
-        return node.getString ("openapi");
+        return node.getString (OPENAPI);
     }
 
     public Info getInfo () {
-        return new Info(context, node.getChildNode ("info"));
+        return new Info(context, node.getChildNode (INFO));
     }
 
     public Collection<Server> getServers () {

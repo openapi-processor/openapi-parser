@@ -8,13 +8,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+import static io.openapiparser.Keywords.*;
+
 public class OpenapiValidator implements Validator {
     private final Collection<Validator> validations = Arrays.asList(
-        new RequiredPropertiesValidator (
-            Arrays.asList (
-                "openapi",
-                "info")
-        ),
+        new RequiredPropertiesValidator (Arrays.asList (OPENAPI, INFO)),
         //  alt least one of: paths, components  webhooks
         new VersionValidator ()
     );

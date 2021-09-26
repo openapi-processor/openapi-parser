@@ -1,10 +1,11 @@
 package io.openapiparser.model.v31;
 
-import io.openapiparser.Context;
-import io.openapiparser.Node;
+import io.openapiparser.*;
 
 import java.util.Collection;
 import java.util.Map;
+
+import static io.openapiparser.Keywords.*;
 
 /**
  * the <em>OpenAPI</em> object.
@@ -22,11 +23,11 @@ public class OpenApi implements Extensions {
     }
 
     public String getOpenapi () {
-        return node.getString ("openapi");
+        return node.getString (OPENAPI);
     }
 
     public Info getInfo () {
-        return new Info (context, node.getChildNode ("info"));
+        return new Info (context, node.getChildNode (INFO));
     }
 
     public String getJsonSchemaDialect () {

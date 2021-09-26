@@ -5,6 +5,8 @@ import io.openapiparser.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
+import static io.openapiparser.Keywords.OPENAPI;
+
 /**
  * validate {@code "openapi"} version number property.
  *
@@ -25,7 +27,6 @@ import java.util.regex.Pattern;
  * </ul>
  */
 public class VersionValidator implements Validator {
-    private static final String OPENAPI = "openapi";
     private static final Pattern VERSION = Pattern.compile ("\\d\\.\\d\\.\\d");
 
     @Override

@@ -6,7 +6,7 @@ import io.openapiparser.validations.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static io.openapiparser.model.v30.OpenApi.*;
+import static io.openapiparser.Keywords.*;
 
 public class OpenapiValidator implements Validator {
     private final Collection<Validator> validations = Arrays.asList(

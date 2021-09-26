@@ -1,6 +1,6 @@
 package io.openapiparser;
 
-import java.util.*;
+import static io.openapiparser.Keywords.OPENAPI;
 
 public class OpenApiParser {
     private final Context context;
@@ -20,7 +20,7 @@ public class OpenApiParser {
     }
 
     private OpenApiResult createResult (Node api) {
-        Object version = api.get("openapi");
+        Object version = api.get(OPENAPI);
 
         if (isVersion30 (version)) {
             return createOpenApiResult30 ();
