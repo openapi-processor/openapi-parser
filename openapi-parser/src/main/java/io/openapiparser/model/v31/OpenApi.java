@@ -22,10 +22,12 @@ public class OpenApi implements Extensions {
     }
 
     public String getOpenapi () {
-        return null;
+        return node.getString ("openapi");
     }
 
-    public Info getInfo () { return null; }
+    public Info getInfo () {
+        return new Info (context, node.getChildNode ("info"));
+    }
 
     public String getJsonSchemaDialect () {
         return null;
