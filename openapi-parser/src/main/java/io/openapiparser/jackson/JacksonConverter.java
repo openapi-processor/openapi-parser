@@ -3,8 +3,7 @@ package io.openapiparser.jackson;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import io.openapiparser.Converter;
-import io.openapiparser.ConverterException;
+import io.openapiparser.*;
 import io.openapiparser.support.Strings;
 
 import java.util.Map;
@@ -22,7 +21,7 @@ public class JacksonConverter implements Converter {
     private static final ObjectMapper json = new ObjectMapper();
     private static final ObjectMapper yaml = new ObjectMapper(new YAMLFactory ());
 
-    public Map<String, Object> convert (String api) throws ConverterException {
+    public Node convert (String api) throws ConverterException {
         if (Strings.isEmpty (api)) {
             throw new ConverterException (String.format (CONVERT_ERROR, "empty"), null);
         }
@@ -34,17 +33,17 @@ public class JacksonConverter implements Converter {
         }
     }
 
-    private Map<String, Object> convertJson (String api) throws ConverterException {
+    private Node convertJson (String api) throws ConverterException {
         try {
-            return json.readValue (api, getMapTypeReference ());
+            return new Node(json.readValue (api, getMapTypeReference ()));
         } catch (Exception e) {
             throw new ConverterException (String.format (CONVERT_ERROR, "json"), e);
         }
     }
 
-    private Map<String, Object> convertYaml (String api) throws ConverterException {
+    private Node convertYaml (String api) throws ConverterException {
         try {
-            return yaml.readValue (api, getMapTypeReference ());
+            return new Node(yaml.readValue (api, getMapTypeReference ()));
         } catch (Exception e) {
             throw new ConverterException (String.format (CONVERT_ERROR, "yaml"), e);
         }

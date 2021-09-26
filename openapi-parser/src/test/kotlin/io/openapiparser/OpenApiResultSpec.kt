@@ -20,7 +20,7 @@ class OpenApiResultSpec: StringSpec({
 
     "should return api 30" {
         val ctx = mockk<Context>()
-        every { ctx.baseNode } returns emptyMap()
+        every { ctx.baseNode } returns Node(emptyMap())
 
         val result = OpenApiResult30(ctx)
 
@@ -29,7 +29,7 @@ class OpenApiResultSpec: StringSpec({
 
     "should throw if model type does not match api version 30" {
         val ctx = mockk<Context>()
-        every { ctx.baseNode } returns emptyMap()
+        every { ctx.baseNode } returns Node(emptyMap())
 
         val result = OpenApiResult30(ctx)
 
@@ -40,7 +40,7 @@ class OpenApiResultSpec: StringSpec({
 
     "should have version 31" {
         val ctx = mockk<Context>()
-        every { ctx.baseNode } returns emptyMap()
+        every { ctx.baseNode } returns Node(emptyMap())
 
         val result = OpenApiResult31(ctx)
 
@@ -49,7 +49,7 @@ class OpenApiResultSpec: StringSpec({
 
     "should throw if model type does not match api version 31" {
         val ctx = mockk<Context>()
-        every { ctx.baseNode } returns emptyMap()
+        every { ctx.baseNode } returns Node(emptyMap())
 
         val result = OpenApiResult31(ctx)
 
@@ -60,7 +60,7 @@ class OpenApiResultSpec: StringSpec({
 
     "should return api 31" {
         val ctx = mockk<Context>()
-        every { ctx.baseNode } returns emptyMap()
+        every { ctx.baseNode } returns Node(emptyMap())
 
         val result = OpenApiResult31(ctx)
 

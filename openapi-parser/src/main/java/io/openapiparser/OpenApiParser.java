@@ -19,7 +19,7 @@ public class OpenApiParser {
         }
     }
 
-    private OpenApiResult createResult (Map<String, Object> api) {
+    private OpenApiResult createResult (Node api) {
         Object version = api.get("openapi");
 
         if (isVersion30 (version)) {

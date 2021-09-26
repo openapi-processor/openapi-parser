@@ -21,4 +21,12 @@ public class Node {
     public Node getChildNode (String key) {
         return new Node ((Map<String, Object>) node.get (key));
     }
+
+    public boolean containsKey (String key) {
+        return node.containsKey (key);
+    }
+
+    public int getSize() {
+        return node.size ();
+    }
 }

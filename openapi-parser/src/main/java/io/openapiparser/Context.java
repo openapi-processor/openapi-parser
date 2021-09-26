@@ -1,7 +1,6 @@
 package io.openapiparser;
 
 import java.net.URI;
-import java.util.Map;
 
 public class Context {
     private static final String READ_ERROR = "failed to read %s.";
@@ -10,7 +9,7 @@ public class Context {
     private final ReferenceResolver resolver;
 
 //    private ReferenceRegistry registry;
-    private Map<String, Object> baseNode;
+    private Node baseNode;
 
 
     public Context (URI baseUri, ReferenceResolver resolver) {
@@ -28,7 +27,7 @@ public class Context {
         }
     }
 
-    public Map<String, Object> getBaseNode() {
+    public Node getBaseNode() {
         return baseNode;
     }
 

@@ -51,7 +51,7 @@ class TestBuilder {
         val resolver = ReferenceResolver(StringReader(api), converter)
         val context = Context(baseUri, resolver)
         context.read()
-        return OpenApi30(context, Node(context.baseNode))
+        return OpenApi30(context, context.baseNode)
     }
 
     fun buildOpenApi31(): OpenApi31 {
@@ -59,7 +59,7 @@ class TestBuilder {
         val resolver = ReferenceResolver(StringReader(api), converter)
         val context = Context(baseUri, resolver)
         context.read()
-        return OpenApi31(context, Node(context.baseNode))
+        return OpenApi31(context, context.baseNode)
     }
 
 }

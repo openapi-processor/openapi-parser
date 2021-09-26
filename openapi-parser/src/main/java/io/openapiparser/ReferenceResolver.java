@@ -11,7 +11,7 @@ public class ReferenceResolver {
     private final Reader reader;
     private final Converter converter;
 
-    private Map<String, Object> baseNode;
+    private Node baseNode;
 
     public ReferenceResolver (Reader reader, Converter converter) {
         this.reader = reader;
@@ -32,7 +32,7 @@ public class ReferenceResolver {
         }
     }
 
-    public Map<String, Object> getBaseNode () {
+    public Node getBaseNode () {
         return baseNode;
     }
 }
