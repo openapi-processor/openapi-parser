@@ -7,11 +7,16 @@ import io.openapiparser.Node
 import io.openapiparser.ValidationContext
 import java.net.URI
 
-class RequiredValidationSpec : StringSpec({
+class RequiredPropertiesValidatorSpec : StringSpec({
 
     "validates required properties of node" {
         val ctx = ValidationContext(URI("file:///any"))
-        val required = RequiredValidation(listOf("foo", "bar"))
+        val required = RequiredPropertiesValidator(
+            listOf(
+                "foo",
+                "bar"
+            )
+        )
 
         val messages = required.validate(ctx, Node(mapOf<String, Any>(
             "foo" to "required",
@@ -25,7 +30,12 @@ class RequiredValidationSpec : StringSpec({
 
     "detects missing required properties of node" {
         val ctx = ValidationContext(URI("file:///any"))
-        val required = RequiredValidation(listOf("foo", "bar"))
+        val required = RequiredPropertiesValidator(
+            listOf(
+                "foo",
+                "bar"
+            )
+        )
 
         val messages = required.validate(ctx, Node(mapOf<String, Any>()))
 

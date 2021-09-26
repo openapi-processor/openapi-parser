@@ -7,11 +7,11 @@ import io.openapiparser.Node
 import io.openapiparser.ValidationContext
 import java.net.URI
 
-class VersionValidationSpec : StringSpec({
+class VersionValidatorSpec : StringSpec({
 
     "validate 'openapi' value is a major.minor.patch version string" {
         val ctx = ValidationContext(URI("file:///any"))
-        val version = VersionValidation()
+        val version = VersionValidator()
 
         val messages = version.validate(ctx, Node(mapOf<String, Any>(
             "openapi" to "3.0.0"
@@ -26,7 +26,7 @@ class VersionValidationSpec : StringSpec({
         )
 
         val ctx = ValidationContext(URI("file:///any"))
-        val version = VersionValidation()
+        val version = VersionValidator()
         val messages = version.validate(ctx, Node(api))
 
         messages.size shouldBe 1
@@ -41,7 +41,7 @@ class VersionValidationSpec : StringSpec({
         )
 
         val ctx = ValidationContext(URI("file:///any"))
-        val version = VersionValidation()
+        val version = VersionValidator()
         val messages = version.validate(ctx, Node(api))
 
         messages.size shouldBe 1
@@ -56,7 +56,7 @@ class VersionValidationSpec : StringSpec({
         )
 
         val ctx = ValidationContext(URI("file:///any"))
-        val version = VersionValidation()
+        val version = VersionValidator()
         val messages = version.validate(ctx, Node(api))
 
         messages.size shouldBe 1

@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
  * </li>
  * </ul>
  */
-public class VersionValidation implements Validation {
+public class VersionValidator implements Validator {
     private static final String OPENAPI = "openapi";
     private static final Pattern VERSION = Pattern.compile ("\\d\\.\\d\\.\\d");
 

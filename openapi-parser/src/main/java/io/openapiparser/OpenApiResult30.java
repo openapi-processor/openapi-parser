@@ -1,7 +1,7 @@
 package io.openapiparser;
 
 import io.openapiparser.model.v30.OpenApi;
-import io.openapiparser.model.v30.validations.OpenapiValidation;
+import io.openapiparser.model.v30.validations.OpenapiValidator;
 
 import java.util.Collection;
 
@@ -34,7 +34,7 @@ public class OpenApiResult30 implements OpenApiResult {
     }
 
     void validate() {
-        validationMessages = new OpenapiValidation ().validate (
+        validationMessages = new OpenapiValidator ().validate (
             new ValidationContext (context.getBaseUri ()), context.getBaseNode ());
     }
 

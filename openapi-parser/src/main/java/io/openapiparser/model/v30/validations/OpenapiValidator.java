@@ -1,21 +1,17 @@
 package io.openapiparser.model.v30.validations;
 
 import io.openapiparser.*;
-import io.openapiparser.validations.RequiredValidation;
-import io.openapiparser.validations.VersionValidation;
+import io.openapiparser.validations.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class OpenapiValidation implements Validation {
-    private final Collection<Validation> validations = Arrays.asList(
-        new RequiredValidation (
-            Arrays.asList (
-                "openapi",
-                "info",
-                "paths")
-        ),
-        new VersionValidation ()
+import static io.openapiparser.model.v30.OpenApi.*;
+
+public class OpenapiValidator implements Validator {
+    private final Collection<Validator> validations = Arrays.asList(
+        new RequiredPropertiesValidator (Arrays.asList (OPENAPI, INFO, PATHS)),
+        new VersionValidator ()
     );
 
     @Override

@@ -8,10 +8,10 @@ import java.util.stream.Collectors;
 /**
  * validates existence of required properties on the given node.
  */
-public class RequiredValidation implements Validation {
+public class RequiredPropertiesValidator implements Validator {
     private final Collection<String> properties;
 
-    public RequiredValidation (Collection<String> properties) {
+    public RequiredPropertiesValidator (Collection<String> properties) {
         this.properties = properties;
     }
 
