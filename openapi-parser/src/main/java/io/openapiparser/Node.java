@@ -1,6 +1,7 @@
 package io.openapiparser;
 
 import java.util.Map;
+import java.util.Set;
 
 public class Node {
     private final Map<String, Object> node;
@@ -28,5 +29,9 @@ public class Node {
 
     public int getSize() {
         return node.size ();
+    }
+
+    public Set<String> getKeys() {
+        return node.keySet ();
     }
 }
