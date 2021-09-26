@@ -1,9 +1,13 @@
 package io.openapiparser;
 
+import io.openapiparser.model.v31.validations.OpenapiValidation;
 import io.openapiparser.model.v31.OpenApi;
+
+import java.util.Collection;
 
 public class OpenApiResult31 implements OpenApiResult {
     private final Context context;
+    private Collection<ValidationMessage> validationMessages;
 
     public OpenApiResult31 (Context context) {
         this.context = context;
@@ -25,12 +29,13 @@ public class OpenApiResult31 implements OpenApiResult {
     }
 
     @Override
-    public ValidationResult getValidationResult () {
-        return new WritableValidationResult ();
+    public Collection<ValidationMessage> getValidationMessages () {
+        return validationMessages;
     }
 
     void validate() {
-
+        validationMessages = new OpenapiValidation ().validate (
+            new ValidationContext (context.getBaseUri ()), context.getBaseNode ());
     }
 
 }

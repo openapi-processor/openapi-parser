@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 /**
  * validates existence of required properties on the given node.
  */
-class RequiredValidation implements Validation {
+public class RequiredValidation implements Validation {
     private final Collection<String> properties;
 
     public RequiredValidation (Collection<String> properties) {
