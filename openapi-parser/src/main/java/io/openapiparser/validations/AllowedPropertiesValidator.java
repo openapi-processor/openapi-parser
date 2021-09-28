@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class AllowedPropertiesValidator implements Validator {
+    public enum Extensions {INCLUDE_X, EXCLUDE_X}
+
     private final Collection<String> properties;
     private final boolean extensions;
 
@@ -14,9 +16,9 @@ public class AllowedPropertiesValidator implements Validator {
         this.extensions = false;
     }
 
-    public AllowedPropertiesValidator (Collection<String> properties, boolean extensions) {
+    public AllowedPropertiesValidator (Collection<String> properties, Extensions extensions) {
         this.properties = properties;
-        this.extensions = extensions;
+        this.extensions = Extensions.INCLUDE_X.equals (extensions);
     }
 
     @Override

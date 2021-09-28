@@ -19,4 +19,9 @@ public class ValidationMessage {
     public String getText () {
         return text;
     }
+
+    @Override
+    public String toString () {
+        return String.format ("%s: %s", path, text);
+    }
 }
