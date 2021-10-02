@@ -1,6 +1,7 @@
 package io.openapiparser;
 
 import java.net.URI;
+import java.util.Collection;
 
 public class ValidationContext {
     private final URI source;
@@ -18,6 +19,10 @@ public class ValidationContext {
 
     public String getPropertyPath(String property) {
         return path + "." + property;
+    }
+
+    public String getPropertyPath(Collection<String> properties) {
+        return path + ".(" + String.join ("|", properties) + ")";
     }
 
 }
