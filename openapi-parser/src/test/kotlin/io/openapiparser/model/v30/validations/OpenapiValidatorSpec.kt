@@ -1,6 +1,7 @@
 package io.openapiparser.model.v30.validations
 
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldExist
 import io.kotest.matchers.shouldBe
 import io.openapiparser.ValidationContext
@@ -10,7 +11,7 @@ import java.net.URI
 
 class OpenapiValidatorSpec : StringSpec({
 
-    "validates 'openapi' object" {
+    "reports errors in 'openapi' object" {
         val ctx = TestBuilder()
             .withApi("""
                 openapi: 3
@@ -32,6 +33,24 @@ class OpenapiValidatorSpec : StringSpec({
         messages.shouldExist { it.matches("$.paths", "'paths'") }
         // not allowed
         messages.shouldExist { it.matches("$.bad", "'bad'") }
+    }
+
+    "accepts valid 'openapi' object" {
+        val ctx = TestBuilder()
+            .withApi("""
+                openapi: 3.0.3
+                info: {}
+                paths: {}
+                x-foo: allowed
+            """.trimIndent())
+            .buildContext()
+        ctx.read()
+
+        val validator = OpenapiValidator()
+        val messages = validator.validate(
+            ValidationContext(URI("file:///any")), ctx.baseNode)
+
+        messages.shouldBeEmpty()
     }
 
 })
