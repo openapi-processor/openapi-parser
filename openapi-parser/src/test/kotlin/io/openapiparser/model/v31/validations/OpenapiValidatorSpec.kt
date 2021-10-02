@@ -24,14 +24,18 @@ class OpenapiValidatorSpec : StringSpec({
          val messages = validator.validate(
              ValidationContext(URI("file:///any")), ctx.baseNode)
 
-         messages.size shouldBe 3
+         messages.size shouldBe 4
 
          // version
          messages.shouldExist { it.matches("$.openapi", "'3'") }
+
          // required
          messages.shouldExist { it.matches("$.info", "'info'") }
-         // required xor
-        //  messages.shouldExist { it.matches("$.paths", "'paths'") }
+
+         // required at least one
+          messages.shouldExist { it.matches("$.(paths|webhooks|components)",
+              "'paths|webhooks|components'") }
+
          // not allowed
          messages.shouldExist { it.matches("$.bad", "'bad'") }
      }

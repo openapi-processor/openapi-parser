@@ -22,7 +22,7 @@ public interface Keywords {
         OPENAPI,
         INFO);
 
-    List<String> OPENAPI_KEYS_REQUIRED_XOR = Arrays.asList (
+    List<String> OPENAPI_KEYS_AT_LEAST_ONE = Arrays.asList (
         PATHS,
         WEBHOOKS,
         COMPONENTS);
