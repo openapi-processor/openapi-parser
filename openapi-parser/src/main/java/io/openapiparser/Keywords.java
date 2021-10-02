@@ -1,17 +1,48 @@
 package io.openapiparser;
 
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 public interface Keywords {
-    // openapi object 3.0
+
     String COMPONENTS = "components";
+    String CONTACT = "contact";
+    String DESCRIPTION = "description";
     String EXTERNAL_DOCS = "externalDocs";
     String INFO = "info";
+    String JSON_SCHEMA_DIALECT = "jsonSchemaDialect";
+    String LICENSE = "license";
     String OPENAPI = "openapi";
     String PATHS = "paths";
     String SECURITY = "security";
     String SERVERS = "servers";
+    String SUMMARY = "summary";
     String TAGS = "tags";
-
-    // openapi object since 3.1
-    String JSON_SCHEMA_DIALECT = "jsonSchemaDialect";
+    String TERMS_OF_SERVICE = "termsOfService";
+    String TITLE = "title";
+    String VERSION = "version";
     String WEBHOOKS = "webhooks";
+
+    static Collection<String> getProperties(Collection<Keyword> keywords) {
+        return keywords
+            .stream ()
+            .map (Keyword::getKeyword)
+            .collect (Collectors.toList ());
+    }
+
+    static Collection<String> getRequiredProperties(Collection<Keyword> keywords) {
+        return keywords
+            .stream ()
+            .filter (Keyword::isRequired)
+            .map (Keyword::getKeyword)
+            .collect (Collectors.toList ());
+    }
+
+    static Keyword optional (String keyword) {
+        return new Keyword (keyword);
+    }
+
+    static Keyword required (String keyword) {
+        return new Keyword (keyword, true);
+    }
 }

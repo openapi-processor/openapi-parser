@@ -6,15 +6,16 @@ import io.openapiparser.validations.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static io.openapiparser.model.v30.Keywords.OPENAPI_KEYS;
-import static io.openapiparser.model.v30.Keywords.OPENAPI_KEYS_REQUIRED;
+import static io.openapiparser.Keywords.getProperties;
+import static io.openapiparser.Keywords.getRequiredProperties;
+import static io.openapiparser.model.v30.Keywords.*;
 import static io.openapiparser.validations.AllowedPropertiesValidator.Extensions.*;
 
 public class OpenapiValidator implements Validator {
 
     private final Collection<Validator> validations = Arrays.asList(
-        new AllowedPropertiesValidator (OPENAPI_KEYS, INCLUDE_X),
-        new RequiredPropertiesValidator (OPENAPI_KEYS_REQUIRED),
+        new AllowedPropertiesValidator (getProperties (OPENAPI_KEYS), INCLUDE_X),
+        new RequiredPropertiesValidator (getRequiredProperties (OPENAPI_KEYS)),
         new VersionValidator ()
     );
 

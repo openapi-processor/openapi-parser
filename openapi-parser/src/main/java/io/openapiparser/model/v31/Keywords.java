@@ -1,29 +1,42 @@
 package io.openapiparser.model.v31;
 
-import java.util.Arrays;
-import java.util.List;
+import io.openapiparser.Keyword;
+
+import java.util.*;
 
 import static io.openapiparser.Keywords.*;
 
 public interface Keywords {
-    List<String> OPENAPI_KEYS = Arrays.asList (
-        OPENAPI,
-        INFO,
-        JSON_SCHEMA_DIALECT,
-        SERVERS,
-        PATHS,
-        WEBHOOKS,
-        COMPONENTS,
-        SECURITY,
-        TAGS,
-        EXTERNAL_DOCS);
 
-    List<String> OPENAPI_KEYS_REQUIRED = Arrays.asList (
-        OPENAPI,
-        INFO);
+    Collection<Keyword> OPENAPI_KEYS = Arrays.asList (
+        required (OPENAPI),
+        required (INFO),
+        optional (JSON_SCHEMA_DIALECT),
+        optional (SERVERS),
+        optional (PATHS),
+        optional (WEBHOOKS),
+        optional (COMPONENTS),
+        optional (SECURITY),
+        optional (TAGS),
+        optional (EXTERNAL_DOCS)
+    );
 
-    List<String> OPENAPI_KEYS_AT_LEAST_ONE = Arrays.asList (
-        PATHS,
-        WEBHOOKS,
-        COMPONENTS);
+    Collection<Keyword> OPENAPI_KEYS_AT_LEAST_ONE = Arrays.asList (
+        optional (PATHS),
+        optional (WEBHOOKS),
+        optional (COMPONENTS));
+
+
+    Collection<Keyword> INFO_KEYS = Arrays.asList (
+        required (TITLE),
+        optional (SUMMARY),
+        optional (DESCRIPTION),
+        optional (TERMS_OF_SERVICE),
+        optional (CONTACT),
+        optional (LICENSE),
+        required (VERSION)
+    );
+
+
+
 }
