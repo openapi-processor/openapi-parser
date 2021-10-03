@@ -5,8 +5,7 @@ import io.openapiparser.Node;
 
 import java.util.Map;
 
-import static io.openapiparser.Keywords.DESCRIPTION;
-import static io.openapiparser.Keywords.URL;
+import static io.openapiparser.Keywords.*;
 
 /**
  * the <em>Server</em> object.
@@ -32,6 +31,6 @@ public class Server implements Extensions {
     }
 
     public Map<String, ServerVariable> getVariables () {
-        return null;
+        return node.getChildMapAs (VARIABLES, node -> new ServerVariable (context, node));
     }
 }

@@ -23,6 +23,7 @@ public interface Keywords {
     String TERMS_OF_SERVICE = "termsOfService";
     String TITLE = "title";
     String URL = "url";
+    String VARIABLES = "variables";
     String VERSION = "version";
     String WEBHOOKS = "webhooks";
 

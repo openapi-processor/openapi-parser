@@ -1,6 +1,7 @@
 package io.openapiparser;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class Node {
@@ -23,11 +24,33 @@ public class Node {
         return new Node ((Map<String, Object>) node.get (key));
     }
 
+    public <T> T getChildAs (String key, Function<Node, T> factory) {
+        return factory.apply (getChildNode (key));
+    }
+
+    @SuppressWarnings ("unchecked")
+    public <T> Map<String, T> getChildMapAs (String key, Function<Node, T> factory) {
+        Map<String, Object> keyValue = (Map<String, Object>) node.get (key);
+
+        Map<String, T> result = new LinkedHashMap<> ();
+        keyValue.forEach ((k, v) -> {
+            result.put (k, factory.apply (new Node ((Map<String, Object>) v)));
+        });
+        return result;
+    }
+
     @SuppressWarnings ("unchecked")
     public Collection<Node> getChildNodes (String key) {
         return ((Collection<Map<String, Object>>) node.get (key))
             .stream ()
             .map (Node::new)
+            .collect(Collectors.toList());
+    }
+
+    public <T> Collection<T> getChildListAs (String key, Function<Node, T> factory) {
+        return getChildNodes (key)
+            .stream ()
+            .map (factory)
             .collect(Collectors.toList());
     }
 
