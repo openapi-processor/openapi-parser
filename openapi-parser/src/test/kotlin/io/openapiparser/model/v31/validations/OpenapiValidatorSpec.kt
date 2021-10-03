@@ -18,7 +18,6 @@ class OpenapiValidatorSpec : StringSpec({
                  bad: not allowed
              """.trimIndent())
              .buildContext()
-         ctx.read()
 
          val validator = OpenapiValidator()
          val messages = validator.validate(

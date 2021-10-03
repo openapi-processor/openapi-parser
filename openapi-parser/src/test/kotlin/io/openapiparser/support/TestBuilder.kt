@@ -43,7 +43,9 @@ class TestBuilder {
     fun buildContext(): Context {
         val converter = JacksonConverter()
         val resolver = ReferenceResolver(StringReader(api), converter)
-        return Context(baseUri, resolver)
+        val context = Context(baseUri, resolver)
+        context.read()
+        return context
     }
 
     fun buildOpenApi30(): OpenApi30 {

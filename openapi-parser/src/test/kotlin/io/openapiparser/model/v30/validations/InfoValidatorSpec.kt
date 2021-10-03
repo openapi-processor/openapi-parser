@@ -17,7 +17,6 @@ class InfoValidatorSpec : StringSpec({
                 bad: not allowed
             """.trimIndent())
             .buildContext()
-        ctx.read()
 
         val validator = InfoValidator()
         val messages = validator.validate(
@@ -45,7 +44,6 @@ class InfoValidatorSpec : StringSpec({
                 x-foo: allowed
             """.trimIndent())
             .buildContext()
-        ctx.read()
 
         val validator = InfoValidator()
         val messages = validator.validate(
