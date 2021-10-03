@@ -3,6 +3,8 @@ package io.openapiparser.model.v30;
 import io.openapiparser.Context;
 import io.openapiparser.Node;
 
+import static io.openapiparser.Keywords.*;
+
 /**
  * the <em>License</em> object.
  *
@@ -19,11 +21,10 @@ public class License implements Extensions {
     }
 
     public String getName () {
-        return null;
+        return node.getString (NAME);
     }
 
     public String getUrl () {
-        return null;
+        return node.getString (URL);
     }
-
 }
