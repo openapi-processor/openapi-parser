@@ -8,10 +8,12 @@ public interface Keywords {
     String COMPONENTS = "components";
     String CONTACT = "contact";
     String DESCRIPTION = "description";
+    String EMAIL = "email";
     String EXTERNAL_DOCS = "externalDocs";
     String INFO = "info";
     String JSON_SCHEMA_DIALECT = "jsonSchemaDialect";
     String LICENSE = "license";
+    String NAME = "name";
     String OPENAPI = "openapi";
     String PATHS = "paths";
     String SECURITY = "security";
@@ -20,6 +22,7 @@ public interface Keywords {
     String TAGS = "tags";
     String TERMS_OF_SERVICE = "termsOfService";
     String TITLE = "title";
+    String URL = "url";
     String VERSION = "version";
     String WEBHOOKS = "webhooks";
 
