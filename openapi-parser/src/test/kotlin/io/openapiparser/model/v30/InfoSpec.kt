@@ -10,13 +10,11 @@ class InfoSpec : StringSpec({
     "gets info object" {
         val api = TestBuilder()
             .withApi("""
-                openapi: 3.0.3
                 info:
                   title: the title
                   description: the description
                   termsOfService: https://any/terms 
                   version: "1"
-                paths: {}
             """.trimIndent())
             .buildOpenApi30()
 
@@ -30,12 +28,10 @@ class InfoSpec : StringSpec({
     "gets contact object" {
         val api = TestBuilder()
             .withApi("""
-                openapi: 3.0.3
                 info:
                   title: the title
                   contact: {}
                   version: "1"
-                paths: {}
             """.trimIndent())
             .buildOpenApi30()
 
@@ -45,12 +41,10 @@ class InfoSpec : StringSpec({
     "gets license object" {
         val api = TestBuilder()
             .withApi("""
-                openapi: 3.0.3
                 info:
                   title: the title
                   license: {}
                   version: "1"
-                paths: {}
             """.trimIndent())
             .buildOpenApi30()
 
