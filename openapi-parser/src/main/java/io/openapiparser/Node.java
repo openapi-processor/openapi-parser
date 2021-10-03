@@ -1,7 +1,7 @@
 package io.openapiparser;
 
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Node {
     private final Map<String, Object> node;
@@ -21,6 +21,14 @@ public class Node {
     @SuppressWarnings ("unchecked")
     public Node getChildNode (String key) {
         return new Node ((Map<String, Object>) node.get (key));
+    }
+
+    @SuppressWarnings ("unchecked")
+    public Collection<Node> getChildNodes (String key) {
+        return ((Collection<Map<String, Object>>) node.get (key))
+            .stream ()
+            .map (Node::new)
+            .collect(Collectors.toList());
     }
 
     public boolean containsKey (String key) {

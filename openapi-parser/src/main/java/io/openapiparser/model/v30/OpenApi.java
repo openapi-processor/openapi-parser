@@ -3,10 +3,10 @@ package io.openapiparser.model.v30;
 import io.openapiparser.Context;
 import io.openapiparser.Node;
 
-import java.util.Collection;
+import java.util.*;
+import java.util.stream.Collectors;
 
-import static io.openapiparser.Keywords.INFO;
-import static io.openapiparser.Keywords.OPENAPI;
+import static io.openapiparser.Keywords.*;
 
 /**
  * the <em>OpenAPI</em> object.
@@ -32,7 +32,10 @@ public class OpenApi implements Extensions {
     }
 
     public Collection<Server> getServers () {
-        return null;
+        return node.getChildNodes (SERVERS)
+            .stream ()
+            .map (server -> new Server(context, server))
+            .collect(Collectors.toList());
     }
 
     public Paths getPaths () {
