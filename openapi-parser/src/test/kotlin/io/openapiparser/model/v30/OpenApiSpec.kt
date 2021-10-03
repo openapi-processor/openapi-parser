@@ -15,7 +15,6 @@ class OpenApiSpec : StringSpec({
                 info:
                   title: title
                   version: "1"
-                paths: {}
             """.trimIndent())
             .buildOpenApi30()
 
@@ -29,7 +28,6 @@ class OpenApiSpec : StringSpec({
                 info:
                   title: the title
                   version: "1"
-                paths: {}
             """.trimIndent())
             .buildOpenApi30()
 
@@ -46,7 +44,6 @@ class OpenApiSpec : StringSpec({
                 servers:
                   - {}
                   - {}
-                paths: {}
             """.trimIndent())
             .buildOpenApi30()
 
