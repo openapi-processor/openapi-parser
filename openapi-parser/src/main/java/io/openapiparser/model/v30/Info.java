@@ -3,6 +3,8 @@ package io.openapiparser.model.v30;
 import io.openapiparser.Context;
 import io.openapiparser.Node;
 
+import static io.openapiparser.Keywords.*;
+
 /**
  * the <em>Info</em> object.
  *
@@ -19,26 +21,26 @@ public class Info {
     }
 
     public String getTitle () {
-        return node.getString ("title");
+        return node.getString (TITLE);
     }
 
     public String getDescription () {
-        return node.getString ("description");
+        return node.getString (DESCRIPTION);
     }
 
     public String getTermsOfService () {
-        return node.getString ("termsOfService");
+        return node.getString (TERMS_OF_SERVICE);
     }
 
     public Contact getContact () {
-        return null;
+        return new Contact (context, node.getChildNode (CONTACT));
     }
 
     public License getLicense () {
-        return null;
+        return new License (context, node.getChildNode (LICENSE));
     }
 
     public String getVersion () {
-        return node.getString ("version");
+        return node.getString (VERSION);
     }
 }
