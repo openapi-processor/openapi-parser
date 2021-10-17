@@ -9,7 +9,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import io.openapiparser.*;
-import io.openapiparser.support.Strings;
 
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -27,7 +26,7 @@ public class JacksonConverter implements Converter {
     private static final ObjectMapper yaml = new ObjectMapper(new YAMLFactory ());
 
     public Node convert (String api) throws ConverterException {
-        if (Strings.isEmpty (api)) {
+        if (isEmpty (api)) {
             throw new ConverterException (String.format (CONVERT_ERROR, "empty"), null);
         }
 
@@ -70,4 +69,7 @@ public class JacksonConverter implements Converter {
       return null;
     }
 
+    private static boolean isEmpty(String source) {
+        return source == null || source.isEmpty ();
+    }
 }
