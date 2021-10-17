@@ -11,10 +11,6 @@ class ServerSpec : StringSpec({
     "gets server objects" {
         val api = TestBuilder()
             .withApi("""
-                openapi: 3.0.3
-                info:
-                  title: title
-                  version: "1"
                 servers:
                  - url: https://a.url
                    description: a description
@@ -22,7 +18,6 @@ class ServerSpec : StringSpec({
                  - url: https://b.url
                    description: b description
                    variables: {}
-                paths: {}
             """.trimIndent())
             .buildOpenApi30()
 
@@ -34,14 +29,9 @@ class ServerSpec : StringSpec({
     "gets server variables" {
         val api = TestBuilder()
             .withApi("""
-                openapi: 3.0.3
-                info:
-                  title: the title
-                  version: "1"
                 servers:
                 - url: https://{one}.{two}/url
                   variables: {}
-                paths: {}
             """.trimIndent())
             .buildOpenApi30()
 

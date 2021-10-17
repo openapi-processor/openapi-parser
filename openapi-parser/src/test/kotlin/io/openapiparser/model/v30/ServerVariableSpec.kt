@@ -10,10 +10,6 @@ class ServerVariableSpec : StringSpec({
     "gets server variables" {
         val api = TestBuilder()
             .withApi("""
-                openapi: 3.0.3
-                info:
-                  title: the title
-                  version: "1"
                 servers:
                 - url: https://{one}.{two}/url
                   description: a description
@@ -27,7 +23,6 @@ class ServerVariableSpec : StringSpec({
                         - two-two
                       default: two-default
                       description: two description
-                paths: {}
             """.trimIndent())
             .buildOpenApi30()
 
