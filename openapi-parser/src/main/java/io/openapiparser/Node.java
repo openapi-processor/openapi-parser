@@ -24,8 +24,23 @@ public class Node {
         return new Node ((Map<String, Object>) node.get (key));
     }
 
+    @SuppressWarnings ("unchecked")
+    public Collection<Node> getChildNodes (String key) {
+        return ((Collection<Map<String, Object>>) node.get (key))
+            .stream ()
+            .map (Node::new)
+            .collect(Collectors.toList());
+    }
+
     public <T> T getChildAs (String key, Function<Node, T> factory) {
         return factory.apply (getChildNode (key));
+    }
+
+    public <T> Collection<T> getChildArrayAs (String key, Function<Node, T> factory) {
+        return getChildNodes (key)
+            .stream ()
+            .map (factory)
+            .collect(Collectors.toList());
     }
 
     @SuppressWarnings ("unchecked")
@@ -37,21 +52,6 @@ public class Node {
             result.put (k, factory.apply (new Node ((Map<String, Object>) v)));
         });
         return result;
-    }
-
-    @SuppressWarnings ("unchecked")
-    public Collection<Node> getChildNodes (String key) {
-        return ((Collection<Map<String, Object>>) node.get (key))
-            .stream ()
-            .map (Node::new)
-            .collect(Collectors.toList());
-    }
-
-    public <T> Collection<T> getChildArrayAs (String key, Function<Node, T> factory) {
-        return getChildNodes (key)
-            .stream ()
-            .map (factory)
-            .collect(Collectors.toList());
     }
 
     public boolean containsKey (String key) {
