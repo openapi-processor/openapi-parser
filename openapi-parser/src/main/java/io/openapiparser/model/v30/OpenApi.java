@@ -4,7 +4,6 @@ import io.openapiparser.Context;
 import io.openapiparser.Node;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static io.openapiparser.Keywords.*;
 
@@ -32,10 +31,7 @@ public class OpenApi implements Extensions {
     }
 
     public Collection<Server> getServers () {
-        return node.getChildNodes (SERVERS)
-            .stream ()
-            .map (server -> new Server(context, server))
-            .collect(Collectors.toList());
+        return node.getChildArrayAs (SERVERS, node -> new Server(context, node));
     }
 
     public Paths getPaths () {

@@ -33,11 +33,11 @@ public class Info {
     }
 
     public Contact getContact () {
-        return new Contact (context, node.getChildNode (CONTACT));
+        return node.getChildAs (CONTACT, node -> new Contact (context, node));
     }
 
     public License getLicense () {
-        return new License (context, node.getChildNode (LICENSE));
+        return node.getChildAs (LICENSE, node -> new License (context, node));
     }
 
     public String getVersion () {
