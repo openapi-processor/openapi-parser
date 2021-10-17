@@ -8,7 +8,6 @@ package io.openapiparser;
 import io.openapiparser.support.Strings;
 
 import java.net.URI;
-import java.util.Map;
 
 public class ReferenceResolver {
     private static final String RESOLVE_ERROR = "failed to resolve %s.";
