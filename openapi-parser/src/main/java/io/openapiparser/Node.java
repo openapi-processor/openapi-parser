@@ -47,7 +47,7 @@ public class Node {
             .collect(Collectors.toList());
     }
 
-    public <T> Collection<T> getChildListAs (String key, Function<Node, T> factory) {
+    public <T> Collection<T> getChildArrayAs (String key, Function<Node, T> factory) {
         return getChildNodes (key)
             .stream ()
             .map (factory)
