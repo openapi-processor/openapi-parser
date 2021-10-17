@@ -11,10 +11,6 @@ class PathsSpec : StringSpec({
     "gets paths object" {
         val api = TestBuilder()
             .withApi("""
-                openapi: 3.0.3
-                info:
-                  title: title
-                  version: "1"
                 paths:
                   /foo: {}
             """.trimIndent())
@@ -28,10 +24,6 @@ class PathsSpec : StringSpec({
     "gets paths objects" {
         val api = TestBuilder()
             .withApi("""
-                openapi: 3.0.3
-                info:
-                  title: title
-                  version: "1"
                 paths:
                   /foo: {}
                   /bar: {}
