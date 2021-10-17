@@ -1,8 +1,13 @@
+/*
+ * Copyright 2021 https://github.com/openapi-processor/openapi-parser
+ * PDX-License-Identifier: Apache-2.0
+ */
+
 package io.openapiparser;
 
 public class Keyword {
-    private String keyword;
-    private boolean required;
+    private final String keyword;
+    private final boolean required;
 
     public Keyword (String keyword) {
         this.keyword = keyword;

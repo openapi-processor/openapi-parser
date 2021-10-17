@@ -1,7 +1,11 @@
+/*
+ * Copyright 2021 https://github.com/openapi-processor/openapi-parser
+ * PDX-License-Identifier: Apache-2.0
+ */
+
 package io.openapiparser.support
 
 import io.openapiparser.Context
-import io.openapiparser.Node
 import io.openapiparser.OpenApiParser
 import io.openapiparser.ReferenceResolver
 import io.openapiparser.model.v30.OpenApi as OpenApi30
