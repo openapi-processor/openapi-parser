@@ -16,6 +16,7 @@ public interface Keywords {
     String NAME = "name";
     String OPENAPI = "openapi";
     String PATHS = "paths";
+    String REF = "$ref";
     String SECURITY = "security";
     String SERVERS = "servers";
     String SUMMARY = "summary";
