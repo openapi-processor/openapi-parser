@@ -1,0 +1,17 @@
+:openapi: https://www.openapis.org/
+
+== openapi-parser
+
+a Java link:{openapi}[OpenAPI] 3.0.x & 3.1 parser with validation.
+
+=== yaml/json prser
+
+It is using `Map<String, Object>` internally to represent an OpenAPI object tree to be independent of a specific yaml/json parser.
+
+openapi-parser will work with any yaml/json parser that is able to convert an OpenAPI yaml or json to a `Map<String, Object>` object tree.
+
+`openapi-parser-jackson` provides a default implementation that is based on jackson.
+
+== documentation
+
+todo
