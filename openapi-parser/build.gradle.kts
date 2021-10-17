@@ -5,5 +5,6 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":openapi-parser-api"))
+    implementation(project(":openapi-parser-base"))
+    testImplementation(project(":openapi-parser-jackson"))
 }
