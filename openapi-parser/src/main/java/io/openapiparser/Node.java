@@ -20,6 +20,15 @@ public class Node {
     }
 
     @SuppressWarnings ("unchecked")
+    public <T> Map<String, T> getMapAs (Function<Node, T> factory) {
+        Map<String, T> result = new LinkedHashMap<> ();
+        node.forEach ((k, v) -> {
+            result.put (k, factory.apply (new Node ((Map<String, Object>) v)));
+        });
+        return result;
+    }
+
+    @SuppressWarnings ("unchecked")
     public Node getChildNode (String key) {
         return new Node ((Map<String, Object>) node.get (key));
     }

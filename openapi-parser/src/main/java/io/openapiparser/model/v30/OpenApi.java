@@ -35,7 +35,7 @@ public class OpenApi implements Extensions {
     }
 
     public Paths getPaths () {
-        return null;
+        return node.getChildAs (PATHS, node -> new Paths (context, node));
     }
 
     public Components getComponents () {

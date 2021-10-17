@@ -50,4 +50,18 @@ class OpenApiSpec : StringSpec({
         api.servers.size shouldBe 2
     }
 
+    "gets paths object" {
+        val api = TestBuilder()
+            .withApi("""
+                openapi: 3.0.3
+                info:
+                  title: the title
+                  version: "1"
+                paths: {}
+            """.trimIndent())
+            .buildOpenApi30()
+
+        api.paths.shouldNotBeNull()
+    }
+
 })
