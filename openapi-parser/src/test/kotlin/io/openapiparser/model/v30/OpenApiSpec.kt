@@ -1,7 +1,6 @@
 package io.openapiparser.model.v30
 
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.openapiparser.support.TestBuilder
@@ -48,7 +47,7 @@ class OpenApiSpec : StringSpec({
             .buildOpenApi30()
 
         api.servers.shouldNotBeNull()
-        api.servers.shouldNotBeEmpty()
+        api.servers.size shouldBe 2
     }
 
 })
