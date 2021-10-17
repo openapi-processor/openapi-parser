@@ -27,7 +27,7 @@ public class OpenApi implements Extensions {
     }
 
     public Info getInfo () {
-        return new Info(context, node.getChildNode (INFO));
+        return node.getChildAs (INFO, node -> new Info (context, node));
     }
 
     public Collection<Server> getServers () {
