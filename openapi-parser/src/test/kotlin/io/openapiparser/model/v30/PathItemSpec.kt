@@ -22,7 +22,6 @@ class PathItemSpec : StringSpec({
 
         val path = api.paths.getPathItem("/foo")
         path.ref shouldBe "ref path"
-        // todo other properties should be null
     }
 
 })
