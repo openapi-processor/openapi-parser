@@ -15,10 +15,10 @@ class UriReaderSpec: StringSpec({
 
     "reads file by uri" {
         val openapi = "openapi: 3.0.3"
-        Memory.add("openapi.yaml", openapi)
+        Memory.add("/openapi.yaml", openapi)
 
         val reader = UriReader()
-        val content = reader.read(URI("memory:openapi.yaml"))
+        val content = reader.read(URI("memory:/openapi.yaml"))
 
         Strings.of(content).shouldBe(openapi)
     }
