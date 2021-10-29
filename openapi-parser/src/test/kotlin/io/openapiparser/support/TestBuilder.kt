@@ -7,6 +7,7 @@ package io.openapiparser.support
 
 import io.openapiparser.Context
 import io.openapiparser.OpenApiParser
+import io.openapiparser.ReferenceRegistry
 import io.openapiparser.ReferenceResolver
 import io.openapiparser.model.v30.OpenApi as OpenApi30
 import io.openapiparser.model.v31.OpenApi as OpenApi31
@@ -38,31 +39,43 @@ class TestBuilder {
     }
 
     fun buildParser(): OpenApiParser {
-        val converter = JacksonConverter()
-        val resolver = ReferenceResolver(StringReader(api), converter)
+        val resolver = ReferenceResolver(
+            baseUri,
+            StringReader(api),
+            JacksonConverter(),
+            ReferenceRegistry(baseUri))
         val context = Context(baseUri, resolver)
         return OpenApiParser(context)
     }
 
     fun buildContext(): Context {
-        val converter = JacksonConverter()
-        val resolver = ReferenceResolver(StringReader(api), converter)
+        val resolver = ReferenceResolver(
+            baseUri,
+            StringReader(api),
+            JacksonConverter(),
+            ReferenceRegistry(baseUri))
         val context = Context(baseUri, resolver)
         context.read()
         return context
     }
 
     fun buildOpenApi30(): OpenApi30 {
-        val converter = JacksonConverter()
-        val resolver = ReferenceResolver(StringReader(api), converter)
+        val resolver = ReferenceResolver(
+            baseUri,
+            StringReader(api),
+            JacksonConverter(),
+            ReferenceRegistry(baseUri))
         val context = Context(baseUri, resolver)
         context.read()
         return OpenApi30(context, context.baseNode)
     }
 
     fun buildOpenApi31(): OpenApi31 {
-        val converter = JacksonConverter()
-        val resolver = ReferenceResolver(StringReader(api), converter)
+        val resolver = ReferenceResolver(
+            baseUri,
+            StringReader(api),
+            JacksonConverter(),
+            ReferenceRegistry(baseUri))
         val context = Context(baseUri, resolver)
         context.read()
         return OpenApi31(context, context.baseNode)

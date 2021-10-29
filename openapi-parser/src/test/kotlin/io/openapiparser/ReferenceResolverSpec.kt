@@ -18,14 +18,17 @@ import java.net.URI
 class ReferenceResolverSpec : StringSpec({
 
     "reads OpenAPI document" {
+        val uri = URI("file:///any")
         val resolver = ReferenceResolver(
+            uri,
             StringReader("""
                 openapi: 3.0.3
             """.trimIndent()),
-            JacksonConverter()
+            JacksonConverter(),
+            ReferenceRegistry(uri)
         )
 
-        resolver.resolve(URI("file:///any"))
+        resolver.resolve()
 
         val node = resolver.baseNode
         node.size shouldBe 1
@@ -37,10 +40,8 @@ class ReferenceResolverSpec : StringSpec({
         every { reader.read(any()) } throws IOException()
 
         shouldThrow<ResolverException> {
-            val resolver = ReferenceResolver(
-                reader,
-                null)
-            resolver.resolve(URI("file:///any"))
+            val resolver = ReferenceResolver(null, reader, null, null)
+            resolver.resolve()
         }
     }
 
@@ -50,9 +51,11 @@ class ReferenceResolverSpec : StringSpec({
 
         shouldThrow<ResolverException> {
             val resolver = ReferenceResolver(
+                null,
                 StringReader("openapi: 3.0.3"),
-                converter)
-            resolver.resolve(URI("file:///any"))
+                converter,
+                null)
+            resolver.resolve()
         }
     }
 

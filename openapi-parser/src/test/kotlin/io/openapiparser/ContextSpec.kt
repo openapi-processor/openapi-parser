@@ -17,13 +17,17 @@ import java.net.URI
 class ContextSpec : StringSpec({
 
     "reads OpenAPI document" {
+        val uri = URI("file:///any")
         val ctx = Context(
-            URI("file:///any"),
+            uri,
             ReferenceResolver(
+                uri,
                 StringReader("""
                     openapi: 3.0.3
                     """.trimIndent()),
-                JacksonConverter())
+                JacksonConverter(),
+                ReferenceRegistry(uri)
+            )
         )
 
         ctx.read()
@@ -35,7 +39,7 @@ class ContextSpec : StringSpec({
 
     "throws if reading fails" {
         val resolver = mockk<ReferenceResolver>()
-        every { resolver.resolve(any()) } throws ResolverException("failed", null)
+        every { resolver.resolve() } throws ResolverException("failed", null)
 
         shouldThrow<ContextException> {
             val ctx = Context(
