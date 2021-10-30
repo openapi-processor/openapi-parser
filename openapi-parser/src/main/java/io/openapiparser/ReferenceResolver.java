@@ -31,20 +31,37 @@ public class ReferenceResolver {
     }
 
     public void resolve () throws ResolverException {
-        baseNode = loadDocument (baseUri);
-        documents.add (baseUri, baseNode);
-        resolveReferences (baseUri, baseNode);
+        initBaseDocument ();
+        collectReferences ();
+        resolveReferences ();
     }
 
-    private void resolveReferences (URI uri, Node node) throws ResolverException {
+    private void initBaseDocument () throws ResolverException {
+        baseNode = loadDocument (baseUri);
+        documents.add (baseUri, baseNode);
+    }
+
+    private void resolveReferences() {
+        references.resolve((documentUri, ref) -> {
+            Node documentNode = documents.get (documentUri);
+            String fragment = ref.substring(ref.indexOf (HASH));
+            return getRawRefNode (documentNode, fragment);
+        });
+    }
+
+    private void collectReferences () throws ResolverException {
+        collectReferences (baseUri, baseNode);
+    }
+
+    private void collectReferences (URI uri, Node node) throws ResolverException {
         for (String k: node.getKeys ()) {
             if (k.equals (Keywords.REF)) {
                 // handle ref
                 String ref = node.getString (k);
                 if (ref.startsWith (HASH)) {
-                    // into same source
+                    // into same document
                 } else {
-                    // into other source
+                    // into other document
                     if (ref.contains (HASH)) {
                         String document = ref.substring(0, ref.indexOf(HASH));
                         URI documentUri = uri.resolve (document);
@@ -52,15 +69,12 @@ public class ReferenceResolver {
                         if (!documents.contains (documentUri)) {
                             Node documentNode = loadDocument (documentUri);
                             documents.add (documentUri, documentNode);
-                            resolveReferences (documentUri, documentNode);
+                            collectReferences (documentUri, documentNode);
                         }
 
-                        Node documentNode = documents.get (documentUri);
-                        String fragment = ref.substring(ref.indexOf (HASH));
-                        Object rawRefNode = getRawRefNode (documentNode, fragment);
-                        references.add (baseUri, documentUri, ref, rawRefNode);
+                        references.add (baseUri, documentUri, ref);
                     } else {
-                        // source is object
+                        // is other document
                     }
                 }
             } else {

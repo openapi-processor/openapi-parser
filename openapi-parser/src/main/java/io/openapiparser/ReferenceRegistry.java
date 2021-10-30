@@ -8,6 +8,7 @@ package io.openapiparser;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 public class ReferenceRegistry {
     private final URI baseUri; // todo not needed ??
@@ -17,15 +18,25 @@ public class ReferenceRegistry {
       this.baseUri = baseUri;
     }
 
-    public void add (URI parentUri, URI documentUri, String ref, Object rawRefNode) {
+    public void add (URI parentUri, URI documentUri, String ref) {
         references.put (
             createAbsoluteRefUri (documentUri, ref),
-            new Reference (parentUri, documentUri, ref, rawRefNode));
+            new Reference (parentUri, documentUri, ref));
+    }
+
+    public void resolve(BiFunction<URI, String, Object> resolver) {
+        references.forEach ((key, ref) -> {
+            replace (key, ref, resolver.apply (ref.getDocUri (), ref.getRef ()));
+        });
     }
 
     // todo where does a caller get the absolute ref?
     Reference getRef(String absoluteRef) {
         return references.get (absoluteRef);
+    }
+
+    private void replace (String key, Reference ref, Object rawValue) {
+        references.put (key, ref.withRawValue (rawValue));
     }
 
     private String createAbsoluteRefUri(URI documentUri, String ref) {
