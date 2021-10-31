@@ -8,6 +8,7 @@ package io.openapiparser;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.*;
+import java.util.Objects;
 
 /**
  * simple {@link Reader} implementation based on {@link URL}.
@@ -23,11 +24,11 @@ public class UriReader implements Reader {
      */
     @Override
     public InputStream read (URI uri) throws IOException {
-        URL root = uri.toURL ();
+        Objects.requireNonNull (uri);
 
+        URL root = uri.toURL ();
         URLConnection connection = root.openConnection ();
         connection.connect ();
-
         return connection.getInputStream ();
     }
 
