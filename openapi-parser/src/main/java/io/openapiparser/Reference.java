@@ -28,7 +28,7 @@ public class Reference {
         this.parentUri = parentUri;
         this.docUri = docUri;
         this.ref = ref;
-        this.rawValue = null;
+        this.rawValue = "unresolved reference";
     }
 
     public Reference (URI parentUri, URI docUri, String ref, Object rawValue) {
