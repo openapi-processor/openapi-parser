@@ -6,7 +6,6 @@
 package io.openapiparser;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class Node {
@@ -16,54 +15,66 @@ public class Node {
         this.node = node;
     }
 
-    public Object get (String key) {
+    public @Nullable Object get (String key) {
         return node.get (key);
     }
 
-    public String getString (String key) {
+    public @Nullable String getString (String key) {
         return (String) node.get (key);
     }
 
     @SuppressWarnings ("unchecked")
-    public <T> Map<String, T> getMapAs (Function<Node, T> factory) {
+    public <T> Map<String, T> getMapAs (NodeConverter<T> factory) {
         Map<String, T> result = new LinkedHashMap<> ();
         node.forEach ((k, v) -> {
-            result.put (k, factory.apply (new Node ((Map<String, Object>) v)));
+            result.put (k, factory.create (new Node ((Map<String, Object>) v)));
         });
         return result;
     }
 
     @SuppressWarnings ("unchecked")
-    public Node getChildNode (String key) {
+    public @Nullable Node getChildNode (String key) {
+        if (!node.containsKey (key))
+            return null;
+
         return new Node ((Map<String, Object>) node.get (key));
     }
 
     @SuppressWarnings ("unchecked")
     public Collection<Node> getChildNodes (String key) {
+        if (!node.containsKey (key))
+            return Collections.EMPTY_LIST;
+
         return ((Collection<Map<String, Object>>) node.get (key))
             .stream ()
             .map (Node::new)
             .collect(Collectors.toList());
     }
 
-    public <T> T getChildAs (String key, Function<Node, T> factory) {
-        return factory.apply (getChildNode (key));
+    public <T> @Nullable T getChildAs (String key, NodeConverter<T> factory) {
+        final Node childNode = getChildNode (key);
+        if (childNode == null)
+            return null;
+
+        return factory.create (childNode);
     }
 
-    public <T> Collection<T> getChildArrayAs (String key, Function<Node, T> factory) {
+    public <T> Collection<T> getChildArrayAs (String key, NodeConverter<T> factory) {
         return getChildNodes (key)
             .stream ()
-            .map (factory)
+            .map (factory::create)
             .collect(Collectors.toList());
     }
 
     @SuppressWarnings ("unchecked")
-    public <T> Map<String, T> getChildMapAs (String key, Function<Node, T> factory) {
+    public <T> @Nullable Map<String, T> getChildMapAs (String key, NodeConverter<T> factory) {
         Map<String, Object> keyValue = (Map<String, Object>) node.get (key);
+        if (keyValue == null)
+            return null;
 
         Map<String, T> result = new LinkedHashMap<> ();
         keyValue.forEach ((k, v) -> {
-            result.put (k, factory.apply (new Node ((Map<String, Object>) v)));
+            result.put (k, factory.create (new Node ((Map<String, Object>) v)));
         });
         return result;
     }
