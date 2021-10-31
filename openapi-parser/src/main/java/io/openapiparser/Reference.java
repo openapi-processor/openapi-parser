@@ -7,6 +7,17 @@ package io.openapiparser;
 
 import java.net.URI;
 
+/**
+ * resolved $ref.
+ *
+ * <ul>
+ *   <li>$ref string must be an uri.</li>
+ *   <li>
+ *     fragment of $ref is a <a href="https://datatracker.ietf.org/doc/html/rfc6901">json pointer</a>
+ *     ('~' encoded as '~0', '/' encoded as '~1').
+ *   </li>
+ * </ul>
+ */
 public class Reference {
     private final URI parentUri;
     private final URI docUri;
@@ -32,7 +43,7 @@ public class Reference {
     }
 
     /**
-     * the uri of ref'erenced document.
+     * the uri of the referenced document.
      *
      * @return the referenced document.
      */
@@ -49,6 +60,11 @@ public class Reference {
         return ref;
     }
 
+    /**
+     * the raw value of the reference. Maybe a simple value, array or map.
+     *
+     * @return the raw value.
+     */
     public Object getRawValue () {
         return rawValue;
     }
