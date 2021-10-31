@@ -134,16 +134,11 @@ public class Node {
      */
     @SuppressWarnings ("unchecked")
     public <T> @Nullable Map<String, T> getChildMapAs (String key, NodeConverter<T> factory) {
-        Map<String, Object> keyValue = (Map<String, Object>) node.get (key);
-        if (keyValue == null)
+        Map<String, Object> value = (Map<String, Object>) node.get (key);
+        if (value == null)
             return null;
 
-        return getMapAs (factory);
-//        Map<String, T> result = new LinkedHashMap<> ();
-//        keyValue.forEach ((k, v) -> {
-//            result.put (k, factory.create (new Node ((Map<String, Object>) v)));
-//        });
-//        return result;
+        return new Node(value).getMapAs (factory);
     }
 
     /**
