@@ -28,7 +28,7 @@ public class OpenApi implements Extensions {
     }
 
     public String getOpenapi () {
-        return node.getAsString (OPENAPI);
+        return node.getPropertyAsString (OPENAPI);
     }
 
     public Info getInfo () {

@@ -40,15 +40,15 @@ public class Node {
      * @param key property name
      * @return property value or null if the property does not exist
      */
-    public @Nullable String getAsString (String key) {
+    public @Nullable String getPropertyAsString (String key) {
         return (String) properties.get (key);
     }
 
     /**
-     * same as {@link #getAsString}, but throws if the property values is {@code null}.
+     * same as {@link #getPropertyAsString}, but throws if the property values is {@code null}.
      */
-    public String getRequiredAsString (String key) {
-        return notNullProperty (key, getAsString (key));
+    public String getRequiredPropertyAsString (String key) {
+        return notNullProperty (key, getPropertyAsString (key));
     }
 
     /**

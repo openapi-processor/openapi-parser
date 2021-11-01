@@ -28,11 +28,11 @@ public class Server implements Extensions {
     }
 
     public String getUrl () {
-        return node.getAsString (URL);
+        return node.getPropertyAsString (URL);
     }
 
     public String getDescription () {
-        return node.getAsString (DESCRIPTION);
+        return node.getPropertyAsString (DESCRIPTION);
     }
 
     public Map<String, ServerVariable> getVariables () {

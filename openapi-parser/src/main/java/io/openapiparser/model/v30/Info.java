@@ -26,15 +26,15 @@ public class Info {
     }
 
     public String getTitle () {
-        return node.getAsString (TITLE);
+        return node.getPropertyAsString (TITLE);
     }
 
     public String getDescription () {
-        return node.getAsString (DESCRIPTION);
+        return node.getPropertyAsString (DESCRIPTION);
     }
 
     public String getTermsOfService () {
-        return node.getAsString (TERMS_OF_SERVICE);
+        return node.getPropertyAsString (TERMS_OF_SERVICE);
     }
 
     public Contact getContact () {
@@ -46,6 +46,6 @@ public class Info {
     }
 
     public String getVersion () {
-        return node.getAsString (VERSION);
+        return node.getPropertyAsString (VERSION);
     }
 }

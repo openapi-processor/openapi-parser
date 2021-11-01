@@ -26,14 +26,14 @@ public class Contact implements Extensions {
     }
 
     public String getName () {
-        return node.getAsString (NAME);
+        return node.getPropertyAsString (NAME);
     }
 
     public String getUrl () {
-        return node.getAsString (URL);
+        return node.getPropertyAsString (URL);
     }
 
     public String getEmail () {
-        return node.getAsString (EMAIL);
+        return node.getPropertyAsString (EMAIL);
     }
 }

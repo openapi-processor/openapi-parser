@@ -30,6 +30,6 @@ public class ServerVariable implements Extensions {
     }
 
     public String getDescription () {
-        return node.getAsString (DESCRIPTION);
+        return node.getPropertyAsString (DESCRIPTION);
     }
 }

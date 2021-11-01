@@ -27,10 +27,10 @@ public class License implements Extensions {
     }
 
     public String getName () {
-        return node.getAsString (NAME);
+        return node.getPropertyAsString (NAME);
     }
 
     public @Nullable String getUrl () {
-        return node.getAsString (URL);
+        return node.getPropertyAsString (URL);
     }
 }

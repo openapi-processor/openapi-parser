@@ -28,7 +28,7 @@ public class OpenApi implements Extensions {
 
     @Required
     public String getOpenapi () {
-        return node.getRequiredAsString (OPENAPI);
+        return node.getRequiredPropertyAsString (OPENAPI);
     }
 
     @Required
