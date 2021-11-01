@@ -36,6 +36,6 @@ public class Server implements Extensions {
     }
 
     public Map<String, ServerVariable> getVariables () {
-        return node.getPropertyMapAs (VARIABLES, node -> new ServerVariable (context, node));
+        return node.getPropertyAsMapOf (VARIABLES, node -> new ServerVariable (context, node));
     }
 }

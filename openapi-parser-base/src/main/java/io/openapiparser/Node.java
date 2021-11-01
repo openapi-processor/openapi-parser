@@ -60,7 +60,7 @@ public class Node {
      * @return map from properties to {@code T}
      */
     @SuppressWarnings ("unchecked")
-    public <T> Map<String, T> getPropertiesAsMap (NodeConverter<T> factory) {
+    public <T> Map<String, T> getPropertiesAsMapOf (NodeConverter<T> factory) {
         Map<String, T> result = new LinkedHashMap<> ();
         properties.forEach ((k, v) -> {
             result.put (k, factory.create (new Node ((Map<String, Object>) v)));
@@ -165,7 +165,7 @@ public class Node {
      * @param <T> type of the target OpenAPI model object
      * @return {@code T}
      */
-    public <T> Collection<T> getPropertyArrayAs (String property, NodeConverter<T> factory) {
+    public <T> Collection<T> getPropertyAsArrayOf (String property, NodeConverter<T> factory) {
         return getPropertyAsNodes (property)
             .stream ()
             .map (factory::create)
@@ -182,12 +182,12 @@ public class Node {
      * @return map of property values to {@code T}s
      */
     @SuppressWarnings ("unchecked")
-    public <T> @Nullable Map<String, T> getPropertyMapAs (String property, NodeConverter<T> factory) {
+    public <T> @Nullable Map<String, T> getPropertyAsMapOf (String property, NodeConverter<T> factory) {
         Map<String, Object> value = (Map<String, Object>) properties.get (property);
         if (value == null)
             return null;
 
-        return new Node(value).getPropertiesAsMap (factory);
+        return new Node(value).getPropertiesAsMapOf (factory);
     }
 
     /**
