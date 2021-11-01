@@ -112,7 +112,7 @@ public class ReferenceResolver {
                     }
                 }
             } else {
-                node.traverse (k, n -> {
+                node.traverseProperty (k, n -> {
                     collectReferences (uri, n);
                 });
             }

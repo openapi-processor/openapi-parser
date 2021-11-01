@@ -84,19 +84,19 @@ public class Node {
     }
 
     /**
-     * traverses the object tree of the given property key and runs the handler on each child
+     * traverses the object tree of the given property and runs the handler on each child
      * {@link Node}. It traverses into any child map or array of the property value.
      *
-     * @param key property name
+     * @param property property name
      * @param handler node handler
      */
-    public void traverse(String key, NodeHandler handler) {
-        final Object value = properties.get (key);
+    public void traverseProperty (String property, NodeHandler handler) {
+        final Object value = properties.get (property);
 
         if(value instanceof Map) {
-            handler.handle (getChildNode (key));
+            handler.handle (getChildNode (property));
         } else if (value instanceof Collection) {
-            for (Node node : getChildNodes (key)) {
+            for (Node node : getChildNodes (property)) {
                 handler.handle (node);
             }
         }
