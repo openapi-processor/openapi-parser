@@ -32,7 +32,7 @@ class ReferenceResolverSpec : StringSpec({
 
         val node = resolver.baseNode
         node.countProperties shouldBe 1
-        node["openapi"] shouldBe "3.0.3"
+        node.getProperty("openapi") shouldBe "3.0.3"
     }
 
     "throws if reading fails" {
