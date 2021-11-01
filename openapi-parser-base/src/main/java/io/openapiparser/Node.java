@@ -45,6 +45,13 @@ public class Node {
     }
 
     /**
+     * same as {@link #getString}, but throws if the property values is {@code null}.
+     */
+    public String getRequiredString (String key) {
+        return notNullProperty (key, getString (key));
+    }
+
+    /**
      * converts the properties of this {@link Node} to a map from property name to {@code T} using
      * the given factory to convert all property values to {@code T}.
      *
@@ -135,6 +142,13 @@ public class Node {
     }
 
     /**
+     * same as {@link #getChildAs}, but throws if the property values is {@code null}.
+     */
+    public <T> @Nullable T getRequiredChild (String key, NodeConverter<T> factory) {
+        return notNullProperty (key, getChildAs (key, factory));
+    }
+
+    /**
      * converts the value of the given property name to a collection of {@code T}s using the given
      * factory to convert all property values to {@code T}s.
      *
@@ -166,6 +180,21 @@ public class Node {
             return null;
 
         return new Node(value).getMapAs (factory);
+    }
+
+    /**
+     * makes sure that the property value is not null. Throws if the property value is null.
+     *
+     * @param name property name
+     * @param value property value
+     * @param <T>type of value
+     * @return property value
+     */
+    private <T> T notNullProperty (String name, @Nullable T value) {
+        if (value == null) {
+            throw new NullPropertyException(String.format ("property %s should not be null", name));
+        }
+        return value;
     }
 
     /**
