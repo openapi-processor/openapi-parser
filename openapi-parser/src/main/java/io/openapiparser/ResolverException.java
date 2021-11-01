@@ -5,7 +5,14 @@
 
 package io.openapiparser;
 
+/**
+ * thrown if the parser is unable to resolve a $reference.
+ */
 public class ResolverException extends Exception {
+
+    public ResolverException (String message) {
+        super(message);
+    }
 
     public ResolverException (String message, Exception e) {
         super(message, e);

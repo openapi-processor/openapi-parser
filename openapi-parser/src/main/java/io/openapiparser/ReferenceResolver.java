@@ -58,6 +58,10 @@ public class ReferenceResolver {
             if (k.equals (Keywords.REF)) {
                 // handle ref
                 String ref = node.getString (k);
+                if (ref == null) {
+                    // todo
+                    throw new ResolverException ("todo");
+                }
                 if (ref.startsWith (HASH)) {
                     // into same document
                 } else {
