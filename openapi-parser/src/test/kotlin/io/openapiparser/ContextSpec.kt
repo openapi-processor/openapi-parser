@@ -33,7 +33,7 @@ class ContextSpec : StringSpec({
         ctx.read()
 
         val node = ctx.baseNode
-        node.size shouldBe 1
+        node.countProperties shouldBe 1
         node["openapi"] shouldBe "3.0.3"
     }
 

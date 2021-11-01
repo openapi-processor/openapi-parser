@@ -40,7 +40,7 @@ class JacksonConverterSpec : StringSpec({
             """{ "foo": "bar" }"""
         )
 
-        result.size shouldBe 1
+        result.countProperties shouldBe 1
         result["foo"] shouldBe "bar"
     }
 
@@ -54,7 +54,7 @@ class JacksonConverterSpec : StringSpec({
             """.trimIndent()
         )
 
-        result.size shouldBe 1
+        result.countProperties shouldBe 1
         result["foo"] shouldBe "bar"
     }
 
@@ -80,7 +80,7 @@ class JacksonConverterSpec : StringSpec({
             """foo: bar"""
         )
 
-        result.size shouldBe 1
+        result.countProperties shouldBe 1
         result["foo"] shouldBe "bar"
     }
 
@@ -94,7 +94,7 @@ class JacksonConverterSpec : StringSpec({
             """.trimIndent()
         )
 
-        result.size shouldBe 1
+        result.countProperties shouldBe 1
         result["foo"] shouldBe "bar"
     }
 

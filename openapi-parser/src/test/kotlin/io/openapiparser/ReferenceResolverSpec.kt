@@ -31,7 +31,7 @@ class ReferenceResolverSpec : StringSpec({
         resolver.resolve()
 
         val node = resolver.baseNode
-        node.size shouldBe 1
+        node.countProperties shouldBe 1
         node["openapi"] shouldBe "3.0.3"
     }
 

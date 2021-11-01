@@ -221,7 +221,7 @@ public class Node {
      *
      * @return count of properties
      */
-    public int getSize () {
+    public int getCountProperties () {
         return properties.size ();
     }
 }
