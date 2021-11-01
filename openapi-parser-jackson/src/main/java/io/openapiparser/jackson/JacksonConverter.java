@@ -28,7 +28,7 @@ public class JacksonConverter implements Converter {
     @Override
     public Node convert (String api) throws ConverterException {
         if (isEmpty (api)) {
-            throw new ConverterException (String.format (CONVERT_ERROR, "empty"), null);
+            throw new ConverterException (String.format (CONVERT_ERROR, "empty"));
         }
 
         if (isJson (api)) {
@@ -62,7 +62,7 @@ public class JacksonConverter implements Converter {
         return "{".equals(getFirstChar (source));
     }
 
-    private static String getFirstChar (String content) {
+    private static @Nullable String getFirstChar (String content) {
       Matcher matcher = FIRST_CHAR.matcher(content);
       if (matcher.find()) {
         return matcher.group(1);
