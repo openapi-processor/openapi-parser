@@ -37,7 +37,7 @@ public class OpenApi implements Extensions {
     }
 
     public Collection<Server> getServers () {
-        return node.getChildArrayAs (SERVERS, node -> new Server(context, node));
+        return node.getPropertyArrayAs (SERVERS, node -> new Server(context, node));
     }
 
     @Required

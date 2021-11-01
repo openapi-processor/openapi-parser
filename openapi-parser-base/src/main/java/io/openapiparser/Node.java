@@ -100,7 +100,7 @@ public class Node {
         if(isObject (value)) {
             handler.handle (getPropertyAsNode (property));
         } else if (isArray (value)) {
-            for (Node node : getPropertyAsArray (property)) {
+            for (Node node : getPropertyAsNodes (property)) {
                 handler.handle (node);
             }
         }
@@ -114,7 +114,7 @@ public class Node {
      * @return collection of {@link Node}s
      */
     @SuppressWarnings ("unchecked")
-    public Collection<Node> getPropertyAsArray (String property) {
+    public Collection<Node> getPropertyAsNodes (String property) {
         if (!hasProperty (property))
             return Collections.EMPTY_LIST;
 
@@ -160,13 +160,13 @@ public class Node {
      * converts the value of the given property name to a collection of {@code T}s using the given
      * factory to convert all property values to {@code T}s.
      *
-     * @param key property name
+     * @param property property name
      * @param factory converter from {@link Node} to {@code T}
      * @param <T> type of the target OpenAPI model object
      * @return {@code T}
      */
-    public <T> Collection<T> getChildArrayAs (String key, NodeConverter<T> factory) {
-        return getPropertyAsArray (key)
+    public <T> Collection<T> getPropertyArrayAs (String property, NodeConverter<T> factory) {
+        return getPropertyAsNodes (property)
             .stream ()
             .map (factory::create)
             .collect(Collectors.toList());
@@ -176,14 +176,14 @@ public class Node {
      * converts the value of the given property name to a map from property name to {@code T} using
      * the given factory to convert all property values to {@code T}.
      *
-     * @param key property name
+     * @param property property name
      * @param factory converter from {@link Node} to {@code T}
      * @param <T> type of the target OpenAPI model object
      * @return map of property values to {@code T}s
      */
     @SuppressWarnings ("unchecked")
-    public <T> @Nullable Map<String, T> getChildMapAs (String key, NodeConverter<T> factory) {
-        Map<String, Object> value = (Map<String, Object>) properties.get (key);
+    public <T> @Nullable Map<String, T> getPropertyMapAs (String property, NodeConverter<T> factory) {
+        Map<String, Object> value = (Map<String, Object>) properties.get (property);
         if (value == null)
             return null;
 
