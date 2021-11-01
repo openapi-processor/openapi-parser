@@ -31,7 +31,7 @@ public class Paths implements Extensions {
     }
 
     public PathItem getPathItem(String path) {
-        return node.getChildAs (path, node -> new PathItem (context, node));
+        return node.getPropertyAs (path, node -> new PathItem (context, node));
     }
 
     public Set<String> pathSet() {

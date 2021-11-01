@@ -37,18 +37,18 @@ public class Node {
     /**
      * get the raw/untyped value of the given property key as {@link String}.
      *
-     * @param key property name
+     * @param property property name
      * @return property value or null if the property does not exist
      */
-    public @Nullable String getPropertyAsString (String key) {
-        return (String) properties.get (key);
+    public @Nullable String getPropertyAsString (String property) {
+        return (String) properties.get (property);
     }
 
     /**
      * same as {@link #getPropertyAsString}, but throws if the property values is {@code null}.
      */
-    public String getRequiredPropertyAsString (String key) {
-        return notNullProperty (key, getPropertyAsString (key));
+    public String getRequiredPropertyAsString (String property) {
+        return notNullProperty (property, getPropertyAsString (property));
     }
 
     /**
@@ -95,12 +95,12 @@ public class Node {
      * @param handler node handler
      */
     public void traverseProperty (String property, NodeHandler handler) {
-        final Object value = properties.get (property);
+        final Object value = getProperty (property);
 
-        if(value instanceof Map) {
+        if(isObject (value)) {
             handler.handle (getPropertyAsNode (property));
-        } else if (value instanceof Collection) {
-            for (Node node : getChildNodes (property)) {
+        } else if (isArray (value)) {
+            for (Node node : getPropertyAsArray (property)) {
                 handler.handle (node);
             }
         }
@@ -110,36 +110,39 @@ public class Node {
      * converts the array value of the given property key to a collection of {@link Node}s. If the
      * elements are not maps the result collection will be empty.
      *
-     * @param key property name
+     * @param property property name
      * @return collection of {@link Node}s
      */
     @SuppressWarnings ("unchecked")
-    // todo check collection, else throw
-    public Collection<Node> getChildNodes (String key) {
-        if (!properties.containsKey (key))
+    public Collection<Node> getPropertyAsArray (String property) {
+        if (!hasProperty (property))
             return Collections.EMPTY_LIST;
 
+        final Object value = properties.get (property);
+        if (!isArray (value)) {
+            throw new NoArrayException (String.format ("property %s should be an array", property));
+        }
+
         final Collection<Node> nodes = new ArrayList<> ();
-        final Collection<?> values = (Collection<?>) properties.get (key);
-        for (Object value : values) {
-            if (value instanceof Map) {
-                nodes.add (new Node ((Map<String, Object>) value));
+        for (Object val : (Collection<?>) value) {
+            if (isObject (val)) {
+                nodes.add (new Node ((Map<String, Object>) val));
             }
         }
         return nodes;
     }
 
     /**
-     * converts the value of the given property key to a {@code T} using the given factory to
-     * convert the value to {@code T}.
+     * converts the value of the given property to a {@code T} using the given factory to convert
+     * the value to {@code T}.
      *
-     * @param key property name
+     * @param property property name
      * @param factory converter from {@link Node} to {@code T}
      * @param <T> type of the target OpenAPI model object
      * @return {@code T}
      */
-    public <T> @Nullable T getChildAs (String key, NodeConverter<T> factory) {
-        final Node childNode = getPropertyAsNode (key);
+    public <T> @Nullable T getPropertyAs (String property, NodeConverter<T> factory) {
+        final Node childNode = getPropertyAsNode (property);
         if (childNode == null)
             return null;
 
@@ -147,10 +150,10 @@ public class Node {
     }
 
     /**
-     * same as {@link #getChildAs}, but throws if the property values is {@code null}.
+     * same as {@link #getPropertyAs}, but throws if the property values is {@code null}.
      */
-    public <T> @Nullable T getRequiredChild (String key, NodeConverter<T> factory) {
-        return notNullProperty (key, getChildAs (key, factory));
+    public <T> @Nullable T getRequiredPropertyAs (String property, NodeConverter<T> factory) {
+        return notNullProperty (property, getPropertyAs (property, factory));
     }
 
     /**
@@ -163,7 +166,7 @@ public class Node {
      * @return {@code T}
      */
     public <T> Collection<T> getChildArrayAs (String key, NodeConverter<T> factory) {
-        return getChildNodes (key)
+        return getPropertyAsArray (key)
             .stream ()
             .map (factory::create)
             .collect(Collectors.toList());
@@ -232,5 +235,9 @@ public class Node {
 
     private boolean isObject (Object value) {
         return value instanceof Map;
+    }
+
+    private boolean isArray (Object value) {
+        return value instanceof Collection;
     }
 }

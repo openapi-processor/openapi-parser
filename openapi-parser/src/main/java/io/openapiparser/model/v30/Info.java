@@ -38,11 +38,11 @@ public class Info {
     }
 
     public Contact getContact () {
-        return node.getChildAs (CONTACT, node -> new Contact (context, node));
+        return node.getPropertyAs (CONTACT, node -> new Contact (context, node));
     }
 
     public License getLicense () {
-        return node.getChildAs (LICENSE, node -> new License (context, node));
+        return node.getPropertyAs (LICENSE, node -> new License (context, node));
     }
 
     public String getVersion () {

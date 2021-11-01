@@ -33,7 +33,7 @@ public class OpenApi implements Extensions {
 
     @Required
     public Info getInfo () {
-        return node.getRequiredChild (INFO, node -> new Info (context, node));
+        return node.getRequiredPropertyAs (INFO, node -> new Info (context, node));
     }
 
     public Collection<Server> getServers () {
@@ -42,7 +42,7 @@ public class OpenApi implements Extensions {
 
     @Required
     public Paths getPaths () {
-        return node.getChildAs (PATHS, node -> new Paths (context, node));
+        return node.getPropertyAs (PATHS, node -> new Paths (context, node));
     }
 
     public Components getComponents () {
