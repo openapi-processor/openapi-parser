@@ -14,10 +14,14 @@ import java.util.stream.Collectors;
  */
 public class Node {
     /** wrapped OpenAPI object node */
-    private final Map<String, Object> node;
+    private final Map<String, Object> properties;
 
-    public Node (Map<String, Object> node) {
-        this.node = node;
+    public static Node empty() {
+        return new Node(Collections.emptyMap ());
+    }
+
+    public Node (Map<String, Object> properties) {
+        this.properties = properties;
     }
 
     /**
@@ -27,7 +31,7 @@ public class Node {
      * @return property value or null if the property does not exist
      */
     public @Nullable Object get (String key) {
-        return node.get (key);
+        return properties.get (key);
     }
 
     /**
@@ -37,7 +41,7 @@ public class Node {
      * @return property value or null if the property does not exist
      */
     public @Nullable String getString (String key) {
-        return (String) node.get (key);
+        return (String) properties.get (key);
     }
 
     /**
@@ -51,7 +55,7 @@ public class Node {
     @SuppressWarnings ("unchecked")
     public <T> Map<String, T> getMapAs (NodeConverter<T> factory) {
         Map<String, T> result = new LinkedHashMap<> ();
-        node.forEach ((k, v) -> {
+        properties.forEach ((k, v) -> {
             result.put (k, factory.create (new Node ((Map<String, Object>) v)));
         });
         return result;
@@ -65,29 +69,33 @@ public class Node {
      */
     @SuppressWarnings ("unchecked")
     public @Nullable Node getChildNode (String key) {
-        if (!node.containsKey (key))
+        if (!properties.containsKey (key))
             return null;
 
         // todo check map, else throw
-        return new Node ((Map<String, Object>) node.get (key));
+        return new Node ((Map<String, Object>) properties.get (key));
     }
 
     /**
-     * converts the array value of the given property key to a collection of {@link Node}s.
+     * converts the array value of the given property key to a collection of {@link Node}s. If the
+     * elements are not maps the result collection will be empty.
      *
      * @param key property name
      * @return collection of {@link Node}s
      */
     @SuppressWarnings ("unchecked")
     public Collection<Node> getChildNodes (String key) {
-        if (!node.containsKey (key))
+        if (!properties.containsKey (key))
             return Collections.EMPTY_LIST;
 
-        // todo check collection, else throw
-        return ((Collection<Map<String, Object>>) node.get (key))
-            .stream ()
-            .map (Node::new)
-            .collect(Collectors.toList());
+        final Collection<Node> nodes = new ArrayList<> ();
+        final Collection<?> values = (Collection<?>) properties.get (key);
+        for (Object value : values) {
+            if (value instanceof Map) {
+                nodes.add (new Node ((Map<String, Object>) value));
+            }
+        }
+        return nodes;
     }
 
     /**
@@ -134,7 +142,7 @@ public class Node {
      */
     @SuppressWarnings ("unchecked")
     public <T> @Nullable Map<String, T> getChildMapAs (String key, NodeConverter<T> factory) {
-        Map<String, Object> value = (Map<String, Object>) node.get (key);
+        Map<String, Object> value = (Map<String, Object>) properties.get (key);
         if (value == null)
             return null;
 
@@ -148,7 +156,7 @@ public class Node {
      * @return true if the property exists, else false
      */
     public boolean containsKey (String key) {
-        return node.containsKey (key);
+        return properties.containsKey (key);
     }
 
     /**
@@ -157,7 +165,7 @@ public class Node {
      * @return existing property names
      */
     public Set<String> getKeys () {
-        return node.keySet ();
+        return properties.keySet ();
     }
 
     /**
@@ -166,6 +174,6 @@ public class Node {
      * @return count of properties
      */
     public int getSize () {
-        return node.size ();
+        return properties.size ();
     }
 }
