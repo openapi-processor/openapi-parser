@@ -116,7 +116,7 @@ public class Node {
     @SuppressWarnings ("unchecked")
     public Collection<Node> getPropertyAsNodes (String property) {
         if (!hasProperty (property))
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList ();
 
         final Object value = properties.get (property);
         if (!isArray (value)) {
