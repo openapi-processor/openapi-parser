@@ -5,8 +5,7 @@
 
 package io.openapiparser.model.v30;
 
-import io.openapiparser.Context;
-import io.openapiparser.Node;
+import io.openapiparser.*;
 
 import java.util.Collection;
 
@@ -21,10 +20,12 @@ import static io.openapiparser.Keywords.*;
 public class PathItem implements Reference, Extensions {
     private final Context context;
     private final Node node;
+    private final @Nullable Node refNode;
 
     public PathItem (Context context, Node node) {
         this.context = context;
         this.node = node;
+        refNode = getRefNode ();
     }
 
     @Override
@@ -33,7 +34,7 @@ public class PathItem implements Reference, Extensions {
     }
 
     public String getSummary () {
-        return null;
+        return getSource ().getString (SUMMARY);
     }
 
     public String getDescription () {
@@ -80,4 +81,16 @@ public class PathItem implements Reference, Extensions {
         return null;
     }
 
+    private Node getSource () {
+        return isRef () ? refNode : node;
+    }
+
+    private Node getRefNode () {
+        String ref = getRef ();
+        return ref != null ? context.getRefNode (ref) : null;
+    }
+
+    private boolean isRef () {
+        return refNode != null;
+    }
 }

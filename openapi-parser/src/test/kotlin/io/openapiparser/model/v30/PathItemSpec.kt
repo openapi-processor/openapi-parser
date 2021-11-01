@@ -16,12 +16,15 @@ class PathItemSpec : StringSpec({
             .withApi("""
                 paths:
                   /foo:
-                    ${'$'}ref: ref path
+                    ${'$'}ref: '#/path'
+                path:
+                  summary: a summary
             """.trimIndent())
             .buildOpenApi30()
 
         val path = api.paths.getPathItem("/foo")
-        path.ref shouldBe "ref path"
+        path.ref shouldBe "#/path"
+        path.summary shouldBe "a summary"
     }
 
 })
