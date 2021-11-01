@@ -110,6 +110,7 @@ public class Node {
      * @return collection of {@link Node}s
      */
     @SuppressWarnings ("unchecked")
+    // todo check collection, else throw
     public Collection<Node> getChildNodes (String key) {
         if (!properties.containsKey (key))
             return Collections.EMPTY_LIST;
