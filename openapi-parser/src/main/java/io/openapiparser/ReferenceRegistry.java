@@ -35,7 +35,10 @@ public class ReferenceRegistry {
         });
     }
 
-    // todo where does a caller get the absolute ref?
+    Reference getRef (URI absoluteRef) {
+        return getRef (absoluteRef.toString ());
+    }
+
     Reference getRef(String absoluteRef) {
         return references.get (absoluteRef);
     }

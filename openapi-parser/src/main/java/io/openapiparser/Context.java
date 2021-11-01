@@ -6,21 +6,33 @@
 package io.openapiparser;
 
 import java.net.URI;
+import java.util.Map;
 
 public class Context {
-    private static final String READ_ERROR = "failed to read %s.";
 
     private final URI baseUri;
     private final ReferenceResolver resolver;
 
-//    private ReferenceRegistry registry;
     private Node baseNode;
-
 
     public Context (URI baseUri, ReferenceResolver resolver) {
         this.baseUri = baseUri;
         this.resolver = resolver;
-//        registry = new ReferenceRegistry (baseUri);
+        this.baseNode = Node.empty ();
+    }
+
+    public Reference getReference(String ref) {
+        return resolver.resolve (baseUri, ref);
+    }
+
+    public @Nullable Node getRefNode(String ref) {
+        final Reference reference = getReference (ref);
+        final Map<String, Object> value = reference.getValue();
+        if (value == null) {
+            // todo throw ResolverException ?
+            return null;
+        }
+        return new Node (value);
     }
 
     public void read () throws ContextException {
@@ -28,7 +40,7 @@ public class Context {
             resolver.resolve ();
             baseNode = resolver.getBaseNode ();
         } catch (Exception e) {
-            throw new ContextException (String.format (READ_ERROR, baseUri), e);
+            throw new ContextException (String.format ("failed to read %s.", baseUri), e);
         }
     }
 

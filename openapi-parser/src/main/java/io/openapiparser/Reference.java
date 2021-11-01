@@ -68,4 +68,9 @@ public class Reference {
     public Object getRawValue () {
         return rawValue;
     }
+
+    @SuppressWarnings ({"unchecked", "TypeParameterUnusedInFormals"})
+    public <T> T getValue () {
+        return (T) rawValue;
+    }
 }
