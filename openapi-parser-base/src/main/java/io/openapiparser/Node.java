@@ -71,16 +71,20 @@ public class Node {
     /**
      * get the value of the given property key as {@link Node}.
      *
-     * @param key property name
+     * @param property property name
      * @return property value wrapped as {@link Node}.
      */
     @SuppressWarnings ("unchecked")
-    public @Nullable Node getChildNode (String key) {
-        if (!properties.containsKey (key))
+    public @Nullable Node getPropertyAsNode (String property) {
+        if (!hasProperty (property))
             return null;
 
-        // todo check map, else throw
-        return new Node ((Map<String, Object>) properties.get (key));
+        final Object value = properties.get (property);
+        if (!isObject (value)) {
+            throw new NoObjectException(String.format ("property %s should be an object", property));
+        }
+
+        return new Node ((Map<String, Object>) value);
     }
 
     /**
@@ -94,7 +98,7 @@ public class Node {
         final Object value = properties.get (property);
 
         if(value instanceof Map) {
-            handler.handle (getChildNode (property));
+            handler.handle (getPropertyAsNode (property));
         } else if (value instanceof Collection) {
             for (Node node : getChildNodes (property)) {
                 handler.handle (node);
@@ -135,7 +139,7 @@ public class Node {
      * @return {@code T}
      */
     public <T> @Nullable T getChildAs (String key, NodeConverter<T> factory) {
-        final Node childNode = getChildNode (key);
+        final Node childNode = getPropertyAsNode (key);
         if (childNode == null)
             return null;
 
@@ -184,21 +188,6 @@ public class Node {
     }
 
     /**
-     * makes sure that the property value is not null. Throws if the property value is null.
-     *
-     * @param property property name
-     * @param value property value
-     * @param <T>type of value
-     * @return property value
-     */
-    private <T> T notNullProperty (String property, @Nullable T value) {
-        if (value == null) {
-            throw new NullPropertyException(String.format ("property %s should not be null", property));
-        }
-        return value;
-    }
-
-    /**
      * checks if the {@link Node} contains the given property name.
      *
      * @param property property name
@@ -224,5 +213,24 @@ public class Node {
      */
     public int getCountProperties () {
         return properties.size ();
+    }
+
+    /**
+     * makes sure that the property value is not null. Throws if the property value is null.
+     *
+     * @param property property name
+     * @param value property value
+     * @param <T>type of value
+     * @return property value
+     */
+    private <T> T notNullProperty (String property, @Nullable T value) {
+        if (value == null) {
+            throw new NullPropertyException(String.format ("property %s should not be null", property));
+        }
+        return value;
+    }
+
+    private boolean isObject (Object value) {
+        return value instanceof Map;
     }
 }

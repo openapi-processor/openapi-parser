@@ -32,7 +32,7 @@ public class OpenApi implements Extensions {
     }
 
     public Info getInfo () {
-        return new Info (context, node.getChildNode (INFO));
+        return new Info (context, node.getPropertyAsNode (INFO));
     }
 
     public String getJsonSchemaDialect () {
