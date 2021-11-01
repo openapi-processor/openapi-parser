@@ -30,11 +30,11 @@ public class PathItem implements Reference, Extensions {
 
     @Override
     public String getRef () {
-        return node.getString (REF);
+        return node.getAsString (REF);
     }
 
     public String getSummary () {
-        return getSource ().getString (SUMMARY);
+        return getSource ().getAsString (SUMMARY);
     }
 
     public String getDescription () {

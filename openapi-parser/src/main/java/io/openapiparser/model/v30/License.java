@@ -7,6 +7,7 @@ package io.openapiparser.model.v30;
 
 import io.openapiparser.Context;
 import io.openapiparser.Node;
+import io.openapiparser.Nullable;
 
 import static io.openapiparser.Keywords.*;
 
@@ -26,10 +27,10 @@ public class License implements Extensions {
     }
 
     public String getName () {
-        return node.getString (NAME);
+        return node.getAsString (NAME);
     }
 
-    public String getUrl () {
-        return node.getString (URL);
+    public @Nullable String getUrl () {
+        return node.getAsString (URL);
     }
 }

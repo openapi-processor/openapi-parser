@@ -5,8 +5,7 @@
 
 package io.openapiparser.model.v30;
 
-import io.openapiparser.Context;
-import io.openapiparser.Node;
+import io.openapiparser.*;
 
 import java.util.*;
 
@@ -27,18 +26,21 @@ public class OpenApi implements Extensions {
         this.node = node;
     }
 
+    @Required
     public String getOpenapi () {
-        return node.getString (OPENAPI);
+        return node.getRequiredAsString (OPENAPI);
     }
 
+    @Required
     public Info getInfo () {
-        return node.getChildAs (INFO, node -> new Info (context, node));
+        return node.getRequiredChild (INFO, node -> new Info (context, node));
     }
 
     public Collection<Server> getServers () {
         return node.getChildArrayAs (SERVERS, node -> new Server(context, node));
     }
 
+    @Required
     public Paths getPaths () {
         return node.getChildAs (PATHS, node -> new Paths (context, node));
     }

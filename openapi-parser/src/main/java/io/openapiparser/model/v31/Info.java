@@ -24,19 +24,19 @@ public class Info implements Extensions {
     }
 
     public String getTitle () {
-        return node.getString ("title");
+        return node.getAsString ("title");
     }
 
     public String getSummary () {
-        return node.getString ("summary");
+        return node.getAsString ("summary");
     }
 
     public String getDescription () {
-        return node.getString ("description");
+        return node.getAsString ("description");
     }
 
     public String getTermsOfService () {
-        return node.getString ("termsOfService");
+        return node.getAsString ("termsOfService");
     }
 
     public Contact getContact () {
@@ -48,6 +48,6 @@ public class Info implements Extensions {
     }
 
     public String getVersion () {
-        return node.getString ("version");
+        return node.getAsString ("version");
     }
 }
