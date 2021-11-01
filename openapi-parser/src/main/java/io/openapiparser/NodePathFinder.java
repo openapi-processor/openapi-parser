@@ -14,7 +14,7 @@ public class NodePathFinder {
         this.root = root;
     }
 
-    Object find(String path) {
+    @Nullable Object find(String path) {
         if (!isPath (path)) {
             return root.get (path);
         } else {
@@ -25,7 +25,7 @@ public class NodePathFinder {
             for (int i = 0; i < parts.length; i++) {
                 String part = parts[i];
 
-                if (!node.containsKey (part))
+                if (node == null || !node.containsKey (part))
                     return null;
 
                 if (i == last)
