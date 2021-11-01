@@ -38,7 +38,7 @@ public class VersionValidator implements Validator {
     public Collection<ValidationMessage> validate (ValidationContext context, Node node) {
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
-        Object version = node.get (OPENAPI);
+        Object version = node.getProperty (OPENAPI);
         if (!(version instanceof String) || !isValid((String)version)) {
             messages.add(createMessage (context, version));
         }

@@ -41,7 +41,7 @@ class JacksonConverterSpec : StringSpec({
         )
 
         result.countProperties shouldBe 1
-        result["foo"] shouldBe "bar"
+        result.getProperty("foo") shouldBe "bar"
     }
 
     "converts json object input with leading whitespace" {
@@ -55,7 +55,7 @@ class JacksonConverterSpec : StringSpec({
         )
 
         result.countProperties shouldBe 1
-        result["foo"] shouldBe "bar"
+        result.getProperty("foo") shouldBe "bar"
     }
 
     "throws on bad json input" {
@@ -81,7 +81,7 @@ class JacksonConverterSpec : StringSpec({
         )
 
         result.countProperties shouldBe 1
-        result["foo"] shouldBe "bar"
+        result.getProperty("foo") shouldBe "bar"
     }
 
     "converts yaml input with leading whitespace" {
@@ -95,7 +95,7 @@ class JacksonConverterSpec : StringSpec({
         )
 
         result.countProperties shouldBe 1
-        result["foo"] shouldBe "bar"
+        result.getProperty("foo") shouldBe "bar"
     }
 
     "throws on bad yaml input" {

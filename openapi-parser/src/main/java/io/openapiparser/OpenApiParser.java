@@ -25,7 +25,7 @@ public class OpenApiParser {
     }
 
     private OpenApiResult createResult (Node api) {
-        Object version = api.get(OPENAPI);
+        Object version = api.getProperty (OPENAPI);
 
         if (isVersion30 (version)) {
             return createOpenApiResult30 ();

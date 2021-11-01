@@ -27,11 +27,11 @@ public class Node {
     /**
      * get the raw/untyped value of the given property key.
      *
-     * @param key property name
+     * @param property property name
      * @return property value or null if the property does not exist
      */
-    public @Nullable Object get (String key) {
-        return properties.get (key);
+    public @Nullable Object getProperty (String property) {
+        return properties.get (property);
     }
 
     /**
