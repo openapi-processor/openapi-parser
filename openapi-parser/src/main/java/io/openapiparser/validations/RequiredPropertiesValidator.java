@@ -23,7 +23,7 @@ public class RequiredPropertiesValidator implements Validator {
     @Override
     public Collection<ValidationMessage> validate (ValidationContext context, Node node) {
         return properties.stream ()
-            .filter (prop -> !node.containsKey (prop))
+            .filter (prop -> !node.hasProperty (prop))
             .map (prop -> createMessage (context, prop))
             .collect(Collectors.toList());
     }

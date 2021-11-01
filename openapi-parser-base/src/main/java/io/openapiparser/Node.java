@@ -185,14 +185,14 @@ public class Node {
     /**
      * makes sure that the property value is not null. Throws if the property value is null.
      *
-     * @param name property name
+     * @param property property name
      * @param value property value
      * @param <T>type of value
      * @return property value
      */
-    private <T> T notNullProperty (String name, @Nullable T value) {
+    private <T> T notNullProperty (String property, @Nullable T value) {
         if (value == null) {
-            throw new NullPropertyException(String.format ("property %s should not be null", name));
+            throw new NullPropertyException(String.format ("property %s should not be null", property));
         }
         return value;
     }
@@ -200,11 +200,11 @@ public class Node {
     /**
      * checks if the {@link Node} contains the given property name.
      *
-     * @param key property name
+     * @param property property name
      * @return true if the property exists, else false
      */
-    public boolean containsKey (String key) {
-        return properties.containsKey (key);
+    public boolean hasProperty (String property) {
+        return properties.containsKey (property);
     }
 
     /**

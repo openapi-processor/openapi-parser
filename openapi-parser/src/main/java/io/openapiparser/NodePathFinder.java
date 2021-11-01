@@ -25,7 +25,7 @@ public class NodePathFinder {
             for (int i = 0; i < parts.length; i++) {
                 String part = parts[i];
 
-                if (node == null || !node.containsKey (part))
+                if (node == null || !node.hasProperty (part))
                     return null;
 
                 if (i == last)

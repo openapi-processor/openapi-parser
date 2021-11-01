@@ -22,7 +22,7 @@ public class AtLeastOnePropertyValidator implements Validator {
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
         Set<String> found = properties.stream ()
-            .filter (node::containsKey)
+            .filter (node::hasProperty)
             .collect(Collectors.toSet());
 
         if(found.isEmpty ()) {
