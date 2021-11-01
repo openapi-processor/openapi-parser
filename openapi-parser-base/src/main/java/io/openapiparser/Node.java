@@ -212,7 +212,7 @@ public class Node {
      *
      * @return existing property names
      */
-    public Set<String> getKeys () {
+    public Set<String> getPropertyNames () {
         return properties.keySet ();
     }
 

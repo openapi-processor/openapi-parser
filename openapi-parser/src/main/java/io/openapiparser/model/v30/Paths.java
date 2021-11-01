@@ -35,7 +35,7 @@ public class Paths implements Extensions {
     }
 
     public Set<String> pathSet() {
-        return node.getKeys ();
+        return node.getPropertyNames ();
     }
 
 }

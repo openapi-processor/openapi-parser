@@ -28,7 +28,7 @@ public class AllowedPropertiesValidator implements Validator {
 
     @Override
     public Collection<ValidationMessage> validate (ValidationContext context, Node node) {
-        return node.getKeys ().stream ()
+        return node.getPropertyNames ().stream ()
             .filter (key -> !isAllowedProperty (key))
             .map (prop -> createMessage (context, prop))
             .collect(Collectors.toList());

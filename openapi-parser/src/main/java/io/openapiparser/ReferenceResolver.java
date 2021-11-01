@@ -8,7 +8,6 @@ package io.openapiparser;
 import io.openapiparser.support.Strings;
 
 import java.net.URI;
-import java.util.*;
 
 /**
  * resolves all $ref'erences of the base document loading all referenced documents.
@@ -89,7 +88,7 @@ public class ReferenceResolver {
     }
 
     private void collectReferences (URI uri, Node node) throws ResolverException {
-        for (String k: node.getKeys ()) {
+        for (String k: node.getPropertyNames ()) {
             if (k.equals (Keywords.REF)) {
                 String ref = getRef (uri, node);
                 if (ref.startsWith (HASH)) {
