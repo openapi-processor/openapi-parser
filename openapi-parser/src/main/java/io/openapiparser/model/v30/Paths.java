@@ -27,7 +27,7 @@ public class Paths implements Extensions {
     }
 
     public Map<String, PathItem> getPathItems() {
-        return node.getMapAs (node -> new PathItem (context, node));
+        return node.getPropertiesAsMap (node -> new PathItem (context, node));
     }
 
     public PathItem getPathItem(String path) {

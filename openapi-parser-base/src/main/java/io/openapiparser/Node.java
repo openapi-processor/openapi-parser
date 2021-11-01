@@ -60,7 +60,7 @@ public class Node {
      * @return map from properties to {@code T}
      */
     @SuppressWarnings ("unchecked")
-    public <T> Map<String, T> getMapAs (NodeConverter<T> factory) {
+    public <T> Map<String, T> getPropertiesAsMap (NodeConverter<T> factory) {
         Map<String, T> result = new LinkedHashMap<> ();
         properties.forEach ((k, v) -> {
             result.put (k, factory.create (new Node ((Map<String, Object>) v)));
@@ -180,7 +180,7 @@ public class Node {
         if (value == null)
             return null;
 
-        return new Node(value).getMapAs (factory);
+        return new Node(value).getPropertiesAsMap (factory);
     }
 
     /**
