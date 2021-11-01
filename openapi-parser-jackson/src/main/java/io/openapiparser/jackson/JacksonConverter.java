@@ -25,6 +25,7 @@ public class JacksonConverter implements Converter {
     private static final ObjectMapper json = new ObjectMapper();
     private static final ObjectMapper yaml = new ObjectMapper(new YAMLFactory ());
 
+    @Override
     public Node convert (String api) throws ConverterException {
         if (isEmpty (api)) {
             throw new ConverterException (String.format (CONVERT_ERROR, "empty"), null);
