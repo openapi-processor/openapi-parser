@@ -43,7 +43,7 @@ public class Node {
      * @param property property name
      * @return property value or null if the property does not exist
      */
-    public @Nullable Object getProperty (String property) {
+    public @Nullable Object getRawValue (String property) {
         return properties.get (property);
     }
 
@@ -54,7 +54,7 @@ public class Node {
      * @return property value or null if the property does not exist
      */
     public @Nullable String getPropertyAsString (String property) {
-        final Object value = getProperty (property);
+        final Object value = getRawValue (property);
         if (value == null)
             return null;
 
@@ -68,7 +68,7 @@ public class Node {
      * @return collection of values
      */
     public @Nullable Collection<String> getPropertyAsStrings (String property) {
-        final Object value = getProperty (property);
+        final Object value = getRawValue (property);
         if (value == null)
             return null;
 
@@ -210,7 +210,7 @@ public class Node {
      * @param handler node handler
      */
     public void traverseProperty (String property, NodeHandler handler) {
-        final Object value = getProperty (property);
+        final Object value = getRawValue (property);
 
         if (isObject (value)) {
             handler.handle (getPropertyAsNode (property));

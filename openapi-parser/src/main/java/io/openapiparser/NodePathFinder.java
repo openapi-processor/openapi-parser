@@ -16,7 +16,7 @@ public class NodePathFinder {
 
     @Nullable Object find(String path) {
         if (!isPath (path)) {
-            return root.getProperty (path);
+            return root.getRawValue (path);
         } else {
             String[] parts = getParts (path);
             int last = parts.length - 1;
@@ -29,7 +29,7 @@ public class NodePathFinder {
                     return null;
 
                 if (i == last)
-                    return node.getProperty (part);
+                    return node.getRawValue (part);
 
                 node = node.getPropertyAsNode (part);
             }
