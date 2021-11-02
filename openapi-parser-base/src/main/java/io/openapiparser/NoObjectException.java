@@ -10,7 +10,7 @@ package io.openapiparser;
  */
 public class NoObjectException extends RuntimeException {
 
-    public NoObjectException (String message) {
-        super(message);
+    public NoObjectException (String property) {
+        super(String.format ("property '%s' should be an object", property));
     }
 }

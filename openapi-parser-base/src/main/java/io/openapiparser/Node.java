@@ -16,19 +16,28 @@ import static java.util.Collections.unmodifiableMap;
  * object.
  */
 public class Node {
+    private final String path;
+
     /** wrapped OpenAPI object node */
     private final Map<String, Object> properties;
 
     public static Node empty() {
-        return new Node(Collections.emptyMap ());
+        return new Node("empty", Collections.emptyMap ());
     }
 
+    @Deprecated
     public Node (Map<String, Object> properties) {
+        this.path = "not set";
+        this.properties = properties;
+    }
+
+    public Node (String path, Map<String, Object> properties) {
+        this.path = path;
         this.properties = properties;
     }
 
     /**
-     * get the raw/untyped value of the given property key.
+     * get the raw value of the given property.
      *
      * @param property property name
      * @return property value or null if the property does not exist
@@ -38,24 +47,31 @@ public class Node {
     }
 
     /**
-     * get the raw/untyped value of the given property key as {@link String}.
+     * get the raw value of the given property cast to {@link String}.
      *
      * @param property property name
      * @return property value or null if the property does not exist
      */
     public @Nullable String getPropertyAsString (String property) {
-        return (String) properties.get (property);
+        final Object value = getProperty (property);
+        if (value == null)
+            return null;
+
+        return castToString (property, value);
     }
 
     /**
-     * get the raw/untyped array value of the given property key as collection of {@link String}s.
+     * get the raw array value of the given property key as collection of {@link String}s.
      *
      * @param property property name
      * @return collection of values
      */
-    @SuppressWarnings ("unchecked")
     public @Nullable Collection<String> getPropertyAsStrings (String property) {
-        return (Collection<String>) properties.get (property);
+        final Object value = getProperty (property);
+        if (value == null)
+            return null;
+
+        return castToCollection(property, value, String.class);
     }
 
     /**
@@ -77,7 +93,7 @@ public class Node {
     public <T> Map<String, T> getPropertiesAsMapOf (NodeConverter<T> factory) {
         Map<String, T> result = new LinkedHashMap<> ();
         properties.forEach ((k, v) -> {
-            result.put (k, factory.create (new Node ((Map<String, Object>) v)));
+            result.put (k, factory.create (new Node (getPath (k), (Map<String, Object>) v)));
         });
         return unmodifiableMap (result);
     }
@@ -91,10 +107,10 @@ public class Node {
     public Node getPropertyAsNode (String property) {
         final Object value = properties.get (property);
         if (!isObject (value)) {
-            throw new NoObjectException(String.format ("property %s should be an object", property));
+            throw new NoObjectException(getPath(property));
         }
 
-        return new Node (notNullAsObject (property, value));
+        return new Node (getPath (property), notNullAsObject (property, value));
     }
 
     /**
@@ -115,11 +131,15 @@ public class Node {
         }
 
         final Collection<Node> nodes = new ArrayList<> ();
-        for (Object val : notNullAsArray (property, value)) {
+        final Object[] values = notNullAsArray (property, value).toArray ();
+        for (int i = 0; i < values.length ; i++) {
+            Object val = values[i];
+
             if (isObject (val)) {
-                nodes.add (new Node ((Map<String, Object>) val));
+                nodes.add (new Node (getArrayPath(property, i), (Map<String, Object>) val));
             }
         }
+
         return unmodifiableCollection (nodes);
     }
 
@@ -178,7 +198,7 @@ public class Node {
         if (value == null)
             return null;
 
-        return new Node(value).getPropertiesAsMapOf (factory);
+        return new Node(getPath (property), value).getPropertiesAsMapOf (factory);
     }
 
     /**
@@ -224,8 +244,16 @@ public class Node {
      *
      * @return count of properties
      */
-    public int getCountProperties () {
+    int getCountProperties () {
         return properties.size ();
+    }
+
+    private String getPath (String property) {
+        return String.format ("%s.%s", path, property);
+    }
+
+    private String getArrayPath (String property, int index) {
+        return String.format ("%s.%s[%d]", path, property, index);
     }
 
     @SuppressWarnings ("unchecked")
@@ -240,9 +268,34 @@ public class Node {
 
     private <T> T notNullProperty (String property, @Nullable T value) {
         if (value == null)
-            throw new NullPropertyException(property);
+            throw new NullPropertyException(getPath (property));
 
         return value;
+    }
+
+    private String castToString(String property, Object value) {
+        if (!(value instanceof String))
+            throw new BadPropertyTypeException (getPath(property), String.class);
+
+        return (String) value;
+    }
+
+    @SuppressWarnings ("unchecked")
+    private <T> Collection<T> castToCollection (String property, Object value, Class<T> itemType) {
+        String type = String.format ("%s<%s>", Collection.class.getName (), itemType.getName ());
+
+        if (!isArray (value))
+            throw new BadPropertyTypeException (getPath (property), type);
+
+        // check items
+        final Collection<T> collection = (Collection<T>) value;
+        for (T item : collection) {
+            if (itemType.isInstance (item))
+                continue;
+
+            throw new BadPropertyTypeException (getPath (property), type);
+        }
+        return collection;
     }
 
     private boolean isObject (@Nullable Object value) {

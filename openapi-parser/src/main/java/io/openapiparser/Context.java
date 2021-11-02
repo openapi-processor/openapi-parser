@@ -32,7 +32,7 @@ public class Context {
             // todo throw ResolverException ?
             return null;
         }
-        return new Node (value);
+        return new Node (String.format ("%s.$ref(%s)", "....", reference.getRef ()), value);
     }
 
     public void read () throws ContextException {

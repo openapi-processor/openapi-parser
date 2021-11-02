@@ -102,7 +102,7 @@ public class ReferenceResolver {
                         URI documentUri = uri.resolve (document);
 
                         if (!documents.contains (documentUri)) {
-                            Node documentNode = new Node(uri.toString (), loadDocument (documentUri));
+                            Node documentNode = new Node(documentUri.toString (), loadDocument (documentUri));
                             documents.add (documentUri, documentNode);
                             collectReferences (documentUri, documentNode);
                         }
