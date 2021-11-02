@@ -24,7 +24,7 @@ public class JacksonConverter implements Converter {
     private static final ObjectMapper yaml = new ObjectMapper(new YAMLFactory ());
 
     @Override
-    public Node convert (String api) throws ConverterException {
+    public Map<String, Object> convert (String api) throws ConverterException {
         if (isEmpty (api)) {
             throw new ConverterException (String.format (CONVERT_ERROR, "empty"));
         }
@@ -36,17 +36,17 @@ public class JacksonConverter implements Converter {
         }
     }
 
-    private Node convertJson (String api) throws ConverterException {
+    private Map<String, Object> convertJson (String api) throws ConverterException {
         try {
-            return new Node(json.readValue (api, getMapTypeReference ()));
+            return json.readValue (api, getMapTypeReference ());
         } catch (Exception e) {
             throw new ConverterException (String.format (CONVERT_ERROR, "json"), e);
         }
     }
 
-    private Node convertYaml (String api) throws ConverterException {
+    private Map<String, Object> convertYaml (String api) throws ConverterException {
         try {
-            return new Node(yaml.readValue (api, getMapTypeReference ()));
+            return yaml.readValue (api, getMapTypeReference ());
         } catch (Exception e) {
             throw new ConverterException (String.format (CONVERT_ERROR, "yaml"), e);
         }
