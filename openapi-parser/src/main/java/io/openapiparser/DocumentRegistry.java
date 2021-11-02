@@ -12,12 +12,16 @@ import java.util.Map;
 public class DocumentRegistry {
     private final Map<URI, Node> documents = new HashMap<> ();
 
-    public void add (URI uri, Node node) {
-        documents.put (uri, node);
+    public void add (URI uri, Node document) {
+        documents.put (uri, document);
     }
 
     public Node get (URI uri) {
-        return documents.get (uri);
+        final Node document = documents.get (uri);
+        if (document == null)
+            throw new RuntimeException (); // todo
+
+        return document;
     }
 
     public boolean contains (URI uri) {

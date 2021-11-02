@@ -127,7 +127,7 @@ public class ReferenceResolver {
         return ref;
     }
 
-    private Object getRawRefNode (Node documentNode, String fragment) {
+    private @Nullable Object getRawRefNode (Node documentNode, String fragment) {
         NodePathFinder finder = new NodePathFinder (documentNode);
         return finder.find (fragment.substring (1));
     }
