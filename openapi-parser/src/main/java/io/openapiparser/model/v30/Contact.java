@@ -26,16 +26,16 @@ public class Contact implements Extensions {
 
     @Nullable
     public String getName () {
-        return node.getPropertyAsString (NAME);
+        return node.getStringValue (NAME);
     }
 
     @Nullable
     public String getUrl () {
-        return node.getPropertyAsString (URL);
+        return node.getStringValue (URL);
     }
 
     @Nullable
     public String getEmail () {
-        return node.getPropertyAsString (EMAIL);
+        return node.getStringValue (EMAIL);
     }
 }

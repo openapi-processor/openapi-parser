@@ -33,7 +33,7 @@ public class Server implements Extensions {
 
     @Nullable
     public String getDescription () {
-        return node.getPropertyAsString (DESCRIPTION);
+        return node.getStringValue (DESCRIPTION);
     }
 
     @Nullable

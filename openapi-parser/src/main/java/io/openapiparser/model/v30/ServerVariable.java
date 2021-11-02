@@ -38,6 +38,6 @@ public class ServerVariable implements Extensions {
 
     @Nullable
     public String getDescription () {
-        return node.getPropertyAsString (DESCRIPTION);
+        return node.getStringValue (DESCRIPTION);
     }
 }

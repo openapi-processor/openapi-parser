@@ -29,17 +29,17 @@ public class Info implements Extensions {
 
     @Nullable
     public String getSummary () {
-        return node.getPropertyAsString ("summary");
+        return node.getStringValue ("summary");
     }
 
     @Nullable
     public String getDescription () {
-        return node.getPropertyAsString ("description");
+        return node.getStringValue ("description");
     }
 
     @Nullable
     public String getTermsOfService () {
-        return node.getPropertyAsString ("termsOfService");
+        return node.getStringValue ("termsOfService");
     }
 
     @Nullable

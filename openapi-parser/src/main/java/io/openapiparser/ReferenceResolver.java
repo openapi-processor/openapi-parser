@@ -121,7 +121,7 @@ public class ReferenceResolver {
     }
 
     private String getRef (URI uri, Node node) {
-        final String ref = node.getPropertyAsString (Keywords.REF);
+        final String ref = node.getStringValue (Keywords.REF);
         if (ref == null) {
             throw new ResolverException (String.format ("unable to resolve empty $ref in %s.", uri));
         }

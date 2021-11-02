@@ -31,12 +31,12 @@ public class Info {
 
     @Nullable
     public String getDescription () {
-        return node.getPropertyAsString (DESCRIPTION);
+        return node.getStringValue (DESCRIPTION);
     }
 
     @Nullable
     public String getTermsOfService () {
-        return node.getPropertyAsString (TERMS_OF_SERVICE);
+        return node.getStringValue (TERMS_OF_SERVICE);
     }
 
     @Nullable

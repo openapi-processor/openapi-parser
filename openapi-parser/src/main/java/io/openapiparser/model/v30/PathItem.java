@@ -31,12 +31,12 @@ public class PathItem implements Reference, Extensions {
     @Nullable
     @Override
     public String getRef () {
-        return node.getPropertyAsString (REF);
+        return node.getStringValue (REF);
     }
 
     @Nullable
     public String getSummary () {
-        return getSource ().getPropertyAsString (SUMMARY);
+        return getSource ().getStringValue (SUMMARY);
     }
 
     @Nullable

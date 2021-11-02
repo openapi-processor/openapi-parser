@@ -53,7 +53,7 @@ public class Node {
      * @param property property name
      * @return property value or null if the property does not exist
      */
-    public @Nullable String getPropertyAsString (String property) {
+    public @Nullable String getStringValue (String property) {
         final Object value = getRawValue (property);
         if (value == null)
             return null;
@@ -76,10 +76,10 @@ public class Node {
     }
 
     /**
-     * same as {@link #getPropertyAsString}, but throws if the property values is {@code null}.
+     * same as {@link #getStringValue}, but throws if the property values is {@code null}.
      */
     public String getRequiredPropertyAsString (String property) {
-        return notNullProperty (property, getPropertyAsString (property));
+        return notNullProperty (property, getStringValue (property));
     }
 
     /**
@@ -275,7 +275,7 @@ public class Node {
     }
 
     private String castToString(String property, Object value) {
-        if (!(value instanceof String))
+        if (! isString (value))
             throw new BadPropertyTypeException (getPath(property), String.class);
 
         return (String) value;
@@ -305,5 +305,9 @@ public class Node {
 
     private boolean isArray (@Nullable Object value) {
         return value instanceof Collection;
+    }
+
+    private boolean isString (@Nullable Object value) {
+        return value instanceof String;
     }
 }

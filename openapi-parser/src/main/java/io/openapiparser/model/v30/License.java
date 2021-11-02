@@ -31,6 +31,6 @@ public class License implements Extensions {
 
     @Nullable
     public String getUrl () {
-        return node.getPropertyAsString (URL);
+        return node.getStringValue (URL);
     }
 }
