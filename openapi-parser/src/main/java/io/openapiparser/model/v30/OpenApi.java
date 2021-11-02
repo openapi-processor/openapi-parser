@@ -42,7 +42,7 @@ public class OpenApi implements Extensions {
 
     @Required
     public Paths getPaths () {
-        return node.getPropertyAs (PATHS, node -> new Paths (context, node));
+        return node.getRequiredPropertyAs (PATHS, node -> new Paths (context, node));
     }
 
     public Components getComponents () {

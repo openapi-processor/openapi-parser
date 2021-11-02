@@ -31,8 +31,9 @@ public class OpenApi implements Extensions {
         return node.getPropertyAsString (OPENAPI);
     }
 
+    @Required
     public Info getInfo () {
-        return new Info (context, node.getPropertyAsNode (INFO));
+        return node.getRequiredPropertyAs (INFO, node -> new Info (context, node));
     }
 
     public String getJsonSchemaDialect () {
