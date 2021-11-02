@@ -5,6 +5,8 @@
 
 package io.openapiparser.model.v30;
 
+import io.openapiparser.Nullable;
+
 /**
  * the <em>Reference</em> object.
  *
@@ -13,6 +15,6 @@ package io.openapiparser.model.v30;
  */
 public interface Reference {
 
-    String getRef();
+    @Nullable String getRef();
 
 }

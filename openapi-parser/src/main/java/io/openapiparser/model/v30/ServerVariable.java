@@ -5,13 +5,18 @@
 
 package io.openapiparser.model.v30;
 
-import io.openapiparser.Context;
-import io.openapiparser.Node;
+import io.openapiparser.*;
 
 import java.util.Collection;
 
 import static io.openapiparser.Keywords.DESCRIPTION;
 
+/**
+ * the <em>Server Variable</em> object.
+ *
+ * <p>See specification:
+ * <a href="https://spec.openapis.org/oas/v3.0.3.html#server-variable-object">4.7.6 Server Variable Object</a>
+ */
 public class ServerVariable implements Extensions {
     private final Context context;
     private final Node node;
@@ -21,15 +26,16 @@ public class ServerVariable implements Extensions {
         this.node = node;
     }
 
-    public Collection<String> getEnum () {
+    public @Nullable Collection<String> getEnum () {
         return null;
     }
 
+    @Required
     public String getDefault () {
         return null;
     }
 
-    public String getDescription () {
+    public @Nullable String getDescription () {
         return node.getPropertyAsString (DESCRIPTION);
     }
 }

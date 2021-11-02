@@ -5,8 +5,7 @@
 
 package io.openapiparser.model.v30;
 
-import io.openapiparser.Context;
-import io.openapiparser.Node;
+import io.openapiparser.*;
 
 import static io.openapiparser.Keywords.*;
 
@@ -25,15 +24,15 @@ public class Contact implements Extensions {
         this.node = node;
     }
 
-    public String getName () {
+    public @Nullable String getName () {
         return node.getPropertyAsString (NAME);
     }
 
-    public String getUrl () {
+    public @Nullable String getUrl () {
         return node.getPropertyAsString (URL);
     }
 
-    public String getEmail () {
+    public @Nullable String getEmail () {
         return node.getPropertyAsString (EMAIL);
     }
 }
