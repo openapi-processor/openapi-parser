@@ -25,7 +25,6 @@ class NodePathFinderSpec : StringSpec({
 
     "find by multi level path" {
         val found = NodePathFinder(Node(
-
             mapOf("level 0" to
                 mapOf("level 1" to
                     mapOf("level 2" to
