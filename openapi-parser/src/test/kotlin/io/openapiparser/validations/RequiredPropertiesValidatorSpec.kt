@@ -42,7 +42,7 @@ class RequiredPropertiesValidatorSpec : StringSpec({
             )
         )
 
-        val messages = required.validate(ctx, Node(mapOf<String, Any>()))
+        val messages = required.validate(ctx, Node.empty())
 
         messages.size shouldBe 2
         val messageFoo = ArrayList(messages)[0]
