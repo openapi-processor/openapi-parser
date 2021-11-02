@@ -11,7 +11,6 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import io.openapiparser.*;
 
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -19,8 +18,7 @@ import java.util.regex.Pattern;
  */
 public class JacksonConverter implements Converter {
     private static final String CONVERT_ERROR = "failed to convert %s document.";
-
-    private static final Pattern FIRST_CHAR = Pattern.compile("\\s*(.)");
+    private static final Pattern JSON_PATTERN = Pattern.compile("^\\s*\\{");
 
     private static final ObjectMapper json = new ObjectMapper();
     private static final ObjectMapper yaml = new ObjectMapper(new YAMLFactory ());
@@ -59,15 +57,7 @@ public class JacksonConverter implements Converter {
     }
 
     private boolean isJson (String source) {
-        return "{".equals(getFirstChar (source));
-    }
-
-    private static @Nullable String getFirstChar (String content) {
-      Matcher matcher = FIRST_CHAR.matcher(content);
-      if (matcher.find()) {
-        return matcher.group(1);
-      }
-      return null;
+        return JSON_PATTERN.matcher(source).find ();
     }
 
     private static boolean isEmpty(String source) {
