@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     `java-library`
+    jacoco
     id("org.jetbrains.kotlin.jvm")
     id("net.ltgt.errorprone")
     //id("org.unbroken-dome.test-sets")
@@ -48,4 +49,17 @@ tasks.withType<JavaCompile>().configureEach {
 
 tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+tasks.jacocoTestReport {
+    reports {
+//        xml.required.set(false)
+//        csv.required.set(false)
+//        html.required.set(false)
+//        html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
+    }
 }
