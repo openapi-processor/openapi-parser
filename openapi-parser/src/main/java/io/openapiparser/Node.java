@@ -268,7 +268,7 @@ public class Node {
 
     private <T> T notNullProperty (String property, @Nullable T value) {
         if (value == null)
-            throw new NullPropertyException(getPath (property));
+            throw new NullPropertyException (getPath (property));
 
         return value;
     }
