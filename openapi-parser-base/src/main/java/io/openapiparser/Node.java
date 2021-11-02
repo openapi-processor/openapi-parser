@@ -131,7 +131,7 @@ public class Node {
     /**
      * same as {@link #getPropertyAs}, but throws if the property values is {@code null}.
      */
-    public <T> @Nullable T getRequiredPropertyAs (String property, NodeConverter<T> factory) {
+    public <T> T getRequiredPropertyAs (String property, NodeConverter<T> factory) {
         return notNullProperty (property, getPropertyAs (property, factory));
     }
 

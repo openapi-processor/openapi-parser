@@ -36,6 +36,7 @@ public class OpenApi implements Extensions {
         return node.getRequiredPropertyAs (INFO, node -> new Info (context, node));
     }
 
+    @Nullable
     public Collection<Server> getServers () {
         return node.getPropertyAsArrayOf (SERVERS, node -> new Server(context, node));
     }
@@ -45,18 +46,22 @@ public class OpenApi implements Extensions {
         return node.getRequiredPropertyAs (PATHS, node -> new Paths (context, node));
     }
 
+    @Nullable
     public Components getComponents () {
         return null;
     }
 
+    @Nullable
     public Collection<SecurityRequirement> getSecurity () {
         return null;
     }
 
+    @Nullable
     public Collection<Tag> getTags () {
         return null;
     }
 
+    @Nullable
     public ExternalDocumentation getExternalDocs () {
         return null;
     }

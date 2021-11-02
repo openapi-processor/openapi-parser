@@ -38,23 +38,26 @@ public class VersionValidator implements Validator {
     public Collection<ValidationMessage> validate (ValidationContext context, Node node) {
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
-        Object version = node.getProperty (OPENAPI);
-        if (!(version instanceof String) || !isValid((String)version)) {
-            messages.add(createMessage (context, version));
+        Object value = node.getProperty (OPENAPI);
+        if (value == null) {
+            messages.add (createMessage (context, "null"));
+
+        } else if (!(value instanceof String) || !isValid(value)) {
+            messages.add(createMessage (context, value));
         }
 
         return messages;
     }
 
-    private ValidationMessage createMessage (ValidationContext context, Object version) {
+    private ValidationMessage createMessage (ValidationContext context, @Nullable Object version) {
         return new ValidationMessage(context.getPropertyPath (OPENAPI), createText (version));
     }
 
-    private boolean isValid (String version) {
-        return VERSION.matcher (version).matches ();
+    private boolean isValid (Object version) {
+        return VERSION.matcher ((String) version).matches ();
     }
 
-    private String createText(Object value) {
+    private String createText(@Nullable Object value) {
         return String.format ("'%s' is not a valid version number", value);
     }
 

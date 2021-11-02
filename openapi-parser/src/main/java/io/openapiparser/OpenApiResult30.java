@@ -9,6 +9,7 @@ import io.openapiparser.model.v30.OpenApi;
 import io.openapiparser.model.v30.validations.OpenapiValidator;
 
 import java.util.Collection;
+import java.util.Collections;
 
 public class OpenApiResult30 implements OpenApiResult {
     private final Context context;
@@ -16,6 +17,7 @@ public class OpenApiResult30 implements OpenApiResult {
 
     public OpenApiResult30 (Context context) {
         this.context = context;
+        this.validationMessages = Collections.emptyList ();
     }
 
     @Override

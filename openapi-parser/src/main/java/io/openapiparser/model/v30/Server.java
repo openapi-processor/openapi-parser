@@ -5,8 +5,7 @@
 
 package io.openapiparser.model.v30;
 
-import io.openapiparser.Context;
-import io.openapiparser.Node;
+import io.openapiparser.*;
 
 import java.util.Map;
 
@@ -27,14 +26,17 @@ public class Server implements Extensions {
         this.node = node;
     }
 
+    @Required
     public String getUrl () {
-        return node.getPropertyAsString (URL);
+        return node.getRequiredPropertyAsString (URL);
     }
 
+    @Nullable
     public String getDescription () {
         return node.getPropertyAsString (DESCRIPTION);
     }
 
+    @Nullable
     public Map<String, ServerVariable> getVariables () {
         return node.getPropertyAsMapOf (VARIABLES, node -> new ServerVariable (context, node));
     }

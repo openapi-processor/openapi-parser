@@ -27,8 +27,9 @@ public class OpenApi implements Extensions {
         this.node = node;
     }
 
+    @Required
     public String getOpenapi () {
-        return node.getPropertyAsString (OPENAPI);
+        return node.getRequiredPropertyAsString (OPENAPI);
     }
 
     @Required
@@ -36,34 +37,45 @@ public class OpenApi implements Extensions {
         return node.getRequiredPropertyAs (INFO, node -> new Info (context, node));
     }
 
+    @Nullable
     public String getJsonSchemaDialect () {
         return null;
     }
 
+    @Nullable
     public Collection<Server> getServers () {
         return null;
     }
 
+    // requires one of  path, webhooks or components
+    @Nullable
     public Map<String, PathItem> getPaths () {
         return null;
     }
 
+    // requires one of  path, webhooks or components
+    @Nullable
     public Map<String, PathItem> getWebhooks () {
         return null;
     }
 
+    // requires one of  path, webhooks or components
+    @Nullable
     public Components getComponents () {
         return null;
     }
 
+    @Nullable
     public Collection<SecurityRequirement> getSecurity () {
         return null;
     }
 
+    @Nullable
     public Collection<Tag> getTags () {
         return null;
     }
 
+    @Nullable
     public ExternalDocumentation getExternalDocs () {
         return null;
     }

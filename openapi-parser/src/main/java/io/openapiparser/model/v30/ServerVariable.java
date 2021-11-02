@@ -26,16 +26,18 @@ public class ServerVariable implements Extensions {
         this.node = node;
     }
 
-    public @Nullable Collection<String> getEnum () {
+    @Nullable
+    public Collection<String> getEnum () {
         return null;
     }
 
     @Required
     public String getDefault () {
-        return null;
+        return "todo";
     }
 
-    public @Nullable String getDescription () {
+    @Nullable
+    public String getDescription () {
         return node.getPropertyAsString (DESCRIPTION);
     }
 }

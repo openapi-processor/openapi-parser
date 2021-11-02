@@ -28,69 +28,79 @@ public class PathItem implements Reference, Extensions {
         refNode = getRefNode ();
     }
 
+    @Nullable
     @Override
     public String getRef () {
         return node.getPropertyAsString (REF);
     }
 
+    @Nullable
     public String getSummary () {
         return getSource ().getPropertyAsString (SUMMARY);
     }
 
+    @Nullable
     public String getDescription () {
         return null;
     }
 
+    @Nullable
     public Operation getGet () {
         return null;
     }
 
+    @Nullable
     public Operation getPut () {
         return null;
     }
 
+    @Nullable
     public Operation getPost () {
         return null;
     }
 
+    @Nullable
     public Operation getDelete () {
         return null;
     }
 
+    @Nullable
     public Operation getOptions () {
         return null;
     }
 
+    @Nullable
     public Operation getHead () {
         return null;
     }
 
+    @Nullable
     public Operation getPatch () {
         return null;
     }
 
+    @Nullable
     public Operation getTrace () {
         return null;
     }
 
+    @Nullable
     public Collection<Server> getServers () {
         return null;
     }
 
+    @Nullable
     public Collection<Parameter> getParameters () {
         return null;
     }
 
     private Node getSource () {
-        return isRef () ? refNode : node;
+        return (refNode != null) ? refNode : node;
     }
 
+    @Nullable
     private Node getRefNode () {
         String ref = getRef ();
         return ref != null ? context.getRefNode (ref) : null;
-    }
-
-    private boolean isRef () {
-        return refNode != null;
     }
 }

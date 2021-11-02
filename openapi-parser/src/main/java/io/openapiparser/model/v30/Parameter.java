@@ -5,6 +5,8 @@
 
 package io.openapiparser.model.v30;
 
+import io.openapiparser.Nullable;
+
 /**
  * the <em>Parameter</em> object.
  *
@@ -13,6 +15,7 @@ package io.openapiparser.model.v30;
  */
 public class Parameter implements Reference {
 
+    @Nullable
     @Override
     public String getRef () {
         return null;

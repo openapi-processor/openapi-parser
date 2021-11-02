@@ -5,8 +5,7 @@
 
 package io.openapiparser.model.v30;
 
-import io.openapiparser.Context;
-import io.openapiparser.Node;
+import io.openapiparser.*;
 
 import static io.openapiparser.Keywords.*;
 
@@ -25,27 +24,33 @@ public class Info {
         this.node = node;
     }
 
+    @Required
     public String getTitle () {
-        return node.getPropertyAsString (TITLE);
+        return node.getRequiredPropertyAsString (TITLE);
     }
 
+    @Nullable
     public String getDescription () {
         return node.getPropertyAsString (DESCRIPTION);
     }
 
+    @Nullable
     public String getTermsOfService () {
         return node.getPropertyAsString (TERMS_OF_SERVICE);
     }
 
+    @Nullable
     public Contact getContact () {
         return node.getPropertyAs (CONTACT, node -> new Contact (context, node));
     }
 
+    @Nullable
     public License getLicense () {
         return node.getPropertyAs (LICENSE, node -> new License (context, node));
     }
 
+    @Required
     public String getVersion () {
-        return node.getPropertyAsString (VERSION);
+        return node.getRequiredPropertyAsString (VERSION);
     }
 }

@@ -5,8 +5,7 @@
 
 package io.openapiparser.model.v30;
 
-import io.openapiparser.Context;
-import io.openapiparser.Node;
+import io.openapiparser.*;
 
 import java.util.Map;
 import java.util.Set;
@@ -30,6 +29,7 @@ public class Paths implements Extensions {
         return node.getPropertiesAsMapOf (node -> new PathItem (context, node));
     }
 
+    @Nullable
     public PathItem getPathItem(String path) {
         return node.getPropertyAs (path, node -> new PathItem (context, node));
     }

@@ -15,6 +15,7 @@ import io.openapiparser.Nullable;
  */
 public interface Reference {
 
-    @Nullable String getRef();
+    @Nullable
+    String getRef();
 
 }

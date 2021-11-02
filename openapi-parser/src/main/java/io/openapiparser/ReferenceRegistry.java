@@ -33,7 +33,11 @@ public class ReferenceRegistry {
     }
 
     Reference getRef(String absoluteRef) {
-        return references.get (absoluteRef);
+        final Reference reference = references.get (absoluteRef);
+        if (reference == null)
+            throw new RuntimeException (); // todo
+
+        return reference;
     }
 
     private void replace (String key, Reference ref, Object rawValue) {

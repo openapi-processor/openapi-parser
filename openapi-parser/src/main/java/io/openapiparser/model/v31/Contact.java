@@ -5,6 +5,8 @@
 
 package io.openapiparser.model.v31;
 
+import io.openapiparser.Nullable;
+
 /**
  * the <em>Contact</em> object.
  *
@@ -13,14 +15,17 @@ package io.openapiparser.model.v31;
  */
 public class Contact implements Extensions {
 
+    @Nullable
     public String getName () {
         return null;
     }
 
+    @Nullable
     public String getUrl () {
         return null;
     }
 
+    @Nullable
     public String getEmail () {
         return null;
     }

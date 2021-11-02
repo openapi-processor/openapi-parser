@@ -14,6 +14,6 @@ import java.util.LinkedHashMap;
  * <a href="https://spec.openapis.org/oas/v3.1.0.html#paths-object">4.8.8 Paths Object</a>
  */
 public class Paths implements Extensions {
-    private LinkedHashMap<String, PathItem> pathItems;
+    private LinkedHashMap<String, PathItem> pathItems = new LinkedHashMap<> ();
 
 }

@@ -24,15 +24,18 @@ public class Contact implements Extensions {
         this.node = node;
     }
 
-    public @Nullable String getName () {
+    @Nullable
+    public String getName () {
         return node.getPropertyAsString (NAME);
     }
 
-    public @Nullable String getUrl () {
+    @Nullable
+    public String getUrl () {
         return node.getPropertyAsString (URL);
     }
 
-    public @Nullable String getEmail () {
+    @Nullable
+    public String getEmail () {
         return node.getPropertyAsString (EMAIL);
     }
 }

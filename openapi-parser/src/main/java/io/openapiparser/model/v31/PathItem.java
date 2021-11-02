@@ -5,6 +5,8 @@
 
 package io.openapiparser.model.v31;
 
+import io.openapiparser.Nullable;
+
 /**
  * the <em>Path Item</em> object.
  *
@@ -13,16 +15,19 @@ package io.openapiparser.model.v31;
  */
 public class PathItem implements Extensions, Reference {
 
+    @Nullable
     @Override
     public String getRef () {
         return null;
     }
 
+    @Nullable
     @Override
     public String getSummary () {
         return null;
     }
 
+    @Nullable
     @Override
     public String getDescription () {
         return null;

@@ -5,8 +5,7 @@
 
 package io.openapiparser.model.v31;
 
-import io.openapiparser.Context;
-import io.openapiparser.Node;
+import io.openapiparser.*;
 
 /**
  * the <em>Info</em> object.
@@ -23,31 +22,38 @@ public class Info implements Extensions {
         this.node = node;
     }
 
+    @Required
     public String getTitle () {
-        return node.getPropertyAsString ("title");
+        return node.getRequiredPropertyAsString ("title");
     }
 
+    @Nullable
     public String getSummary () {
         return node.getPropertyAsString ("summary");
     }
 
+    @Nullable
     public String getDescription () {
         return node.getPropertyAsString ("description");
     }
 
+    @Nullable
     public String getTermsOfService () {
         return node.getPropertyAsString ("termsOfService");
     }
 
+    @Nullable
     public Contact getContact () {
         return null;
     }
 
+    @Nullable
     public License getLicense () {
         return null;
     }
 
+    @Required
     public String getVersion () {
-        return node.getPropertyAsString ("version");
+        return node.getRequiredPropertyAsString ("version");
     }
 }

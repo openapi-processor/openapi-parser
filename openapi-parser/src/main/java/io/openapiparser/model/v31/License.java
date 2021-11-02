@@ -5,6 +5,9 @@
 
 package io.openapiparser.model.v31;
 
+import io.openapiparser.Nullable;
+import io.openapiparser.Required;
+
 /**
  * the <em>License</em> object.
  *
@@ -13,14 +16,17 @@ package io.openapiparser.model.v31;
  */
 public class License implements Extensions {
 
+    @Required
     public String getName () {
-        return null;
+        return "todo";
     }
 
+    @Nullable
     public String getIdentifier () {
         return null;
     }
 
+    @Nullable
     public String getUrl () {
         return null;
     }
