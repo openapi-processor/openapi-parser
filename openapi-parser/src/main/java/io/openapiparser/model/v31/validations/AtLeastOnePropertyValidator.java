@@ -33,12 +33,11 @@ public class AtLeastOnePropertyValidator implements Validator {
     }
 
     private ValidationMessage createMessage (ValidationContext context, Collection<String> properties) {
-
         return new ValidationMessage(context.getPropertyPath (properties), createText (properties));
     }
 
     private String createText(Collection<String> properties) {
         return String.format ("one of '%s' is missing, at least one is required",
-            String.join ("|", this.properties));
+            String.join ("|", properties));
     }
 }
