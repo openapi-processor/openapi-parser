@@ -26,7 +26,7 @@ class ContextSpec : StringSpec({
                     openapi: 3.0.3
                     """.trimIndent()),
                 JacksonConverter(),
-                ReferenceRegistry(uri)
+                ReferenceRegistry()
             )
         )
 

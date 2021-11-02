@@ -43,7 +43,7 @@ class TestBuilder {
             baseUri,
             StringReader(api),
             JacksonConverter(),
-            ReferenceRegistry(baseUri))
+            ReferenceRegistry())
         val context = Context(baseUri, resolver)
         return OpenApiParser(context)
     }
@@ -53,7 +53,7 @@ class TestBuilder {
             baseUri,
             StringReader(api),
             JacksonConverter(),
-            ReferenceRegistry(baseUri))
+            ReferenceRegistry())
         val context = Context(baseUri, resolver)
         context.read()
         return context
@@ -64,7 +64,7 @@ class TestBuilder {
             baseUri,
             StringReader(api),
             JacksonConverter(),
-            ReferenceRegistry(baseUri))
+            ReferenceRegistry())
         val context = Context(baseUri, resolver)
         context.read()
         return OpenApi30(context, context.baseNode)
@@ -75,7 +75,7 @@ class TestBuilder {
             baseUri,
             StringReader(api),
             JacksonConverter(),
-            ReferenceRegistry(baseUri))
+            ReferenceRegistry())
         val context = Context(baseUri, resolver)
         context.read()
         return OpenApi31(context, context.baseNode)

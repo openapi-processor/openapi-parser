@@ -11,16 +11,9 @@ import java.util.Map;
 import java.util.function.BiFunction;
 
 public class ReferenceRegistry {
-    private final URI baseUri; // todo not needed ??
     private final Map<String, Reference> references = new HashMap<> ();
 
     public ReferenceRegistry() {
-        baseUri = null;
-    }
-
-    @Deprecated
-    public ReferenceRegistry(URI baseUri) {
-      this.baseUri = baseUri;
     }
 
     public void add (URI parentUri, URI documentUri, String ref) {

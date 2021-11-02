@@ -25,7 +25,7 @@ class ReferenceResolverSpec : StringSpec({
                 openapi: 3.0.3
             """.trimIndent()),
             JacksonConverter(),
-            ReferenceRegistry(uri)
+            ReferenceRegistry()
         )
 
         resolver.resolve()
