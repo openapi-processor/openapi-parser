@@ -25,7 +25,7 @@ public class OpenApiParser {
     }
 
     private OpenApiResult createResult (Node api) {
-        Object version = api.getProperty (OPENAPI);
+        String version = api.getRequiredPropertyAsString (OPENAPI);
 
         if (isVersion30 (version)) {
             return createOpenApiResult30 ();
@@ -49,15 +49,15 @@ public class OpenApiParser {
         return result;
     }
 
-    private boolean isVersion30(Object version) {
+    private boolean isVersion30(String version) {
         return checkVersion (version, "3.0");
     }
 
-    private boolean isVersion31(Object version) {
+    private boolean isVersion31(String version) {
         return checkVersion (version, "3.1");
     }
 
-    private boolean checkVersion (Object version, String prefix) {
-        return (version instanceof String) && ((String) version).startsWith (prefix);
+    private boolean checkVersion (String version, String prefix) {
+        return version.startsWith (prefix);
     }
 }
