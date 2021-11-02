@@ -11,6 +11,6 @@ package io.openapiparser;
 public class NullPropertyException extends RuntimeException {
 
     public NullPropertyException (String property) {
-        super(String.format ("property %s should not be null", property));
+        super(String.format ("property '%s' should not be null", property));
     }
 }
