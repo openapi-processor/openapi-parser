@@ -74,36 +74,13 @@ public class Node {
      * @param property property name
      * @return property value wrapped as {@link Node}.
      */
-    @SuppressWarnings ("unchecked")
-    public @Nullable Node getPropertyAsNode (String property) {
-        if (!hasProperty (property))
-            return null;
-
+    public Node getPropertyAsNode (String property) {
         final Object value = properties.get (property);
         if (!isObject (value)) {
             throw new NoObjectException(String.format ("property %s should be an object", property));
         }
 
-        return new Node ((Map<String, Object>) value);
-    }
-
-    /**
-     * traverses the object tree of the given property and runs the handler on each child
-     * {@link Node}. It traverses into any child map or array of the property value.
-     *
-     * @param property property name
-     * @param handler node handler
-     */
-    public void traverseProperty (String property, NodeHandler handler) {
-        final Object value = getProperty (property);
-
-        if(isObject (value)) {
-            handler.handle (getPropertyAsNode (property));
-        } else if (isArray (value)) {
-            for (Node node : getPropertyAsNodes (property)) {
-                handler.handle (node);
-            }
-        }
+        return new Node (notNullAsObject (property, value));
     }
 
     /**
@@ -124,7 +101,7 @@ public class Node {
         }
 
         final Collection<Node> nodes = new ArrayList<> ();
-        for (Object val : (Collection<?>) value) {
+        for (Object val : notNullAsArray (property, value)) {
             if (isObject (val)) {
                 nodes.add (new Node ((Map<String, Object>) val));
             }
@@ -142,11 +119,10 @@ public class Node {
      * @return {@code T}
      */
     public <T> @Nullable T getPropertyAs (String property, NodeConverter<T> factory) {
-        final Node childNode = getPropertyAsNode (property);
-        if (childNode == null)
+        if (!hasProperty (property))
             return null;
 
-        return factory.create (childNode);
+        return factory.create (getPropertyAsNode (property));
     }
 
     /**
@@ -191,6 +167,25 @@ public class Node {
     }
 
     /**
+     * traverses the object tree of the given property and runs the handler on each child
+     * {@link Node}. It traverses into any child map or array of the property value.
+     *
+     * @param property property name
+     * @param handler node handler
+     */
+    public void traverseProperty (String property, NodeHandler handler) {
+        final Object value = getProperty (property);
+
+        if (isObject (value)) {
+            handler.handle (getPropertyAsNode (property));
+        } else if (isArray (value)) {
+            for (Node node : getPropertyAsNodes (property)) {
+                handler.handle (node);
+            }
+        }
+    }
+
+    /**
      * checks if the {@link Node} contains the given property name.
      *
      * @param property property name
@@ -218,26 +213,28 @@ public class Node {
         return properties.size ();
     }
 
-    /**
-     * makes sure that the property value is not null. Throws if the property value is null.
-     *
-     * @param property property name
-     * @param value property value
-     * @param <T>type of value
-     * @return property value
-     */
+    @SuppressWarnings ("unchecked")
+    private Map<String, Object> notNullAsObject (String property, @Nullable Object value) {
+        return (Map<String, Object>) notNullProperty (property, value);
+    }
+
+    @SuppressWarnings ("unchecked")
+    private Collection<Object> notNullAsArray (String property, @Nullable Object value) {
+        return (Collection<Object>) notNullProperty (property, value);
+    }
+
     private <T> T notNullProperty (String property, @Nullable T value) {
-        if (value == null) {
-            throw new NullPropertyException(String.format ("property %s should not be null", property));
-        }
+        if (value == null)
+            throw new NullPropertyException(property);
+
         return value;
     }
 
-    private boolean isObject (Object value) {
+    private boolean isObject (@Nullable Object value) {
         return value instanceof Map;
     }
 
-    private boolean isArray (Object value) {
+    private boolean isArray (@Nullable Object value) {
         return value instanceof Collection;
     }
 }

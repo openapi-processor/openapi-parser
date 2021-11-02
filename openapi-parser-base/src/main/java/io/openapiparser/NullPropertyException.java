@@ -10,7 +10,7 @@ package io.openapiparser;
  */
 public class NullPropertyException extends RuntimeException {
 
-    public NullPropertyException (String message) {
-        super(message);
+    public NullPropertyException (String property) {
+        super(String.format ("property %s should not be null", property));
     }
 }
