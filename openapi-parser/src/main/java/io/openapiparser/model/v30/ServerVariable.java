@@ -9,7 +9,7 @@ import io.openapiparser.*;
 
 import java.util.Collection;
 
-import static io.openapiparser.Keywords.DESCRIPTION;
+import static io.openapiparser.Keywords.*;
 
 /**
  * the <em>Server Variable</em> object.
@@ -28,12 +28,12 @@ public class ServerVariable implements Extensions {
 
     @Nullable
     public Collection<String> getEnum () {
-        return null;
+        return node.getPropertyAsStrings (ENUM);
     }
 
     @Required
     public String getDefault () {
-        return "todo";
+        return node.getRequiredPropertyAsString (DEFAULT);
     }
 
     @Nullable

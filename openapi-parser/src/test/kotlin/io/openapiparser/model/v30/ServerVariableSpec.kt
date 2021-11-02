@@ -6,9 +6,9 @@
 package io.openapiparser.model.v30
 
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.collections.shouldContainAll
 import io.kotest.matchers.shouldBe
 import io.openapiparser.support.TestBuilder
-import io.openapiparser.support.matches
 
 class ServerVariableSpec : StringSpec({
 
@@ -33,9 +33,20 @@ class ServerVariableSpec : StringSpec({
 
         val variables = api.servers.first().variables
         variables.size shouldBe 2
-        variables["one"]?.matches("one-default", "one description")
-        variables["two"]?.matches("two-default", "two description",
-            listOf("two-one", "two-two"))
+        variables["one"]?.shouldBe("one-default", "one description")
+        variables["two"]?.shouldBe("two-default", "two description", listOf("two-one", "two-two"))
     }
 
 })
+
+fun ServerVariable.shouldBe(default: String, description: String) {
+    this.default shouldBe default
+    this.description shouldBe description
+}
+
+fun ServerVariable.shouldBe(default: String, description: String, enum: List<String>) {
+    this.default shouldBe default
+    this.description shouldBe description
+    this.enum shouldContainAll enum
+    this.enum.size shouldBe enum.size
+}

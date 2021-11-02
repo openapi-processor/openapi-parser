@@ -12,7 +12,9 @@ public interface Keywords {
 
     String COMPONENTS = "components";
     String CONTACT = "contact";
+    String DEFAULT = "default";
     String DESCRIPTION = "description";
+    String ENUM = "enum";
     String EMAIL = "email";
     String EXTERNAL_DOCS = "externalDocs";
     String INFO = "info";

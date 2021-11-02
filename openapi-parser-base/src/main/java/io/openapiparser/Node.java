@@ -48,6 +48,17 @@ public class Node {
     }
 
     /**
+     * get the raw/untyped array value of the given property key as collection of {@link String}s.
+     *
+     * @param property property name
+     * @return collection of values
+     */
+    @SuppressWarnings ("unchecked")
+    public @Nullable Collection<String> getPropertyAsStrings (String property) {
+        return (Collection<String>) properties.get (property);
+    }
+
+    /**
      * same as {@link #getPropertyAsString}, but throws if the property values is {@code null}.
      */
     public String getRequiredPropertyAsString (String property) {
