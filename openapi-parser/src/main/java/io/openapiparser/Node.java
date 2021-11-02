@@ -16,6 +16,7 @@ import static java.util.Collections.unmodifiableMap;
  * object.
  */
 public class Node {
+    /** (json) path to this node */
     private final String path;
 
     /** wrapped OpenAPI object node */
