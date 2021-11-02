@@ -8,6 +8,7 @@ package io.openapiparser;
 import io.openapiparser.support.Strings;
 
 import java.net.URI;
+import java.util.Map;
 
 /**
  * resolves all $ref'erences of the base document loading all referenced documents.
@@ -71,7 +72,7 @@ public class ReferenceResolver {
     }
 
     private void initBaseDocument () throws ResolverException {
-        baseNode = loadDocument (baseUri);
+        baseNode = new Node("$", loadDocument (baseUri));
         documents.add (baseUri, baseNode);
     }
 
@@ -101,7 +102,7 @@ public class ReferenceResolver {
                         URI documentUri = uri.resolve (document);
 
                         if (!documents.contains (documentUri)) {
-                            Node documentNode = loadDocument (documentUri);
+                            Node documentNode = new Node(uri.toString (), loadDocument (documentUri));
                             documents.add (documentUri, documentNode);
                             collectReferences (documentUri, documentNode);
                         }
@@ -132,7 +133,7 @@ public class ReferenceResolver {
         return finder.find (fragment.substring (1));
     }
 
-    private Node loadDocument (URI documentUri) throws ResolverException {
+    private Map<String, Object> loadDocument (URI documentUri) throws ResolverException {
         try {
             return converter.convert (Strings.of (reader.read (documentUri)));
         } catch (Exception e) {
