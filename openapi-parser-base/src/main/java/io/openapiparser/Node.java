@@ -8,6 +8,9 @@ package io.openapiparser;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.unmodifiableCollection;
+import static java.util.Collections.unmodifiableMap;
+
 /**
  * OpenAPI object wrapper. It provides utility functions to extract the properties from the un-typed
  * object.
@@ -65,7 +68,7 @@ public class Node {
         properties.forEach ((k, v) -> {
             result.put (k, factory.create (new Node ((Map<String, Object>) v)));
         });
-        return result;
+        return unmodifiableMap (result);
     }
 
     /**
@@ -106,7 +109,7 @@ public class Node {
                 nodes.add (new Node ((Map<String, Object>) val));
             }
         }
-        return nodes;
+        return unmodifiableCollection (nodes);
     }
 
     /**
@@ -142,10 +145,11 @@ public class Node {
      * @return {@code T}
      */
     public <T> Collection<T> getPropertyAsArrayOf (String property, NodeConverter<T> factory) {
-        return getPropertyAsNodes (property)
-            .stream ()
-            .map (factory::create)
-            .collect(Collectors.toList());
+        return unmodifiableCollection (
+            getPropertyAsNodes (property)
+                .stream ()
+                .map (factory::create)
+                .collect (Collectors.toList ()));
     }
 
     /**
