@@ -28,12 +28,12 @@ public class ServerVariable implements Extensions {
 
     @Nullable
     public Collection<String> getEnum () {
-        return node.getPropertyAsStrings (ENUM);
+        return node.getStringValues (ENUM);
     }
 
     @Required
     public String getDefault () {
-        return node.getRequiredPropertyAsString (DEFAULT);
+        return node.getRequiredStringValue (DEFAULT);
     }
 
     @Nullable

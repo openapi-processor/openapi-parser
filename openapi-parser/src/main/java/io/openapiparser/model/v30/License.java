@@ -26,7 +26,7 @@ public class License implements Extensions {
 
     @Required
     public String getName () {
-        return node.getRequiredPropertyAsString (NAME);
+        return node.getRequiredStringValue (NAME);
     }
 
     @Nullable

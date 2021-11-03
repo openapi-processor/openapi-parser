@@ -24,7 +24,7 @@ public class Info implements Extensions {
 
     @Required
     public String getTitle () {
-        return node.getRequiredPropertyAsString ("title");
+        return node.getRequiredStringValue ("title");
     }
 
     @Nullable
@@ -54,6 +54,6 @@ public class Info implements Extensions {
 
     @Required
     public String getVersion () {
-        return node.getRequiredPropertyAsString ("version");
+        return node.getRequiredStringValue ("version");
     }
 }

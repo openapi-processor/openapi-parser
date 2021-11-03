@@ -26,7 +26,7 @@ public class Info {
 
     @Required
     public String getTitle () {
-        return node.getRequiredPropertyAsString (TITLE);
+        return node.getRequiredStringValue (TITLE);
     }
 
     @Nullable
@@ -51,6 +51,6 @@ public class Info {
 
     @Required
     public String getVersion () {
-        return node.getRequiredPropertyAsString (VERSION);
+        return node.getRequiredStringValue (VERSION);
     }
 }

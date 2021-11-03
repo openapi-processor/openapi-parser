@@ -28,7 +28,7 @@ public class Server implements Extensions {
 
     @Required
     public String getUrl () {
-        return node.getRequiredPropertyAsString (URL);
+        return node.getRequiredStringValue (URL);
     }
 
     @Nullable
