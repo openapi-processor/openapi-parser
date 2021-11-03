@@ -48,7 +48,7 @@ public class Node {
     }
 
     /**
-     * get the raw value of the given property cast to {@link String}.
+     * get the raw value of the given property as {@link String}.
      *
      * @param property property name
      * @return property value or null if the property does not exist
@@ -58,28 +58,32 @@ public class Node {
         if (value == null)
             return null;
 
-        return castToString (property, value);
+        return asString (property, value);
     }
 
     /**
-     * get the raw array value of the given property key as collection of {@link String}s.
+     * get the raw array values of the given property as collection of {@link String}s.
      *
      * @param property property name
      * @return collection of values
      */
-    public @Nullable Collection<String> getPropertyAsStrings (String property) {
+    public @Nullable Collection<String> getStringValues (String property) {
         final Object value = getRawValue (property);
         if (value == null)
             return null;
 
-        return castToCollection(property, value, String.class);
+        return asCollection (property, value, String.class);
     }
 
     /**
      * same as {@link #getStringValue}, but throws if the property values is {@code null}.
      */
-    public String getRequiredPropertyAsString (String property) {
-        return notNullProperty (property, getStringValue (property));
+    public String getRequiredStringValue (String property) {
+        final String value = getStringValue (property);
+        if (value == null)
+            throw new NullPropertyException (getPath (property));
+
+        return value;
     }
 
     /**
@@ -274,29 +278,47 @@ public class Node {
         return value;
     }
 
-    private String castToString(String property, Object value) {
+    private String asString (String property, Object value) {
         if (! isString (value))
-            throw new BadPropertyTypeException (getPath(property), String.class);
+            throw new TypeMismatchException (getPath(property), String.class);
 
         return (String) value;
     }
 
     @SuppressWarnings ("unchecked")
-    private <T> Collection<T> castToCollection (String property, Object value, Class<T> itemType) {
-        String type = String.format ("%s<%s>", Collection.class.getName (), itemType.getName ());
+    private <T> Collection<T> asCollection (String property, Object value, Class<T> itemType) {
+        if (!isArray (value, itemType))
+            throw new TypeMismatchException (getPath (property), getCollectionTypeName (itemType));
 
+        return (Collection<T>) value;
+    }
+
+    private <T> String getCollectionTypeName (Class<T> itemType) {
+        return String.format ("%s<%s>", Collection.class.getName (), itemType.getName ());
+    }
+
+    @SuppressWarnings ("unchecked")
+    private <T> boolean isArray (Object value, Class<T> itemType) {
         if (!isArray (value))
-            throw new BadPropertyTypeException (getPath (property), type);
+            return false;
 
-        // check items
-        final Collection<T> collection = (Collection<T>) value;
-        for (T item : collection) {
-            if (itemType.isInstance (item))
-                continue;
-
-            throw new BadPropertyTypeException (getPath (property), type);
+        final Collection<T> items = (Collection<T>) value;
+        for (T item : items) {
+            if (! isType (item, itemType))
+                return false;
         }
-        return collection;
+        return true;
+    }
+
+    private <T> T checkType (String property, Object value, Class<T> type) {
+        if (!type.isInstance (value))
+            throw new TypeMismatchException (getPath (property), type);
+
+        return type.cast (value);
+    }
+
+    private <T> boolean isType (@Nullable Object value, Class<T> type) {
+        return type.isInstance (value);
     }
 
     private boolean isObject (@Nullable Object value) {
