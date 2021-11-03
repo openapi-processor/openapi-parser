@@ -41,47 +41,47 @@ public class PathItem implements Reference, Extensions {
 
     @Nullable
     public String getDescription () {
-        return null;
+        return getSource ().getStringValue (DESCRIPTION);
     }
 
     @Nullable
     public Operation getGet () {
-        return null;
+        return getOperation (GET);
     }
 
     @Nullable
     public Operation getPut () {
-        return null;
+        return getOperation (PUT);
     }
 
     @Nullable
     public Operation getPost () {
-        return null;
+        return getOperation (POST);
     }
 
     @Nullable
     public Operation getDelete () {
-        return null;
+        return getOperation (DELETE);
     }
 
     @Nullable
     public Operation getOptions () {
-        return null;
+        return getOperation (OPTIONS);
     }
 
     @Nullable
     public Operation getHead () {
-        return null;
+        return getOperation (HEAD);
     }
 
     @Nullable
     public Operation getPatch () {
-        return null;
+        return getOperation (PATCH);
     }
 
     @Nullable
     public Operation getTrace () {
-        return null;
+        return getOperation (TRACE);
     }
 
     @Nullable
@@ -92,6 +92,10 @@ public class PathItem implements Reference, Extensions {
     @Nullable
     public Collection<Parameter> getParameters () {
         return null;
+    }
+
+    private Operation getOperation(String property) {
+        return getSource ().getObjectValue (property, node -> new Operation (context, node));
     }
 
     private Node getSource () {
