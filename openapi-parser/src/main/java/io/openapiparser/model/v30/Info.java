@@ -41,12 +41,12 @@ public class Info {
 
     @Nullable
     public Contact getContact () {
-        return node.getPropertyAs (CONTACT, node -> new Contact (context, node));
+        return node.getObjectValue (CONTACT, node -> new Contact (context, node));
     }
 
     @Nullable
     public License getLicense () {
-        return node.getPropertyAs (LICENSE, node -> new License (context, node));
+        return node.getObjectValue (LICENSE, node -> new License (context, node));
     }
 
     @Required

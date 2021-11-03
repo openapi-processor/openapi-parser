@@ -26,12 +26,12 @@ public class Paths implements Extensions {
     }
 
     public Map<String, PathItem> getPathItems() {
-        return node.getMapValue (node -> new PathItem (context, node));
+        return node.getObjectValues (node -> new PathItem (context, node));
     }
 
     @Nullable
     public PathItem getPathItem(String path) {
-        return node.getPropertyAs (path, node -> new PathItem (context, node));
+        return node.getObjectValue (path, node -> new PathItem (context, node));
     }
 
     public Set<String> pathSet() {

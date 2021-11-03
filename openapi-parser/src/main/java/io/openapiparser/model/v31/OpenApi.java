@@ -34,7 +34,7 @@ public class OpenApi implements Extensions {
 
     @Required
     public Info getInfo () {
-        return node.getRequiredPropertyAs (INFO, node -> new Info (context, node));
+        return node.getRequiredObjectValue (INFO, node -> new Info (context, node));
     }
 
     @Nullable
