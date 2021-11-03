@@ -1,5 +1,7 @@
 :openapi: https://www.openapis.org/
 
+** work in progress **
+
 == openapi-parser
 
 a Java link:{openapi}[OpenAPI] 3.0.x & 3.1 parser with validation.
@@ -15,3 +17,10 @@ a Java link:{openapi}[OpenAPI] 3.0.x & 3.1 parser with validation.
 == documentation
 
 todo
+
+* create OpenApiParser(Context)
+** Context (Uri, ReferenceResolver)
+** ReferenceResolver (Uri, Reader, Converter, ReferenceRegistry)
+* openapi.parse()
+* result.getVersion()
+* openapi.getModel(OpenApiResult30)
