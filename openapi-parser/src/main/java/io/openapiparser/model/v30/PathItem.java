@@ -91,7 +91,7 @@ public class PathItem implements Reference, Extensions {
 
     @Nullable
     public Collection<Parameter> getParameters () {
-        return null;
+        return node.getArrayValues (SERVERS, node -> new Parameter (context, node));
     }
 
     private Operation getOperation(String property) {
