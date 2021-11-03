@@ -85,6 +85,12 @@ class NodeSpec : StringSpec({
         }
     }
 
+    "gets required object value throws if value is missing" {
+        shouldThrow<NullValueException> {
+            Node.empty().getRequiredObjectValue("missing") {}
+        }
+    }
+
     "gets object values throws if value is missing" {
             shouldThrow<NoArrayException> {
             Node.empty().getObjectValues("property")
@@ -97,7 +103,6 @@ class NodeSpec : StringSpec({
         }
     }
 
-    // todo
     "gets object values throws if any value is not an object" {
         val node = Node("$", linkedMapOf<String, Any>("property" to listOf(
             mapOf<String, Any>("foo" to "bar"),
@@ -119,8 +124,9 @@ class NodeSpec : StringSpec({
         objects.size shouldBe 2
     }
 
-
-
+    "gets nullable object values" {
+        Node.empty().getObjectValues("missing") {}.shouldBeNull()
+    }
 
     "converts to null if property does not exists" {
         Node.empty().getObjectValue("unknown") {}.shouldBeNull()

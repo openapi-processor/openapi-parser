@@ -38,7 +38,7 @@ public class OpenApi implements Extensions {
 
     @Nullable
     public Collection<Server> getServers () {
-        return node.getPropertyAsArrayOf (SERVERS, node -> new Server(context, node));
+        return node.getArrayValues (SERVERS, node -> new Server(context, node));
     }
 
     @Required

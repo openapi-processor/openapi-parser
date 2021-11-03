@@ -83,7 +83,7 @@ public class Node {
         if (value == null)
             return null;
 
-        return asCollection (property, value, String.class);
+        return asArray (property, value, String.class);
     }
 
     /**
@@ -107,13 +107,14 @@ public class Node {
      * @param property property name
      * @return property value wrapped as {@link Node}.
      */
+    @SuppressWarnings ("unchecked")
     Node getObjectValue (String property) {
         final Object value = getRawValue (property);
         if (!isObject (value)) {
             throw new NoObjectException(getPath(property));
         }
 
-        return new Node (getPath (property), notNullAsObject (property, value));
+        return new Node (getPath (property), (Map<String, Object>) value);
     }
 
     /**
@@ -165,7 +166,11 @@ public class Node {
      * same as {@link #getObjectValue}, but throws if the property values is {@code null}.
      */
     public <T> T getRequiredObjectValue (String property, NodeConverter<T> factory) {
-        return notNullProperty (property, getObjectValue (property, factory));
+        final T value = getObjectValue (property, factory);
+        if (value == null) {
+            throw new NullValueException (getPath(property));
+        }
+        return value;
     }
 
     /**
@@ -177,7 +182,7 @@ public class Node {
      * @param <T> type of the target OpenAPI model object
      * @return {@code T}
      */
-    public <T> Collection<T> getPropertyAsArrayOf (String property, NodeConverter<T> factory) {
+    public <T> Collection<T> getArrayValues (String property, NodeConverter<T> factory) {
         return unmodifiableCollection (
             getObjectValues (property)
                 .stream ()
@@ -186,8 +191,8 @@ public class Node {
     }
 
     /**
-     * converts the value of the given property name to a map from property name to {@code T} using
-     * the given factory to convert all property values to {@code T}.
+     * converts the value of the given property to a map from property name to {@code T} using the
+     * given factory to convert all property values to {@code T}.
      *
      * @param property property name
      * @param factory converter from {@link Node} to {@code T}
@@ -195,7 +200,7 @@ public class Node {
      * @return map of property values to {@code T}s
      */
     @SuppressWarnings ("unchecked")
-    public <T> @Nullable Map<String, T> getPropertyAsMapOf (String property, NodeConverter<T> factory) {
+    public <T> @Nullable Map<String, T> getObjectValues (String property, NodeConverter<T> factory) {
         Map<String, Object> value = (Map<String, Object>) properties.get (property);
         if (value == null)
             return null;
@@ -257,11 +262,6 @@ public class Node {
     }
 
     @SuppressWarnings ("unchecked")
-    private Map<String, Object> notNullAsObject (String property, @Nullable Object value) {
-        return (Map<String, Object>) notNullProperty (property, value);
-    }
-
-    @SuppressWarnings ("unchecked")
     private Collection<Object> notNullAsArray (String property, @Nullable Object value) {
         return (Collection<Object>) notNullProperty (property, value);
     }
@@ -281,14 +281,14 @@ public class Node {
     }
 
     @SuppressWarnings ("unchecked")
-    private <T> Collection<T> asCollection (String property, Object value, Class<T> itemType) {
+    private <T> Collection<T> asArray (String property, Object value, Class<T> itemType) {
         if (!isArray (value, itemType))
-            throw new TypeMismatchException (getPath (property), getCollectionTypeName (itemType));
+            throw new TypeMismatchException (getPath (property), getArrayTypeName (itemType));
 
         return (Collection<T>) value;
     }
 
-    private <T> String getCollectionTypeName (Class<T> itemType) {
+    private <T> String getArrayTypeName (Class<T> itemType) {
         return String.format ("%s<%s>", Collection.class.getName (), itemType.getName ());
     }
 
@@ -305,12 +305,12 @@ public class Node {
         return true;
     }
 
-    private <T> T checkType (String property, Object value, Class<T> type) {
-        if (!type.isInstance (value))
-            throw new TypeMismatchException (getPath (property), type);
-
-        return type.cast (value);
-    }
+//    private <T> T checkType (String property, Object value, Class<T> type) {
+//        if (!type.isInstance (value))
+//            throw new TypeMismatchException (getPath (property), type);
+//
+//        return type.cast (value);
+//    }
 
     private <T> boolean isType (@Nullable Object value, Class<T> type) {
         return type.isInstance (value);

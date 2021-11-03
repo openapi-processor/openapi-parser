@@ -38,6 +38,6 @@ public class Server implements Extensions {
 
     @Nullable
     public Map<String, ServerVariable> getVariables () {
-        return node.getPropertyAsMapOf (VARIABLES, node -> new ServerVariable (context, node));
+        return node.getObjectValues (VARIABLES, node -> new ServerVariable (context, node));
     }
 }
