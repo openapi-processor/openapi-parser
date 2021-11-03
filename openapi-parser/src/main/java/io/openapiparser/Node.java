@@ -81,7 +81,7 @@ public class Node {
     public String getRequiredStringValue (String property) {
         final String value = getStringValue (property);
         if (value == null)
-            throw new NullPropertyException (getPath (property));
+            throw new NullValueException (getPath (property));
 
         return value;
     }
@@ -270,7 +270,7 @@ public class Node {
 
     private <T> T notNullProperty (String property, @Nullable T value) {
         if (value == null)
-            throw new NullPropertyException (getPath (property));
+            throw new NullValueException (getPath (property));
 
         return value;
     }

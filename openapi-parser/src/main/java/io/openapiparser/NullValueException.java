@@ -8,9 +8,9 @@ package io.openapiparser;
 /**
  * thrown if a property is {@code null} when it should not be null.
  */
-public class NullPropertyException extends RuntimeException {
+public class NullValueException extends RuntimeException {
 
-    public NullPropertyException (String property) {
+    public NullValueException (String property) {
         super(String.format ("property '%s' should not be null", property));
     }
 }
