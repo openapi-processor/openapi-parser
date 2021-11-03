@@ -26,7 +26,7 @@ public class Paths implements Extensions {
     }
 
     public Map<String, PathItem> getPathItems() {
-        return node.getPropertiesAsMapOf (node -> new PathItem (context, node));
+        return node.getMapValue (node -> new PathItem (context, node));
     }
 
     @Nullable

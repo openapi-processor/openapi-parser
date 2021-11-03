@@ -10,7 +10,7 @@ package io.openapiparser;
  */
 public class NoArrayException extends RuntimeException {
 
-    public NoArrayException (String message) {
-        super(message);
+    public NoArrayException (String property) {
+        super(String.format ("property %s should be an array", property));
     }
 }

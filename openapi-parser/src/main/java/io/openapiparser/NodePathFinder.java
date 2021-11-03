@@ -31,7 +31,7 @@ public class NodePathFinder {
                 if (i == last)
                     return node.getRawValue (part);
 
-                node = node.getPropertyAsNode (part);
+                node = node.getNodeValue (part);
             }
 
             return null;

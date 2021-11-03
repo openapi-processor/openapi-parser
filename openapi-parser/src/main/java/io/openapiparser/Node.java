@@ -95,11 +95,9 @@ public class Node {
      * @return map from properties to {@code T}
      */
     @SuppressWarnings ("unchecked")
-    public <T> Map<String, T> getPropertiesAsMapOf (NodeConverter<T> factory) {
+    public <T> Map<String, T> getMapValue (NodeConverter<T> factory) {
         Map<String, T> result = new LinkedHashMap<> ();
-        properties.forEach ((k, v) -> {
-            result.put (k, factory.create (new Node (getPath (k), (Map<String, Object>) v)));
-        });
+        properties.keySet ().forEach (k -> result.put (k, factory.create (getNodeValue (k))));
         return unmodifiableMap (result);
     }
 
@@ -109,7 +107,7 @@ public class Node {
      * @param property property name
      * @return property value wrapped as {@link Node}.
      */
-    public Node getPropertyAsNode (String property) {
+    public Node getNodeValue (String property) {
         final Object value = properties.get (property);
         if (!isObject (value)) {
             throw new NoObjectException(getPath(property));
@@ -126,14 +124,13 @@ public class Node {
      * @return collection of {@link Node}s
      */
     @SuppressWarnings ("unchecked")
-    public Collection<Node> getPropertyAsNodes (String property) {
-        if (!hasProperty (property))
+    public Collection<Node> getNodeValues (String property) {
+        final Object value = getRawValue (property);
+        if (value == null)
             return Collections.emptyList ();
 
-        final Object value = properties.get (property);
-        if (!isArray (value)) {
-            throw new NoArrayException (String.format ("property %s should be an array", property));
-        }
+        if (!isArray (value))
+            throw new NoArrayException (getPath (property));
 
         final Collection<Node> nodes = new ArrayList<> ();
         final Object[] values = notNullAsArray (property, value).toArray ();
@@ -161,7 +158,7 @@ public class Node {
         if (!hasProperty (property))
             return null;
 
-        return factory.create (getPropertyAsNode (property));
+        return factory.create (getNodeValue (property));
     }
 
     /**
@@ -182,7 +179,7 @@ public class Node {
      */
     public <T> Collection<T> getPropertyAsArrayOf (String property, NodeConverter<T> factory) {
         return unmodifiableCollection (
-            getPropertyAsNodes (property)
+            getNodeValues (property)
                 .stream ()
                 .map (factory::create)
                 .collect (Collectors.toList ()));
@@ -203,7 +200,7 @@ public class Node {
         if (value == null)
             return null;
 
-        return new Node(getPath (property), value).getPropertiesAsMapOf (factory);
+        return new Node(getPath (property), value).getMapValue (factory);
     }
 
     /**
@@ -217,9 +214,9 @@ public class Node {
         final Object value = getRawValue (property);
 
         if (isObject (value)) {
-            handler.handle (getPropertyAsNode (property));
+            handler.handle (getNodeValue (property));
         } else if (isArray (value)) {
-            for (Node node : getPropertyAsNodes (property)) {
+            for (Node node : getNodeValues (property)) {
                 handler.handle (node);
             }
         }
