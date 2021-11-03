@@ -53,6 +53,22 @@ class PathItemSpec : StringSpec({
         path.parameters.size shouldBe 2
     }
 
+    "gets path item parameters with \$ref" {
+        val api = TestBuilder()
+            .withApi("""
+                paths:
+                  /foo:
+                    parameters:
+                      - ${'$'}ef: '#/parameter'
+                parameter: {}
+            """.trimIndent())
+            .buildOpenApi30()
+
+        val path = api.paths.getPathItem("/foo")
+        val params = path.parameters
+        params.size shouldBe 1
+    }
+
     "gets \$ref path item object" {
         val api = TestBuilder()
             .withApi("""

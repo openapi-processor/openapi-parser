@@ -26,6 +26,7 @@ public interface Keywords {
     String NAME = "name";
     String OPENAPI = "openapi";
     String OPTIONS = "options";
+    String PARAMETERS = "parameters";
     String PATHS = "paths";
     String PATCH = "patch";
     String POST = "post";
