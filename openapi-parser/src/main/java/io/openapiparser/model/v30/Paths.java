@@ -25,6 +25,7 @@ public class Paths implements Extensions {
         this.node = node;
     }
 
+    // todo annotate
     public Map<String, PathItem> getPathItems() {
         return node.getObjectValues (node -> new PathItem (context, node));
     }

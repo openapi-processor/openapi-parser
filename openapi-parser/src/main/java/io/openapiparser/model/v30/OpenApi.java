@@ -48,21 +48,21 @@ public class OpenApi implements Extensions {
 
     @Nullable
     public Components getComponents () {
-        return null;
+        return null; // todo
     }
 
     @Nullable
     public Collection<SecurityRequirement> getSecurity () {
-        return null;
+        return null; // todo
     }
 
     @Nullable
     public Collection<Tag> getTags () {
-        return null;
+        return null; // todo
     }
 
     @Nullable
     public ExternalDocumentation getExternalDocs () {
-        return null;
+        return null; // todo
     }
 }
