@@ -86,7 +86,7 @@ public class PathItem implements Reference, Extensions {
 
     @Nullable
     public Collection<Server> getServers () {
-        return null;
+        return node.getArrayValues (SERVERS, node -> new Server(context, node));
     }
 
     @Nullable

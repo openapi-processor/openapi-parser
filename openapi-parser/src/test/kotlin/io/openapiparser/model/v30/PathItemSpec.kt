@@ -27,6 +27,9 @@ class PathItemSpec : StringSpec({
                     head: {}
                     patch: {}
                     trace: {}
+                    servers:
+                      - {}
+                      - {}
             """.trimIndent())
             .buildOpenApi30()
 
@@ -41,6 +44,8 @@ class PathItemSpec : StringSpec({
         path.head.shouldNotBeNull()
         path.patch.shouldNotBeNull()
         path.trace.shouldNotBeNull()
+        path.servers.shouldNotBeNull()
+        path.servers.size shouldBe 2
     }
 
     "gets \$ref path item object" {
