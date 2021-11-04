@@ -25,6 +25,13 @@ public class Context {
         return resolver.resolve (baseUri, ref);
     }
 
+    public @Nullable Node getRefNodeOrNull(String ref) {
+        if (ref == null)
+            return null;
+
+        return getRefNode (ref);
+    }
+
     public @Nullable Node getRefNode(String ref) {
         final Reference reference = getReference (ref);
         final Map<String, Object> value = reference.getValue();

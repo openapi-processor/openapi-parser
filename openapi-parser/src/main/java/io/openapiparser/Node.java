@@ -73,6 +73,20 @@ public class Node {
     }
 
     /**
+     * get the raw value of the given property as {@link Boolean}.
+     *
+     * @param property property name
+     * @return property value or null if the property does not exist
+     */
+    public @Nullable Boolean getBooleanValue (String property) {
+        final Object value = getRawValue (property);
+        if (value == null)
+            return null;
+
+        return checkType (property, value, Boolean.class);
+    }
+
+    /**
      * get the raw array values of the given property as collection of {@link String}s.
      *
      * @param property property name
@@ -305,12 +319,12 @@ public class Node {
         return true;
     }
 
-//    private <T> T checkType (String property, Object value, Class<T> type) {
-//        if (!type.isInstance (value))
-//            throw new TypeMismatchException (getPath (property), type);
-//
-//        return type.cast (value);
-//    }
+    private <T> T checkType (String property, Object value, Class<T> type) {
+        if (!type.isInstance (value))
+            throw new TypeMismatchException (getPath (property), type);
+
+        return type.cast (value);
+    }
 
     private <T> boolean isType (@Nullable Object value, Class<T> type) {
         return type.isInstance (value);

@@ -5,13 +5,12 @@
 
 package io.openapiparser.support
 
-import io.openapiparser.Context
-import io.openapiparser.OpenApiParser
-import io.openapiparser.ReferenceRegistry
-import io.openapiparser.ReferenceResolver
+import io.openapiparser.*
 import io.openapiparser.model.v30.OpenApi as OpenApi30
 import io.openapiparser.model.v31.OpenApi as OpenApi31
 import io.openapiparser.jackson.JacksonConverter
+import io.openapiparser.model.v30.Parameter
+import io.openapiparser.model.v30.PathItem
 import java.net.URI
 
 class TestBuilder {
@@ -19,13 +18,17 @@ class TestBuilder {
     private var api: String? = null
 
     fun withApi(api: String): TestBuilder {
-        return withApi("file:///any", api)
+        return withYaml("file:///any", api)
     }
 
-    fun withApi(baseUri: String, api: String): TestBuilder {
+    fun withYaml(baseUri: String, api: String): TestBuilder {
         this.baseUri = URI(baseUri)
         this.api = api
         return this
+    }
+
+    fun withYaml(yml: String): TestBuilder {
+        return withYaml("file:///yaml", yml)
     }
 
     fun withUri(baseURI: URI): TestBuilder {
@@ -79,6 +82,26 @@ class TestBuilder {
         val context = Context(baseUri, resolver)
         context.read()
         return OpenApi31(context, context.baseNode)
+    }
+
+    fun buildPathItem (): PathItem {
+        return build { ctx, node -> PathItem(ctx, node) }
+    }
+
+    fun buildParameter (): Parameter {
+        return build { ctx, node -> Parameter(ctx, node) }
+    }
+
+    fun <T> build(factory: (context: Context, node: Node) -> T): T {
+        val resolver = ReferenceResolver(
+            baseUri,
+            StringReader(api),
+            JacksonConverter(),
+            ReferenceRegistry()
+        )
+        val context = Context(baseUri, resolver)
+        context.read()
+        return factory(context, context.baseNode)
     }
 
 }

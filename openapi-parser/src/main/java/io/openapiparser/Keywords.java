@@ -10,16 +10,24 @@ import java.util.stream.Collectors;
 
 public interface Keywords {
 
+    String ALLOW_EMPTY_VALUE = "allowEmptyValue";
+    String ALLOW_RESERVED = "allowReserved";
     String COMPONENTS = "components";
     String CONTACT = "contact";
+    String CONTENT = "content";
     String DEFAULT = "default";
     String DELETE = "delete";
+    String DEPRECATED = "deprecated";
     String DESCRIPTION = "description";
     String ENUM = "enum";
     String EMAIL = "email";
+    String EXAMPLE = "example";
+    String EXAMPLES = "examples";
+    String EXPLODE = "explode";
     String EXTERNAL_DOCS = "externalDocs";
     String GET = "get";
     String HEAD = "head";
+    String IN = "in";
     String INFO = "info";
     String JSON_SCHEMA_DIALECT = "jsonSchemaDialect";
     String LICENSE = "license";
@@ -32,8 +40,11 @@ public interface Keywords {
     String POST = "post";
     String PUT = "put";
     String REF = "$ref";
+    String REQUIRED = "required";
+    String SCHEMA = "schema";
     String SECURITY = "security";
     String SERVERS = "servers";
+    String STYLE = "style";
     String SUMMARY = "summary";
     String TAGS = "tags";
     String TERMS_OF_SERVICE = "termsOfService";
