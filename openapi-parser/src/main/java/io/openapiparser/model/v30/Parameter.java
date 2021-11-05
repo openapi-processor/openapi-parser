@@ -28,10 +28,15 @@ public class Parameter implements Reference, Extensions {
         refNode = getRefNode ();
     }
 
-    @Nullable
+    @Override
+    public boolean isRef () {
+        return node.hasProperty (REF);
+    }
+
+    @Required
     @Override
     public String getRef () {
-        return node.getStringValue (REF);
+        return node.getRequiredStringValue (REF);
     }
 
     @Required
@@ -51,7 +56,6 @@ public class Parameter implements Reference, Extensions {
 
     @Nullable
     public Boolean getRequired () {
-        // @Required if getIn() == "path"
         return getSource ().getBooleanValue (REQUIRED);
     }
 
@@ -106,6 +110,6 @@ public class Parameter implements Reference, Extensions {
 
     @Nullable
     private Node getRefNode () {
-        return context.getRefNodeOrNull (getRef());
+        return context.getRefNodeOrNull (node.getStringValue (REF));
     }
 }

@@ -64,10 +64,10 @@ public class Node {
     /**
      * same as {@link #getStringValue}, but throws if the property values is {@code null}.
      */
-    public String getRequiredStringValue (String property) {
+    public String getRequiredStringValue (String property) throws NoValueException {
         final String value = getStringValue (property);
         if (value == null)
-            throw new NullValueException (getPath (property));
+            throw new NoValueException (getPath (property));
 
         return value;
     }
@@ -182,7 +182,7 @@ public class Node {
     public <T> T getRequiredObjectValue (String property, NodeConverter<T> factory) {
         final T value = getObjectValue (property, factory);
         if (value == null) {
-            throw new NullValueException (getPath(property));
+            throw new NoValueException (getPath(property));
         }
         return value;
     }
@@ -282,7 +282,7 @@ public class Node {
 
     private <T> T notNullProperty (String property, @Nullable T value) {
         if (value == null)
-            throw new NullValueException (getPath (property));
+            throw new NoValueException (getPath (property));
 
         return value;
     }

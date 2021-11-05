@@ -5,7 +5,8 @@
 
 package io.openapiparser.model.v30;
 
-import io.openapiparser.Nullable;
+import io.openapiparser.NoValueException;
+import io.openapiparser.Required;
 
 /**
  * the <em>Reference</em> object.
@@ -15,7 +16,19 @@ import io.openapiparser.Nullable;
  */
 public interface Reference {
 
-    @Nullable
-    String getRef();
+    /**
+     * check if this is a $ref object.
+     *
+     * @return true if $ref else false.
+     */
+    boolean isRef ();
 
+    /**
+     * $ref value. Should be guarded by {@link #isRef()}. Throws if {@link #isRef()} is false.
+     *
+     * @return ref
+     * @throws NoValueException if {@link #isRef()} is false
+     */
+    @Required
+    String getRef () throws NoValueException;
 }

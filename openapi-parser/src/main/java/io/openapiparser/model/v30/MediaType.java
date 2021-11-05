@@ -6,6 +6,7 @@
 package io.openapiparser.model.v30;
 
 import io.openapiparser.Nullable;
+import io.openapiparser.Required;
 
 /**
  * the <em>Media Type</em> object.
@@ -16,7 +17,13 @@ import io.openapiparser.Nullable;
 public class MediaType implements Reference, Extensions {
 
     @Override
-    public @Nullable String getRef () {
+    public boolean isRef () {
+        return false;
+    }
+
+    @Override
+    @Required
+    public String getRef () {
         return null;
     }
 }

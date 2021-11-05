@@ -28,10 +28,15 @@ public class PathItem implements Reference, Extensions {
         refNode = getRefNode ();
     }
 
-    @Nullable
     @Override
+    public boolean isRef () {
+        return node.hasProperty (REF);
+    }
+
+    @Override
+    @Required
     public String getRef () {
-        return node.getStringValue (REF);
+        return node.getRequiredStringValue (REF);
     }
 
     @Nullable
@@ -84,14 +89,12 @@ public class PathItem implements Reference, Extensions {
         return getOperation (TRACE);
     }
 
-    @Nullable
     public Collection<Server> getServers () {
-        return node.getArrayValues (SERVERS, node -> new Server(context, node));
+        return getSource ().getArrayValues (SERVERS, node -> new Server(context, node));
     }
 
-    @Nullable
     public Collection<Parameter> getParameters () {
-        return node.getArrayValues (PARAMETERS, node -> new Parameter (context, node));
+        return getSource ().getArrayValues (PARAMETERS, node -> new Parameter (context, node));
     }
 
     private Operation getOperation(String property) {
@@ -104,7 +107,6 @@ public class PathItem implements Reference, Extensions {
 
     @Nullable
     private Node getRefNode () {
-        String ref = getRef ();
-        return ref != null ? context.getRefNode (ref) : null;
+        return context.getRefNodeOrNull (node.getStringValue (REF));
     }
 }

@@ -46,7 +46,7 @@ class NodeSpec : StringSpec({
     }
 
     "gets required string value throws if value is missing" {
-        shouldThrow<NullValueException> {
+        shouldThrow<NoValueException> {
             Node.empty().getRequiredStringValue("missing")
         }
     }
@@ -86,7 +86,7 @@ class NodeSpec : StringSpec({
     }
 
     "gets required object value throws if value is missing" {
-        shouldThrow<NullValueException> {
+        shouldThrow<NoValueException> {
             Node.empty().getRequiredObjectValue("missing") {}
         }
     }
@@ -133,7 +133,7 @@ class NodeSpec : StringSpec({
     }
 
     "getting required string property (as String) reports full json path if it is missing" {
-        val ex = shouldThrow<NullValueException> {
+        val ex = shouldThrow<NoValueException> {
             Node("$", emptyMap()).getRequiredStringValue("property")
         }
 

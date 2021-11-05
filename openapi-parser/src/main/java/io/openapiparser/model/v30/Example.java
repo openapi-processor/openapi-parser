@@ -5,7 +5,7 @@
 
 package io.openapiparser.model.v30;
 
-import io.openapiparser.Nullable;
+import io.openapiparser.Required;
 
 /**
  * the <em>Example</em> object.
@@ -16,7 +16,13 @@ import io.openapiparser.Nullable;
 public class Example implements Reference {
 
     @Override
-    public @Nullable String getRef () {
+    public boolean isRef () {
+        return false;
+    }
+
+    @Override
+    @Required
+    public String getRef () {
         return null;
     }
 }

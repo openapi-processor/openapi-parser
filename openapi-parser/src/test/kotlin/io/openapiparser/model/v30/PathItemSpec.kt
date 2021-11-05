@@ -6,6 +6,7 @@
 package io.openapiparser.model.v30
 
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
@@ -37,7 +38,7 @@ class PathItemSpec : StringSpec({
             .buildOpenApi30()
 
         val path = api.paths.getPathItem("/foo")
-        path.ref.shouldBeNull()
+        path.isRef.shouldBeFalse()
         path.summary shouldBe "a summary"
         path.get.shouldNotBeNull()
         path.put.shouldNotBeNull()
