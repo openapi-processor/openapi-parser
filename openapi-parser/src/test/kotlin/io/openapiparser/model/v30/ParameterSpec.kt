@@ -11,7 +11,7 @@ import io.openapiparser.support.TestBuilder
 
 class ParameterSpec : StringSpec({
 
-    "get parameter object" {
+    "gets parameter object" {
         val param = TestBuilder()
             .withYaml("""
                   name: p
@@ -20,6 +20,9 @@ class ParameterSpec : StringSpec({
                   required: true
                   deprecated: true
                   allowEmptyValue: true
+                  style: simple
+                  explode: true
+                  allowReserved: true
             """.trimIndent())
             .buildParameter()
 
@@ -29,6 +32,9 @@ class ParameterSpec : StringSpec({
         param.required shouldBe true
         param.deprecated shouldBe true
         param.allowEmptyValue shouldBe true
+        param.style shouldBe "simple"
+        param.explode shouldBe true
+        param.allowReserved shouldBe true
     }
 
 })

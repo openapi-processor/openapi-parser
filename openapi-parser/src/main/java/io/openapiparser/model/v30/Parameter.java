@@ -28,11 +28,13 @@ public class Parameter implements Reference, Extensions {
         refNode = getRefNode ();
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean isRef () {
         return node.hasProperty (REF);
     }
 
+    /** {@inheritDoc} */
     @Required
     @Override
     public String getRef () {
