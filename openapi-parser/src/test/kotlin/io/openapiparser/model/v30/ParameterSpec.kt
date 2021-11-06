@@ -6,12 +6,14 @@
 package io.openapiparser.model.v30
 
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.maps.shouldContainKey
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.openapiparser.support.TestBuilder
 
 class ParameterSpec : StringSpec({
 
-    "gets parameter object" {
+    "gets parameter properties" {
         val param = TestBuilder()
             .withYaml("""
                   name: p
@@ -37,4 +39,65 @@ class ParameterSpec : StringSpec({
         param.allowReserved shouldBe true
     }
 
+    "gets schema object" {
+        val param = TestBuilder()
+            .withApi("""
+                schema: {}
+            """.trimIndent())
+            .buildParameter()
+
+        param.schema.shouldNotBeNull()
+    }
+
+    "gets example object" {
+        val param = TestBuilder()
+            .withApi("""
+                example: {}
+            """.trimIndent())
+            .buildParameter()
+
+        param.example.shouldNotBeNull()
+    }
+
+    "gets example objects" {
+        val param = TestBuilder()
+            .withApi("""
+                examples:
+                 foo: {}
+                 bar: {}
+            """.trimIndent())
+            .buildParameter()
+
+        param.examples.shouldNotBeNull()
+    }
+
+    "gets content objects" {
+        val param = TestBuilder()
+            .withApi("""
+                content:
+                 application/json: {}
+            """.trimIndent())
+            .buildParameter()
+
+        val content = param.content
+        content.size shouldBe 1
+        content.shouldContainKey("application/json")
+    }
+
+    "gets parameter with \$ref" {
+        val api = TestBuilder()
+            .withApi("""
+                paths:
+                  /foo:
+                    parameters:
+                      - ${'$'}ref: '#/parameter'
+                parameter:
+                  name: p
+            """.trimIndent())
+            .buildOpenApi30()
+
+        val path = api.paths.getPathItem("/foo")
+        val param = path.parameters.first()
+        param.name shouldBe "p"
+    }
 })

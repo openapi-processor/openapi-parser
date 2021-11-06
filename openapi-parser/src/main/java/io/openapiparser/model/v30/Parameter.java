@@ -88,22 +88,22 @@ public class Parameter implements Reference, Extensions {
 
     @Nullable
     public Schema getSchema () {
-        return null;
+        return getSource ().getRequiredObjectValue (SCHEMA, node -> new Schema (context, node));
     }
 
     @Nullable
     public Object getExample () {
-        return null;
+        return getSource ().getRawValue (EXAMPLE);
     }
 
     @Nullable
     public Map<String, Example> getExamples () {
-        return null;
+        return getSource ().getObjectValues (EXAMPLES, node -> new Example(context, node));
     }
 
     @Nullable
     public Map<String, MediaType> getContent () {
-        return null;
+        return getSource ().getObjectValues (CONTENT, node -> new MediaType (context, node));
     }
 
     private Node getSource () {
@@ -112,6 +112,6 @@ public class Parameter implements Reference, Extensions {
 
     @Nullable
     private Node getRefNode () {
-        return context.getRefNodeOrNull (node.getStringValue (REF));
+        return context.getRefNodeOrNull (node);
     }
 }

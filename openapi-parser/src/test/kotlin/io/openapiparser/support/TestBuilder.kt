@@ -11,6 +11,7 @@ import io.openapiparser.model.v31.OpenApi as OpenApi31
 import io.openapiparser.jackson.JacksonConverter
 import io.openapiparser.model.v30.Parameter
 import io.openapiparser.model.v30.PathItem
+import io.openapiparser.model.v30.Schema
 import java.net.URI
 
 class TestBuilder {
@@ -84,12 +85,16 @@ class TestBuilder {
         return OpenApi31(context, context.baseNode)
     }
 
-    fun buildPathItem (): PathItem {
+    fun buildParameter(): Parameter {
+        return build { ctx, node -> Parameter(ctx, node) }
+    }
+
+    fun buildPathItem(): PathItem {
         return build { ctx, node -> PathItem(ctx, node) }
     }
 
-    fun buildParameter (): Parameter {
-        return build { ctx, node -> Parameter(ctx, node) }
+    fun buildSchema(): Schema {
+        return build { ctx, node -> Schema(ctx, node) }
     }
 
     fun <T> build(factory: (context: Context, node: Node) -> T): T {

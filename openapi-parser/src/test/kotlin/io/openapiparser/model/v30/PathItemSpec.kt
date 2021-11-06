@@ -60,7 +60,7 @@ class PathItemSpec : StringSpec({
                 paths:
                   /foo:
                     parameters:
-                      - ${'$'}ef: '#/parameter'
+                      - ${'$'}ref: '#/parameter'
                 parameter: {}
             """.trimIndent())
             .buildOpenApi30()

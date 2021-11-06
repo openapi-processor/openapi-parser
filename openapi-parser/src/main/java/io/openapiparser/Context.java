@@ -8,6 +8,8 @@ package io.openapiparser;
 import java.net.URI;
 import java.util.Map;
 
+import static io.openapiparser.Keywords.REF;
+
 public class Context {
 
     private final URI baseUri;
@@ -25,6 +27,14 @@ public class Context {
         return resolver.resolve (baseUri, ref);
     }
 
+    public @Nullable Node getRefNodeOrNull(Node current) {
+        String ref = current.getStringValue (REF);
+        if (ref == null)
+            return null;
+
+        return getRefNode (current.getPath (), ref);
+    }
+
     public @Nullable Node getRefNodeOrNull(String ref) {
         if (ref == null)
             return null;
@@ -40,6 +50,16 @@ public class Context {
             return null;
         }
         return new Node (String.format ("%s.$ref(%s)", "....", reference.getRef ()), value);
+    }
+
+    public @Nullable Node getRefNode(String path, String ref) {
+        final Reference reference = getReference (ref);
+        final Map<String, Object> value = reference.getValue();
+        if (value == null) {
+            // todo throw ResolverException ?
+            return null;
+        }
+        return new Node (String.format ("%s.$ref(%s)", path, reference.getRef ()), value);
     }
 
     public void read () throws ContextException {

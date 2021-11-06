@@ -267,6 +267,10 @@ public class Node {
         return properties.size ();
     }
 
+    public String getPath () {
+        return path;
+    }
+
     private String getPath (String property) {
         return String.format ("%s.%s", path, property);
     }
