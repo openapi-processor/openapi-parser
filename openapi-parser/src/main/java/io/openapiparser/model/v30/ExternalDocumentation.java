@@ -5,6 +5,9 @@
 
 package io.openapiparser.model.v30;
 
+import io.openapiparser.Context;
+import io.openapiparser.Node;
+
 /**
  * the <em>External Documentation</em> object.
  *
@@ -14,4 +17,11 @@ package io.openapiparser.model.v30;
  * </a>
  */
 public class ExternalDocumentation implements Extensions {
+    private final Context context;
+    private final Node node;
+
+    public ExternalDocumentation (Context context, Node node) {
+        this.context = context;
+        this.node = node;
+    }
 }

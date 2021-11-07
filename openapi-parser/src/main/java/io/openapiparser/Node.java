@@ -187,6 +187,19 @@ public class Node {
         return value;
     }
 
+
+    /**
+     * converts the value of the given property name to a collection of {@code T}s casting the items
+     * to {@code T}s. If the property is missing it returns an empty collection.
+     *
+     * @param property property name
+     * @param <T> target type
+     * @return collection of {@code T}s
+     */
+    public <T> Collection<T> getArrayValues (String property, Class<T> itemType) {
+        return asArray (property, getRawValue (property), itemType);
+    }
+
     /**
      * converts the value of the given property name to a collection of {@code T}s using the given
      * factory to convert all property values to {@code T}s.

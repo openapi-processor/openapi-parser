@@ -7,6 +7,10 @@ package io.openapiparser.model.v30;
 
 import io.openapiparser.*;
 
+import java.util.Collection;
+
+import static io.openapiparser.Keywords.*;
+
 /**
  * the <em>Operation</em> object.
  *
@@ -21,4 +25,33 @@ public class Operation {
         this.context = context;
         this.node = node;
     }
+
+    public Collection<String> getTags () {
+        return node.getArrayValues (TAGS, String.class);
+    }
+
+    @Nullable
+    public String getSummary () {
+        return node.getStringValue (SUMMARY);
+    }
+
+    @Nullable
+    public String getDescription () {
+        return node.getStringValue (DESCRIPTION);
+    }
+
+    @Nullable
+    public ExternalDocumentation getExternalDocs () {
+        return node.getObjectValue (EXTERNAL_DOCS, node -> new ExternalDocumentation (context, node));
+    }
+
+    @Nullable
+    public String getOperationId () {
+        return node.getStringValue (OPERATION_ID);
+    }
+
+    public Collection<Parameter> getParameters () {
+        return node.getArrayValues (PARAMETERS, node -> new Parameter (context, node));
+    }
+
 }

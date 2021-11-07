@@ -9,6 +9,7 @@ import io.openapiparser.*
 import io.openapiparser.model.v30.OpenApi as OpenApi30
 import io.openapiparser.model.v31.OpenApi as OpenApi31
 import io.openapiparser.jackson.JacksonConverter
+import io.openapiparser.model.v30.Operation
 import io.openapiparser.model.v30.Parameter
 import io.openapiparser.model.v30.PathItem
 import io.openapiparser.model.v30.Schema
@@ -83,6 +84,10 @@ class TestBuilder {
         val context = Context(baseUri, resolver)
         context.read()
         return OpenApi31(context, context.baseNode)
+    }
+
+    fun buildOperation(): Operation {
+        return build { ctx, node -> Operation(ctx, node) }
     }
 
     fun buildParameter(): Parameter {

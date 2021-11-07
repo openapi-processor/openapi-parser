@@ -33,6 +33,7 @@ public interface Keywords {
     String LICENSE = "license";
     String NAME = "name";
     String OPENAPI = "openapi";
+    String OPERATION_ID = "operationId";
     String OPTIONS = "options";
     String PARAMETERS = "parameters";
     String PATHS = "paths";
