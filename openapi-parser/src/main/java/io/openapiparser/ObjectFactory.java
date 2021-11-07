@@ -11,7 +11,7 @@ package io.openapiparser;
  * @param <R> the result type
  */
 @FunctionalInterface
-public interface NodeConverter<R> {
+public interface ObjectFactory<R> {
 
     /**
      * the function applied to a {@link Node}.

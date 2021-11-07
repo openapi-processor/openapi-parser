@@ -138,16 +138,16 @@ public class Node {
      * @param <T> type of the target OpenAPI model object
      * @return map from properties to {@code T}
      */
-    public <T> Map<String, T> getObjectValues (NodeConverter<T> factory) {
+    public <T> Map<String, T> getObjectValues (ObjectFactory<T> factory) {
         Map<String, T> result = new LinkedHashMap<> ();
         getPropertyNames ().forEach (k -> result.put (k, factory.create (getObjectNode (k))));
         return unmodifiableMap (result);
     }
 
     /**
-     * same as {@link #getObjectValues(NodeConverter)}.
+     * same as {@link #getObjectValues(ObjectFactory)}.
      */
-    public <T> Map<String, T> getObjectValuesOrEmpty (NodeConverter<T> factory) {
+    public <T> Map<String, T> getObjectValuesOrEmpty (ObjectFactory<T> factory) {
         return getObjectValues (factory);
     }
 
@@ -203,7 +203,7 @@ public class Node {
      * @param <T> type of the target OpenAPI model object
      * @return {@code T}
      */
-    public <T> @Nullable T getObjectValue (String property, NodeConverter<T> factory) {
+    public <T> @Nullable T getObjectValue (String property, ObjectFactory<T> factory) {
         if (!hasProperty (property))
             return null;
 
@@ -213,7 +213,7 @@ public class Node {
     /**
      * same as {@link #getObjectNode}, but throws if the property values is {@code null}.
      */
-    public <T> T getRequiredObjectValue (String property, NodeConverter<T> factory) {
+    public <T> T getRequiredObjectValue (String property, ObjectFactory<T> factory) {
         final T value = getObjectValue (property, factory);
         if (value == null) {
             throw new NoValueException (getPath(property));
@@ -259,7 +259,7 @@ public class Node {
      * @param <T> type of the target OpenAPI model object
      * @return {@code T}
      */
-    public <T> Collection<T> getArrayValues (String property, NodeConverter<T> factory) {
+    public <T> Collection<T> getArrayValues (String property, ObjectFactory<T> factory) {
         return unmodifiableCollection (
             getObjectNodes (property)
                 .stream ()
@@ -267,7 +267,7 @@ public class Node {
                 .collect (Collectors.toList ()));
     }
 
-    public <T> Collection<T> getArrayValuesOrEmpty (String property, NodeConverter<T> factory) {
+    public <T> Collection<T> getArrayValuesOrEmpty (String property, ObjectFactory<T> factory) {
         return unmodifiableCollection (
             getObjectNodesOrEmpty (property)
                 .stream ()
@@ -285,7 +285,7 @@ public class Node {
      * @return map of property values to {@code T}s
      */
     @SuppressWarnings ("unchecked")
-    public <T> @Nullable Map<String, T> getObjectValues (String property, NodeConverter<T> factory) {
+    public <T> @Nullable Map<String, T> getObjectValues (String property, ObjectFactory<T> factory) {
         Map<String, Object> value = (Map<String, Object>) properties.get (property);
         if (value == null)
             return null;
