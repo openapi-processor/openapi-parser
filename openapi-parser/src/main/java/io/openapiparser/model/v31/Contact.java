@@ -7,6 +7,8 @@ package io.openapiparser.model.v31;
 
 import io.openapiparser.Nullable;
 
+import java.util.Map;
+
 /**
  * the <em>Contact</em> object.
  *
@@ -27,6 +29,11 @@ public class Contact implements Extensions {
 
     @Nullable
     public String getEmail () {
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> getExtensions () {
         return null;
     }
 }

@@ -39,44 +39,47 @@ public class OpenApi implements Extensions {
 
     @Nullable
     public String getJsonSchemaDialect () {
-        return null;
+        return node.getStringValue (JSON_SCHEMA_DIALECT);
     }
 
     @Nullable
     public Collection<Server> getServers () {
-        return null;
+        return node.getArrayValuesOrEmpty (SERVERS, node -> new Server (context, node));
     }
 
-    // requires one of  path, webhooks or components
-    @Nullable
-    public Map<String, PathItem> getPaths () {
-        return null;
+    @Nullable // @Required (if webhooks or components are null)
+    public Paths getPaths () {
+        return node.getObjectValue (PATHS, node -> new Paths (context, node));
     }
 
-    // requires one of  path, webhooks or components
-    @Nullable
+    @Nullable // @Required (if paths or components are null)
     public Map<String, PathItem> getWebhooks () {
-        return null;
+        return node.getObjectValues (WEBHOOKS, node -> new PathItem (context, node));
     }
 
     // requires one of  path, webhooks or components
     @Nullable
     public Components getComponents () {
-        return null;
+        return node.getObjectValue (COMPONENTS, node -> new Components (context, node));
     }
 
     @Nullable
     public Collection<SecurityRequirement> getSecurity () {
-        return null;
+        return node.getArrayValuesOrEmpty (SECURITY, node -> new SecurityRequirement (context, node));
     }
 
     @Nullable
     public Collection<Tag> getTags () {
-        return null;
+        return node.getArrayValuesOrEmpty (TAGS, node -> new Tag (context, node));
     }
 
     @Nullable
     public ExternalDocumentation getExternalDocs () {
-        return null;
+        return node.getObjectValue (EXTERNAL_DOCS, node -> new ExternalDocumentation (context, node));
+    }
+
+    @Override
+    public Map<String, Object> getExtensions () {
+        return node.getExtensions ();
     }
 }

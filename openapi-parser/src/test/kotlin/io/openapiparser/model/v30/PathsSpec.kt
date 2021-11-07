@@ -13,7 +13,7 @@ import io.openapiparser.support.TestBuilder
 
 class PathsSpec : StringSpec({
 
-    "gets paths object" {
+    "gets path item object" {
         val api = TestBuilder()
             .withApi("""
                 paths:
@@ -26,7 +26,7 @@ class PathsSpec : StringSpec({
         paths.getPathItem("/foo").shouldNotBeNull()
     }
 
-    "gets paths objects" {
+    "gets path items objects" {
         val api = TestBuilder()
             .withApi("""
                 paths:

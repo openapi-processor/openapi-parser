@@ -7,6 +7,8 @@ package io.openapiparser.model.v31;
 
 import io.openapiparser.*;
 
+import java.util.Map;
+
 /**
  * the <em>Info</em> object.
  *
@@ -55,5 +57,10 @@ public class Info implements Extensions {
     @Required
     public String getVersion () {
         return node.getRequiredStringValue ("version");
+    }
+
+    @Override
+    public Map<String, Object> getExtensions () {
+        return null;
     }
 }

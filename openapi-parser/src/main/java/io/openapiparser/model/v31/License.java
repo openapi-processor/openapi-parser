@@ -8,6 +8,8 @@ package io.openapiparser.model.v31;
 import io.openapiparser.Nullable;
 import io.openapiparser.Required;
 
+import java.util.Map;
+
 /**
  * the <em>License</em> object.
  *
@@ -31,4 +33,8 @@ public class License implements Extensions {
         return null;
     }
 
+    @Override
+    public Map<String, Object> getExtensions () {
+        return null;
+    }
 }

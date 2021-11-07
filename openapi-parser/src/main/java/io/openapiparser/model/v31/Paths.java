@@ -5,7 +5,10 @@
 
 package io.openapiparser.model.v31;
 
-import java.util.LinkedHashMap;
+import io.openapiparser.Context;
+import io.openapiparser.Node;
+
+import java.util.Map;
 
 /**
  * the <em>Paths</em> object.
@@ -14,6 +17,16 @@ import java.util.LinkedHashMap;
  * <a href="https://spec.openapis.org/oas/v3.1.0.html#paths-object">4.8.8 Paths Object</a>
  */
 public class Paths implements Extensions {
-    private LinkedHashMap<String, PathItem> pathItems = new LinkedHashMap<> ();
+    private final Context context;
+    private final Node node;
 
+    public Paths (Context context, Node node) {
+        this.context = context;
+        this.node = node;
+    }
+
+    @Override
+    public Map<String, Object> getExtensions () {
+        return null;
+    }
 }
