@@ -194,13 +194,15 @@ class OpenApiSpec : StringSpec({
     }
 
     "gets extension values" {
-        val node = Node("$", linkedMapOf<String, Any>(
-            "property" to "foo",
-            "x-foo" to "foo extension",
-            "x-bar" to linkedMapOf<String, Any>()
-        ))
+        val api = TestBuilder()
+            .withApi("""
+                any: value
+                x-foo: "foo extension"
+                x-bar: "bar extension"
+            """.trimIndent())
+            .buildOpenApi30()
 
-        val extensions = node.extensions
+        val extensions = api.extensions
         extensions.shouldNotBeNull()
         extensions.size shouldBe 2
     }
