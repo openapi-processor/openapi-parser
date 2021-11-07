@@ -5,6 +5,8 @@
 
 package io.openapiparser.model.v30;
 
+import java.util.Map;
+
 /**
  * the <em>Specification Extensions</em> object.
  *
@@ -14,4 +16,12 @@ package io.openapiparser.model.v30;
  * </a>
  */
 public interface Extensions {
+
+    /**
+     * map of all extension properties.
+     *
+     * @return map of extension properties
+     */
+    Map<String, Object> getExtensions ();
+
 }

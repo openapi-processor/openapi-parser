@@ -7,6 +7,8 @@ package io.openapiparser.model.v30;
 
 import io.openapiparser.*;
 
+import java.util.Map;
+
 import static io.openapiparser.Keywords.*;
 
 /**
@@ -32,5 +34,10 @@ public class License implements Extensions {
     @Nullable
     public String getUrl () {
         return node.getStringValue (URL);
+    }
+
+    @Override
+    public Map<String, Object> getExtensions () {
+        return null;
     }
 }

@@ -63,4 +63,9 @@ public class OpenApi implements Extensions {
     public ExternalDocumentation getExternalDocs () {
         return node.getObjectValue (EXTERNAL_DOCS, node -> new ExternalDocumentation (context, node));
     }
+
+    @Override
+    public Map<String, Object> getExtensions () {
+        return null;
+    }
 }

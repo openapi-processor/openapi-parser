@@ -7,6 +7,8 @@ package io.openapiparser.model.v30;
 
 import io.openapiparser.*;
 
+import java.util.Map;
+
 /**
  * the <em>Media Type</em> object.
  *
@@ -32,6 +34,11 @@ public class MediaType implements Reference, Extensions {
     @Override
     @Required
     public String getRef () {
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> getExtensions () {
         return null;
     }
 }

@@ -8,6 +8,8 @@ package io.openapiparser.model.v30;
 import io.openapiparser.Context;
 import io.openapiparser.Node;
 
+import java.util.Map;
+
 /**
  * the <em>External Documentation</em> object.
  *
@@ -23,5 +25,10 @@ public class ExternalDocumentation implements Extensions {
     public ExternalDocumentation (Context context, Node node) {
         this.context = context;
         this.node = node;
+    }
+
+    @Override
+    public Map<String, Object> getExtensions () {
+        return null;
     }
 }

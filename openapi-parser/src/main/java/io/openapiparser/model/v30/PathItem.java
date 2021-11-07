@@ -8,6 +8,7 @@ package io.openapiparser.model.v30;
 import io.openapiparser.*;
 
 import java.util.Collection;
+import java.util.Map;
 
 import static io.openapiparser.Keywords.*;
 
@@ -108,5 +109,10 @@ public class PathItem implements Reference, Extensions {
     @Nullable
     private Node getRefNode () {
         return context.getRefNodeOrNull (node.getStringValue (REF));
+    }
+
+    @Override
+    public Map<String, Object> getExtensions () {
+        return null;
     }
 }

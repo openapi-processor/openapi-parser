@@ -8,6 +8,8 @@ package io.openapiparser.model.v30;
 import io.openapiparser.Context;
 import io.openapiparser.Node;
 
+import java.util.Map;
+
 /**
  * the <em>Tag</em> object.
  *
@@ -21,5 +23,10 @@ public class Tag implements Extensions {
     public Tag (Context context, Node node) {
         this.context = context;
         this.node = node;
+    }
+
+    @Override
+    public Map<String, Object> getExtensions () {
+        return null;
     }
 }

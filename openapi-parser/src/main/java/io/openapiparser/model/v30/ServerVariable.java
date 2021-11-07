@@ -8,6 +8,7 @@ package io.openapiparser.model.v30;
 import io.openapiparser.*;
 
 import java.util.Collection;
+import java.util.Map;
 
 import static io.openapiparser.Keywords.*;
 
@@ -39,5 +40,10 @@ public class ServerVariable implements Extensions {
     @Nullable
     public String getDescription () {
         return node.getStringValue (DESCRIPTION);
+    }
+
+    @Override
+    public Map<String, Object> getExtensions () {
+        return null;
     }
 }

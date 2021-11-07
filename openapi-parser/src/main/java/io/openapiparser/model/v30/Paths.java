@@ -39,4 +39,8 @@ public class Paths implements Extensions {
         return node.getPropertyNames ();
     }
 
+    @Override
+    public Map<String, Object> getExtensions () {
+        return null;
+    }
 }

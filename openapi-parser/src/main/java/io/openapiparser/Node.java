@@ -6,6 +6,7 @@
 package io.openapiparser;
 
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.unmodifiableCollection;
@@ -16,6 +17,8 @@ import static java.util.Collections.unmodifiableMap;
  * object.
  */
 public class Node {
+    private static final Pattern EXTENSION_PATTERN = Pattern.compile("^x-");
+
     /** (json) path to this node */
     private final String path;
 
@@ -290,6 +293,25 @@ public class Node {
             return null;
 
         return new Node(getPath (property), value).getObjectValues (factory);
+    }
+
+    /**
+     * get a map with the extension properties.
+     *
+     * @return map of extension properties
+     */
+    public Map<String, Object> getExtensions () {
+        Map<String, Object> extensions = new LinkedHashMap<> ();
+        properties.forEach ((property, value) -> {
+            if (isExtension (property)) {
+                extensions.put (property, value);
+            }
+        });
+        return extensions;
+    }
+
+    private boolean isExtension (String property) {
+        return EXTENSION_PATTERN.matcher(property).find ();
     }
 
     /**

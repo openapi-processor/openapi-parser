@@ -114,4 +114,9 @@ public class Parameter implements Reference, Extensions {
     private Node getRefNode () {
         return context.getRefNodeOrNull (node);
     }
+
+    @Override
+    public Map<String, Object> getExtensions () {
+        return null;
+    }
 }

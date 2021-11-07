@@ -13,6 +13,7 @@ import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.openapiparser.NoValueException
+import io.openapiparser.Node
 import io.openapiparser.support.TestBuilder
 
 class OpenApiSpec : StringSpec({
@@ -190,5 +191,17 @@ class OpenApiSpec : StringSpec({
             .buildOpenApi30()
 
         api.externalDocs.shouldBeNull()
+    }
+
+    "gets extension values" {
+        val node = Node("$", linkedMapOf<String, Any>(
+            "property" to "foo",
+            "x-foo" to "foo extension",
+            "x-bar" to linkedMapOf<String, Any>()
+        ))
+
+        val extensions = node.extensions
+        extensions.shouldNotBeNull()
+        extensions.size shouldBe 2
     }
 })

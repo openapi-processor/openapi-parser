@@ -79,5 +79,26 @@ class NodeSpec : StringSpec({
         objects.size shouldBe 2
     }
 
+    "gets extension values" {
+        val node = Node("$", linkedMapOf<String, Any>(
+            "property" to "foo",
+            "x-foo" to "foo extension",
+            "x-bar" to linkedMapOf<String, Any>()
+        ))
+
+        val extensions = node.extensions
+        extensions.shouldNotBeNull()
+        extensions.size shouldBe 2
+    }
+
+    "gets empty extension values if there are no extensions" {
+        val node = Node("$", linkedMapOf<String, Any>(
+            "property" to "foo"
+        ))
+
+        val extensions = node.extensions
+        extensions.shouldNotBeNull()
+        extensions.size shouldBe 0
+    }
 })
 

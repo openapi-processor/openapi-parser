@@ -40,4 +40,9 @@ public class Server implements Extensions {
     public Map<String, ServerVariable> getVariables () {
         return node.getObjectValues (VARIABLES, node -> new ServerVariable (context, node));
     }
+
+    @Override
+    public Map<String, Object> getExtensions () {
+        return null;
+    }
 }
