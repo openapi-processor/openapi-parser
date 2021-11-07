@@ -221,7 +221,6 @@ public class Node {
         return value;
     }
 
-
     /**
      * converts the value of the given property name to a collection of {@code T}s casting the items
      * to {@code T}s.

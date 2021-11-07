@@ -36,9 +36,8 @@ public class OpenApi implements Extensions {
         return node.getRequiredObjectValue (INFO, node -> new Info (context, node));
     }
 
-    @Nullable
     public Collection<Server> getServers () {
-        return node.getArrayValues (SERVERS, node -> new Server(context, node));
+        return node.getArrayValuesOrEmpty (SERVERS, node -> new Server(context, node));
     }
 
     @Required
@@ -48,21 +47,20 @@ public class OpenApi implements Extensions {
 
     @Nullable
     public Components getComponents () {
-        return null; // todo
+        return node.getObjectValue (COMPONENTS, node -> new Components (context, node));
     }
 
     @Nullable
     public Collection<SecurityRequirement> getSecurity () {
-        return null; // todo
+        return node.getArrayValuesOrEmpty (SECURITY, node -> new SecurityRequirement (context, node));
     }
 
-    @Nullable
     public Collection<Tag> getTags () {
-        return null; // todo
+        return node.getArrayValuesOrEmpty (TAGS, node -> new Tag (context, node));
     }
 
     @Nullable
     public ExternalDocumentation getExternalDocs () {
-        return null; // todo
+        return node.getObjectValue (EXTERNAL_DOCS, node -> new ExternalDocumentation (context, node));
     }
 }
