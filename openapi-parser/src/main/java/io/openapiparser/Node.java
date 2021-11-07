@@ -101,8 +101,38 @@ public class Node {
     }
 
     /**
+     * same as {@link #getStringValues(String)}.
+     */
+    public @Nullable Collection<String> getArrayStringValues (String property) {
+        return getStringValues (property);
+    }
+
+    /**
+     * get the raw array values of the given property as collection of {@link String}s. If property
+     * is missing it returns an empty collection.
+     *
+     * @param property property name
+     * @return collection of values
+     */
+    public Collection<String> getStringValuesOrEmpty (String property) {
+        final Object value = getRawValue (property);
+        if (value == null)
+            return Collections.emptyList ();
+
+        return asArray (property, value, String.class);
+    }
+
+    /**
+     * same as {@link #getStringValuesOrEmpty(String)}.
+     */
+    public Collection<String> getArrayStringValuesOrEmpty (String property) {
+        return getStringValuesOrEmpty (property);
+    }
+
+    /**
      * converts the properties of this {@link Node} to a map from property name to {@code T} using
-     * the given factory to convert all property values to {@code T}.
+     * the given factory to convert all property values to {@code T}. If the property is missing
+     * it returns an empty map.
      *
      * @param factory converter from {@link Node} to {@code T}
      * @param <T> type of the target OpenAPI model object
@@ -110,8 +140,15 @@ public class Node {
      */
     public <T> Map<String, T> getObjectValues (NodeConverter<T> factory) {
         Map<String, T> result = new LinkedHashMap<> ();
-        getPropertyNames ().forEach (k -> result.put (k, factory.create (getObjectValue (k))));
+        getPropertyNames ().forEach (k -> result.put (k, factory.create (getObjectNode (k))));
         return unmodifiableMap (result);
+    }
+
+    /**
+     * same as {@link #getObjectValues(NodeConverter)}.
+     */
+    public <T> Map<String, T> getObjectValuesOrEmpty (NodeConverter<T> factory) {
+        return getObjectValues (factory);
     }
 
     /**
@@ -122,7 +159,7 @@ public class Node {
      * @return property value wrapped as {@link Node}.
      */
     @SuppressWarnings ("unchecked")
-    Node getObjectValue (String property) {
+    Node getObjectNode (String property) {
         final Object value = getRawValue (property);
         if (!isObject (value)) {
             throw new NoObjectException(getPath(property));
@@ -138,26 +175,23 @@ public class Node {
      * @param property property name
      * @return collection of {@link Node}s
      */
-    @SuppressWarnings ("unchecked")
-    public Collection<Node> getObjectValues (String property) {
+    public Collection<Node> getObjectNodes (String property) {
+        return asArray (property, getRawValue (property));
+    }
+
+    /**
+     * converts the array value of the given property to a collection of {@link Node}s. If the
+     * property is missing or empty it returns an empty collection. Throws if it is not an array.
+     *
+     * @param property property name
+     * @return collection of {@link Node}s
+     */
+    public Collection<Node> getObjectNodesOrEmpty (String property) {
         final Object value = getRawValue (property);
-        if (!isArray (value))
-            throw new NoArrayException (getPath (property));
+        if (value == null)
+            return Collections.emptyList ();
 
-        final Object[] values = ((Collection<Object>) value).toArray ();
-
-        final Collection<Node> objects = new ArrayList<> ();
-        for (int i = 0; i < values.length ; i++) {
-            Object val = values[i];
-
-            if (!isObject (val)) {
-                throw new NoObjectException (getArrayPath (property, i));
-            }
-
-            objects.add (new Node (getArrayPath(property, i), (Map<String, Object>) val));
-        }
-
-        return unmodifiableCollection (objects);
+        return asArray (property, value);
     }
 
     /**
@@ -173,11 +207,11 @@ public class Node {
         if (!hasProperty (property))
             return null;
 
-        return factory.create (getObjectValue (property));
+        return factory.create (getObjectNode (property));
     }
 
     /**
-     * same as {@link #getObjectValue}, but throws if the property values is {@code null}.
+     * same as {@link #getObjectNode}, but throws if the property values is {@code null}.
      */
     public <T> T getRequiredObjectValue (String property, NodeConverter<T> factory) {
         final T value = getObjectValue (property, factory);
@@ -190,7 +224,7 @@ public class Node {
 
     /**
      * converts the value of the given property name to a collection of {@code T}s casting the items
-     * to {@code T}s. If the property is missing it returns an empty collection.
+     * to {@code T}s.
      *
      * @param property property name
      * @param <T> target type
@@ -198,6 +232,22 @@ public class Node {
      */
     public <T> Collection<T> getArrayValues (String property, Class<T> itemType) {
         return asArray (property, getRawValue (property), itemType);
+    }
+
+    /**
+     * converts the value of the given property name to a collection of {@code T}s casting the items
+     * to {@code T}s. If the property is missing it returns an empty collection.
+     *
+     * @param property property name
+     * @param <T> target type
+     * @return collection of {@code T}s
+     */
+    public <T> Collection<T> getArrayValuesOrEmpty (String property, Class<T> itemType) {
+        final Object rawValue = getRawValue (property);
+        if (rawValue == null)
+            return Collections.emptyList ();
+
+        return asArray (property, rawValue, itemType);
     }
 
     /**
@@ -211,7 +261,15 @@ public class Node {
      */
     public <T> Collection<T> getArrayValues (String property, NodeConverter<T> factory) {
         return unmodifiableCollection (
-            getObjectValues (property)
+            getObjectNodes (property)
+                .stream ()
+                .map (factory::create)
+                .collect (Collectors.toList ()));
+    }
+
+    public <T> Collection<T> getArrayValuesOrEmpty (String property, NodeConverter<T> factory) {
+        return unmodifiableCollection (
+            getObjectNodesOrEmpty (property)
                 .stream ()
                 .map (factory::create)
                 .collect (Collectors.toList ()));
@@ -246,9 +304,9 @@ public class Node {
         final Object value = getRawValue (property);
 
         if (isObject (value)) {
-            handler.handle (getObjectValue (property));
+            handler.handle (getObjectNode (property));
         } else if (isArray (value, Map.class)) {
-            getObjectValues (property).forEach (handler::handle);
+            getObjectNodes (property).forEach (handler::handle);
         }
     }
 
@@ -317,6 +375,27 @@ public class Node {
             throw new TypeMismatchException (getPath (property), getArrayTypeName (itemType));
 
         return (Collection<T>) value;
+    }
+
+    @SuppressWarnings ("unchecked")
+    private Collection<Node> asArray (String property, Object value) {
+        if (!isArray (value))
+            throw new NoArrayException (getPath (property));
+
+        final Object[] values = ((Collection<Object>) value).toArray ();
+
+        final Collection<Node> objects = new ArrayList<> ();
+        for (int i = 0; i < values.length; i++) {
+            Object val = values[i];
+
+            if (!isObject (val)) {
+                throw new NoObjectException (getArrayPath (property, i));
+            }
+
+            objects.add (new Node (getArrayPath (property, i), (Map<String, Object>) val));
+        }
+
+        return unmodifiableCollection (objects);
     }
 
     private <T> String getArrayTypeName (Class<T> itemType) {

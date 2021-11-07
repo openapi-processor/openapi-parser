@@ -21,3 +21,5 @@ public interface NodeConverter<R> {
      */
     R create (Node node);
 }
+
+// todo rename to ObjectFactory
