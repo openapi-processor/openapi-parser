@@ -3,7 +3,7 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.model.v30
+package io.openapiparser.model.v31
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
@@ -21,7 +21,7 @@ class InfoSpec : StringSpec({
                 info:
                   title: the title
             """.trimIndent())
-            .buildOpenApi30()
+            .buildOpenApi31()
 
         val info = api.info
         info.title shouldBe "the title"
@@ -32,7 +32,7 @@ class InfoSpec : StringSpec({
             .withApi("""
                 info: {}
             """.trimIndent())
-            .buildOpenApi30()
+            .buildOpenApi31()
 
         shouldThrow<NoValueException> {
             api.info.title
@@ -45,7 +45,7 @@ class InfoSpec : StringSpec({
                 info:
                   version: "1"
             """.trimIndent())
-            .buildOpenApi30()
+            .buildOpenApi31()
 
         val info = api.info
         info.version shouldBe "1"
@@ -56,11 +56,34 @@ class InfoSpec : StringSpec({
             .withApi("""
                 info: {}
             """.trimIndent())
-            .buildOpenApi30()
+            .buildOpenApi31()
 
         shouldThrow<NoValueException> {
             api.info.version
         }
+    }
+
+    "gets info summary" {
+        val api = TestBuilder()
+            .withApi("""
+                info:
+                  summary: the summary
+            """.trimIndent())
+            .buildOpenApi31()
+
+        val info = api.info
+        info.summary shouldBe "the summary"
+    }
+
+    "gets info summary is null if missing" {
+        val api = TestBuilder()
+            .withApi("""
+                info: {}
+            """.trimIndent())
+            .buildOpenApi31()
+
+        val info = api.info
+        info.summary.shouldBeNull()
     }
 
     "gets info description" {
@@ -69,7 +92,7 @@ class InfoSpec : StringSpec({
                 info:
                   description: the description
             """.trimIndent())
-            .buildOpenApi30()
+            .buildOpenApi31()
 
         val info = api.info
         info.description shouldBe "the description"
@@ -80,7 +103,7 @@ class InfoSpec : StringSpec({
             .withApi("""
                 info: {}
             """.trimIndent())
-            .buildOpenApi30()
+            .buildOpenApi31()
 
         val info = api.info
         info.description.shouldBeNull()
@@ -92,7 +115,7 @@ class InfoSpec : StringSpec({
                 info:
                   termsOfService: https://any/terms
             """.trimIndent())
-            .buildOpenApi30()
+            .buildOpenApi31()
 
         val info = api.info
         info.termsOfService shouldBe "https://any/terms"
@@ -103,7 +126,7 @@ class InfoSpec : StringSpec({
             .withApi("""
                 info: {}
             """.trimIndent())
-            .buildOpenApi30()
+            .buildOpenApi31()
 
         val info = api.info
         info.termsOfService.shouldBeNull()
@@ -115,7 +138,7 @@ class InfoSpec : StringSpec({
                 info:
                   contact: {}
             """.trimIndent())
-            .buildOpenApi30()
+            .buildOpenApi31()
 
         api.info.contact.shouldNotBeNull()
     }
@@ -125,7 +148,7 @@ class InfoSpec : StringSpec({
             .withApi("""
                 info: {}
             """.trimIndent())
-            .buildOpenApi30()
+            .buildOpenApi31()
 
         api.info.contact.shouldBeNull()
     }
@@ -136,7 +159,7 @@ class InfoSpec : StringSpec({
                 info:
                   license: {}
             """.trimIndent())
-            .buildOpenApi30()
+            .buildOpenApi31()
 
         api.info.license.shouldNotBeNull()
     }
@@ -146,7 +169,7 @@ class InfoSpec : StringSpec({
             .withApi("""
                 info: {}
             """.trimIndent())
-            .buildOpenApi30()
+            .buildOpenApi31()
 
         api.info.license.shouldBeNull()
     }
@@ -158,7 +181,7 @@ class InfoSpec : StringSpec({
                   x-foo: "foo extension"
                   x-bar: "bar extension"
             """.trimIndent())
-            .buildOpenApi30()
+            .buildOpenApi31()
 
         val extensions = api.info.extensions
         extensions.shouldNotBeNull()

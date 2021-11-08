@@ -5,8 +5,7 @@
 
 package io.openapiparser.model.v31;
 
-import io.openapiparser.Nullable;
-import io.openapiparser.Required;
+import io.openapiparser.*;
 
 import java.util.Map;
 
@@ -17,6 +16,13 @@ import java.util.Map;
  * <a href="https://spec.openapis.org/oas/v3.1.0.html#license-object">4.8.4 License Object</a>
  */
 public class License implements Extensions {
+    private final Context context;
+    private final Node node;
+
+    public License (Context context, Node node) {
+        this.context = context;
+        this.node = node;
+    }
 
     @Required
     public String getName () {

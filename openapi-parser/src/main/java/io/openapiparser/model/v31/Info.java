@@ -9,6 +9,9 @@ import io.openapiparser.*;
 
 import java.util.Map;
 
+import static io.openapiparser.Keywords.CONTACT;
+import static io.openapiparser.Keywords.LICENSE;
+
 /**
  * the <em>Info</em> object.
  *
@@ -46,12 +49,12 @@ public class Info implements Extensions {
 
     @Nullable
     public Contact getContact () {
-        return null;
+        return node.getObjectValue (CONTACT, node -> new Contact (context, node));
     }
 
     @Nullable
     public License getLicense () {
-        return null;
+        return node.getObjectValue (LICENSE, node -> new License (context, node));
     }
 
     @Required
@@ -61,6 +64,6 @@ public class Info implements Extensions {
 
     @Override
     public Map<String, Object> getExtensions () {
-        return null;
+        return node.getExtensions ();
     }
 }

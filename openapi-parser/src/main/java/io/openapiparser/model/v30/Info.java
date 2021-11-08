@@ -7,6 +7,8 @@ package io.openapiparser.model.v30;
 
 import io.openapiparser.*;
 
+import java.util.Map;
+
 import static io.openapiparser.Keywords.*;
 
 /**
@@ -15,7 +17,7 @@ import static io.openapiparser.Keywords.*;
  * <p>See specification:
  * <a href="https://spec.openapis.org/oas/v3.0.3.html#info-object">4.7.2 Info Object</a>
  */
-public class Info {
+public class Info implements Extensions {
     private final Context context;
     private final Node node;
 
@@ -52,5 +54,10 @@ public class Info {
     @Required
     public String getVersion () {
         return node.getRequiredStringValue (VERSION);
+    }
+
+    @Override
+    public Map<String, Object> getExtensions () {
+        return node.getExtensions ();
     }
 }
