@@ -13,7 +13,6 @@ import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.openapiparser.NoValueException
-import io.openapiparser.Node
 import io.openapiparser.support.TestBuilder
 
 class OpenApiSpec : StringSpec({

@@ -57,8 +57,7 @@ public class OpenApi implements Extensions {
         return node.getObjectValues (WEBHOOKS, node -> new PathItem (context, node));
     }
 
-    // requires one of  path, webhooks or components
-    @Nullable
+    @Nullable  // @Required (if paths or webhooks are null)
     public Components getComponents () {
         return node.getObjectValue (COMPONENTS, node -> new Components (context, node));
     }
