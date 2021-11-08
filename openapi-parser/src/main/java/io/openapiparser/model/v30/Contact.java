@@ -43,6 +43,6 @@ public class Contact implements Extensions {
 
     @Override
     public Map<String, Object> getExtensions () {
-        return null;
+        return node.getExtensions ();
     }
 }

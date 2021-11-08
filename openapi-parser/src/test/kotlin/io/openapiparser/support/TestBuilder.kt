@@ -6,18 +6,22 @@
 package io.openapiparser.support
 
 import io.openapiparser.*
-import io.openapiparser.model.v30.OpenApi as OpenApi30
-import io.openapiparser.model.v31.OpenApi as OpenApi31
 import io.openapiparser.jackson.JacksonConverter
 import io.openapiparser.model.v30.Operation
 import io.openapiparser.model.v30.Parameter
 import io.openapiparser.model.v30.PathItem
 import io.openapiparser.model.v30.Schema
 import java.net.URI
+import io.openapiparser.model.v30.OpenApi as OpenApi30
+import io.openapiparser.model.v31.OpenApi as OpenApi31
 
 class TestBuilder {
     private var baseUri: URI? = null
     private var api: String? = null
+
+    enum class Version {
+        V30, V31
+    }
 
     fun withApi(api: String): TestBuilder {
         return withYaml("file:///any", api)
@@ -100,6 +104,13 @@ class TestBuilder {
 
     fun buildSchema(): Schema {
         return build { ctx, node -> Schema(ctx, node) }
+    }
+
+    fun <T> build(clazz: Class<T>): T {
+        return build { c, n -> clazz
+            .getDeclaredConstructor(Context::class.java, Node::class.java)
+            .newInstance(c, n)
+        }
     }
 
     fun <T> build(factory: (context: Context, node: Node) -> T): T {

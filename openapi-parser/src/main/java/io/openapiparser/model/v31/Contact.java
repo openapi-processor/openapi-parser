@@ -9,6 +9,8 @@ import io.openapiparser.*;
 
 import java.util.Map;
 
+import static io.openapiparser.Keywords.*;
+
 /**
  * the <em>Contact</em> object.
  *
@@ -26,21 +28,21 @@ public class Contact implements Extensions {
 
     @Nullable
     public String getName () {
-        return null;
+        return node.getStringValue (NAME);
     }
 
     @Nullable
     public String getUrl () {
-        return null;
+        return node.getStringValue (URL);
     }
 
     @Nullable
     public String getEmail () {
-        return null;
+        return node.getStringValue (EMAIL);
     }
 
     @Override
     public Map<String, Object> getExtensions () {
-        return null;
+        return node.getExtensions ();
     }
 }
