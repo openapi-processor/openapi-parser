@@ -27,6 +27,7 @@ public interface Keywords {
     String EXTERNAL_DOCS = "externalDocs";
     String GET = "get";
     String HEAD = "head";
+    String IDENTIFIER = "identifier";
     String IN = "in";
     String INFO = "info";
     String JSON_SCHEMA_DIALECT = "jsonSchemaDialect";

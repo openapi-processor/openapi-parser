@@ -9,6 +9,8 @@ import io.openapiparser.*;
 
 import java.util.Map;
 
+import static io.openapiparser.Keywords.*;
+
 /**
  * the <em>License</em> object.
  *
@@ -26,21 +28,21 @@ public class License implements Extensions {
 
     @Required
     public String getName () {
-        return "todo";
+        return node.getRequiredStringValue (NAME);
     }
 
     @Nullable
     public String getIdentifier () {
-        return null;
+        return node.getStringValue (IDENTIFIER);
     }
 
     @Nullable
     public String getUrl () {
-        return null;
+        return node.getStringValue (URL);
     }
 
     @Override
     public Map<String, Object> getExtensions () {
-        return null;
+        return node.getExtensions ();
     }
 }

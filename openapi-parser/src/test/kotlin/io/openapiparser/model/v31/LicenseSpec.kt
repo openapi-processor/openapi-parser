@@ -3,7 +3,7 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.model.v30
+package io.openapiparser.model.v31
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
@@ -20,12 +20,14 @@ class LicenseSpec : StringSpec({
             .withApi("""
               license:
                 name: license name
+                identifier: Apache-2.0
                 url: https://license
             """.trimIndent())
             .build(Info::class.java)
 
         val license = info.license
         license.name shouldBe "license name"
+        license.identifier shouldBe "Apache-2.0"
         license.url shouldBe "https://license"
     }
 
@@ -42,13 +44,24 @@ class LicenseSpec : StringSpec({
     }
 
     "gets url is null if missing" {
+        val info = TestBuilder()
+            .withApi("""
+                license: {}
+            """.trimIndent())
+            .build(License::class.java)
+
+        val license = listOf(info)
+        info.url.shouldBeNull()
+    }
+
+    "gets identifier is null if missing" {
         val license = TestBuilder()
             .withApi("""
                 {}
             """.trimIndent())
             .build(License::class.java)
 
-        license.url.shouldBeNull()
+        license.identifier.shouldBeNull()
     }
 
     "gets extension values" {
