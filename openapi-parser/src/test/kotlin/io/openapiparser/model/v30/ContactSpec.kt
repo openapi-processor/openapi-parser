@@ -9,90 +9,45 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import io.openapiparser.support.TestBuilder
+import io.openapiparser.support.buildObject
 
 class ContactSpec : StringSpec({
 
     "gets contact name" {
-        val info = TestBuilder()
-            .withApi("""
-                  contact:
-                    name: contact name
-            """.trimIndent())
-            .build(Info::class.java)
-
-        val contact = info.contact
-        contact.name shouldBe "contact name"
+        contact("name: contact name").name shouldBe "contact name"
     }
 
     "gets contact name is null if missing" {
-        val info = TestBuilder()
-            .withApi("""
-                  contact: {}
-            """.trimIndent())
-            .build(Info::class.java)
-
-        val contact = info.contact
-        contact.name.shouldBeNull()
+        contact().name.shouldBeNull()
     }
 
     "gets contact url" {
-        val info = TestBuilder()
-            .withApi("""
-                  contact:
-                    url: https://contact.url
-            """.trimIndent())
-            .build(Info::class.java)
-
-        val contact = info.contact
-        contact.url shouldBe "https://contact.url"
+        contact("url: https://contact.url").url shouldBe "https://contact.url"
     }
 
     "gets contact url is null if missing" {
-        val info = TestBuilder()
-            .withApi("""
-                  contact: {}
-            """.trimIndent())
-            .build(Info::class.java)
-
-        val contact = info.contact
-        contact.url.shouldBeNull()
+        contact().url.shouldBeNull()
     }
 
     "gets contact email" {
-        val info = TestBuilder()
-            .withApi("""
-                  contact:
-                    email: contact@email
-            """.trimIndent())
-            .build(Info::class.java)
-
-        val contact = info.contact
-        contact.email shouldBe "contact@email"
+        contact("email: contact@email").email shouldBe "contact@email"
     }
 
     "gets contact email is null if missing" {
-        val info = TestBuilder()
-            .withApi("""
-                  contact: {}
-            """.trimIndent())
-            .build(Info::class.java)
-
-        val contact = info.contact
-        contact.email.shouldBeNull()
+        contact().email.shouldBeNull()
     }
 
     "gets extension values" {
-        val info = TestBuilder()
-            .withApi("""
-                contact:
-                  x-foo: "foo extension"
-                  x-bar: "bar extension"
-            """.trimIndent())
-            .build(Info::class.java)
+        val extensions = contact("""
+          x-foo: "foo extension"
+          x-bar: "bar extension"
+        """).extensions
 
-        val extensions = info.contact.extensions
         extensions.shouldNotBeNull()
         extensions.size shouldBe 2
     }
 })
+
+fun contact(content: String = "{}"): Contact {
+    return buildObject(Contact::class.java, content)
+}

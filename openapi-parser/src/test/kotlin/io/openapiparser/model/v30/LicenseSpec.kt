@@ -36,16 +36,14 @@ class LicenseSpec : StringSpec({
     }
 
     "gets extension values" {
-        val license = license("""
+        val extensions = license("""
           x-foo: "foo extension"
           x-bar: "bar extension"
-        """)
+        """).extensions
 
-        val extensions = license.extensions
         extensions.shouldNotBeNull()
         extensions.size shouldBe 2
     }
-
 })
 
 fun license(content: String = "{}"): License {
