@@ -11,53 +11,35 @@ import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.openapiparser.NoValueException
-import io.openapiparser.support.TestBuilder
+import io.openapiparser.support.buildObject
 
 class LicenseSpec : StringSpec({
 
     "gets license object" {
-        val info = TestBuilder()
-            .withApi("""
-              license:
-                name: license name
-                url: https://license
-            """.trimIndent())
-            .build(Info::class.java)
+        val license = license("""
+          name: license name
+          url: https://license
+          """)
 
-        val license = info.license
         license.name shouldBe "license name"
         license.url shouldBe "https://license"
     }
 
     "gets name throws if it missing" {
-        val license = TestBuilder()
-            .withApi("""
-                any: value
-            """.trimIndent())
-            .build(License::class.java)
-
         shouldThrow<NoValueException> {
-            license.name
+            license().name
         }
     }
 
     "gets url is null if missing" {
-        val license = TestBuilder()
-            .withApi("""
-                {}
-            """.trimIndent())
-            .build(License::class.java)
-
-        license.url.shouldBeNull()
+        license().url.shouldBeNull()
     }
 
     "gets extension values" {
-        val license = TestBuilder()
-            .withApi("""
-              x-foo: "foo extension"
-              x-bar: "bar extension"
-            """.trimIndent())
-            .build(License::class.java)
+        val license = license("""
+          x-foo: "foo extension"
+          x-bar: "bar extension"
+        """)
 
         val extensions = license.extensions
         extensions.shouldNotBeNull()
@@ -65,3 +47,7 @@ class LicenseSpec : StringSpec({
     }
 
 })
+
+fun license(content: String = "{}"): License {
+    return buildObject(License::class.java, content)
+}

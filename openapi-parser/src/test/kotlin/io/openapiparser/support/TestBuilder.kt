@@ -7,6 +7,7 @@ package io.openapiparser.support
 
 import io.openapiparser.*
 import io.openapiparser.jackson.JacksonConverter
+import io.openapiparser.model.v30.License
 import java.net.URI
 import io.openapiparser.model.v30.OpenApi as OpenApi30
 import io.openapiparser.model.v31.OpenApi as OpenApi31
@@ -16,7 +17,7 @@ class TestBuilder {
     private var api: String? = null
 
     fun withApi(api: String): TestBuilder {
-        return withYaml("file:///any", api)
+        return withYaml("file:///any", api.trimIndent())
     }
 
     fun withYaml(baseUri: String, api: String): TestBuilder {
@@ -89,6 +90,15 @@ class TestBuilder {
         }
     }
 
+    fun <T> build(content: String, clazz: Class<T>): T {
+        withApi(content)
+
+        return build { c, n -> clazz
+            .getDeclaredConstructor(Context::class.java, Node::class.java)
+            .newInstance(c, n)
+        }
+    }
+
     private fun <T> build(factory: (context: Context, node: Node) -> T): T {
         val resolver = ReferenceResolver(
             baseUri,
@@ -101,4 +111,10 @@ class TestBuilder {
         return factory(context, context.baseNode)
     }
 
+}
+
+fun <T> buildObject(clazz: Class<T>, content: String = "{}"): T {
+    return TestBuilder()
+        .withApi(content)
+        .build(clazz)
 }
