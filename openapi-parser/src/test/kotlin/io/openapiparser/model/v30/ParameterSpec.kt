@@ -26,7 +26,7 @@ class ParameterSpec : StringSpec({
                   explode: true
                   allowReserved: true
             """.trimIndent())
-            .buildParameter()
+            .build(Parameter::class.java)
 
         param.name shouldBe "p"
         param.`in` shouldBe "query"
@@ -44,7 +44,7 @@ class ParameterSpec : StringSpec({
             .withApi("""
                 schema: {}
             """.trimIndent())
-            .buildParameter()
+            .build(Parameter::class.java)
 
         param.schema.shouldNotBeNull()
     }
@@ -54,7 +54,7 @@ class ParameterSpec : StringSpec({
             .withApi("""
                 example: {}
             """.trimIndent())
-            .buildParameter()
+            .build(Parameter::class.java)
 
         param.example.shouldNotBeNull()
     }
@@ -66,7 +66,7 @@ class ParameterSpec : StringSpec({
                  foo: {}
                  bar: {}
             """.trimIndent())
-            .buildParameter()
+            .build(Parameter::class.java)
 
         param.examples.shouldNotBeNull()
     }
@@ -77,7 +77,7 @@ class ParameterSpec : StringSpec({
                 content:
                  application/json: {}
             """.trimIndent())
-            .buildParameter()
+            .build(Parameter::class.java)
 
         val content = param.content
         content.size shouldBe 1
@@ -94,7 +94,7 @@ class ParameterSpec : StringSpec({
                 parameter:
                   name: p
             """.trimIndent())
-            .buildOpenApi30()
+            .build(OpenApi::class.java)
 
         val path = api.paths.getPathItem("/foo")
         val param = path.parameters.first()

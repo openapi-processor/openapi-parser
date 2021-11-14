@@ -7,10 +7,6 @@ package io.openapiparser.support
 
 import io.openapiparser.*
 import io.openapiparser.jackson.JacksonConverter
-import io.openapiparser.model.v30.Operation
-import io.openapiparser.model.v30.Parameter
-import io.openapiparser.model.v30.PathItem
-import io.openapiparser.model.v30.Schema
 import java.net.URI
 import io.openapiparser.model.v30.OpenApi as OpenApi30
 import io.openapiparser.model.v31.OpenApi as OpenApi31
@@ -18,10 +14,6 @@ import io.openapiparser.model.v31.OpenApi as OpenApi31
 class TestBuilder {
     private var baseUri: URI? = null
     private var api: String? = null
-
-    enum class Version {
-        V30, V31
-    }
 
     fun withApi(api: String): TestBuilder {
         return withYaml("file:///any", api)
@@ -90,22 +82,6 @@ class TestBuilder {
         return OpenApi31(context, context.baseNode)
     }
 
-    fun buildOperation(): Operation {
-        return build { ctx, node -> Operation(ctx, node) }
-    }
-
-    fun buildParameter(): Parameter {
-        return build { ctx, node -> Parameter(ctx, node) }
-    }
-
-    fun buildPathItem(): PathItem {
-        return build { ctx, node -> PathItem(ctx, node) }
-    }
-
-    fun buildSchema(): Schema {
-        return build { ctx, node -> Schema(ctx, node) }
-    }
-
     fun <T> build(clazz: Class<T>): T {
         return build { c, n -> clazz
             .getDeclaredConstructor(Context::class.java, Node::class.java)
@@ -113,7 +89,7 @@ class TestBuilder {
         }
     }
 
-    fun <T> build(factory: (context: Context, node: Node) -> T): T {
+    private fun <T> build(factory: (context: Context, node: Node) -> T): T {
         val resolver = ReferenceResolver(
             baseUri,
             StringReader(api),

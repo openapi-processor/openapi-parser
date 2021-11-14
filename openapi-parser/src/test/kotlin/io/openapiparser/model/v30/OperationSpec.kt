@@ -26,7 +26,7 @@ class OperationSpec: StringSpec({
                 operationId: op-id
                 parameters: []
             """.trimIndent())
-            .buildOperation()
+            .build(Operation::class.java)
 
         op.tags.shouldContainExactly("foo", "bar")
         op.summary shouldBe "a summary"
