@@ -13,196 +13,92 @@ import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.openapiparser.NoValueException
-import io.openapiparser.support.TestBuilder
+import io.openapiparser.support.buildObject
 
 class OpenApiSpec : StringSpec({
 
     "gets openapi version" {
-        val api = TestBuilder()
-            .withApi("""
-                openapi: 3.0.3
-            """.trimIndent())
-            .buildOpenApi30()
-
-        api.openapi shouldBe "3.0.3"
+        openapi("openapi: 3.0.3").openapi shouldBe "3.0.3"
     }
 
     "gets openapi version throws if it is missing" {
-        val api = TestBuilder()
-            .withApi("""
-                any: value
-            """.trimIndent())
-            .buildOpenApi30()
-
-        shouldThrow<NoValueException> {
-            api.openapi
-        }
+        shouldThrow<NoValueException> { openapi().openapi }
     }
 
     "gets info object" {
-        val api = TestBuilder()
-            .withApi("""
-                info: {}
-            """.trimIndent())
-            .buildOpenApi30()
-
-        api.info.shouldNotBeNull()
+        openapi("info: {}").info.shouldNotBeNull()
     }
 
     "gets info object throws if it missing" {
-        val api = TestBuilder()
-            .withApi("""
-                any: value
-            """.trimIndent())
-            .buildOpenApi30()
-
-        shouldThrow<NoValueException> {
-            api.info
-        }
+        shouldThrow<NoValueException> { openapi().info }
     }
 
     "gets server objects" {
-        val api = TestBuilder()
-            .withApi("""
-                servers:
-                  - {}
-                  - {}
-            """.trimIndent())
-            .buildOpenApi30()
-
-        val servers = api.servers
+        val servers = openapi("servers: [{}, {}]").servers
         servers.shouldNotBeNull()
-        servers.size shouldBe 2
+        servers.size
     }
 
     "gets empty server objects if it is missing" {
-        val api = TestBuilder()
-            .withApi("""
-                openapi: 3.0.3
-            """.trimIndent())
-            .buildOpenApi30()
-
-        val servers = api.servers
-        servers.shouldBeEmpty()
+        openapi().servers.shouldBeEmpty()
     }
 
     "gets paths object" {
-        val api = TestBuilder()
-            .withApi(
-                """
-                paths: {}
-            """.trimIndent()
-            )
-            .buildOpenApi30()
-
-        api.paths.shouldNotBeNull()
+        openapi("paths: {}").paths.shouldNotBeNull()
     }
 
     "gets path object throws if it missing" {
-        val api = TestBuilder()
-            .withApi("""
-                any: value
-            """.trimIndent())
-            .buildOpenApi30()
-
-        shouldThrow<NoValueException> {
-            api.paths
-        }
+        shouldThrow<NoValueException> { openapi().paths }
     }
 
     "gets components objects" {
-        val api = TestBuilder()
-            .withApi("""
-                components:
-                  foo: "foo"
-                  bar: "bar"
-            """.trimIndent())
-            .buildOpenApi30()
-
-        val components = api.components
-        components.shouldNotBeNull()
+        openapi("""
+            components:
+              foo: {}
+              bar: {}
+        """).components.shouldNotBeNull()
     }
 
     "gets security requirements objects" {
-        val api = TestBuilder()
-            .withApi("""
-                security:
-                  - {}
-                  - {}
-            """.trimIndent())
-            .buildOpenApi30()
-
-        val security = api.security
+        val security = openapi("security: [{}, {}]").security
         security.shouldNotBeNull()
         security.size shouldBe 2
     }
 
     "gets empty security requirements objects if it is missing" {
-        val api = TestBuilder()
-            .withApi("""
-                any: value
-            """.trimIndent())
-            .buildOpenApi30()
-
-        val security = api.security
-        security.shouldBeEmpty()
+        openapi().security.shouldBeEmpty()
     }
 
     "gets tags array" {
-        val api = TestBuilder()
-            .withApi("""
-                tags:
-                  - {}
-                  - {}
-            """.trimIndent())
-            .buildOpenApi30()
-
-        val tags = api.tags
+        val tags = openapi("tags: [{}, {}]").tags
         tags.shouldNotBeEmpty()
         tags.size shouldBe 2
     }
 
     "gets empty tag objects if it is missing" {
-        val api = TestBuilder()
-            .withApi("""
-                any: value
-            """.trimIndent())
-            .buildOpenApi30()
-
-        api.tags.shouldBeEmpty()
+        openapi().tags.shouldBeEmpty()
     }
 
     "gets external docs object" {
-        val api = TestBuilder()
-            .withApi("""
-                externalDocs: {}
-            """.trimIndent())
-            .buildOpenApi30()
-
-        api.externalDocs.shouldNotBeNull()
+        openapi("externalDocs: {}").externalDocs.shouldNotBeNull()
     }
 
     "gets external docs object is null if it missing" {
-        val api = TestBuilder()
-            .withApi("""
-                any: value
-            """.trimIndent())
-            .buildOpenApi30()
-
-        api.externalDocs.shouldBeNull()
+        openapi().externalDocs.shouldBeNull()
     }
 
     "gets extension values" {
-        val api = TestBuilder()
-            .withApi("""
-                any: value
-                x-foo: "foo extension"
-                x-bar: "bar extension"
-            """.trimIndent())
-            .buildOpenApi30()
+        val extensions = openapi("""
+          any: value
+          x-foo: "foo extension"
+          x-bar: "bar extension"
+        """).extensions
 
-        val extensions = api.extensions
         extensions.shouldNotBeNull()
         extensions.size shouldBe 2
     }
 })
+
+fun openapi(content: String = "{}"): OpenApi {
+    return buildObject(OpenApi::class.java, content)
+}
