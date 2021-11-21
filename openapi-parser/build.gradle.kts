@@ -3,6 +3,7 @@ plugins {
     id("openapi-parser.java-conventions")
     id("org.unbroken-dome.test-sets") version "4.0.0"
     id("com.github.ben-manes.versions") version "0.39.0"
+    id( "org.checkerframework") version "0.6.3"
 }
 
 dependencies {
@@ -20,3 +21,15 @@ tasks {
     }
 }
 
+configure<org.checkerframework.gradle.plugin.CheckerFrameworkExtension> {
+//    skipCheckerFramework = true
+//    excludeTests = true
+    extraJavacArgs = listOf("-Awarns")
+
+    checkers = listOf(
+        "org.checkerframework.checker.nullness.NullnessChecker",
+//        "org.checkerframework.checker.interning.InterningChecker",
+//        "org.checkerframework.checker.resourceleak.ResourceLeakChecker",
+//        "org.checkerframework.checker.index.IndexChecker"
+    )
+}
