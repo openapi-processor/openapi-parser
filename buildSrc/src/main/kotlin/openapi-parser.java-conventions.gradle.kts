@@ -1,11 +1,9 @@
-import net.ltgt.gradle.errorprone.errorprone
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     `java-library`
     jacoco
     id("org.jetbrains.kotlin.jvm")
-    id("net.ltgt.errorprone")
     //id("org.unbroken-dome.test-sets")
     //id("com.github.ben-manes.versions")
 }
@@ -18,9 +16,6 @@ repositories {
 }
 
 dependencies {
-    annotationProcessor ("com.uber.nullaway:nullaway:0.9.2")
-    errorprone("com.google.errorprone:error_prone_core:2.9.0")
-
     testImplementation (platform("org.junit:junit-bom:5.7.2"))
     testImplementation ("org.junit.jupiter:junit-jupiter-api")
     testImplementation ("org.junit.jupiter:junit-jupiter-params")
@@ -41,10 +36,6 @@ tasks.getByName<Test>("test") {
 
 tasks.withType<JavaCompile>().configureEach {
     options.release.set(8)
-
-    options.errorprone {
-        option("NullAway:AnnotatedPackages", "io.openapiparser")
-    }
 }
 
 tasks.withType<KotlinCompile>().configureEach {
