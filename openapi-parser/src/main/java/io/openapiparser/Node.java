@@ -12,6 +12,9 @@ import java.util.stream.Collectors;
 import static java.util.Collections.unmodifiableCollection;
 import static java.util.Collections.unmodifiableMap;
 
+import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 /**
  * OpenAPI object wrapper. It provides utility functions to extract the properties from the raw map
  * object.
@@ -32,12 +35,12 @@ public class Node {
     @Deprecated
     public Node (Map<String, Object> properties) {
         this.path = "not set";
-        this.properties = properties;
+        this.properties = new HashMap<> (properties);
     }
 
     public Node (String path, Map<String, Object> properties) {
         this.path = path;
-        this.properties = properties;
+        this.properties = new HashMap<> (properties);
     }
 
     /**
@@ -61,7 +64,7 @@ public class Node {
         if (value == null)
             return null;
 
-        return asString (property, value);
+        return checked (getPath (property), value, String.class);
     }
 
     /**
@@ -86,7 +89,7 @@ public class Node {
         if (value == null)
             return null;
 
-        return checkType (property, value, Boolean.class);
+        return checked (property, value, Boolean.class);
     }
 
     /**
@@ -100,14 +103,7 @@ public class Node {
         if (value == null)
             return null;
 
-        return asArray (property, value, String.class);
-    }
-
-    /**
-     * same as {@link #getStringValues(String)}.
-     */
-    public @Nullable Collection<String> getArrayStringValues (String property) {
-        return getStringValues (property);
+        return checkedCollection (getPath (property), value, String.class);
     }
 
     /**
@@ -122,14 +118,7 @@ public class Node {
         if (value == null)
             return Collections.emptyList ();
 
-        return asArray (property, value, String.class);
-    }
-
-    /**
-     * same as {@link #getStringValuesOrEmpty(String)}.
-     */
-    public Collection<String> getArrayStringValuesOrEmpty (String property) {
-        return getStringValuesOrEmpty (property);
+        return checkedCollection (getPath (property), value, String.class);
     }
 
     /**
@@ -148,38 +137,25 @@ public class Node {
     }
 
     /**
-     * same as {@link #getObjectValues(ObjectFactory)}.
-     */
-    public <T> Map<String, T> getObjectValuesOrEmpty (ObjectFactory<T> factory) {
-        return getObjectValues (factory);
-    }
-
-    /**
      * get the object value of the given property as {@link Node}. Throws if the property is not
      * an object.
      *
      * @param property property name
      * @return property value wrapped as {@link Node}.
      */
-    @SuppressWarnings ("unchecked")
     Node getObjectNode (String property) {
-        final Object value = getRawValue (property);
-        if (!isObject (value)) {
-            throw new NoObjectException(getPath(property));
-        }
-
-        return new Node (getPath (property), (Map<String, Object>) value);
+        return new Node (property, checkedObject (property, getRawValue (property)));
     }
 
     /**
      * converts the array value of the given property to a collection of {@link Node}s. Throws if
-     * it is not an array or the elements are no objects.
+     * it is not a collection or the elements are no objects.
      *
      * @param property property name
      * @return collection of {@link Node}s
      */
     public Collection<Node> getObjectNodes (String property) {
-        return asArray (property, getRawValue (property));
+        return checkedNodeCollection (property, getRawValue (property));
     }
 
     /**
@@ -194,7 +170,7 @@ public class Node {
         if (value == null)
             return Collections.emptyList ();
 
-        return asArray (property, value);
+        return checkedNodeCollection (property, value);
     }
 
     /**
@@ -233,7 +209,7 @@ public class Node {
      * @return collection of {@code T}s
      */
     public <T> Collection<T> getArrayValues (String property, Class<T> itemType) {
-        return asArray (property, getRawValue (property), itemType);
+        return checkedCollection (property, getRawValue (property), itemType);
     }
 
     /**
@@ -249,7 +225,7 @@ public class Node {
         if (rawValue == null)
             return Collections.emptyList ();
 
-        return asArray (property, rawValue, itemType);
+        return checkedCollection (property, rawValue, itemType);
     }
 
     /**
@@ -316,7 +292,7 @@ public class Node {
 
     /**
      * traverses the object tree of the given property and runs the handler on each child
-     * {@link Node}. It traverses into any child map or array of the property.
+     * {@link Node}. It traverses into any child map or collection of the property.
      *
      * @param property property name
      * @param handler node handler
@@ -324,10 +300,16 @@ public class Node {
     public void traverseProperty (String property, NodeHandler handler) {
         final Object value = getRawValue (property);
 
-        if (isObject (value)) {
+        if (value instanceof Map) {
             handler.handle (getObjectNode (property));
-        } else if (isArray (value, Map.class)) {
-            getObjectNodes (property).forEach (handler::handle);
+
+        } else if (value instanceof Collection) {
+            for (Object o : (Collection<?>) value) {
+                if (!(o instanceof Map))
+                    continue;
+
+                handler.handle (new Node (getPath (property), uncheckedObject (o)));
+            }
         }
     }
 
@@ -347,7 +329,7 @@ public class Node {
      * @return existing property names
      */
     public Set<String> getPropertyNames () {
-        return properties.keySet ();
+        return properties.keySet();
     }
 
     /**
@@ -366,96 +348,70 @@ public class Node {
     private String getPath (String property) {
         return String.format ("%s.%s", path, property);
     }
-
-    private String getArrayPath (String property, int index) {
+    private String getCollectionPath (String property, int index) {
         return String.format ("%s.%s[%d]", path, property, index);
     }
 
-    @SuppressWarnings ("unchecked")
-    private Collection<Object> notNullAsArray (String property, @Nullable Object value) {
-        return (Collection<Object>) notNullProperty (property, value);
-    }
-
-    private <T> T notNullProperty (String property, @Nullable T value) {
-        if (value == null)
-            throw new NoValueException (getPath (property));
-
-        return value;
-    }
-
-    private String asString (String property, Object value) {
-        if (! isString (value))
-            throw new TypeMismatchException (getPath(property), String.class);
-
-        return (String) value;
-    }
-
-    @SuppressWarnings ("unchecked")
-    private <T> Collection<T> asArray (String property, Object value, Class<T> itemType) {
-        if (!isArray (value, itemType))
-            throw new TypeMismatchException (getPath (property), getArrayTypeName (itemType));
-
-        return (Collection<T>) value;
-    }
-
-    @SuppressWarnings ("unchecked")
-    private Collection<Node> asArray (String property, Object value) {
-        if (!isArray (value))
-            throw new NoArrayException (getPath (property));
-
-        final Object[] values = ((Collection<Object>) value).toArray ();
-
-        final Collection<Node> objects = new ArrayList<> ();
-        for (int i = 0; i < values.length; i++) {
-            Object val = values[i];
-
-            if (!isObject (val)) {
-                throw new NoObjectException (getArrayPath (property, i));
-            }
-
-            objects.add (new Node (getArrayPath (property, i), (Map<String, Object>) val));
-        }
-
-        return unmodifiableCollection (objects);
-    }
-
-    private <T> String getArrayTypeName (Class<T> itemType) {
+    private <T> String getCollectionTypeName (Class<T> itemType) {
         return String.format ("%s<%s>", Collection.class.getName (), itemType.getName ());
     }
 
     @SuppressWarnings ("unchecked")
-    private <T> boolean isArray (Object value, Class<T> itemType) {
-        if (!isArray (value))
-            return false;
+    private Collection<Node> checkedNodeCollection (String property, @Nullable Object value) {
+        final Collection<Object> collection = checked (property, value, Collection.class);
 
-        final Collection<T> items = (Collection<T>) value;
-        for (T item : items) {
-            if (! isType (item, itemType))
-                return false;
+        final Collection<Node> nodes = new ArrayList<> ();
+
+        final Object[] values = collection.toArray ();
+        for (int i = 0; i < values.length; i++) {
+            final String path = getCollectionPath (property, i);
+            nodes.add (new Node (path, checked (path, values[i], Map.class)));
         }
-        return true;
+
+        return unmodifiableCollection(nodes);
     }
 
-    private <T> T checkType (String property, Object value, Class<T> type) {
+    @SuppressWarnings ({"unchecked", "rawtypes"})
+    private <T> Collection<T> checkedCollection (String property, @Nullable Object value, Class<T> itemType) {
+        final Collection collection = checked (property, value, Collection.class);
+
+        final Object[] values = collection.toArray ();
+        for (int i = 0; i < values.length; i++) {
+            checkedItem (property, i, values[i], itemType);
+        }
+
+        return unmodifiableCollection(collection);
+    }
+
+    @SuppressWarnings ("unchecked")
+    private Map<String, Object> checkedObject (String property, @Nullable Object value) {
+        return checkedProperty (property, value, Map.class);
+    }
+
+    private <T> T checkedItem (String property, int index, Object value, Class<T> type) {
+        return checked (getCollectionPath (property, index), value, type);
+    }
+
+    private <T> T checkedProperty (String property, @Nullable Object value, Class<T> type) {
+        return checked (getPath(property), value, type);
+    }
+
+    @EnsuresNonNull ("#2")
+    @SuppressWarnings ("unchecked")
+    private <T> T checked (String path, @Nullable Object value, Class<T> type) {
         if (!type.isInstance (value))
-            throw new TypeMismatchException (getPath (property), type);
+            throw new TypeMismatchException (path, type);
 
-        return type.cast (value);
+        return (T) value;
     }
 
-    private <T> boolean isType (@Nullable Object value, Class<T> type) {
-        return type.isInstance (value);
+    @SuppressWarnings ("unchecked")
+    private static Map<String, Object> uncheckedObject (Object o) {
+        return (Map<String, Object>) o;
     }
 
-    private boolean isObject (@Nullable Object value) {
-        return value instanceof Map;
-    }
-
-    private boolean isArray (@Nullable Object value) {
-        return value instanceof Collection;
-    }
-
-    private boolean isString (@Nullable Object value) {
-        return value instanceof String;
+    @SuppressWarnings ("unchecked")
+    private static <T> T unchecked (Object o) {
+        return (T) o;
     }
 }

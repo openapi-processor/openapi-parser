@@ -32,14 +32,14 @@ class NodeSpec : StringSpec({
     }
 
     "gets object value throws if value is missing" {
-        shouldThrow<NoObjectException> {
+        shouldThrow<TypeMismatchException> {
             Node.empty().getObjectNode("property")
         }
     }
 
     "gets object value throws if value is not an object" {
         val node = Node("$", linkedMapOf<String, Any>("property" to "bad type"))
-        shouldThrow<NoObjectException> {
+        shouldThrow<TypeMismatchException> {
             node.getObjectNode("property")
         }
     }
@@ -47,13 +47,13 @@ class NodeSpec : StringSpec({
     // node array
 
     "gets object values throws if value is missing" {
-            shouldThrow<NoArrayException> {
+            shouldThrow<TypeMismatchException> {
             Node.empty().getObjectNodes("property")
         }
     }
 
     "gets object values throws if value is no collection" {
-        shouldThrow<NoArrayException> {
+        shouldThrow<TypeMismatchException> {
             Node.empty().getObjectNodes("property")
         }
     }
@@ -64,7 +64,7 @@ class NodeSpec : StringSpec({
             "not an object"
         )))
 
-        shouldThrow<NoObjectException> {
+        shouldThrow<TypeMismatchException> {
             node.getObjectNodes("property")
         }
     }

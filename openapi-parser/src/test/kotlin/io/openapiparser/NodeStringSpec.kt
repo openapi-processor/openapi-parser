@@ -56,13 +56,11 @@ class NodeStringSpec : StringSpec({
 
     "gets nullable string values" {
         Node.empty().getStringValues("missing").shouldBeNull()
-        Node.empty().getArrayStringValues("missing").shouldBeNull()
     }
 
     "gets string values" {
         val node = Node("$", linkedMapOf<String, Any>("property" to listOf("foo", "bar")))
         node.getStringValues("property").shouldContainExactly("foo", "bar")
-        node.getArrayStringValues("property").shouldContainExactly("foo", "bar")
     }
 
     "gets string values throws if values are not strings" {
@@ -70,20 +68,15 @@ class NodeStringSpec : StringSpec({
         shouldThrow<TypeMismatchException> {
             node.getStringValues("property")
         }
-        shouldThrow<TypeMismatchException> {
-            node.getArrayStringValues("property")
-        }
     }
 
     "gets not empty string values" {
         val node = Node("$", linkedMapOf<String, Any>("property" to listOf("foo", "bar")))
         node.getStringValuesOrEmpty("property").shouldContainExactly("foo", "bar")
-        node.getArrayStringValuesOrEmpty("property").shouldContainExactly("foo", "bar")
     }
 
     "gets empty array if property is missing" {
         Node.empty().getStringValuesOrEmpty("missing").shouldBeEmpty()
-        Node.empty().getArrayStringValuesOrEmpty("missing").shouldBeEmpty()
     }
 
 })
