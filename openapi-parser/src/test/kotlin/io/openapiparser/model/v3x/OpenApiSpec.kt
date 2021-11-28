@@ -113,4 +113,7 @@ class OpenApiSpec: StringSpec({
         openapi30().externalDocs.shouldBeNull()
         openapi31().externalDocs.shouldBeNull()
     }
+
+    include(testExtensions("Openapi30", ::openapi30) { it.extensions })
+    include(testExtensions("Openapi31", ::openapi31) { it.extensions })
 })

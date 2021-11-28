@@ -9,7 +9,6 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import io.openapiparser.support.TestBuilder
 import io.openapiparser.support.buildObject
 
 class OpenApiSpec: StringSpec({
@@ -44,20 +43,6 @@ class OpenApiSpec: StringSpec({
 
     "gets webhooks is null if it missing" {
         openapi().webhooks.shouldBeNull()
-    }
-
-    "gets extension values" {
-        val api = TestBuilder()
-            .withApi("""
-                any: value
-                x-foo: "foo extension"
-                x-bar: "bar extension"
-            """.trimIndent())
-            .buildOpenApi31()
-
-        val extensions = api.extensions
-        extensions.shouldNotBeNull()
-        extensions.size shouldBe 2
     }
 })
 
