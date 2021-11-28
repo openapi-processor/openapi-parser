@@ -21,6 +21,7 @@ dependencies {
     testImplementation ("org.junit.jupiter:junit-jupiter-params")
     testRuntimeOnly ("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("io.kotest:kotest-runner-junit5:4.6.1")
+    testImplementation("io.kotest:kotest-framework-datatest:4.6.1")
     testImplementation("io.mockk:mockk:1.12.0")
 }
 
