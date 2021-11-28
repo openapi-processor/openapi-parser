@@ -10,6 +10,9 @@ import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 
+/**
+ * @see [io.openapiparser.model.v3x.OpenApiSpec]
+ */
 class OpenApiSpec: StringSpec({
 
     "gets json schema dialect" {

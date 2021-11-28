@@ -9,6 +9,9 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 
+/**
+ * @see [io.openapiparser.model.v3x.InfoSpec]
+ */
 class InfoSpec : StringSpec({
 
     "gets info summary" {

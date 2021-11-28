@@ -7,6 +7,8 @@ package io.openapiparser.model.v30
 
 import io.kotest.core.spec.style.StringSpec
 
+/**
+ * @see [io.openapiparser.model.v3x.InfoSpec]
+ */
 class InfoSpec : StringSpec({
-    // see v3x.InfoSpec
 })

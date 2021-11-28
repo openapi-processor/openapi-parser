@@ -10,6 +10,9 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.openapiparser.NoValueException
 
+/**
+ * @see [io.openapiparser.model.v3x.OpenApiSpec]
+ */
 class OpenApiSpec : StringSpec({
 
     "gets paths object" {
