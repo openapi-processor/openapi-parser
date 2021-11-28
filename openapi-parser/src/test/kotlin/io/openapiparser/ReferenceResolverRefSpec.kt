@@ -10,6 +10,7 @@ import io.kotest.data.forAll
 import io.kotest.data.row
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import io.mockk.mockk
 import io.openapiparser.jackson.JacksonConverter
 import io.openapiparser.support.Memory
 import java.net.URI
@@ -44,7 +45,7 @@ class ReferenceResolverRefSpec: StringSpec ({
             row(URI("file:/openapi.yaml"), URI("file:/foo.yaml"), "foo.yaml#/foo"),
         ) { parentUri, docUri, ref ->
             val registry = ReferenceRegistry()
-            val resolver = ReferenceResolver(null, null, null, registry)
+            val resolver = ReferenceResolver(parentUri, mockk(), mockk(), registry)
             registry.add(parentUri, docUri, ref)
 
             val reference = resolver.resolve(parentUri, ref)

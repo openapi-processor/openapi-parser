@@ -40,7 +40,7 @@ class ReferenceResolverSpec : StringSpec({
         every { reader.read(any()) } throws IOException()
 
         shouldThrow<ResolverException> {
-            val resolver = ReferenceResolver(null, reader, null, null)
+            val resolver = ReferenceResolver(mockk(), reader, mockk(), mockk())
             resolver.resolve()
         }
     }
@@ -51,10 +51,10 @@ class ReferenceResolverSpec : StringSpec({
 
         shouldThrow<ResolverException> {
             val resolver = ReferenceResolver(
-                null,
+                mockk(),
                 StringReader("openapi: 3.0.3"),
                 converter,
-                null)
+                mockk())
             resolver.resolve()
         }
     }

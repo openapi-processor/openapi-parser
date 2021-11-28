@@ -12,6 +12,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.openapiparser.jackson.JacksonConverter
 import io.openapiparser.support.StringReader
+import java.lang.Exception
 import java.net.URI
 
 class ContextSpec : StringSpec({
@@ -39,7 +40,7 @@ class ContextSpec : StringSpec({
 
     "throws if reading fails" {
         val resolver = mockk<ReferenceResolver>()
-        every { resolver.resolve() } throws ResolverException("failed", null)
+        every { resolver.resolve() } throws ResolverException("failed", Exception())
 
         shouldThrow<ContextException> {
             val ctx = Context(
