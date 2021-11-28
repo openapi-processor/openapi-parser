@@ -5,10 +5,8 @@
 
 package io.openapiparser.model.v30
 
-import io.kotest.core.spec.style.StringSpec
+import io.openapiparser.support.buildObject
 
-/**
- * @see [io.openapiparser.model.v3x.LicenseSpec]
- */
-class LicenseSpec : StringSpec({
-})
+fun license(content: String = "{}"): License {
+    return buildObject(License::class.java, content)
+}
