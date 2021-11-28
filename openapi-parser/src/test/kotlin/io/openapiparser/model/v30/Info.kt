@@ -5,8 +5,8 @@
 
 package io.openapiparser.model.v30
 
-import io.kotest.core.spec.style.StringSpec
+import io.openapiparser.support.buildObject
 
-class InfoSpec : StringSpec({
-    // see v3x.InfoSpec
-})
+fun info(content: String = "{}"): Info {
+    return buildObject(Info::class.java, content)
+}
