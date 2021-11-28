@@ -5,10 +5,8 @@
 
 package io.openapiparser.model.v30
 
-import io.kotest.core.spec.style.StringSpec
+import io.openapiparser.support.buildObject
 
-/**
- * @see [io.openapiparser.model.v3x.ContactSpec]
- */
-class ContactSpec : StringSpec({
-})
+fun contact(content: String = "{}"): Contact {
+    return buildObject(Contact::class.java, content)
+}
