@@ -9,7 +9,6 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.openapiparser.NoValueException
-import io.openapiparser.support.buildObject
 
 class OpenApiSpec : StringSpec({
 
@@ -22,6 +21,3 @@ class OpenApiSpec : StringSpec({
     }
 })
 
-fun openapi(content: String = "{}"): OpenApi {
-    return buildObject(OpenApi::class.java, content)
-}

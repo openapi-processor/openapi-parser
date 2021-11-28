@@ -9,7 +9,6 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import io.openapiparser.support.buildObject
 
 class OpenApiSpec: StringSpec({
 
@@ -45,7 +44,3 @@ class OpenApiSpec: StringSpec({
         openapi().webhooks.shouldBeNull()
     }
 })
-
-fun openapi(content: String = "{}"): OpenApi {
-    return buildObject(OpenApi::class.java, content)
-}
