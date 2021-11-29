@@ -271,6 +271,19 @@ public class Node {
     }
 
     /**
+     * same as {@link #getObjectValues}, but returns an empty map if the property values is
+     * {@code null}.
+     */
+    @SuppressWarnings ("unchecked")
+    public <T> Map<String, T> getObjectValuesOrEmpty (String property, ObjectFactory<T> factory) {
+        Map<String, Object> value = (Map<String, Object>) properties.get (property);
+        if (value == null)
+            return Collections.emptyMap ();
+
+        return new Node(getPath (property), value).getObjectValues (factory);
+    }
+
+    /**
      * get a map with the extension properties.
      *
      * @return map of extension properties
