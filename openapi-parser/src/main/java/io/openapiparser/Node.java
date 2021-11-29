@@ -12,8 +12,7 @@ import java.util.stream.Collectors;
 import static java.util.Collections.unmodifiableCollection;
 import static java.util.Collections.unmodifiableMap;
 
-import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.*;
 
 /**
  * OpenAPI object wrapper. It provides utility functions to extract the properties from the raw map
@@ -328,6 +327,7 @@ public class Node {
      *
      * @return existing property names
      */
+    @SuppressWarnings ("return") // @KeyFor
     public Set<String> getPropertyNames () {
         return properties.keySet();
     }
