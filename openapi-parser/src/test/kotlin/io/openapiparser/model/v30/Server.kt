@@ -5,10 +5,8 @@
 
 package io.openapiparser.model.v30
 
-import io.kotest.core.spec.style.StringSpec
+import io.openapiparser.support.buildObject
 
-/**
- * @see [io.openapiparser.model.v3x.ServerSpec]
- */
-class ServerSpec : StringSpec({
-})
+fun server(content: String = "{}"): Server {
+    return buildObject(Server::class.java, content)
+}

@@ -7,28 +7,34 @@ package io.openapiparser.model.v31;
 
 import io.openapiparser.*;
 
+import java.util.Collection;
 import java.util.Map;
 
 import static io.openapiparser.Keywords.*;
 
 /**
- * the <em>Server</em> object.
+ * the <em>Server Variable</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.1.0.html#server-object">4.8.5 Server Object</a>
+ * <a href="https://spec.openapis.org/oas/v3.1.0.html#server-variable-object">4.8.6 Server Variable Object</a>
  */
-public class Server implements Extensions {
+public class ServerVariable implements Extensions {
     private final Context context;
     private final Node node;
 
-    public Server (Context context, Node node) {
+    public ServerVariable (Context context, Node node) {
         this.context = context;
         this.node = node;
     }
 
+    @Nullable
+    public Collection<String> getEnum () {
+        return node.getStringValues (ENUM);
+    }
+
     @Required
-    public String getUrl () {
-        return node.getRequiredStringValue (URL);
+    public String getDefault () {
+        return node.getRequiredStringValue (DEFAULT);
     }
 
     @Nullable
@@ -36,12 +42,8 @@ public class Server implements Extensions {
         return node.getStringValue (DESCRIPTION);
     }
 
-    public Map<String, ServerVariable> getVariables () {
-        return node.getObjectValuesOrEmpty (VARIABLES, node -> new ServerVariable (context, node));
-    }
-
     @Override
     public Map<String, Object> getExtensions () {
-        return node.getExtensions ();
+        return null;
     }
 }

@@ -36,13 +36,12 @@ public class Server implements Extensions {
         return node.getStringValue (DESCRIPTION);
     }
 
-    @Nullable
     public Map<String, ServerVariable> getVariables () {
-        return node.getObjectValues (VARIABLES, node -> new ServerVariable (context, node));
+        return node.getObjectValuesOrEmpty (VARIABLES, node -> new ServerVariable (context, node));
     }
 
     @Override
     public Map<String, Object> getExtensions () {
-        return null;
+        return node.getExtensions ();
     }
 }
