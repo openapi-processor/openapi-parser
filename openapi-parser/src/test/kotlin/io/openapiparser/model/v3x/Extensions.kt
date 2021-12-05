@@ -16,7 +16,7 @@ fun <O> testExtensions(
     extract: (o: O) -> Map<String, Any>
 ) = stringSpec {
 
-        "gets extension values of $name" {
+        "gets $name extension values" {
             val source = """
           any: value
           x-foo: "foo extension"
@@ -28,7 +28,7 @@ fun <O> testExtensions(
             extensions.size shouldBe 2
         }
 
-        "gets empty extension values of $name" {
+        "gets $name empty extension values" {
             extract(build("{}")).shouldBeEmpty()
         }
     }
