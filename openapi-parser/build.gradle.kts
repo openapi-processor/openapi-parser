@@ -8,6 +8,7 @@ plugins {
 
 dependencies {
     implementation(project(":openapi-parser-base"))
+    checkerFramework("org.checkerframework:checker:3.19.0")
 
     testImplementation(project(":openapi-parser-jackson"))
     testImplementation("org.spockframework:spock-core:2.1-M2-groovy-3.0")
