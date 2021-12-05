@@ -97,7 +97,7 @@ class ParameterSpec : StringSpec({
             .build(OpenApi::class.java)
 
         val path = api.paths.getPathItem("/foo")
-        val param = path.parameters.first()
-        param.name shouldBe "p"
+        val param = path?.parameters?.first()
+        param?.name shouldBe "p"
     }
 })
