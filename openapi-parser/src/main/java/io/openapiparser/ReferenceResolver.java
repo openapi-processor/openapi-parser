@@ -6,6 +6,7 @@
 package io.openapiparser;
 
 import io.openapiparser.support.Strings;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
 import java.util.Map;

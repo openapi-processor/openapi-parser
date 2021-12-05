@@ -6,6 +6,7 @@
 package io.openapiparser.model.v30;
 
 import io.openapiparser.*;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
 
@@ -31,8 +32,7 @@ public class Server implements Extensions {
         return node.getRequiredStringValue (URL);
     }
 
-    @Nullable
-    public String getDescription () {
+    public @Nullable String getDescription () {
         return node.getStringValue (DESCRIPTION);
     }
 

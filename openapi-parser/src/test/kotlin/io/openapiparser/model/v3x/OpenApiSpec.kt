@@ -62,8 +62,8 @@ class OpenApiSpec: StringSpec({
         """
 
         forAll(
-            openapi30(source).components,
-            openapi31(source).components
+            openapi30(source).components!!,
+            openapi31(source).components!!
         ) { components ->
             components.shouldNotBeNull()
         }

@@ -5,7 +5,9 @@
 
 package io.openapiparser.model.v30;
 
-import io.openapiparser.*;
+import io.openapiparser.Context;
+import io.openapiparser.Node;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
 
@@ -26,18 +28,15 @@ public class Contact implements Extensions {
         this.node = node;
     }
 
-    @Nullable
-    public String getName () {
+    public @Nullable String getName () {
         return node.getStringValue (NAME);
     }
 
-    @Nullable
-    public String getUrl () {
+    public @Nullable String getUrl () {
         return node.getStringValue (URL);
     }
 
-    @Nullable
-    public String getEmail () {
+    public @Nullable String getEmail () {
         return node.getStringValue (EMAIL);
     }
 

@@ -5,6 +5,8 @@
 
 package io.openapiparser;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 public class NodePathFinder {
     private static final String SLASH =  "/";
 

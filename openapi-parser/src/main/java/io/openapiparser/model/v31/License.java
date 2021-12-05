@@ -6,6 +6,7 @@
 package io.openapiparser.model.v31;
 
 import io.openapiparser.*;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
 
@@ -31,13 +32,11 @@ public class License implements Extensions {
         return node.getRequiredStringValue (NAME);
     }
 
-    @Nullable
-    public String getIdentifier () {
+    public @Nullable String getIdentifier () {
         return node.getStringValue (IDENTIFIER);
     }
 
-    @Nullable
-    public String getUrl () {
+    public @Nullable String getUrl () {
         return node.getStringValue (URL);
     }
 

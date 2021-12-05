@@ -6,6 +6,7 @@
 package io.openapiparser.model.v30;
 
 import io.openapiparser.*;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
 
@@ -31,23 +32,19 @@ public class Info implements Extensions {
         return node.getRequiredStringValue (TITLE);
     }
 
-    @Nullable
-    public String getDescription () {
+    public @Nullable String getDescription () {
         return node.getStringValue (DESCRIPTION);
     }
 
-    @Nullable
-    public String getTermsOfService () {
+    public @Nullable String getTermsOfService () {
         return node.getStringValue (TERMS_OF_SERVICE);
     }
 
-    @Nullable
-    public Contact getContact () {
+    public @Nullable Contact getContact () {
         return node.getObjectValue (CONTACT, node -> new Contact (context, node));
     }
 
-    @Nullable
-    public License getLicense () {
+    public @Nullable License getLicense () {
         return node.getObjectValue (LICENSE, node -> new License (context, node));
     }
 

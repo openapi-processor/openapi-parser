@@ -6,6 +6,7 @@
 package io.openapiparser.model.v31
 
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.maps.shouldBeEmpty
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
@@ -43,7 +44,7 @@ class OpenApiSpec: StringSpec({
         webhooks["/bar"].shouldNotBeNull()
     }
 
-    "gets webhooks is null if it missing" {
-        openapi().webhooks.shouldBeNull()
+    "gets webhooks is empty if it is missing" {
+        openapi().webhooks.shouldBeEmpty()
     }
 })

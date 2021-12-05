@@ -6,6 +6,7 @@
 package io.openapiparser.model.v31;
 
 import io.openapiparser.*;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Collection;
 import java.util.Map;
@@ -37,43 +38,38 @@ public class OpenApi implements Extensions {
         return node.getRequiredObjectValue (INFO, node -> new Info (context, node));
     }
 
-    @Nullable
-    public String getJsonSchemaDialect () {
+    public @Nullable String getJsonSchemaDialect () {
         return node.getStringValue (JSON_SCHEMA_DIALECT);
     }
 
-    @Nullable
     public Collection<Server> getServers () {
         return node.getArrayValuesOrEmpty (SERVERS, node -> new Server (context, node));
     }
 
-    @Nullable // @Required (if webhooks or components are null)
-    public Paths getPaths () {
+    // @Required (if webhooks or components are null)
+    public @Nullable Paths getPaths () {
         return node.getObjectValue (PATHS, node -> new Paths (context, node));
     }
 
-    @Nullable // @Required (if paths or components are null)
+     // @Required (if paths or components are null)
     public Map<String, PathItem> getWebhooks () {
-        return node.getObjectValues (WEBHOOKS, node -> new PathItem (context, node));
+        return node.getObjectValuesOrEmpty (WEBHOOKS, node -> new PathItem (context, node));
     }
 
-    @Nullable  // @Required (if paths or webhooks are null)
-    public Components getComponents () {
+    // @Required (if paths or webhooks are null)
+    public @Nullable Components getComponents () {
         return node.getObjectValue (COMPONENTS, node -> new Components (context, node));
     }
 
-    @Nullable
     public Collection<SecurityRequirement> getSecurity () {
         return node.getArrayValuesOrEmpty (SECURITY, node -> new SecurityRequirement (context, node));
     }
 
-    @Nullable
     public Collection<Tag> getTags () {
         return node.getArrayValuesOrEmpty (TAGS, node -> new Tag (context, node));
     }
 
-    @Nullable
-    public ExternalDocumentation getExternalDocs () {
+    public @Nullable ExternalDocumentation getExternalDocs () {
         return node.getObjectValue (EXTERNAL_DOCS, node -> new ExternalDocumentation (context, node));
     }
 

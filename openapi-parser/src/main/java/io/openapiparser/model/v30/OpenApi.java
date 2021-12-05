@@ -6,8 +6,10 @@
 package io.openapiparser.model.v30;
 
 import io.openapiparser.*;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Map;
 
 import static io.openapiparser.Keywords.*;
 
@@ -45,12 +47,10 @@ public class OpenApi implements Extensions {
         return node.getRequiredObjectValue (PATHS, node -> new Paths (context, node));
     }
 
-    @Nullable
-    public Components getComponents () {
+    public @Nullable Components getComponents () {
         return node.getObjectValue (COMPONENTS, node -> new Components (context, node));
     }
 
-    @Nullable
     public Collection<SecurityRequirement> getSecurity () {
         return node.getArrayValuesOrEmpty (SECURITY, node -> new SecurityRequirement (context, node));
     }
@@ -59,8 +59,7 @@ public class OpenApi implements Extensions {
         return node.getArrayValuesOrEmpty (TAGS, node -> new Tag (context, node));
     }
 
-    @Nullable
-    public ExternalDocumentation getExternalDocs () {
+    public @Nullable ExternalDocumentation getExternalDocs () {
         return node.getObjectValue (EXTERNAL_DOCS, node -> new ExternalDocumentation (context, node));
     }
 
