@@ -27,9 +27,8 @@ public class ServerVariable implements Extensions {
         this.node = node;
     }
 
-    @Nullable
     public Collection<String> getEnum () {
-        return node.getStringValues (ENUM);
+        return node.getStringValuesOrEmpty (ENUM);
     }
 
     @Required
@@ -44,6 +43,6 @@ public class ServerVariable implements Extensions {
 
     @Override
     public Map<String, Object> getExtensions () {
-        return null;
+        return node.getExtensions ();
     }
 }
