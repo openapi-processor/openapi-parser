@@ -13,11 +13,11 @@ import io.kotest.matchers.types.shouldBeInstanceOf
 class NodePathFinderSpec : StringSpec({
 
     "returns null for unknown path" {
-        NodePathFinder(Node(mapOf())).find("/unknown").shouldBeNull()
+        NodePathFinder(Node("$", mapOf())).find("/unknown").shouldBeNull()
     }
 
     "find by single level path" {
-        val found = NodePathFinder(Node(mapOf("key" to "value"))).find("/key")
+        val found = NodePathFinder(Node("$", mapOf("key" to "value"))).find("/key")
 
         found.shouldBeInstanceOf<String>()
         found.shouldBe("value")
@@ -25,6 +25,7 @@ class NodePathFinderSpec : StringSpec({
 
     "find by multi level path" {
         val found = NodePathFinder(Node(
+            "$",
             mapOf("level 0" to
                 mapOf("level 1" to
                     mapOf("level 2" to

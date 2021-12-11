@@ -18,7 +18,7 @@ class VersionValidatorSpec : StringSpec({
         val ctx = ValidationContext(URI("file:///any"))
         val version = VersionValidator()
 
-        val messages = version.validate(ctx, Node(mapOf<String, Any>(
+        val messages = version.validate(ctx, Node("$", mapOf<String, Any>(
             "openapi" to "3.0.0"
         )))
 
@@ -32,7 +32,7 @@ class VersionValidatorSpec : StringSpec({
 
         val ctx = ValidationContext(URI("file:///any"))
         val version = VersionValidator()
-        val messages = version.validate(ctx, Node(api))
+        val messages = version.validate(ctx, Node("$", api))
 
         messages.size shouldBe 1
         val message = messages.first()
@@ -47,7 +47,7 @@ class VersionValidatorSpec : StringSpec({
 
         val ctx = ValidationContext(URI("file:///any"))
         val version = VersionValidator()
-        val messages = version.validate(ctx, Node(api))
+        val messages = version.validate(ctx, Node("$", api))
 
         messages.size shouldBe 1
         val message = messages.first()
@@ -62,7 +62,7 @@ class VersionValidatorSpec : StringSpec({
 
         val ctx = ValidationContext(URI("file:///any"))
         val version = VersionValidator()
-        val messages = version.validate(ctx, Node(api))
+        val messages = version.validate(ctx, Node("$", api))
 
         messages.size shouldBe 1
         val message = messages.first()

@@ -22,7 +22,7 @@ class AllowedPropertiesValidatorSpec : StringSpec({
         val required = AllowedPropertiesValidator(listOf("foo", "bar"))
 
         val messages = required.validate(
-            ctx, Node(
+            ctx, Node("$",
                 mapOf<String, Any>(
                     "foo" to "allowed",
                     "bar" to "allowed",
@@ -42,7 +42,7 @@ class AllowedPropertiesValidatorSpec : StringSpec({
         val required = AllowedPropertiesValidator(listOf("foo", "bar"), INCLUDE_X)
 
         val messages = required.validate(
-            ctx, Node(
+            ctx, Node("$",
                 mapOf<String, Any>(
                     "foo" to "allowed",
                     "bar" to "allowed",
@@ -64,7 +64,7 @@ class AllowedPropertiesValidatorSpec : StringSpec({
         val required = AllowedPropertiesValidator(listOf("foo", "bar"), EXCLUDE_X)
 
         val messages = required.validate(
-            ctx, Node(
+            ctx, Node("$",
                 mapOf<String, Any>(
                     "foo" to "allowed",
                     "bar" to "allowed",

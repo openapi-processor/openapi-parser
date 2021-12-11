@@ -23,12 +23,15 @@ class RequiredPropertiesValidatorSpec : StringSpec({
             )
         )
 
-        val messages = required.validate(ctx, Node(mapOf<String, Any>(
-            "foo" to "required",
-            "bar" to "required",
-            "oof" to "any",
-            "rab" to "any"
-        )))
+        val messages = required.validate(
+            ctx,
+            Node("$", mapOf<String, Any>(
+                "foo" to "required",
+                "bar" to "required",
+                "oof" to "any",
+                "rab" to "any"
+            ))
+        )
 
         messages.isEmpty() shouldBe true
     }

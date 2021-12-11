@@ -19,7 +19,7 @@ class AtLeastOnePropertyValidatorSpec : StringSpec({
         val ctx = ValidationContext(URI("file:///any"))
         val required = AtLeastOnePropertyValidator(listOf("foo", "bar"))
 
-        val messages = required.validate(ctx, Node(mapOf<String, Any>()))
+        val messages = required.validate(ctx, Node("$", mapOf<String, Any>()))
 
         messages.size shouldBe 1
         messages.shouldExist { it.matches("$.(foo|bar)", "'foo|bar'") }
@@ -29,7 +29,7 @@ class AtLeastOnePropertyValidatorSpec : StringSpec({
         val ctx = ValidationContext(URI("file:///any"))
         val required = AtLeastOnePropertyValidator(listOf("foo", "bar"))
 
-        val messages = required.validate(ctx, Node(mapOf<String, Any>(
+        val messages = required.validate(ctx, Node("$", mapOf<String, Any>(
             "foo" to "any"
         )))
 

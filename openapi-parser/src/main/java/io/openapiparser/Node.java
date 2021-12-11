@@ -32,12 +32,6 @@ public class Node {
         return new Node("empty", Collections.emptyMap ());
     }
 
-    @Deprecated
-    public Node (Map<String, Object> properties) {
-        this.path = "not set";
-        this.properties = new HashMap<> (properties);
-    }
-
     public Node (String path, Map<String, Object> properties) {
         this.path = path;
         this.properties = new HashMap<> (properties);
