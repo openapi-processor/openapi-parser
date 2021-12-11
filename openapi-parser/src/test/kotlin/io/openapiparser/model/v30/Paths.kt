@@ -5,10 +5,8 @@
 
 package io.openapiparser.model.v30
 
-import io.kotest.core.spec.style.StringSpec
+import io.openapiparser.support.buildObject
 
-/**
- * @see [io.openapiparser.model.v3x.PathsSpec]
- */
-class PathsSpec : StringSpec({
-})
+fun paths(content: String = "{}"): Paths {
+    return buildObject(Paths::class.java, content)
+}

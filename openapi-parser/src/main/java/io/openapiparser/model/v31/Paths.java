@@ -5,8 +5,9 @@
 
 package io.openapiparser.model.v31;
 
-import io.openapiparser.Context;
-import io.openapiparser.Node;
+import io.openapiparser.*;
+import io.openapiparser.model.v30.PathItem;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
 
@@ -25,8 +26,17 @@ public class Paths implements Extensions {
         this.node = node;
     }
 
+    @Required
+    public Map<String, PathItem> getPathItems() {
+        return node.getObjectValues (node -> new PathItem (context, node));
+    }
+
+    public @Nullable PathItem getPathItem(String path) {
+        return node.getObjectValue (path, node -> new PathItem (context, node));
+    }
+
     @Override
     public Map<String, Object> getExtensions () {
-        return null;
+        return node.getExtensions ();
     }
 }

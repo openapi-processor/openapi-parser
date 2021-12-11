@@ -9,7 +9,6 @@ import io.openapiparser.*;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
-import java.util.Set;
 
 /**
  * the <em>Paths</em> object.
@@ -35,12 +34,8 @@ public class Paths implements Extensions {
         return node.getObjectValue (path, node -> new PathItem (context, node));
     }
 
-    public Set<String> pathSet() {
-        return node.getPropertyNames ();
-    }
-
     @Override
     public Map<String, Object> getExtensions () {
-        return null;
+        return node.getExtensions ();
     }
 }
