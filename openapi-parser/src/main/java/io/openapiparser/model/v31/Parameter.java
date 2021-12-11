@@ -3,7 +3,7 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.model.v30;
+package io.openapiparser.model.v31;
 
 import io.openapiparser.*;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -16,7 +16,7 @@ import static io.openapiparser.Keywords.*;
  * the <em>Parameter</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.0.3.html#parameter-object">4.7.12 Parameter Object</a>
+ * <a href="https://spec.openapis.org/oas/v3.1.0.html#parameter-object">4.8.12 Parameter Object</a>
  */
 public class Parameter implements Reference, Extensions {
     private final Context context;
@@ -40,6 +40,11 @@ public class Parameter implements Reference, Extensions {
     @Override
     public String getRef () {
         return node.getRequiredStringValue (REF);
+    }
+
+    @Override
+    public @Nullable String getSummary () {
+        return getSource ().getStringValue (SUMMARY);
     }
 
     @Required

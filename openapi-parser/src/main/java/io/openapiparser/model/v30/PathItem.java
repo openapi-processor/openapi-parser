@@ -85,7 +85,7 @@ public class PathItem implements Reference, Extensions {
     }
 
     public Collection<Parameter> getParameters () {
-        return getSource ().getArrayValues (PARAMETERS, node -> new Parameter (context, node));
+        return getSource ().getArrayValuesOrEmpty (PARAMETERS, node -> new Parameter (context, node));
     }
 
     private Operation getOperation(String property) {

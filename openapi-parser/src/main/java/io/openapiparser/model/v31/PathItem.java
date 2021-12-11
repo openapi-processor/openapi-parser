@@ -54,6 +54,10 @@ public class PathItem implements Extensions, Reference {
         return getSource ().getArrayValuesOrEmpty (SERVERS, node -> new Server (context, node));
     }
 
+    public Collection<Parameter> getParameters () {
+        return getSource ().getArrayValuesOrEmpty (PARAMETERS, node -> new Parameter (context, node));
+    }
+
     @Override
     public Map<String, Object> getExtensions () {
         return node.getExtensions ();

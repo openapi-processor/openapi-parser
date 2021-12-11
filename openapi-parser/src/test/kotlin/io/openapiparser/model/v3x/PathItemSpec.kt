@@ -39,8 +39,8 @@ class PathItemSpec: StringSpec({
 
     include(testDescription("path item 30", ::pathItem30) { it.description })
     include(testDescription("path item 31", ::pathItem31) { it.description })
-    
-    "gets server objects" {
+
+    "gets path item server objects" {
         forAll(
             pathItem30("servers: [{}, {}]").servers,
             pathItem31("servers: [{}, {}]").servers
@@ -50,9 +50,24 @@ class PathItemSpec: StringSpec({
         }
     }
 
-    "gets empty server objects if it is missing" {
+    "gets path item empty server objects if it is missing" {
         pathItem30().servers.shouldBeEmpty()
         pathItem31().servers.shouldBeEmpty()
+    }
+
+    "gets path item parameters" {
+        forAll(
+            pathItem30("parameters: [{}, {}]").parameters,
+            pathItem31("parameters: [{}, {}]").parameters
+        ) { parameters ->
+            parameters.shouldNotBeNull()
+            parameters.size shouldBe 2
+        }
+    }
+
+    "gets path item empty parameters objects if it is missing" {
+        pathItem30().parameters.shouldBeEmpty()
+        pathItem31().parameters.shouldBeEmpty()
     }
 
     include(testExtensions("path item 30", ::pathItem30) { it.extensions })
