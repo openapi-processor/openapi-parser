@@ -6,6 +6,7 @@
 package io.openapiparser.model.v30;
 
 import io.openapiparser.*;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Collection;
 import java.util.Map;
@@ -35,63 +36,52 @@ public class PathItem implements Reference, Extensions {
     }
 
     @Override
-    @Required
     public String getRef () {
         return node.getRequiredStringValue (REF);
     }
 
-    @Nullable
-    public String getSummary () {
+    public  @Nullable String getSummary () {
         return getSource ().getStringValue (SUMMARY);
     }
 
-    @Nullable
-    public String getDescription () {
+    public @Nullable String getDescription () {
         return getSource ().getStringValue (DESCRIPTION);
     }
 
-    @Nullable
-    public Operation getGet () {
+    public @Nullable Operation getGet () {
         return getOperation (GET);
     }
 
-    @Nullable
-    public Operation getPut () {
+    public @Nullable Operation getPut () {
         return getOperation (PUT);
     }
 
-    @Nullable
-    public Operation getPost () {
+    public @Nullable Operation getPost () {
         return getOperation (POST);
     }
 
-    @Nullable
-    public Operation getDelete () {
+    public @Nullable Operation getDelete () {
         return getOperation (DELETE);
     }
 
-    @Nullable
-    public Operation getOptions () {
+    public @Nullable Operation getOptions () {
         return getOperation (OPTIONS);
     }
 
-    @Nullable
-    public Operation getHead () {
+    public @Nullable Operation getHead () {
         return getOperation (HEAD);
     }
 
-    @Nullable
-    public Operation getPatch () {
+    public @Nullable Operation getPatch () {
         return getOperation (PATCH);
     }
 
-    @Nullable
-    public Operation getTrace () {
+    public @Nullable Operation getTrace () {
         return getOperation (TRACE);
     }
 
     public Collection<Server> getServers () {
-        return getSource ().getArrayValues (SERVERS, node -> new Server(context, node));
+        return getSource ().getArrayValuesOrEmpty (SERVERS, node -> new Server(context, node));
     }
 
     public Collection<Parameter> getParameters () {
@@ -102,17 +92,16 @@ public class PathItem implements Reference, Extensions {
         return getSource ().getObjectValue (property, node -> new Operation (context, node));
     }
 
+    @Override
+    public Map<String, Object> getExtensions () {
+        return node.getExtensions ();
+    }
+
     private Node getSource () {
         return (refNode != null) ? refNode : node;
     }
 
-    @Nullable
-    private Node getRefNode () {
+    private @Nullable Node getRefNode () {
         return context.getRefNodeOrNull (node.getStringValue (REF));
-    }
-
-    @Override
-    public Map<String, Object> getExtensions () {
-        return null;
     }
 }

@@ -6,8 +6,12 @@
 package io.openapiparser.model.v31;
 
 import io.openapiparser.*;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.util.Collection;
 import java.util.Map;
+
+import static io.openapiparser.Keywords.*;
 
 /**
  * the <em>Path Item</em> object.
@@ -26,26 +30,40 @@ public class PathItem implements Extensions, Reference {
         refNode = null; // getRefNode ();
     }
 
-    @Nullable
+    @Override
+    public boolean isRef () {
+        return node.hasProperty (REF);
+    }
+
     @Override
     public String getRef () {
-        return null;
+        return node.getRequiredStringValue (REF);
     }
 
-    @Nullable
     @Override
-    public String getSummary () {
-        return null;
+    public @Nullable String getSummary () {
+        return getSource ().getStringValue (SUMMARY);
     }
 
-    @Nullable
     @Override
-    public String getDescription () {
-        return null;
+    public  @Nullable String getDescription () {
+        return getSource ().getStringValue (DESCRIPTION);
+    }
+
+    public Collection<Server> getServers () {
+        return getSource ().getArrayValuesOrEmpty (SERVERS, node -> new Server (context, node));
     }
 
     @Override
     public Map<String, Object> getExtensions () {
-        return null;
+        return node.getExtensions ();
+    }
+
+    private Node getSource () {
+        return (refNode != null) ? refNode : node;
+    }
+
+    private @Nullable Node getRefNode () {
+        return context.getRefNodeOrNull (node.getStringValue (REF));
     }
 }
