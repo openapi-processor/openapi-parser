@@ -37,7 +37,7 @@ public class Context {
         return getRefNode (current.getPath (), ref);
     }
 
-    public @Nullable Node getRefNodeOrNull(String ref) {
+    public @Nullable Node getRefNodeOrNull(@Nullable String ref) {
         if (ref == null)
             return null;
 
