@@ -71,6 +71,7 @@ class ParameterSpec : StringSpec({
         param.examples.shouldNotBeNull()
     }
 
+    /*
     "gets content objects" {
         val param = TestBuilder()
             .withApi("""
@@ -82,7 +83,7 @@ class ParameterSpec : StringSpec({
         val content = param.content
         content.size shouldBe 1
         content.shouldContainKey("application/json")
-    }
+    }*/
 
     "gets parameter with \$ref" {
         val api = TestBuilder()
