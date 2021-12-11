@@ -36,15 +36,8 @@ class InfoSpec: StringSpec({
         shouldThrow<NoValueException> { info31().version }
     }
 
-    "gets info description" {
-        info30("description: the description").description shouldBe "the description"
-        info31("description: the description").description shouldBe "the description"
-    }
-
-    "gets info description is null if missing" {
-        info30().description.shouldBeNull()
-        info31().description.shouldBeNull()
-    }
+    include(testDescription("info 30", ::info30) { it.description })
+    include(testDescription("info 31", ::info31) { it.description })
 
     "gets info terms of service" {
         info30("termsOfService: https://any/terms").termsOfService shouldBe "https://any/terms"
