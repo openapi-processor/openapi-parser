@@ -11,6 +11,10 @@ fun contact(content: String = "{}"): Contact {
     return buildObject(Contact::class.java, content)
 }
 
+fun example(content: String = "{}"): Example {
+    return buildObject(Example::class.java, content)
+}
+
 fun info(content: String = "{}"): Info {
     return buildObject(Info::class.java, content)
 }
