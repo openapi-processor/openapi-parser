@@ -6,8 +6,12 @@
 package io.openapiparser.model.v30;
 
 import io.openapiparser.*;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
+
+import static io.openapiparser.Keywords.REF;
+import static io.openapiparser.Keywords.SCHEMA;
 
 /**
  * the <em>Media Type</em> object.
@@ -23,22 +27,32 @@ public class MediaType implements Reference, Extensions {
     public MediaType (Context context, Node node) {
         this.context = context;
         this.node = node;
-        refNode = null; //getRefNode ();
+        refNode = context.getRefNodeOrNull (node);
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean isRef () {
-        return false;
+        return node.hasProperty (REF);
     }
 
-    @Override
+    /** {@inheritDoc} */
     @Required
+    @Override
     public String getRef () {
-        return null;
+        return node.getRequiredStringValue (REF);
+    }
+
+    public @Nullable Schema getSchema () {
+        return getSource ().getObjectValue (SCHEMA, node -> new Schema (context, node));
     }
 
     @Override
     public Map<String, Object> getExtensions () {
         return null;
+    }
+
+    private Node getSource () {
+        return (refNode != null) ? refNode : node;
     }
 }

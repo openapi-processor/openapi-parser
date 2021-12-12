@@ -19,6 +19,10 @@ fun license(content: String = "{}"): License {
     return buildObject(License::class.java, content)
 }
 
+fun mediaType(content: String = "{}"): MediaType {
+    return buildObject(MediaType::class.java, content)
+}
+
 fun openapi(content: String = "{}"): OpenApi {
     return buildObject(OpenApi::class.java, content)
 }

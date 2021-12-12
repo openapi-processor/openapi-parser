@@ -10,6 +10,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
 
+import static io.openapiparser.Keywords.*;
+
 /**
  * the <em>Media Type</em> object.
  *
@@ -24,32 +26,42 @@ public class MediaType implements Reference, Extensions {
     public MediaType (Context context, Node node) {
         this.context = context;
         this.node = node;
-        refNode = null; //getRefNode ();
+        refNode = context.getRefNodeOrNull (node);
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean isRef () {
-        return false;
+        return node.hasProperty (REF);
     }
 
+    /** {@inheritDoc} */
     @Override
     @Required
     public String getRef () {
-        return null;
+        return node.getRequiredStringValue (REF);
     }
 
     @Override
     public @Nullable String getSummary () {
-        return null;
+        return getSource ().getStringValue (SUMMARY);
     }
 
     @Override
     public @Nullable String getDescription () {
-        return null;
+        return getSource ().getStringValue (DESCRIPTION);
+    }
+
+    public @Nullable Schema getSchema () {
+        return getSource ().getObjectValue (SCHEMA, node -> new Schema (context, node));
     }
 
     @Override
     public Map<String, Object> getExtensions () {
         return null;
+    }
+
+    private Node getSource () {
+        return (refNode != null) ? refNode : node;
     }
 }
