@@ -27,7 +27,7 @@ public class PathItem implements Reference, Extensions {
     public PathItem (Context context, Node node) {
         this.context = context;
         this.node = node;
-        refNode = getRefNode ();
+        refNode = context.getRefNodeOrNull (node);
     }
 
     @Override
@@ -99,9 +99,5 @@ public class PathItem implements Reference, Extensions {
 
     private Node getSource () {
         return (refNode != null) ? refNode : node;
-    }
-
-    private @Nullable Node getRefNode () {
-        return context.getRefNodeOrNull (node.getStringValue (REF));
     }
 }

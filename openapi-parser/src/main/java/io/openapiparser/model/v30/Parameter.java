@@ -26,7 +26,7 @@ public class Parameter implements Reference, Extensions {
     public Parameter (Context context, Node node) {
         this.context = context;
         this.node = node;
-        refNode = getRefNode ();
+        refNode = context.getRefNodeOrNull (node);
     }
 
     /** {@inheritDoc} */
@@ -116,10 +116,6 @@ public class Parameter implements Reference, Extensions {
 
     private Node getSource () {
         return (refNode != null) ? refNode : node;
-    }
-
-    private @Nullable Node getRefNode () {
-        return context.getRefNodeOrNull (node);
     }
 
     @Override
