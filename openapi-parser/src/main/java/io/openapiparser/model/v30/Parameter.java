@@ -116,7 +116,7 @@ public class Parameter implements Reference, Extensions {
 
     @Override
     public Map<String, Object> getExtensions () {
-        return node.getExtensions ();
+        return getSource ().getExtensions ();
     }
 
     private Node getSource () {
