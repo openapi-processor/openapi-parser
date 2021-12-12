@@ -12,7 +12,9 @@ import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import io.openapiparser.model.v30.openapi as openapi30
 import io.openapiparser.model.v30.pathItem as pathItem30
+import io.openapiparser.model.v31.openapi as openapi31
 import io.openapiparser.model.v31.pathItem as pathItem31
 
 class PathItemSpec: StringSpec({
@@ -25,6 +27,23 @@ class PathItemSpec: StringSpec({
         val item31 = pathItem31("\$ref: '#/path'")
         item31.isRef.shouldBeTrue()
         item31.ref shouldBe "#/path"
+    }
+
+    "get path item property from \$ref" {
+        val source = """
+            paths:
+              /foo:
+                parameters:
+                  - ${'$'}ref: '#/parameter'
+            parameter:
+                name: ref name
+        """
+
+        val parameter30 = openapi30(source).paths .getPathItem("/foo")?.parameters?.first()
+        parameter30?.name shouldBe "ref name"
+
+        val parameter31 = openapi31(source).paths?.getPathItem("/foo")?.parameters?.first()
+        parameter31?.name shouldBe "ref name"
     }
 
     "gets path item summary" {
@@ -75,40 +94,3 @@ class PathItemSpec: StringSpec({
     include(testExtensions("path item 30", ::pathItem30) { it.extensions })
     include(testExtensions("path item 31", ::pathItem31) { it.extensions })
 })
-
-
-/*
-    "gets path item parameters with \$ref" {
-        val api = TestBuilder()
-            .withApi("""
-                paths:
-                  /foo:
-                    parameters:
-                      - ${'$'}ref: '#/parameter'
-                parameter: {}
-            """.trimIndent())
-            .buildOpenApi30()
-
-        val path = api.paths.getPathItem("/foo")
-        val params = path?.parameters
-        params?.size shouldBe 1
-    }
-
-    "gets \$ref path item object" {
-        val api = TestBuilder()
-            .withApi("""
-                paths:
-                  /foo:
-                    ${'$'}ref: '#/path'
-                path:
-                  summary: a summary
-                  description: a description
-            """.trimIndent())
-            .buildOpenApi30()
-
-        val path = api.paths.getPathItem("/foo")
-        path?.ref shouldBe "#/path"
-        path?.summary shouldBe "a summary"
-        path?.description shouldBe "a description"
-    }
- */
