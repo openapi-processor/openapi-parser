@@ -48,27 +48,27 @@ class ParameterSpec: StringSpec({
     include(testDescription("parameter 31", ::parameter31) { it.description })
 
     "gets parameter required" {
-        parameter30("required: true").required!!.shouldBeTrue()
-        parameter30("required: false").required!!.shouldBeFalse()
-        parameter31("required: true").required!!.shouldBeTrue()
-        parameter31("required: false").required!!.shouldBeFalse()
+        parameter30("required: true").required.shouldBeTrue()
+        parameter30("required: false").required.shouldBeFalse()
+        parameter31("required: true").required.shouldBeTrue()
+        parameter31("required: false").required.shouldBeFalse()
     }
 
     "gets parameter required is false if missing" {
-        parameter30().required!!.shouldBeFalse()
-        parameter31().required!!.shouldBeFalse()
+        parameter30().required.shouldBeFalse()
+        parameter31().required.shouldBeFalse()
     }
 
     "gets parameter deprecated" {
-        parameter30("deprecated: true").deprecated!!.shouldBeTrue()
-        parameter30("deprecated: false").deprecated!!.shouldBeFalse()
-        parameter31("deprecated: true").deprecated!!.shouldBeTrue()
-        parameter31("deprecated: false").deprecated!!.shouldBeFalse()
+        parameter30("deprecated: true").deprecated.shouldBeTrue()
+        parameter30("deprecated: false").deprecated.shouldBeFalse()
+        parameter31("deprecated: true").deprecated.shouldBeTrue()
+        parameter31("deprecated: false").deprecated.shouldBeFalse()
     }
 
     "gets parameter deprecated is false if missing" {
-        parameter30().deprecated!!.shouldBeFalse()
-        parameter31().deprecated!!.shouldBeFalse()
+        parameter30().deprecated.shouldBeFalse()
+        parameter31().deprecated.shouldBeFalse()
     }
 
     "gets parameter allowEmptyValue" {
