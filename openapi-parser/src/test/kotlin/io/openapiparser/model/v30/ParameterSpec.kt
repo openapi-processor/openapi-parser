@@ -6,7 +6,6 @@
 package io.openapiparser.model.v30
 
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.maps.shouldContainKey
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.openapiparser.support.TestBuilder
@@ -28,12 +27,6 @@ class ParameterSpec : StringSpec({
             """.trimIndent())
             .build(Parameter::class.java)
 
-        param.name shouldBe "p"
-        param.`in` shouldBe "query"
-        param.description shouldBe "a description"
-        param.required shouldBe true
-        param.deprecated shouldBe true
-        param.allowEmptyValue shouldBe true
         param.style shouldBe "simple"
         param.explode shouldBe true
         param.allowReserved shouldBe true

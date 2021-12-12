@@ -40,6 +40,8 @@ class PathItemSpec: StringSpec({
     include(testDescription("path item 30", ::pathItem30) { it.description })
     include(testDescription("path item 31", ::pathItem31) { it.description })
 
+    // todo operations
+
     "gets path item server objects" {
         forAll(
             pathItem30("servers: [{}, {}]").servers,

@@ -31,6 +31,10 @@ fun paths(content: String = "{}"): Paths {
     return buildObject(Paths::class.java, content)
 }
 
+fun parameter(content: String = "{}"): Parameter {
+    return buildObject(Parameter::class.java, content)
+}
+
 fun server(content: String = "{}"): Server {
     return buildObject(Server::class.java, content)
 }

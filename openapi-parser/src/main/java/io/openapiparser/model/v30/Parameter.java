@@ -57,19 +57,17 @@ public class Parameter implements Reference, Extensions {
         return getSource ().getStringValue (DESCRIPTION);
     }
 
-    @Nullable
     public Boolean getRequired () {
-        return getSource ().getBooleanValue (REQUIRED);
+        return getSource ().getBooleanValue (REQUIRED, false);
     }
 
-    @Nullable
     public Boolean getDeprecated () {
-        return getSource ().getBooleanValue (DEPRECATED);
+        return getSource ().getBooleanValue (DEPRECATED, false);
     }
 
     @Nullable
     public Boolean getAllowEmptyValue () {
-        return getSource ().getBooleanValue (ALLOW_EMPTY_VALUE);
+        return getSource ().getBooleanValue (ALLOW_EMPTY_VALUE, false);
     }
 
     @Nullable
