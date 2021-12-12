@@ -57,8 +57,7 @@ public class Parameter implements Reference, Extensions {
         return getSource ().getRequiredStringValue (IN);
     }
 
-    @Nullable
-    public String getDescription () {
+    public @Nullable String getDescription () {
         return getSource ().getStringValue (DESCRIPTION);
     }
 
