@@ -57,6 +57,7 @@ public class Parameter implements Reference, Extensions {
         return getSource ().getRequiredStringValue (IN);
     }
 
+    @Override
     public @Nullable String getDescription () {
         return getSource ().getStringValue (DESCRIPTION);
     }
@@ -119,12 +120,12 @@ public class Parameter implements Reference, Extensions {
         return getSource ().getObjectValuesOrEmpty (CONTENT, node -> new MediaType (context, node));
     }
 
-    private Node getSource () {
-        return (refNode != null) ? refNode : node;
-    }
-
     @Override
     public Map<String, Object> getExtensions () {
         return node.getExtensions ();
+    }
+
+    private Node getSource () {
+        return (refNode != null) ? refNode : node;
     }
 }
