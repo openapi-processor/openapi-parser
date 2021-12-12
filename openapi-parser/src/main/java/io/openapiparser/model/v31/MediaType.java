@@ -18,50 +18,33 @@ import static io.openapiparser.Keywords.*;
  * <p>See specification:
  * <a href="https://spec.openapis.org/oas/v3.1.0.html#media-type-object">4.8.14 Media Type Object</a>
  */
-public class MediaType implements Reference, Extensions {
+public class MediaType implements Extensions {
     private final Context context;
     private final Node node;
-    private final @Nullable Node refNode;
 
     public MediaType (Context context, Node node) {
         this.context = context;
         this.node = node;
-        refNode = context.getRefNodeOrNull (node);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public boolean isRef () {
-        return node.hasProperty (REF);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    @Required
-    public String getRef () {
-        return node.getRequiredStringValue (REF);
-    }
-
-    @Override
-    public @Nullable String getSummary () {
-        return getSource ().getStringValue (SUMMARY);
-    }
-
-    @Override
-    public @Nullable String getDescription () {
-        return getSource ().getStringValue (DESCRIPTION);
     }
 
     public @Nullable Schema getSchema () {
-        return getSource ().getObjectValue (SCHEMA, node -> new Schema (context, node));
+        return node.getObjectValue (SCHEMA, node -> new Schema (context, node));
+    }
+
+    public @Nullable Object getExample () {
+        return node.getRawValue (EXAMPLE);
+    }
+
+    public Map<String, Example> getExamples () {
+        return node.getObjectValuesOrEmpty (EXAMPLES, node -> new Example(context, node));
+    }
+
+    public Map<String, MediaType> getContent () {
+        return node.getObjectValuesOrEmpty (CONTENT, node -> new MediaType (context, node));
     }
 
     @Override
     public Map<String, Object> getExtensions () {
-        return null;
-    }
-
-    private Node getSource () {
-        return (refNode != null) ? refNode : node;
+        return node.getExtensions ();
     }
 }
