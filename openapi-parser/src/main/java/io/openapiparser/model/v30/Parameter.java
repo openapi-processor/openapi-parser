@@ -65,24 +65,38 @@ public class Parameter implements Reference, Extensions {
         return getSource ().getBooleanValue (DEPRECATED, false);
     }
 
-    @Nullable
     public Boolean getAllowEmptyValue () {
         return getSource ().getBooleanValue (ALLOW_EMPTY_VALUE, false);
     }
 
-    @Nullable
     public String getStyle () {
-        return getSource ().getStringValue (STYLE);
+        String style = getSource ().getStringValue (STYLE);
+        if (style != null) {
+            return style;
+        }
+
+        final String in = getIn ();
+        switch (in) {
+            case "query":
+            case "cookie":
+                return "form";
+            default:
+                return "simple";
+        }
     }
 
-    @Nullable
     public Boolean getExplode () {
-        return getSource ().getBooleanValue (EXPLODE);
+        Boolean explode = getSource ().getBooleanValue (EXPLODE);
+        if (explode != null) {
+            return explode;
+        }
+
+        final String style = getStyle ();
+        return "form".equals (style);
     }
 
-    @Nullable
     public Boolean getAllowReserved () {
-        return getSource ().getBooleanValue (ALLOW_RESERVED);
+        return getSource ().getBooleanValue (ALLOW_RESERVED, false);
     }
 
     @Nullable

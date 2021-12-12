@@ -64,14 +64,52 @@ class ParameterSpec: StringSpec({
     }
 
     "gets parameter allowEmptyValue" {
-        parameter30("allowEmptyValue: true").allowEmptyValue!!.shouldBeTrue()
-        parameter30("allowEmptyValue: false").allowEmptyValue!!.shouldBeFalse()
-        parameter31("allowEmptyValue: true").allowEmptyValue!!.shouldBeTrue()
-        parameter31("allowEmptyValue: false").allowEmptyValue!!.shouldBeFalse()
+        parameter30("allowEmptyValue: true").allowEmptyValue.shouldBeTrue()
+        parameter30("allowEmptyValue: false").allowEmptyValue.shouldBeFalse()
+        parameter31("allowEmptyValue: true").allowEmptyValue.shouldBeTrue()
+        parameter31("allowEmptyValue: false").allowEmptyValue.shouldBeFalse()
     }
 
     "gets parameter allowEmptyValue is false if missing" {
-        parameter30().allowEmptyValue!!.shouldBeFalse()
-        parameter31().allowEmptyValue!!.shouldBeFalse()
+        parameter30().allowEmptyValue.shouldBeFalse()
+        parameter31().allowEmptyValue.shouldBeFalse()
+    }
+
+    "gets parameter style" {
+        parameter30("style: a Style").style shouldBe "a Style"
+        parameter31("style: a Style").style shouldBe "a Style"
+    }
+
+    "gets parameter style is default if missing" {
+        parameter30("in: query").style shouldBe "form"
+        parameter30("in: cookie").style shouldBe "form"
+        parameter30("in: path").style shouldBe "simple"
+        parameter30("in: header").style shouldBe "simple"
+        parameter31("in: query").style shouldBe "form"
+        parameter31("in: cookie").style shouldBe "form"
+        parameter31("in: path").style shouldBe "simple"
+        parameter31("in: header").style shouldBe "simple"
+    }
+
+    "gets parameter explode" {
+        parameter30("explode: true").explode shouldBe true
+        parameter31("explode: true").explode shouldBe true
+    }
+
+    "gets parameter explode is default if missing" {
+        parameter30("style: form").explode.shouldBeTrue()
+        parameter30("style: simple").explode.shouldBeFalse()
+        parameter31("style: form").explode.shouldBeTrue()
+        parameter31("style: simple").explode.shouldBeFalse()
+    }
+
+    "gets parameter allowReserved" {
+        parameter30("allowReserved: true").allowReserved.shouldBeTrue()
+        parameter31("allowReserved: true").allowReserved.shouldBeTrue()
+    }
+
+    "gets parameter allowReserved is false if missing" {
+        parameter30().allowReserved.shouldBeFalse()
+        parameter31().allowReserved.shouldBeFalse()
     }
 })
