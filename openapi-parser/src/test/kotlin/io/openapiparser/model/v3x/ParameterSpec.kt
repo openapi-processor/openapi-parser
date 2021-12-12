@@ -9,9 +9,17 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.maps.shouldBeEmpty
+import io.kotest.matchers.nulls.shouldBeNull
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 import io.openapiparser.NoValueException
+import io.openapiparser.model.v30.Example as Example30
+import io.openapiparser.model.v30.MediaType as MediaType30
 import io.openapiparser.model.v30.parameter as parameter30
+import io.openapiparser.model.v31.Example as Example31
+import io.openapiparser.model.v31.MediaType as MediaType31
 import io.openapiparser.model.v31.parameter as parameter31
 
 class ParameterSpec: StringSpec({
@@ -112,4 +120,97 @@ class ParameterSpec: StringSpec({
         parameter30().allowReserved.shouldBeFalse()
         parameter31().allowReserved.shouldBeFalse()
     }
+
+    "gets parameter schema" {
+        parameter30("schema: {}").schema.shouldNotBeNull()
+        parameter31("schema: {}").schema.shouldNotBeNull()
+    }
+
+    "gets parameter schema is null if missing" {
+        parameter30().schema.shouldBeNull()
+        parameter31().schema.shouldBeNull()
+    }
+
+    "gets parameter example" {
+        parameter30("example: {}").example.shouldNotBeNull()
+        parameter31("example: {}").example.shouldNotBeNull()
+    }
+
+    "gets parameter example is null if missing" {
+        parameter30().example.shouldBeNull()
+        parameter31().example.shouldBeNull()
+    }
+
+    "gets parameter examples 30" {
+        val source = """
+            examples:
+             foo: {}
+             bar: {}
+        """
+
+        val examples = parameter30(source).examples
+
+        examples.shouldNotBeNull()
+        examples.size shouldBe 2
+        examples["foo"].shouldBeInstanceOf<Example30>()
+        examples["bar"].shouldBeInstanceOf<Example30>()
+    }
+
+    "gets parameter examples 31" {
+        val source = """
+            examples:
+             foo: {}
+             bar: {}
+        """
+
+        val examples = parameter31(source).examples
+
+        examples.shouldNotBeNull()
+        examples.size shouldBe 2
+        examples["foo"].shouldBeInstanceOf<Example31>()
+        examples["bar"].shouldBeInstanceOf<Example31>()
+    }
+
+    "gets parameter examples is empty if missing" {
+        parameter30().examples.shouldBeEmpty()
+        parameter31().examples.shouldBeEmpty()
+    }
+
+    "gets parameter content 30" {
+        val source = """
+            content:
+             application/json: {}
+             application/xml: {}
+        """
+
+        val content = parameter30(source).content
+
+        content.shouldNotBeNull()
+        content.size shouldBe 2
+        content["application/json"].shouldBeInstanceOf<MediaType30>()
+        content["application/xml"].shouldBeInstanceOf<MediaType30>()
+    }
+
+    "gets parameter content 31" {
+        val source = """
+            content:
+             application/json: {}
+             application/xml: {}
+        """
+
+        val content = parameter31(source).content
+
+        content.shouldNotBeNull()
+        content.size shouldBe 2
+        content["application/json"].shouldBeInstanceOf<MediaType31>()
+        content["application/xml"].shouldBeInstanceOf<MediaType31>()
+    }
+
+    "gets parameter content is empty if missing" {
+        parameter30().content.shouldBeEmpty()
+        parameter31().content.shouldBeEmpty()
+    }
+
+    include(testExtensions("parameter30", ::parameter30) { it.extensions })
+    include(testExtensions("parameter31", ::parameter31) { it.extensions })
 })

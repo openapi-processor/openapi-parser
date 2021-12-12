@@ -99,37 +99,32 @@ public class Parameter implements Reference, Extensions {
         return getSource ().getBooleanValue (ALLOW_RESERVED, false);
     }
 
-    @Nullable
-    public Schema getSchema () {
-        return getSource ().getRequiredObjectValue (SCHEMA, node -> new Schema (context, node));
+    public @Nullable Schema getSchema () {
+        return getSource ().getObjectValue (SCHEMA, node -> new Schema (context, node));
     }
 
-    @Nullable
-    public Object getExample () {
+    public @Nullable Object getExample () {
         return getSource ().getRawValue (EXAMPLE);
     }
 
-    @Nullable
     public Map<String, Example> getExamples () {
-        return getSource ().getObjectValues (EXAMPLES, node -> new Example(context, node));
+        return getSource ().getObjectValuesOrEmpty (EXAMPLES, node -> new Example(context, node));
     }
 
-    @Nullable
     public Map<String, MediaType> getContent () {
-        return getSource ().getObjectValues (CONTENT, node -> new MediaType (context, node));
+        return getSource ().getObjectValuesOrEmpty (CONTENT, node -> new MediaType (context, node));
     }
 
     private Node getSource () {
         return (refNode != null) ? refNode : node;
     }
 
-    @Nullable
-    private Node getRefNode () {
+    private @Nullable Node getRefNode () {
         return context.getRefNodeOrNull (node);
     }
 
     @Override
     public Map<String, Object> getExtensions () {
-        return null;
+        return node.getExtensions ();
     }
 }
