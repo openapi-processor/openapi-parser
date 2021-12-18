@@ -9,8 +9,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.unmodifiableCollection;
-import static java.util.Collections.unmodifiableMap;
+import static java.util.Collections.*;
 
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -265,6 +264,28 @@ public class Node {
             throw new NoValueException (getPath(property));
         }
         return value;
+    }
+
+    /**
+     * converts the value of the given property name to a map of string to set of {@link String}.
+     *
+     * @param property property name
+     * @return map of property to set of property string values
+     */
+    public Map<String, Set<String>> getObjectSetValuesOrEmpty (String property) {
+        Object raw = getRawValue (property);
+        if (raw == null) {
+            return Collections.emptyMap ();
+        }
+
+        Map<String, Set<String>> required = new LinkedHashMap<> ();
+
+        Node node = new Node (property, checkedObject (property, raw));
+        node.getPropertyNames ().forEach (k -> {
+            required.put (k, unmodifiableSet (new LinkedHashSet<> (node.getStringValuesOrEmpty (k))));
+        });
+
+        return unmodifiableMap (required);
     }
 
     /**

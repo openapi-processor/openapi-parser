@@ -18,6 +18,7 @@ public interface Keywords {
     String CONTENT_TYPE = "contentType";
     String DEFAULT = "default";
     String DELETE = "delete";
+    String DEPENDENT_REQUIRED = "dependentRequired";
     String DEPRECATED = "deprecated";
     String DESCRIPTION = "description";
     String ENUM = "enum";
@@ -25,6 +26,8 @@ public interface Keywords {
     String ENCODING = "encoding";
     String EXAMPLE = "example";
     String EXAMPLES = "examples";
+    String EXCLUSIVE_MAXIMUM = "exclusiveMaximum";
+    String EXCLUSIVE_MINIMUM = "exclusiveMinimum";
     String EXPLODE = "explode";
     String EXTERNAL_DOCS = "externalDocs";
     String EXTERNAL_VALUE = "externalValue";
@@ -36,6 +39,17 @@ public interface Keywords {
     String INFO = "info";
     String JSON_SCHEMA_DIALECT = "jsonSchemaDialect";
     String LICENSE = "license";
+    String MAX_CONTAINS = "maxContains";
+    String MAX_ITEMS = "maxItems";
+    String MAX_LENGTH = "maxLength";
+    String MAX_PROPERTIES = "maxProperties";
+    String MAXIMUM = "maximum";
+    String MIN_CONTAINS = "minContains";
+    String MIN_ITEMS = "minItems";
+    String MIN_LENGTH = "minLength";
+    String MIN_PROPERTIES = "minProperties";
+    String MINIMUM = "minimum";
+    String MULTIPLE_OF = "multipleOf";
     String NAME = "name";
     String OPENAPI = "openapi";
     String OPERATION_ID = "operationId";
@@ -43,6 +57,7 @@ public interface Keywords {
     String PARAMETERS = "parameters";
     String PATHS = "paths";
     String PATCH = "patch";
+    String PATTERN = "pattern";
     String POST = "post";
     String PUT = "put";
     String REF = "$ref";
@@ -56,6 +71,7 @@ public interface Keywords {
     String TERMS_OF_SERVICE = "termsOfService";
     String TITLE = "title";
     String TRACE = "trace";
+    String UNIQUE_ITEMS = "uniqueItems";
     String URL = "url";
     String VALUE = "value";
     String VARIABLES = "variables";

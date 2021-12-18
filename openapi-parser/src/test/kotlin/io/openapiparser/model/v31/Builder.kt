@@ -51,6 +51,10 @@ fun parameter(content: String = "{}"): Parameter {
     return buildObject(Parameter::class.java, content)
 }
 
+fun schema(content: String = "{}"): Schema {
+    return buildObject(Schema::class.java, content)
+}
+
 fun server(content: String = "{}"): Server {
     return buildObject(Server::class.java, content)
 }
