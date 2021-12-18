@@ -50,25 +50,17 @@ public class Node {
      * get the raw value of the given property as {@link String}.
      *
      * @param property property name
-     * @return property value or null if the property does not exist
+     * @return property value or null if the property is missing
      */
     public @Nullable String getStringValue (String property) {
-        final Object value = getRawValue (property);
-        if (value == null)
-            return null;
-
-        return checked (getPath (property), value, String.class);
+        return convertOrNull (getPath (property), getRawValue (property), String.class);
     }
 
     /**
      * same as {@link #getStringValue}, but throws if the property values is {@code null}.
      */
     public String getRequiredStringValue (String property) throws NoValueException {
-        final String value = getStringValue (property);
-        if (value == null)
-            throw new NoValueException (getPath (property));
-
-        return value;
+        return convertOrThrow (getPath (property), getRawValue (property), String.class);
     }
 
     /**
@@ -505,6 +497,29 @@ public class Node {
             throw new TypeMismatchException (path, type);
 
         return (T) value;
+    }
+
+    @SuppressWarnings ("unchecked")
+    private <T> T convert (String path, @Nullable Object value, Class<T> type) {
+        if (!type.isInstance (value))
+            throw new TypeMismatchException (path, type);
+
+        return (T) value;
+    }
+
+    private <T> T convertOrNull (String path, @Nullable Object value, Class<T> type) {
+        if (value == null)
+            return null;
+
+        return convert (path, value, type);
+    }
+
+    private <T> T convertOrThrow (String path, @Nullable Object value, Class<T> type) {
+        final T result = convertOrNull (path, value, type);
+        if (value == null)
+            throw new NoValueException (path);
+
+        return result;
     }
 
     @SuppressWarnings ("unchecked")
