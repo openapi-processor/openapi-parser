@@ -15,6 +15,7 @@ public interface Keywords {
     String COMPONENTS = "components";
     String CONTACT = "contact";
     String CONTENT = "content";
+    String CONTENT_TYPE = "contentType";
     String DEFAULT = "default";
     String DELETE = "delete";
     String DEPRECATED = "deprecated";
@@ -29,6 +30,7 @@ public interface Keywords {
     String EXTERNAL_VALUE = "externalValue";
     String GET = "get";
     String HEAD = "head";
+    String HEADERS = "headers";
     String IDENTIFIER = "identifier";
     String IN = "in";
     String INFO = "info";

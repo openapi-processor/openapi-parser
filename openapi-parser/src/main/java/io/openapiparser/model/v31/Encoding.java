@@ -7,14 +7,17 @@ package io.openapiparser.model.v31;
 
 import io.openapiparser.Context;
 import io.openapiparser.Node;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
+
+import static io.openapiparser.Keywords.*;
 
 /**
  * the <em>Encoding</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.1.0.html#example-object">4.8.15 Encoding Object</a>
+ * <a href="https://spec.openapis.org/oas/v3.1.0.html#encoding-object">4.8.15 Encoding Object</a>
  */
 public class Encoding implements Extensions {
     private final Context context;
@@ -25,8 +28,35 @@ public class Encoding implements Extensions {
         this.node = node;
     }
 
+    public @Nullable String getContentType () {
+        return node.getStringValue (CONTENT_TYPE);
+    }
+
+    public String getStyle () {
+        String style = node .getStringValue (STYLE);
+        if (style != null) {
+            return style;
+        }
+
+        return "form";
+    }
+
+    public Boolean getExplode () {
+        Boolean explode = node.getBooleanValue (EXPLODE);
+        if (explode != null) {
+            return explode;
+        }
+
+        final String style = getStyle ();
+        return "form".equals (style);
+    }
+
+    public Boolean getAllowReserved () {
+        return node.getBooleanValue (ALLOW_RESERVED, false);
+    }
+
     @Override
     public Map<String, Object> getExtensions () {
-        return null;
+        return node.getExtensions ();
     }
 }
