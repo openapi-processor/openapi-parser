@@ -9,8 +9,6 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import io.openapiparser.model.v30.parameter
-import io.openapiparser.model.v31.parameter
 import io.openapiparser.model.v30.example as example30
 import io.openapiparser.model.v31.example as example31
 
