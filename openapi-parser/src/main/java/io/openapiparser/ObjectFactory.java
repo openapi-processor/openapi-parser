@@ -21,5 +21,3 @@ public interface ObjectFactory<R> {
      */
     R create (Node node);
 }
-
-// todo rename to ObjectFactory
