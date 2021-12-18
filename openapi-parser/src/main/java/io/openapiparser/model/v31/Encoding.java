@@ -32,6 +32,10 @@ public class Encoding implements Extensions {
         return node.getStringValue (CONTENT_TYPE);
     }
 
+    public Map<String, Header> getHeaders () {
+        return node.getObjectValuesOrEmpty (HEADERS, node -> new Header (context, node));
+    }
+
     public String getStyle () {
         String style = node .getStringValue (STYLE);
         if (style != null) {

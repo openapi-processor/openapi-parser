@@ -8,6 +8,7 @@ package io.openapiparser.model.v3x
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.openapiparser.model.v30.encoding as encoding30
 import io.openapiparser.model.v31.encoding as encoding31
@@ -48,7 +49,15 @@ class EncodingSpec: StringSpec({
         mediaType30(source).encoding["array"]?.contentType shouldBe "plain/text"
     }*/
 
-    // todo headers
+    "gets encoding headers" {
+        encoding30("headers: { X-Foo: {}}").headers["X-Foo"].shouldNotBeNull()
+        encoding31("headers: { X-Foo: {}}").headers["X-Foo"].shouldNotBeNull()
+    }
+
+    "gets encoding headers is empty if missing" {
+        encoding30().headers.isEmpty()
+        encoding31().headers.isEmpty()
+    }
 
     // not sure if style is correct ...
     "gets encoding style" {
