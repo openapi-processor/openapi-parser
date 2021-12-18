@@ -21,6 +21,7 @@ public interface Keywords {
     String DESCRIPTION = "description";
     String ENUM = "enum";
     String EMAIL = "email";
+    String ENCODING = "encoding";
     String EXAMPLE = "example";
     String EXAMPLES = "examples";
     String EXPLODE = "explode";

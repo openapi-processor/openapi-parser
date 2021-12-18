@@ -11,11 +11,11 @@ import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
+import io.openapiparser.model.v30.Encoding as Encoding30
 import io.openapiparser.model.v30.Example as Example30
-import io.openapiparser.model.v30.MediaType as MediaType30
 import io.openapiparser.model.v30.mediaType as mediaType30
+import io.openapiparser.model.v31.Encoding as Encoding31
 import io.openapiparser.model.v31.Example as Example31
-import io.openapiparser.model.v31.MediaType as MediaType31
 import io.openapiparser.model.v31.mediaType as mediaType31
 
 class MediaTypeSpec: StringSpec({
@@ -75,39 +75,39 @@ class MediaTypeSpec: StringSpec({
         mediaType31().examples.shouldBeEmpty()
     }
 
-    "gets media type content 30" {
+    "gets media type encoding 30" {
         val source = """
-            content:
-             application/json: {}
-             application/xml: {}
+            encoding:
+             foo: {}
+             bar: {}
         """
 
-        val content = mediaType30(source).content
+        val encoding = mediaType30(source).encoding
 
-        content.shouldNotBeNull()
-        content.size shouldBe 2
-        content["application/json"].shouldBeInstanceOf<MediaType30>()
-        content["application/xml"].shouldBeInstanceOf<MediaType30>()
+        encoding.shouldNotBeNull()
+        encoding.size shouldBe 2
+        encoding["foo"].shouldBeInstanceOf<Encoding30>()
+        encoding["bar"].shouldBeInstanceOf<Encoding30>()
     }
 
-    "gets media type content 31" {
+    "gets media type encoding 31" {
         val source = """
-            content:
-             application/json: {}
-             application/xml: {}
+            encoding:
+             foo: {}
+             bar: {}
         """
 
-        val content = mediaType31(source).content
+        val encoding = mediaType31(source).encoding
 
-        content.shouldNotBeNull()
-        content.size shouldBe 2
-        content["application/json"].shouldBeInstanceOf<MediaType31>()
-        content["application/xml"].shouldBeInstanceOf<MediaType31>()
+        encoding.shouldNotBeNull()
+        encoding.size shouldBe 2
+        encoding["foo"].shouldBeInstanceOf<Encoding31>()
+        encoding["bar"].shouldBeInstanceOf<Encoding31>()
     }
 
     "gets media type content is empty if missing" {
-        mediaType30().content.shouldBeEmpty()
-        mediaType31().content.shouldBeEmpty()
+        mediaType30().encoding.shouldBeEmpty()
+        mediaType31().encoding.shouldBeEmpty()
     }
 
     include(testExtensions("mediaType30", ::mediaType30) { it.extensions })

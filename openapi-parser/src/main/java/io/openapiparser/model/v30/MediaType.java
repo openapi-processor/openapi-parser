@@ -39,8 +39,8 @@ public class MediaType implements Extensions {
         return node.getObjectValuesOrEmpty (EXAMPLES, node -> new Example(context, node));
     }
 
-    public Map<String, MediaType> getContent () {
-        return node.getObjectValuesOrEmpty (CONTENT, node -> new MediaType (context, node));
+    public Map<String, Encoding> getEncoding () {
+        return node.getObjectValuesOrEmpty (ENCODING, node -> new Encoding (context, node));
     }
 
     @Override
