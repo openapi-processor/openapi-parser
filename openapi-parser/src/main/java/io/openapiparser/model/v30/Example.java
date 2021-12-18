@@ -50,7 +50,13 @@ public class Example implements Reference, Extensions {
         return getSource ().getStringValue (DESCRIPTION);
     }
 
-    // todo value, externalValue
+    public @Nullable Object getValue () {
+        return getSource ().getRawValue (VALUE);
+    }
+
+    public @Nullable String getExternalValue () {
+        return getSource ().getStringValue (EXTERNAL_VALUE);
+    }
 
     @Override
     public Map<String, Object> getExtensions () {

@@ -25,6 +25,7 @@ public interface Keywords {
     String EXAMPLES = "examples";
     String EXPLODE = "explode";
     String EXTERNAL_DOCS = "externalDocs";
+    String EXTERNAL_VALUE = "externalValue";
     String GET = "get";
     String HEAD = "head";
     String IDENTIFIER = "identifier";
@@ -53,6 +54,7 @@ public interface Keywords {
     String TITLE = "title";
     String TRACE = "trace";
     String URL = "url";
+    String VALUE = "value";
     String VARIABLES = "variables";
     String VERSION = "version";
     String WEBHOOKS = "webhooks";
