@@ -87,7 +87,7 @@ public class Node {
     }
 
     /**
-     * get the value of the given property as {@link Boolean} or a fallback value if it is mising.
+     * get the value of the given property as {@link Boolean} or a fallback value if it is missing.
      *
      * @param property property name
      * @param fallback fallback value
@@ -95,6 +95,64 @@ public class Node {
      */
     public Boolean getBooleanValue (String property, boolean fallback) {
         Boolean value = getBooleanValue (property);
+        if (value == null)
+            return fallback;
+
+        return value;
+    }
+
+    /**
+     * get the raw value of the given property as {@link Number}.
+     *
+     * @param property property name
+     * @return property value or null if the property does not exist
+     */
+    public @Nullable Number getNumberValue (String property) {
+        final Object value = getRawValue (property);
+        if (value == null)
+            return null;
+
+        return checked (property, value, Number.class);
+    }
+
+    /**
+     * get the value of the given property as {@link Number} or a fallback value if it is missing.
+     *
+     * @param property property name
+     * @param fallback fallback value
+     * @return property value or fallback if the property does not exist
+     */
+    public Number getNumberValue (String property, Number fallback) {
+        Number value = getNumberValue (property);
+        if (value == null)
+            return fallback;
+
+        return value;
+    }
+
+    /**
+     * get the raw value of the given property as {@link Integer}.
+     *
+     * @param property property name
+     * @return property value or null if the property does not exist
+     */
+    public @Nullable Integer getIntegerValue (String property) {
+        final Object value = getRawValue (property);
+        if (value == null)
+            return null;
+
+        return checked (property, value, Integer.class);
+    }
+
+    /**
+     * get the value of the given property as {@link Integer} or a fallback value if it is missing.
+     *
+     * @param property property name
+     * @param fallback fallback value
+     * @return property value or fallback if the property does not exist
+     */
+    public Integer getIntegerValue (String property, Integer fallback) {
+        Integer value = getIntegerValue (property);
         if (value == null)
             return fallback;
 
