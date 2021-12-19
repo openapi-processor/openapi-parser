@@ -12,7 +12,6 @@ import static io.openapiparser.Type.*;
 import static java.util.Collections.*;
 import static java.util.stream.Collectors.toList;
 
-import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -167,21 +166,6 @@ public class Node {
         return value;
     }
 
-
-
-
-    // unused
-//    /**
-//     * get the raw value of the given property as {@link Map<String>} to {@link Object}s.
-//     *
-//     * @param property property name
-//     * @return property value or null if the property is missing
-//     */
-//    @SuppressWarnings ("unchecked")
-//    @Nullable Map<String, Object> getObjectMapValue (String property) {
-//        return convertOrNull (getPath(property), getRawValue (property), Map.class);
-//    }
-
     /**
      * get the raw array values of the given property as {@link Collection<String>} or null if the
      * property is missing.
@@ -204,64 +188,27 @@ public class Node {
         return convertCollectionOrEmpty (getPath (property), getRawValue (property), String.class);
     }
 
-
-
-
-
-
-
-
-    @Deprecated
     /**
-     * converts the value of the given property to a map from property name to {@code T} using the
-     * given factory to convert all property values to {@code T}.
-     *
-     * @param property property name
-     * @param factory converter from {@link Node} to {@code T}
-     * @param <T> type of the target OpenAPI model object
-     * @return map of property values to {@code T}s
-     */
-//    @SuppressWarnings ("unchecked")
-//    public <T> @Nullable Map<String, T> getObjectValuesOrNull (String property, ObjectFactory<T> factory) {
-//        Map<String, Object> value = (Map<String, Object>) properties.get (property);
-//        if (value == null)
-//            return null;
-//
-//        return new Node(getPath (property), value).getObjectValuesOrEmpty (factory);
-//    }
-
-    /**
-     * converts the properties of this {@link Node} to a map from property name to {@code T} using
-     * the given factory to convert all property values to {@code T}. If the property is missing
-     * it returns an empty map.
-     *
-     * @param factory converter from {@link Node} to {@code T}
-     * @param <T> type of the target OpenAPI model object
-     * @return map from properties to {@code T}
-     */
-    public <T> Map<String, T> getObjectValuesOrEmpty (ObjectFactory<T> factory) {
-        Map<String, T> result = new LinkedHashMap<> ();
-        getPropertyNames ().forEach (k -> result.put (k, factory.create (getNode (k))));
-        return unmodifiableMap (result);
-    }
-
-    /**
-     * converts the value of the given property name to a map of string to set of {@link String}.
+     * converts the value of the given property name to a map of {@link String} to {@link Set<String>}.
      *
      * @param property property name
      * @return map of property to set of property string values
      */
     public Map<String, Set<String>> getObjectSetValuesOrEmpty (String property) {
-        Object raw = getRawValue (property);
-        if (raw == null) {
+        Object value = getRawValue (property);
+        if (value == null) {
             return Collections.emptyMap ();
         }
 
+        final String propertyPath = getPath(property);
+        final Map<String, Object> propertyValues = convertMap (propertyPath, value);
+
         Map<String, Set<String>> required = new LinkedHashMap<> ();
 
-        Node node = new Node (property, checkedObject (property, raw));
-        node.getPropertyNames ().forEach (k -> {
-            required.put (k, unmodifiableSet (new LinkedHashSet<> (node.getStringValuesOrEmpty (k))));
+        propertyValues.forEach ((itemProp, itemValue) -> {
+            final Collection<String> values = convertCollectionOrEmpty (
+                getPath (propertyPath, itemProp), itemValue, String.class);
+            required.put (itemProp, unmodifiableSet (new LinkedHashSet<> (values)));
         });
 
         return unmodifiableMap (required);
@@ -276,7 +223,7 @@ public class Node {
      * @param <T> type of the target OpenAPI model object
      * @return {@code T}
      */
-    public <T> Collection<T> getObjects (String property, ObjectFactory<T> factory) {
+    public <T> Collection<T> getObjectValues (String property, ObjectFactory<T> factory) {
         return unmodifiableCollection (
             getNodes (property)
                 .stream ()
@@ -294,7 +241,7 @@ public class Node {
      * @param <T> type of the target OpenAPI model object
      * @return {@code T}
      */
-    public <T> Collection<T> getObjectsOrEmpty (String property, ObjectFactory<T> factory) {
+    public <T> Collection<T> getObjectValuesOrEmpty (String property, ObjectFactory<T> factory) {
         final Collection<Node> nodes = getNodesOrEmpty (property);
         if (nodes == null)
             return Collections.emptyList ();
@@ -307,6 +254,26 @@ public class Node {
     }
 
     /**
+     * converts the properties of this {@link Node} to a map from property name to {@code T} using
+     * the given factory to convert all property values to {@code T}. If the property is missing
+     * it returns an empty map.
+     *
+     * @param factory converter from {@link Node} to {@code T}
+     * @param <T> type of the target OpenAPI model object
+     * @return map from properties to {@code T}
+     */
+    public <T> Map<String, T> getObjectValuesOrEmpty (ObjectFactory<T> factory) {
+        Map<String, T> result = new LinkedHashMap<> ();
+
+        properties.forEach ((itemProp, itemValue) -> {
+            String itemPath = getPath (path, itemProp);
+            result.put (itemProp, factory.create (new Node (itemPath, convertMap (itemPath, itemValue))));
+        });
+
+        return unmodifiableMap (result);
+    }
+
+    /**
      * converts the value of the given property to a map of {@link String} to {@code T} using the
      * given factory to convert all property values to {@code T}s.
      *
@@ -315,15 +282,15 @@ public class Node {
      * @param <T> type of the target OpenAPI model object
      * @return map of {@link String} to {@code T}
      * *
-     * same as {@link #getMapObjects}, but returns an empty map if the property values is
+     * same as {@link #getMapObjectValues}, but returns an empty map if the property values is
      * {@code null}.
      */
-    public <T> Map<String, T> getMapObjectsOrEmpty (String property, ObjectFactory<T> factory) {
+    public <T> Map<String, T> getMapObjectValuesOrEmpty (String property, ObjectFactory<T> factory) {
         final Object value = getRawValue (property);
         if (value == null)
             return Collections.emptyMap ();
 
-        return getMapObjects (getPath (property), value, factory);
+        return getMapObjectValues (getPath (property), value, factory);
     }
 
     /**
@@ -336,7 +303,7 @@ public class Node {
      * @param <T> type of the target OpenAPI model object
      * @return map of {@link String} to {@code T}
      */
-    public <T> Map<String, T> getMapObjects (String path, Object value, ObjectFactory<T> factory) {
+    public <T> Map<String, T> getMapObjectValues (String path, Object value, ObjectFactory<T> factory) {
         final Map<String, T> result = new LinkedHashMap<> ();
 
         final Map<String, Object> parent = convertMap (path, value);
@@ -438,7 +405,7 @@ public class Node {
                 if (!(o instanceof Map))
                     continue;
 
-                handler.handle (new Node (getPath (property), uncheckedObject (o)));
+                handler.handle (new Node (getPath (property), uncheckedMap (o)));
             }
         }
     }
@@ -497,25 +464,7 @@ public class Node {
     }
 
     @SuppressWarnings ("unchecked")
-    private Map<String, Object> checkedObject (String property, @Nullable Object value) {
-        return checkedProperty (property, value, Map.class);
-    }
-
-    private <T> T checkedProperty (String property, @Nullable Object value, Class<T> type) {
-        return checked (getPath(property), value, type);
-    }
-
-    @EnsuresNonNull ("#2")
-    @SuppressWarnings ("unchecked")
-    private <T> T checked (String path, @Nullable Object value, Class<T> type) {
-        if (!type.isInstance (value))
-            throw new TypeMismatchException (path, type);
-
-        return (T) value;
-    }
-
-    @SuppressWarnings ("unchecked")
-    private static Map<String, Object> uncheckedObject (Object o) {
+    private static Map<String, Object> uncheckedMap (Object o) {
         return (Map<String, Object>) o;
     }
 

@@ -33,7 +33,7 @@ public class Encoding implements Extensions {
     }
 
     public Map<String, Header> getHeaders () {
-        return node.getMapObjectsOrEmpty (HEADERS, node -> new Header (context, node));
+        return node.getMapObjectValuesOrEmpty (HEADERS, node -> new Header (context, node));
     }
 
     public String getStyle () {

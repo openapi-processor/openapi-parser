@@ -51,11 +51,11 @@ public class PathItem implements Extensions, Reference {
     }
 
     public Collection<Server> getServers () {
-        return getSource ().getObjectsOrEmpty (SERVERS, node -> new Server (context, node));
+        return getSource ().getObjectValuesOrEmpty (SERVERS, node -> new Server (context, node));
     }
 
     public Collection<Parameter> getParameters () {
-        return getSource ().getObjectsOrEmpty (PARAMETERS, node -> new Parameter (context, node));
+        return getSource ().getObjectValuesOrEmpty (PARAMETERS, node -> new Parameter (context, node));
     }
 
     @Override

@@ -51,7 +51,7 @@ public class Operation {
     }
 
     public Collection<Parameter> getParameters () {
-        return node.getObjectsOrEmpty (PARAMETERS, node -> new Parameter (context, node));
+        return node.getObjectValuesOrEmpty (PARAMETERS, node -> new Parameter (context, node));
     }
 
 }
