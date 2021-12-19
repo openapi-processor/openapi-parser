@@ -133,6 +133,43 @@ public class Node {
         return convertOrFallback (getPath (property), getRawValue (property), Integer.class, fallback);
     }
 
+    /**
+     * converts the value of the given property to a {@code T} using the given factory to convert
+     * the value to {@code T}.
+     *
+     * @param property property name
+     * @param factory converter from {@link Node} to {@code T}
+     * @param <T> type of the target OpenAPI model object
+     * @return {@code T}
+     */
+    public <T> @Nullable T getObjectValue (String property, ObjectFactory<T> factory) {
+        final Object value = getRawValue (property);
+        if (value == null)
+            return null;
+
+        return factory.create (new Node (property, convertMap (getPath(property), value)));
+    }
+
+    /**
+     * same as {@link #getObjectValue(String, ObjectFactory)}, but throws if the property values is
+     * {@code null}.
+     *
+     * @param property property name
+     * @param factory converter from {@link Node} to {@code T}
+     * @param <T> type of the target OpenAPI model object
+     * @return {@code T}
+     */
+    public <T> T getRequiredObjectValue (String property, ObjectFactory<T> factory) {
+        final T value = getObjectValue (property, factory);
+        if (value == null) {
+            throw new NoValueException (getPath(property));
+        }
+        return value;
+    }
+
+
+
+
     // unused
 //    /**
 //     * get the raw value of the given property as {@link Map<String>} to {@link Object}s.
@@ -206,33 +243,6 @@ public class Node {
         Map<String, T> result = new LinkedHashMap<> ();
         getPropertyNames ().forEach (k -> result.put (k, factory.create (getNode (k))));
         return unmodifiableMap (result);
-    }
-
-    /**
-     * converts the value of the given property to a {@code T} using the given factory to convert
-     * the value to {@code T}.
-     *
-     * @param property property name
-     * @param factory converter from {@link Node} to {@code T}
-     * @param <T> type of the target OpenAPI model object
-     * @return {@code T}
-     */
-    public <T> @Nullable T getObjectValue (String property, ObjectFactory<T> factory) {
-        if (!hasProperty (property))
-            return null;
-
-        return factory.create (getNode (property));
-    }
-
-    /**
-     * same as {@link #getNode}, but throws if the property values is {@code null}.
-     */
-    public <T> T getRequiredObjectValue (String property, ObjectFactory<T> factory) {
-        final T value = getObjectValue (property, factory);
-        if (value == null) {
-            throw new NoValueException (getPath(property));
-        }
-        return value;
     }
 
     /**
