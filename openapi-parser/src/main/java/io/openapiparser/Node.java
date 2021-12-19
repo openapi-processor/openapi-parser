@@ -9,6 +9,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static io.openapiparser.Type.*;
 import static java.util.Collections.*;
 
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
@@ -112,11 +113,7 @@ public class Node {
      * @return property value or null if the property does not exist
      */
     public @Nullable Integer getIntegerValue (String property) {
-        final Object value = getRawValue (property);
-        if (value == null)
-            return null;
-
-        return checked (property, value, Integer.class);
+        return convertOrNull (getPath (property), getRawValue (property), Integer.class);
     }
 
     /**
@@ -127,11 +124,7 @@ public class Node {
      * @return property value or fallback if the property does not exist
      */
     public Integer getIntegerValue (String property, Integer fallback) {
-        Integer value = getIntegerValue (property);
-        if (value == null)
-            return fallback;
-
-        return value;
+        return convertOrFallback (getPath (property), getRawValue (property), Integer.class, fallback);
     }
 
     /**
@@ -481,36 +474,6 @@ public class Node {
             throw new TypeMismatchException (path, type);
 
         return (T) value;
-    }
-
-    @SuppressWarnings ("unchecked")
-    private <T> T convert (String path, @Nullable Object value, Class<T> type) {
-        if (!type.isInstance (value))
-            throw new TypeMismatchException (path, type);
-
-        return (T) value;
-    }
-
-    private <T> T convertOrNull (String path, @Nullable Object value, Class<T> type) {
-        if (value == null)
-            return null;
-
-        return convert (path, value, type);
-    }
-
-    private <T> T convertOrFallback (String path, @Nullable Object value, Class<T> type, T fallback) {
-        if (value == null)
-            return fallback;
-
-        return convert (path, value, type);
-    }
-
-    private <T> T convertOrThrow (String path, @Nullable Object value, Class<T> type) {
-        final T result = convertOrNull (path, value, type);
-        if (value == null)
-            throw new NoValueException (path);
-
-        return result;
     }
 
     @SuppressWarnings ("unchecked")
