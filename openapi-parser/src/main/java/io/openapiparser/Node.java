@@ -70,11 +70,7 @@ public class Node {
      * @return property value or null if the property does not exist
      */
     public @Nullable Boolean getBooleanValue (String property) {
-        final Object value = getRawValue (property);
-        if (value == null)
-            return null;
-
-        return checked (property, value, Boolean.class);
+        return convertOrNull (getPath (property), getRawValue (property), Boolean.class);
     }
 
     /**
@@ -85,11 +81,7 @@ public class Node {
      * @return property value or fallback if the property does not exist
      */
     public Boolean getBooleanValue (String property, boolean fallback) {
-        Boolean value = getBooleanValue (property);
-        if (value == null)
-            return fallback;
-
-        return value;
+        return convertOrFallback (getPath (property), getRawValue (property), Boolean.class, fallback);
     }
 
     /**
@@ -99,11 +91,7 @@ public class Node {
      * @return property value or null if the property does not exist
      */
     public @Nullable Number getNumberValue (String property) {
-        final Object value = getRawValue (property);
-        if (value == null)
-            return null;
-
-        return checked (property, value, Number.class);
+        return convertOrNull (getPath (property), getRawValue (property), Number.class);
     }
 
     /**
@@ -114,11 +102,7 @@ public class Node {
      * @return property value or fallback if the property does not exist
      */
     public Number getNumberValue (String property, Number fallback) {
-        Number value = getNumberValue (property);
-        if (value == null)
-            return fallback;
-
-        return value;
+        return convertOrFallback (getPath (property), getRawValue (property), Number.class, fallback);
     }
 
     /**
@@ -510,6 +494,13 @@ public class Node {
     private <T> T convertOrNull (String path, @Nullable Object value, Class<T> type) {
         if (value == null)
             return null;
+
+        return convert (path, value, type);
+    }
+
+    private <T> T convertOrFallback (String path, @Nullable Object value, Class<T> type, T fallback) {
+        if (value == null)
+            return fallback;
 
         return convert (path, value, type);
     }
