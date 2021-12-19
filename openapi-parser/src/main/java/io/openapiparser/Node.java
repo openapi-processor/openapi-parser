@@ -285,19 +285,19 @@ public class Node {
     }
 
     /**
-     * same as {@link #getObjectValuesOrEmpty}, but returns an empty map if the property values is
+     * same as {@link #getMapObjectsOrEmpty}, but returns an empty map if the property values is
      * {@code null}.
      */
     @SuppressWarnings ("unchecked")
-    public <T> Map<String, T> getObjectValuesOrEmpty (String property, ObjectFactory<T> factory) {
+    public <T> Map<String, T> getMapObjectsOrEmpty (String property, ObjectFactory<T> factory) {
         final Object value = getRawValue (property);
         if (value == null)
             return Collections.emptyMap ();
 
-        return getMapModelObjects (getPath (property), value, factory);
+        return getMapObjects (getPath (property), value, factory);
     }
 
-    public <T> Map<String, T> getMapModelObjects (String path, Object value, ObjectFactory<T> factory) {
+    public <T> Map<String, T> getMapObjects (String path, Object value, ObjectFactory<T> factory) {
         final Map<String, T> result = new LinkedHashMap<> ();
 
         final Map<String, Object> parent = convertMap (path, value);

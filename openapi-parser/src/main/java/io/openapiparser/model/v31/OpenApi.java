@@ -53,7 +53,7 @@ public class OpenApi implements Extensions {
 
      // @Required (if paths or components are null)
     public Map<String, PathItem> getWebhooks () {
-        return node.getObjectValuesOrEmpty (WEBHOOKS, node -> new PathItem (context, node));
+        return node.getMapObjectsOrEmpty (WEBHOOKS, node -> new PathItem (context, node));
     }
 
     // @Required (if paths or webhooks are null)

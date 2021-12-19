@@ -113,11 +113,11 @@ public class Parameter implements Reference, Extensions {
     }
 
     public Map<String, Example> getExamples () {
-        return getSource ().getObjectValuesOrEmpty (EXAMPLES, node -> new Example(context, node));
+        return getSource ().getMapObjectsOrEmpty (EXAMPLES, node -> new Example(context, node));
     }
 
     public Map<String, MediaType> getContent () {
-        return getSource ().getObjectValuesOrEmpty (CONTENT, node -> new MediaType (context, node));
+        return getSource ().getMapObjectsOrEmpty (CONTENT, node -> new MediaType (context, node));
     }
 
     @Override

@@ -37,7 +37,7 @@ public class Server implements Extensions {
     }
 
     public Map<String, ServerVariable> getVariables () {
-        return node.getObjectValuesOrEmpty (VARIABLES, node -> new ServerVariable (context, node));
+        return node.getMapObjectsOrEmpty (VARIABLES, node -> new ServerVariable (context, node));
     }
 
     @Override
