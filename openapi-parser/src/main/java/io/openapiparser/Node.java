@@ -204,7 +204,7 @@ public class Node {
      */
     public <T> Map<String, T> getObjectValuesOrEmpty (ObjectFactory<T> factory) {
         Map<String, T> result = new LinkedHashMap<> ();
-        getPropertyNames ().forEach (k -> result.put (k, factory.create (getObjectNode (k))));
+        getPropertyNames ().forEach (k -> result.put (k, factory.create (getNode (k))));
         return unmodifiableMap (result);
     }
 
@@ -221,11 +221,11 @@ public class Node {
         if (!hasProperty (property))
             return null;
 
-        return factory.create (getObjectNode (property));
+        return factory.create (getNode (property));
     }
 
     /**
-     * same as {@link #getObjectNode}, but throws if the property values is {@code null}.
+     * same as {@link #getNode}, but throws if the property values is {@code null}.
      */
     public <T> T getRequiredObjectValue (String property, ObjectFactory<T> factory) {
         final T value = getObjectValue (property, factory);
@@ -269,7 +269,7 @@ public class Node {
     @Deprecated
     public <T> Collection<T> getArrayValues (String property, ObjectFactory<T> factory) {
         return unmodifiableCollection (
-            getObjectNodes (property)
+            getNodes (property)
                 .stream ()
                 .map (factory::create)
                 .collect (toList ()));
@@ -278,17 +278,24 @@ public class Node {
     @Deprecated
     public <T> Collection<T> getArrayValuesOrEmpty (String property, ObjectFactory<T> factory) {
         return unmodifiableCollection (
-            getObjectNodesOrEmpty (property)
+            getNodesOrEmpty (property)
                 .stream ()
                 .map (factory::create)
                 .collect (toList ()));
     }
 
     /**
-     * same as {@link #getMapObjectsOrEmpty}, but returns an empty map if the property values is
+     * converts the value of the given property to a map of {@link String} to {@code T} using the
+     * given factory to convert all property values to {@code T}s.
+     *
+     * @param property property name
+     * @param factory converter from {@link Node} to {@code T}
+     * @param <T> type of the target OpenAPI model object
+     * @return map of {@link String} to {@code T}
+     * *
+     * same as {@link #getMapObjects}, but returns an empty map if the property values is
      * {@code null}.
      */
-    @SuppressWarnings ("unchecked")
     public <T> Map<String, T> getMapObjectsOrEmpty (String property, ObjectFactory<T> factory) {
         final Object value = getRawValue (property);
         if (value == null)
@@ -297,6 +304,16 @@ public class Node {
         return getMapObjects (getPath (property), value, factory);
     }
 
+    /**
+     * converts the value of the given value to a map of {@link String} to {@code T} using the given
+     * factory to convert all property values to {@code T}s.
+     *
+     * @param path the node path
+     * @param value source map value
+     * @param factory converter from {@link Node} to {@code T}
+     * @param <T> type of the target OpenAPI model object
+     * @return map of {@link String} to {@code T}
+     */
     public <T> Map<String, T> getMapObjects (String path, Object value, ObjectFactory<T> factory) {
         final Map<String, T> result = new LinkedHashMap<> ();
 
@@ -311,10 +328,6 @@ public class Node {
 
 
 
-
-
-
-
     /**
      * get the object value of the given property as {@link Node}. Throws if the property is not
      * an object.
@@ -322,7 +335,7 @@ public class Node {
      * @param property property name
      * @return property value wrapped as {@link Node}.
      */
-    Node getObjectNode (String property) {
+    Node getNode (String property) {
         return new Node (property, convertMap (getPath(property), getRawValue (property)));
     }
 
@@ -333,8 +346,8 @@ public class Node {
      * @param property property name
      * @return collection of {@link Node}s
      */
-    Collection<Node> getObjectNodes (String property) {
-        return getObjectNodes (getPath(property), getRawValue (property));
+    Collection<Node> getNodes (String property) {
+        return getNodes (getPath(property), getRawValue (property));
     }
 
     /**
@@ -345,12 +358,12 @@ public class Node {
      * @param property property name
      * @return collection of {@link Node}s
      */
-    @Nullable Collection<Node> getObjectNodesOrEmpty (String property) {
+    @Nullable Collection<Node> getNodesOrEmpty (String property) {
         final Object value = getRawValue (property);
         if (value == null)
             return Collections.emptyList ();
 
-        return getObjectNodes (getPath (property), value);
+        return getNodes (getPath (property), value);
     }
 
     /**
@@ -361,7 +374,7 @@ public class Node {
      * @param value the array
      * @return collection of {@link Node}s
      */
-    private Collection<Node> getObjectNodes (String path, @Nullable Object value) {
+    private Collection<Node> getNodes (String path, @Nullable Object value) {
         return convertCollection (path, value, (index, item) -> {
             String itemPath = getPath (path, index);
             return new Node (itemPath, convertMap (itemPath, item));
@@ -398,7 +411,7 @@ public class Node {
         final Object value = getRawValue (property);
 
         if (value instanceof Map) {
-            handler.handle (getObjectNode (property));
+            handler.handle (getNode (property));
 
         } else if (value instanceof Collection) {
             for (Object o : (Collection<?>) value) {

@@ -28,19 +28,19 @@ class NodeSpec : StringSpec({
 
     "gets object value" {
         val node = Node("$", linkedMapOf<String, Any>("property" to emptyMap<String, Any>()))
-        node.getObjectNode("property").shouldNotBeNull()
+        node.getNode("property").shouldNotBeNull()
     }
 
     "gets object value throws if value is missing" {
         shouldThrow<TypeMismatchException> {
-            Node.empty().getObjectNode("property")
+            Node.empty().getNode("property")
         }
     }
 
     "gets object value throws if value is not an object" {
         val node = Node("$", linkedMapOf<String, Any>("property" to "bad type"))
         shouldThrow<TypeMismatchException> {
-            node.getObjectNode("property")
+            node.getNode("property")
         }
     }
 
@@ -48,13 +48,13 @@ class NodeSpec : StringSpec({
 
     "gets object values throws if value is missing" {
             shouldThrow<TypeMismatchException> {
-            Node.empty().getObjectNodes("property")
+            Node.empty().getNodes("property")
         }
     }
 
     "gets object values throws if value is no collection" {
         shouldThrow<TypeMismatchException> {
-            Node.empty().getObjectNodes("property")
+            Node.empty().getNodes("property")
         }
     }
 
@@ -65,7 +65,7 @@ class NodeSpec : StringSpec({
         )))
 
         shouldThrow<TypeMismatchException> {
-            node.getObjectNodes("property")
+            node.getNodes("property")
         }
     }
 
@@ -75,7 +75,7 @@ class NodeSpec : StringSpec({
             mapOf<String, Any>("foos" to "bars")
         )))
 
-        val objects = node.getObjectNodes("property")
+        val objects = node.getNodes("property")
         objects.size shouldBe 2
     }
 

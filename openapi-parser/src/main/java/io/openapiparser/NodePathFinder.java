@@ -33,7 +33,7 @@ public class NodePathFinder {
                 if (i == last)
                     return node.getRawValue (part);
 
-                node = node.getObjectNode (part);
+                node = node.getNode (part);
             }
 
             return null;
