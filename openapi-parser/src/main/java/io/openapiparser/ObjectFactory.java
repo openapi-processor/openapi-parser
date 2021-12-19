@@ -6,13 +6,12 @@
 package io.openapiparser;
 
 /**
- * represents a function that creates an object from the source {@link Node}.
+ * represents a function that creates a model object from the source {@link Node}.
  *
- * @param <R> the result type
+ * @param <R> the result model object type
  */
 @FunctionalInterface
 public interface ObjectFactory<R> {
-
     /**
      * the function applied to a {@link Node}.
      *

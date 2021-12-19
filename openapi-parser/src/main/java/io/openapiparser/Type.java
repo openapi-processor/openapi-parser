@@ -7,15 +7,25 @@ package io.openapiparser;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
 import static java.util.Collections.unmodifiableCollection;
 
 public class Type {
 
+    @FunctionalInterface
+    public interface Factory<R> {
+        /**
+         * create an {@code R} of the {@link Object}.
+         *
+         * @param obj the source {@link Object}
+         * @return the result
+         */
+        R create (int idx, Object obj);
+    }
+
     @SuppressWarnings ("unchecked")
-    private static <T> T convert (String path, @Nullable Object value, Class<T> type) {
+    static <T> T convert (String path, @Nullable Object value, Class<T> type) {
         if (!type.isInstance (value))
             throw new TypeMismatchException (path, type);
 
@@ -46,6 +56,11 @@ public class Type {
     }
 
     @SuppressWarnings ("unchecked")
+    static Map<String, Object> convertMap (String path, @Nullable Object value) {
+        return convert (path, value, Map.class);
+    }
+
+    @SuppressWarnings ("unchecked")
     static <T> Collection<T> convertCollection (String path, @Nullable Object value, Class<T> itemType) {
         final Collection<?> collection = convert (path, value, Collection.class);
 
@@ -69,6 +84,18 @@ public class Type {
             return Collections.emptyList ();
 
         return convertCollection (path, value, itemType);
+    }
+
+    static <T> Collection<T> convertCollection (String path, @Nullable Object value, Factory<T> factory) {
+        final Collection<?> collection = convert (path, value, Collection.class);
+
+        Collection<T> result = new ArrayList<> ();
+        int idx = 0;
+        for (Object item : collection) {
+            result.add (factory.create (idx++, item));
+        }
+
+        return unmodifiableCollection (result);
     }
 
 }
