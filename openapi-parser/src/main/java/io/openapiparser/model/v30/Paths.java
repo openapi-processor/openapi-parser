@@ -27,7 +27,7 @@ public class Paths implements Extensions {
 
     @Required
     public Map<String, PathItem> getPathItems() {
-        return node.getObjectValuesOrEmpty (node -> new PathItem (context, node));
+        return node.getMapObjectValuesOrEmpty (node -> new PathItem (context, node));
     }
 
     public @Nullable PathItem getPathItem(String path) {

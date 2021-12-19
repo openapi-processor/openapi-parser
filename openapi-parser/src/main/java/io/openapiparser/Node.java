@@ -262,7 +262,7 @@ public class Node {
      * @param <T> type of the target OpenAPI model object
      * @return map from properties to {@code T}
      */
-    public <T> Map<String, T> getObjectValuesOrEmpty (ObjectFactory<T> factory) {
+    public <T> Map<String, T> getMapObjectValuesOrEmpty (ObjectFactory<T> factory) {
         Map<String, T> result = new LinkedHashMap<> ();
 
         properties.forEach ((itemProp, itemValue) -> {
