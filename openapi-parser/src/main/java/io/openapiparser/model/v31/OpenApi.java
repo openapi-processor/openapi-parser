@@ -43,7 +43,7 @@ public class OpenApi implements Extensions {
     }
 
     public Collection<Server> getServers () {
-        return node.getArrayValuesOrEmpty (SERVERS, node -> new Server (context, node));
+        return node.getObjectsOrEmpty (SERVERS, node -> new Server (context, node));
     }
 
     // @Required (if webhooks or components are null)
@@ -62,11 +62,11 @@ public class OpenApi implements Extensions {
     }
 
     public Collection<SecurityRequirement> getSecurity () {
-        return node.getArrayValuesOrEmpty (SECURITY, node -> new SecurityRequirement (context, node));
+        return node.getObjectsOrEmpty (SECURITY, node -> new SecurityRequirement (context, node));
     }
 
     public Collection<Tag> getTags () {
-        return node.getArrayValuesOrEmpty (TAGS, node -> new Tag (context, node));
+        return node.getObjectsOrEmpty (TAGS, node -> new Tag (context, node));
     }
 
     public @Nullable ExternalDocumentation getExternalDocs () {

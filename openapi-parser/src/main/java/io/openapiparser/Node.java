@@ -266,8 +266,7 @@ public class Node {
      * @param <T> type of the target OpenAPI model object
      * @return {@code T}
      */
-    @Deprecated
-    public <T> Collection<T> getArrayValues (String property, ObjectFactory<T> factory) {
+    public <T> Collection<T> getObjects (String property, ObjectFactory<T> factory) {
         return unmodifiableCollection (
             getNodes (property)
                 .stream ()
@@ -275,10 +274,23 @@ public class Node {
                 .collect (toList ()));
     }
 
-    @Deprecated
-    public <T> Collection<T> getArrayValuesOrEmpty (String property, ObjectFactory<T> factory) {
+    /**
+     * converts the value of the given property name to a collection of {@code T}s using the given
+     * factory to convert all property values to {@code T}s. Returns an empty collection if the
+     * property is missing.
+     *
+     * @param property property name
+     * @param factory converter from {@link Node} to {@code T}
+     * @param <T> type of the target OpenAPI model object
+     * @return {@code T}
+     */
+    public <T> Collection<T> getObjectsOrEmpty (String property, ObjectFactory<T> factory) {
+        final Collection<Node> nodes = getNodesOrEmpty (property);
+        if (nodes == null)
+            return Collections.emptyList ();
+
         return unmodifiableCollection (
-            getNodesOrEmpty (property)
+            nodes
                 .stream ()
                 .map (factory::create)
                 .collect (toList ()));
@@ -325,8 +337,6 @@ public class Node {
 
         return unmodifiableMap (result);
     }
-
-
 
     /**
      * get the object value of the given property as {@link Node}. Throws if the property is not

@@ -81,11 +81,11 @@ public class PathItem implements Reference, Extensions {
     }
 
     public Collection<Server> getServers () {
-        return getSource ().getArrayValuesOrEmpty (SERVERS, node -> new Server(context, node));
+        return getSource ().getObjectsOrEmpty (SERVERS, node -> new Server(context, node));
     }
 
     public Collection<Parameter> getParameters () {
-        return getSource ().getArrayValuesOrEmpty (PARAMETERS, node -> new Parameter (context, node));
+        return getSource ().getObjectsOrEmpty (PARAMETERS, node -> new Parameter (context, node));
     }
 
     private Operation getOperation(String property) {
