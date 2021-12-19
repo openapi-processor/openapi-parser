@@ -27,7 +27,7 @@ public class Operation {
     }
 
     public Collection<String> getTags () {
-        return node.getArrayValues (TAGS, String.class);
+        return node.getStringValuesOrEmpty (TAGS);
     }
 
     @Nullable
