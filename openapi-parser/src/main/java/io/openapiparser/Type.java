@@ -7,6 +7,11 @@ package io.openapiparser;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.util.Collection;
+import java.util.Collections;
+
+import static java.util.Collections.unmodifiableCollection;
+
 public class Type {
 
     @SuppressWarnings ("unchecked")
@@ -31,6 +36,7 @@ public class Type {
         return convert (path, value, type);
     }
 
+    @SuppressWarnings ("return")
     static <T> T convertOrThrow (String path, @Nullable Object value, Class<T> type) {
         final T result = convertOrNull (path, value, type);
         if (value == null)
@@ -38,4 +44,31 @@ public class Type {
 
         return result;
     }
+
+    @SuppressWarnings ("unchecked")
+    static <T> Collection<T> convertCollection (String path, @Nullable Object value, Class<T> itemType) {
+        final Collection<?> collection = convert (path, value, Collection.class);
+
+        int idx = 0;
+        for (Object item : collection) {
+            convertOrThrow (String.format ("%s[%d]", path, idx++), item, itemType);
+        }
+
+        return (Collection<T>) unmodifiableCollection (collection);
+    }
+
+    static <T> @Nullable Collection<T> convertCollectionOrNull (String path, @Nullable Object value, Class<T> itemType) {
+        if (value == null)
+            return null;
+
+        return convertCollection (path, value, itemType);
+    }
+
+    static <T> Collection<T> convertCollectionOrEmpty (String path, @Nullable Object value, Class<T> itemType) {
+        if (value == null)
+            return Collections.emptyList ();
+
+        return convertCollection (path, value, itemType);
+    }
+
 }

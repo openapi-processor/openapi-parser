@@ -7,10 +7,10 @@ package io.openapiparser;
 
 import java.util.*;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import static io.openapiparser.Type.*;
 import static java.util.Collections.*;
+import static java.util.stream.Collectors.toList;
 
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -134,33 +134,30 @@ public class Node {
     }
 
     /**
-     * get the raw array values of the given property as collection of {@link String}s.
+     * get the raw array values of the given property as {@link Collection<String>} or null if the
+     * property is missing.
      *
      * @param property property name
-     * @return collection of values
+     * @return property collection or null if the property is missing
      */
     public @Nullable Collection<String> getStringValues (String property) {
-        final Object value = getRawValue (property);
-        if (value == null)
-            return null;
-
-        return checkedCollection (getPath (property), value, String.class);
+        return convertCollectionOrNull (getPath (property), getRawValue (property), String.class);
     }
 
     /**
-     * get the raw array values of the given property as collection of {@link String}s. If property
-     * is missing it returns an empty collection.
+     * get the raw array values of the given property as {@link Collection<String>} or an empty
+     * collection if the property value is missing.
      *
      * @param property property name
      * @return collection of values
      */
     public Collection<String> getStringValuesOrEmpty (String property) {
-        final Object value = getRawValue (property);
-        if (value == null)
-            return Collections.emptyList ();
-
-        return checkedCollection (getPath (property), value, String.class);
+        return convertCollectionOrEmpty (getPath (property), getRawValue (property), String.class);
     }
+
+
+
+
 
     /**
      * converts the properties of this {@link Node} to a map from property name to {@code T} using
@@ -264,34 +261,6 @@ public class Node {
     }
 
     /**
-     * converts the value of the given property name to a collection of {@code T}s casting the items
-     * to {@code T}s.
-     *
-     * @param property property name
-     * @param <T> target type
-     * @return collection of {@code T}s
-     */
-    public <T> Collection<T> getArrayValues (String property, Class<T> itemType) {
-        return checkedCollection (property, getRawValue (property), itemType);
-    }
-
-    /**
-     * converts the value of the given property name to a collection of {@code T}s casting the items
-     * to {@code T}s. If the property is missing it returns an empty collection.
-     *
-     * @param property property name
-     * @param <T> target type
-     * @return collection of {@code T}s
-     */
-    public <T> Collection<T> getArrayValuesOrEmpty (String property, Class<T> itemType) {
-        final Object rawValue = getRawValue (property);
-        if (rawValue == null)
-            return Collections.emptyList ();
-
-        return checkedCollection (property, rawValue, itemType);
-    }
-
-    /**
      * converts the value of the given property name to a collection of {@code T}s using the given
      * factory to convert all property values to {@code T}s.
      *
@@ -305,7 +274,7 @@ public class Node {
             getObjectNodes (property)
                 .stream ()
                 .map (factory::create)
-                .collect (Collectors.toList ()));
+                .collect (toList ()));
     }
 
     public <T> Collection<T> getArrayValuesOrEmpty (String property, ObjectFactory<T> factory) {
@@ -313,7 +282,7 @@ public class Node {
             getObjectNodesOrEmpty (property)
                 .stream ()
                 .map (factory::create)
-                .collect (Collectors.toList ()));
+                .collect (toList ()));
     }
 
     /**
@@ -425,6 +394,7 @@ public class Node {
     private String getPath (String property) {
         return String.format ("%s.%s", path, property);
     }
+
     private String getCollectionPath (String property, int index) {
         return String.format ("%s.%s[%d]", path, property, index);
     }
@@ -448,25 +418,9 @@ public class Node {
         return unmodifiableCollection(nodes);
     }
 
-    @SuppressWarnings ({"unchecked", "rawtypes"})
-    private <T> Collection<T> checkedCollection (String property, @Nullable Object value, Class<T> itemType) {
-        final Collection collection = checked (property, value, Collection.class);
-
-        final Object[] values = collection.toArray ();
-        for (int i = 0; i < values.length; i++) {
-            checkedItem (property, i, values[i], itemType);
-        }
-
-        return unmodifiableCollection(collection);
-    }
-
     @SuppressWarnings ("unchecked")
     private Map<String, Object> checkedObject (String property, @Nullable Object value) {
         return checkedProperty (property, value, Map.class);
-    }
-
-    private <T> T checkedItem (String property, int index, Object value, Class<T> type) {
-        return checked (getCollectionPath (property, index), value, type);
     }
 
     private <T> T checkedProperty (String property, @Nullable Object value, Class<T> type) {
