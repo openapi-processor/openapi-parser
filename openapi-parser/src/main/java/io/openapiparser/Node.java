@@ -58,7 +58,10 @@ public class Node {
     }
 
     /**
-     * same as {@link #getStringValue}, but throws if the property values is {@code null}.
+     * same as {@link #getStringValue(String)}, but throws if the property values is {@code null}.
+     *
+     * @param property property name
+     * @return property value or null if the property is missing
      */
     public String getRequiredStringValue (String property) throws NoValueException {
         return convertOrThrow (getPath (property), getRawValue (property), String.class);
@@ -68,18 +71,19 @@ public class Node {
      * get the raw value of the given property as {@link Boolean}.
      *
      * @param property property name
-     * @return property value or null if the property does not exist
+     * @return property value or null if the property is missing
      */
     public @Nullable Boolean getBooleanValue (String property) {
         return convertOrNull (getPath (property), getRawValue (property), Boolean.class);
     }
 
     /**
-     * get the value of the given property as {@link Boolean} or a fallback value if it is missing.
+     * same as {@link #getBooleanValue(String)}, but returns the fallback if the property values is
+     * missing.
      *
      * @param property property name
      * @param fallback fallback value
-     * @return property value or fallback if the property does not exist
+     * @return property value or fallback if the property is missing
      */
     public Boolean getBooleanValue (String property, boolean fallback) {
         return convertOrFallback (getPath (property), getRawValue (property), Boolean.class, fallback);
@@ -89,18 +93,19 @@ public class Node {
      * get the raw value of the given property as {@link Number}.
      *
      * @param property property name
-     * @return property value or null if the property does not exist
+     * @return property value or null if the property is missing
      */
     public @Nullable Number getNumberValue (String property) {
         return convertOrNull (getPath (property), getRawValue (property), Number.class);
     }
 
     /**
-     * get the value of the given property as {@link Number} or a fallback value if it is missing.
+     * same as {@link #getNumberValue(String)}, but returns the fallback if the property values is
+     * missing.
      *
      * @param property property name
      * @param fallback fallback value
-     * @return property value or fallback if the property does not exist
+     * @return property value or fallback if the property is missing
      */
     public Number getNumberValue (String property, Number fallback) {
         return convertOrFallback (getPath (property), getRawValue (property), Number.class, fallback);
@@ -110,18 +115,19 @@ public class Node {
      * get the raw value of the given property as {@link Integer}.
      *
      * @param property property name
-     * @return property value or null if the property does not exist
+     * @return property value or null if the property is missing
      */
     public @Nullable Integer getIntegerValue (String property) {
         return convertOrNull (getPath (property), getRawValue (property), Integer.class);
     }
 
     /**
-     * get the value of the given property as {@link Integer} or a fallback value if it is missing.
+     * same as {@link #getIntegerValue(String)}, but returns the fallback if the property values is
+     * missing.
      *
      * @param property property name
      * @param fallback fallback value
-     * @return property value or fallback if the property does not exist
+     * @return property value or fallback if the property is missing
      */
     public Integer getIntegerValue (String property, Integer fallback) {
         return convertOrFallback (getPath (property), getRawValue (property), Integer.class, fallback);
