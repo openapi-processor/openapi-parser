@@ -97,7 +97,7 @@ public class Schema implements Reference, Extensions {
     }
 
     public Collection<String> getRequired() {
-        return getSource ().getStringValues (REQUIRED);
+        return getSource ().getStringValuesOrEmpty (REQUIRED);
     }
 
     @Override

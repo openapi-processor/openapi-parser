@@ -8,6 +8,7 @@ package io.openapiparser.model.v3x
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
@@ -152,6 +153,10 @@ class SchemaSpec: StringSpec({
         schema31("required: [foo, bar]").required.shouldContainExactly(listOf("foo", "bar"))
     }
 
+    "gets schema required is empty if missing" {
+        schema30().required.shouldBeEmpty()
+        schema31().required.shouldBeEmpty()
+    }
 
     include(testExtensions("schema 30", ::schema30) { it.extensions })
     include(testExtensions("schema 31", ::schema31) { it.extensions })
