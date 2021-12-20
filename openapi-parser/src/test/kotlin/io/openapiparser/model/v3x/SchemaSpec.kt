@@ -11,6 +11,7 @@ import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.nulls.shouldBeNull
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.openapiparser.model.v30.schema as schema30
 import io.openapiparser.model.v31.schema as schema31
@@ -176,6 +177,39 @@ class SchemaSpec: StringSpec({
     "gets schema enum is null if missing" {
         schema30().enum.shouldBeNull()
         schema31().enum.shouldBeNull()
+    }
+
+    "gets schema title" {
+        schema30("title: foo").title shouldBe "foo"
+        schema31("title: foo").title shouldBe "foo"
+    }
+
+    "gets schema title is null if missing" {
+        schema30().title.shouldBeNull()
+        schema31().title.shouldBeNull()
+    }
+
+    include(testDescription("schema 30", ::schema30) { it.description })
+    include(testDescription("schema 31", ::schema31) { it.description })
+
+    "gets schema default" {
+        schema30("default: {}").default.shouldNotBeNull()
+        schema31("default: {}").default.shouldNotBeNull()
+    }
+
+    "gets schema default is null if missing" {
+        schema30().default.shouldBeNull()
+        schema31().default.shouldBeNull()
+    }
+
+    "gets schema deprecated" {
+        schema30("deprecated: true").deprecated.shouldBeTrue()
+        schema31("deprecated: true").deprecated.shouldBeTrue()
+    }
+
+    "gets schema deprecated is false if missing" {
+        schema30().deprecated.shouldBeFalse()
+        schema31().deprecated.shouldBeFalse()
     }
 
     include(testExtensions("schema 30", ::schema30) { it.extensions })

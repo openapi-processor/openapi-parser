@@ -112,6 +112,26 @@ public class Schema implements Reference, Extensions {
         return getSource ().getStringValues (ENUM);
     }
 
+    public @Nullable String getTitle () {
+        return getSource ().getStringValue (TITLE);
+    }
+
+    public @Nullable String getDescription () {
+        return getSource ().getStringValue (DESCRIPTION);
+    }
+
+    public @Nullable Object getDefault () {
+        return getSource ().getRawValue (DEFAULT);
+    }
+
+    public Boolean getNullable () {
+        return getSource ().getBooleanValue (NULLABLE, false);
+    }
+
+    public Boolean getDeprecated () {
+        return getSource ().getBooleanValue (DEPRECATED, false);
+    }
+
     @Override
     public Map<String, Object> getExtensions () {
         return getSource ().getExtensions ();

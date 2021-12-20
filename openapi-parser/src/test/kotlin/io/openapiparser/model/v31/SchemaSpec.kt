@@ -19,6 +19,35 @@ import io.openapiparser.NoValueException
  */
 class SchemaSpec: StringSpec({
 
+    // todo
+    // contentEncoding
+    // contentMediaType
+    // contentSchema
+    // readOnly
+    // writeOnly
+    // examples
+
+    // $defs
+    // allOf
+    // anyOf
+    // oneOf
+    // not
+    // if
+    // then
+    // else
+    // items
+    // additionalItems
+    // contains
+    // propertyNames
+    // properties
+    // patternProperties
+    // additionalProperties
+
+    // descriminator
+    // xml
+    // externalDocs
+    // example
+
     "gets schema type" {
         schema("type: string").type shouldBe listOf("string")
         schema("type: [string, object]").type shouldBe listOf("string", "object")
@@ -28,11 +57,13 @@ class SchemaSpec: StringSpec({
         shouldThrow<NoValueException> { schema().type }
     }
 
-    // todo
-    // enum
-    // const
+    "gets schema const" {
+        schema("const: foo").const shouldBe "foo"
+    }
 
-    //    additionalItems and items
+    "gets schema const is null if missing" {
+        schema().const.shouldBeNull()
+    }
 
     "gets schema maxContains" {
         schema("maxContains: 9").maxContains shouldBe 9

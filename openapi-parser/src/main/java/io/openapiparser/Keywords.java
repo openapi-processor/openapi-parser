@@ -13,6 +13,7 @@ public interface Keywords {
     String ALLOW_EMPTY_VALUE = "allowEmptyValue";
     String ALLOW_RESERVED = "allowReserved";
     String COMPONENTS = "components";
+    String CONST = "const";
     String CONTACT = "contact";
     String CONTENT = "content";
     String CONTENT_TYPE = "contentType";
@@ -52,6 +53,7 @@ public interface Keywords {
     String MINIMUM = "minimum";
     String MULTIPLE_OF = "multipleOf";
     String NAME = "name";
+    String NULLABLE = "nullable";
     String OPENAPI = "openapi";
     String OPERATION_ID = "operationId";
     String OPTIONS = "options";
