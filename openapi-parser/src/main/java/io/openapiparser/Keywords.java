@@ -31,6 +31,7 @@ public interface Keywords {
     String EXPLODE = "explode";
     String EXTERNAL_DOCS = "externalDocs";
     String EXTERNAL_VALUE = "externalValue";
+    String FORMAT = "format";
     String GET = "get";
     String HEAD = "head";
     String HEADERS = "headers";
@@ -71,6 +72,7 @@ public interface Keywords {
     String TERMS_OF_SERVICE = "termsOfService";
     String TITLE = "title";
     String TRACE = "trace";
+    String TYPE = "type";
     String UNIQUE_ITEMS = "uniqueItems";
     String URL = "url";
     String VALUE = "value";

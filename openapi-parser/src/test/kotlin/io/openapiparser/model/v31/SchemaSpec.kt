@@ -5,20 +5,30 @@
 
 package io.openapiparser.model.v31
 
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.maps.shouldContainKey
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import io.openapiparser.NoValueException
 
 /**
  * @see [io.openapiparser.model.v3x.SchemaSpec]
  */
 class SchemaSpec: StringSpec({
 
+    "gets schema type" {
+        schema("type: string").type shouldBe listOf("string")
+        schema("type: [string, object]").type shouldBe listOf("string", "object")
+    }
+
+    "gets schema type throws if missing" {
+        shouldThrow<NoValueException> { schema().type }
+    }
+
     // todo
-    // type
     // enum
     // const
 

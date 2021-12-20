@@ -121,6 +121,25 @@ public class Schema implements Reference, Extensions {
         return getSource ().getObjectSetValuesOrEmpty (DEPENDENT_REQUIRED);
     }
 
+    public Collection<String> getType() {
+        final Object value = getSource ().getRawValue (TYPE);
+        if (value instanceof String) {
+            return Collections.singletonList (getSource ().getStringValue (TYPE));
+        } else if (value instanceof Collection) {
+            return getSource ().getStringValues (TYPE);
+        } else {
+            throw new NoValueException (getSource ().getPath (TYPE));
+        }
+    }
+
+    public @Nullable String getFormat() {
+        return getSource ().getStringValue (FORMAT);
+    }
+
+    public @Nullable Collection<?> getEnum() {
+        return getSource ().getStringValues (ENUM);
+    }
+
     @Override
     public Map<String, Object> getExtensions () {
         return node.getExtensions ();

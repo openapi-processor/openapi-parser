@@ -158,6 +158,26 @@ class SchemaSpec: StringSpec({
         schema31().required.shouldBeEmpty()
     }
 
+    "gets schema format" {
+        schema30("format: foo").format shouldBe "foo"
+        schema31("format: foo").format shouldBe "foo"
+    }
+
+    "gets schema format is null if missing" {
+        schema30().format.shouldBeNull()
+        schema31().format.shouldBeNull()
+    }
+
+    "gets schema enum" {
+        schema30("enum: [foo, bar]").enum shouldBe listOf("foo", "bar")
+        schema31("enum: [foo, bar]").enum shouldBe listOf("foo", "bar")
+    }
+
+    "gets schema enum is null if missing" {
+        schema30().enum.shouldBeNull()
+        schema31().enum.shouldBeNull()
+    }
+
     include(testExtensions("schema 30", ::schema30) { it.extensions })
     include(testExtensions("schema 31", ::schema31) { it.extensions })
 })

@@ -100,6 +100,18 @@ public class Schema implements Reference, Extensions {
         return getSource ().getStringValuesOrEmpty (REQUIRED);
     }
 
+    public String getType() {
+        return getSource ().getRequiredStringValue (TYPE);
+    }
+
+    public @Nullable String getFormat() {
+        return getSource ().getStringValue (FORMAT);
+    }
+
+    public @Nullable Collection<?> getEnum() {
+        return getSource ().getStringValues (ENUM);
+    }
+
     @Override
     public Map<String, Object> getExtensions () {
         return getSource ().getExtensions ();

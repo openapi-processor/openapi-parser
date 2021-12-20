@@ -8,6 +8,7 @@ package io.openapiparser;
 import java.util.*;
 import java.util.regex.Pattern;
 
+import static io.openapiparser.Keywords.TYPE;
 import static io.openapiparser.Type.*;
 import static java.util.Collections.*;
 import static java.util.stream.Collectors.toList;
@@ -443,7 +444,7 @@ public class Node {
         return path;
     }
 
-    private String getPath (String property) {
+    public String getPath (String property) {
         return String.format ("%s.%s", path, property);
     }
 
