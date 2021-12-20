@@ -5,11 +5,13 @@
 
 package io.openapiparser.model.v3x
 
+import io.kotest.core.datatest.forAll
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.maps.shouldBeEmpty
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
@@ -210,6 +212,28 @@ class SchemaSpec: StringSpec({
     "gets schema deprecated is false if missing" {
         schema30().deprecated.shouldBeFalse()
         schema31().deprecated.shouldBeFalse()
+    }
+
+    "gets schema properties" {
+        val source = """
+          properties:
+            foo: {}
+            bar: {}
+        """
+
+        forAll(
+            schema30(source).properties,
+            schema31(source).properties,
+        ) { properties ->
+            properties.size shouldBe 2
+            properties["foo"].shouldNotBeNull()
+            properties["bar"].shouldNotBeNull()
+        }
+    }
+
+    "gets schema properties is empty if missing" {
+        schema30().properties.shouldBeEmpty()
+        schema31().properties.shouldBeEmpty()
     }
 
     include(testExtensions("schema 30", ::schema30) { it.extensions })

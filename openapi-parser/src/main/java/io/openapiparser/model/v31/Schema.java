@@ -9,6 +9,7 @@ import io.openapiparser.*;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 import static io.openapiparser.Keywords.*;
 
@@ -154,6 +155,14 @@ public class Schema implements Reference, Extensions {
 
     public Boolean getDeprecated () {
         return getSource ().getBooleanValue (DEPRECATED, false);
+    }
+
+    public Map<String, Schema> getProperties () {
+        return node.getMapObjectValuesOrEmpty (PROPERTIES, node -> new Schema (context, node));
+    }
+
+    public Map<String, Schema> getPatternProperties () {
+        return node.getMapObjectValuesOrEmpty (PATTERN_PROPERTIES, node -> new Schema (context, node));
     }
 
     @Override

@@ -18,8 +18,8 @@ import io.openapiparser.NoValueException
 class SchemaSpec: StringSpec({
 
     // todo
-    // properties  Property definitions MUST be a Schema Object and not a standard JSON Schema (inline or referenced).
     // additionalProperties - Value can be boolean or object. Inline or referenced schema MUST be of a Schema Object and not a standard JSON Schema. Consistent with JSON Schema, additionalProperties defaults to true.
+
     // allOf - Inline or referenced schema MUST be of a Schema Object and not a standard JSON Schema.
     // oneOf - Inline or referenced schema MUST be of a Schema Object and not a standard JSON Schema.
     // anyOf - Inline or referenced schema MUST be of a Schema Object and not a standard JSON Schema.

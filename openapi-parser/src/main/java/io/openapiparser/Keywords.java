@@ -61,7 +61,9 @@ public interface Keywords {
     String PATHS = "paths";
     String PATCH = "patch";
     String PATTERN = "pattern";
+    String PATTERN_PROPERTIES = "patternProperties";
     String POST = "post";
+    String PROPERTIES = "properties";
     String PUT = "put";
     String REF = "$ref";
     String REQUIRED = "required";

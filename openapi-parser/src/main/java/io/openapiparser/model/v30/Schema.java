@@ -132,6 +132,10 @@ public class Schema implements Reference, Extensions {
         return getSource ().getBooleanValue (DEPRECATED, false);
     }
 
+    public Map<String, Schema> getProperties () {
+        return node.getMapObjectValuesOrEmpty (PROPERTIES, node -> new Schema (context, node));
+    }
+
     @Override
     public Map<String, Object> getExtensions () {
         return getSource ().getExtensions ();

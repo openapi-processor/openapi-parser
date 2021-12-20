@@ -8,6 +8,7 @@ package io.openapiparser.model.v31
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.maps.shouldBeEmpty
 import io.kotest.matchers.maps.shouldContainKey
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -20,6 +21,11 @@ import io.openapiparser.NoValueException
 class SchemaSpec: StringSpec({
 
     // todo
+    // $schema
+    // $vocabulary
+    // $id
+    // $dynamicRef
+    // $comment
     // contentEncoding
     // contentMediaType
     // contentSchema
@@ -39,8 +45,6 @@ class SchemaSpec: StringSpec({
     // additionalItems
     // contains
     // propertyNames
-    // properties
-    // patternProperties
     // additionalProperties
 
     // descriminator
@@ -89,6 +93,23 @@ class SchemaSpec: StringSpec({
 
     "gets schema dependentRequired is empty if missing" {
         schema().dependentRequired.shouldNotBeNull()
+    }
+
+    "gets schema patternProperties" {
+        val source = """
+          patternProperties:
+            foo: {}
+            bar: {}
+        """
+
+        val properties = schema(source).patternProperties
+        properties.size shouldBe 2
+        properties["foo"].shouldNotBeNull()
+        properties["bar"].shouldNotBeNull()
+    }
+
+    "gets schema patternProperties is empty if missing" {
+        schema().patternProperties.shouldBeEmpty()
     }
 
 })
