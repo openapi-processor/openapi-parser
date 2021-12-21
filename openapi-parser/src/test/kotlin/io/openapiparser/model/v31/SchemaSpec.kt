@@ -7,6 +7,7 @@ package io.openapiparser.model.v31
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.maps.shouldBeEmpty
 import io.kotest.matchers.maps.shouldContainKey
@@ -41,9 +42,6 @@ class SchemaSpec: StringSpec({
     // if
     // then
     // else
-    // items
-    // additionalItems
-    // contains
 
     // descriminator
     // xml
@@ -126,4 +124,19 @@ class SchemaSpec: StringSpec({
         schema().propertyNames.shouldBeNull()
     }
 
+    "gets schema prefixItems" {
+        schema("prefixItems: [{}]").prefixItems.size shouldBe 1
+    }
+
+    "gets schema prefixItems is empty if missing" {
+        schema().prefixItems.shouldBeEmpty()
+    }
+
+    "gets schema contains" {
+        schema("contains: {}").contains.shouldNotBeNull()
+    }
+
+    "gets schema contains is null if missing" {
+        schema().contains.shouldBeNull()
+    }
 })

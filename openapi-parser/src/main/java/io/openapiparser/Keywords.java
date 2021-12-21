@@ -16,6 +16,7 @@ public interface Keywords {
     String COMPONENTS = "components";
     String CONST = "const";
     String CONTACT = "contact";
+    String CONTAINS = "contains";
     String CONTENT = "content";
     String CONTENT_TYPE = "contentType";
     String DEFAULT = "default";
@@ -40,6 +41,7 @@ public interface Keywords {
     String IDENTIFIER = "identifier";
     String IN = "in";
     String INFO = "info";
+    String ITEMS = "items";
     String JSON_SCHEMA_DIALECT = "jsonSchemaDialect";
     String LICENSE = "license";
     String MAX_CONTAINS = "maxContains";
@@ -63,6 +65,7 @@ public interface Keywords {
     String PATCH = "patch";
     String PATTERN = "pattern";
     String PATTERN_PROPERTIES = "patternProperties";
+    String PREFIX_ITEMS = "prefixItems";
     String POST = "post";
     String PROPERTIES = "properties";
     String PROPERTY_NAMES = "propertyNames";

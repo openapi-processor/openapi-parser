@@ -23,7 +23,6 @@ class SchemaSpec: StringSpec({
     // oneOf - Inline or referenced schema MUST be of a Schema Object and not a standard JSON Schema.
     // anyOf - Inline or referenced schema MUST be of a Schema Object and not a standard JSON Schema.
     // not - Inline or referenced schema MUST be of a Schema Object and not a standard JSON Schema.
-    // items - Value MUST be an object and not an array. Inline or referenced schema MUST be of a Schema Object and not a standard JSON Schema. items MUST be present if the type is array.
     // readOnly
     // writeOnly
     // discriminator

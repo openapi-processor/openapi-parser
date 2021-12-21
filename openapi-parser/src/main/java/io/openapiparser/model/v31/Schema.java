@@ -70,33 +70,50 @@ public class Schema implements Reference, Extensions {
     // JSON Schema: subschemas conditional keyword else
     // JSON Schema: subschemas conditional keyword dependentSchemas
 
-    // JSON Schema: subschemas array keyword prefixItems
-    // JSON Schema: subschemas array keyword items
-    // JSON Schema: subschemas array keyword contains
+    /**
+     * JSON Schema: subschemas array keyword
+     */
+    public Collection<Schema> getPrefixItems () {
+        return getSource ().getObjectValuesOrEmpty (PREFIX_ITEMS, node -> new Schema (context, node));
+    }
 
     /**
-     * JSON Schema: subschemas object keyword properties
+     * JSON Schema: subschemas array keyword
+     */
+    public @Nullable Schema getItems () {
+        return getSource ().getObjectValue (ITEMS, node -> new Schema (context, node));
+    }
+
+    /**
+     * JSON Schema: subschemas array keyword
+     */
+    public @Nullable Schema getContains () {
+        return getSource ().getObjectValue (CONTAINS, node -> new Schema (context, node));
+    }
+
+    /**
+     * JSON Schema: subschemas object keyword
      */
     public Map<String, Schema> getProperties () {
         return node.getMapObjectValuesOrEmpty (PROPERTIES, node -> new Schema (context, node));
     }
 
     /**
-     * JSON Schema: subschemas object keyword properties
+     * JSON Schema: subschemas object keyword
      */
     public Map<String, Schema> getPatternProperties () {
         return node.getMapObjectValuesOrEmpty (PATTERN_PROPERTIES, node -> new Schema (context, node));
     }
 
     /**
-     * JSON Schema: subschemas object keyword properties
+     * JSON Schema: subschemas object keyword
      */
     public @Nullable Schema getAdditionalProperties () {
         return node.getObjectValue (ADDITIONAL_PROPERTIES, node -> new Schema (context, node));
     }
 
     /**
-     * JSON Schema: subschemas object keyword properties
+     * JSON Schema: subschemas object keyword
      */
     public @Nullable Schema getPropertyNames () {
         return node.getObjectValue (PROPERTY_NAMES, node -> new Schema (context, node));

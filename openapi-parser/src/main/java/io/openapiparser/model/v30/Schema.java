@@ -93,9 +93,12 @@ public class Schema implements Reference, Extensions {
         return getSource ().getNumberValue (MIN_LENGTH);
     }
 
-    /* todo items
+    /**
      * JSON Schema Validation: validation keyword
      */
+    public @Nullable Schema getItems () {
+        return getSource ().getObjectValue (ITEMS, node -> new Schema (context, node));
+    }
 
     /**
      * JSON Schema Validation: validation keyword

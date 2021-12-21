@@ -236,6 +236,16 @@ class SchemaSpec: StringSpec({
         schema31().properties.shouldBeEmpty()
     }
 
+    "gets schema items" () {
+        schema30("items: {}").items.shouldNotBeNull()
+        schema31("items: {}").items.shouldNotBeNull()
+    }
+
+    "gets schema items is null if missing" () {
+        schema30().items.shouldBeNull()
+        schema31().items.shouldBeNull()
+    }
+
     include(testExtensions("schema 30", ::schema30) { it.extensions })
     include(testExtensions("schema 31", ::schema31) { it.extensions })
 })
