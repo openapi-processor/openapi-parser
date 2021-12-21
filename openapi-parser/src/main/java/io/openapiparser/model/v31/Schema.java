@@ -361,14 +361,20 @@ public class Schema implements Reference, Extensions {
      * OpenAPI base vocabulary
      */
 
-    /* todo externalDocs
+    /**
      * OpenAPI base vocabulary
      */
+    public @Nullable ExternalDocumentation getExternalDocs () {
+        return node.getObjectValue (EXTERNAL_DOCS, node -> new ExternalDocumentation (context, node));
+    }
 
-    /* todo example
+    /**
      * OpenAPI base vocabulary
-     * @Deprecated
      */
+    @Deprecated
+    public @Nullable Object getExample () {
+        return getSource ().getRawValue (EXAMPLE);
+    }
 
     /**
      * todo not required to have x- prefix

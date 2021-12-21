@@ -271,13 +271,19 @@ public class Schema implements Reference, Extensions {
      * OpenAPI Schema
      */
 
-    /* todo externalDocs
+    /**
      * OpenAPI Schema
      */
+    public @Nullable ExternalDocumentation getExternalDocs () {
+        return node.getObjectValue (EXTERNAL_DOCS, node -> new ExternalDocumentation (context, node));
+    }
 
-    /* todo example
+    /**
      * OpenAPI Schema
      */
+    public @Nullable Object getExample () {
+        return getSource ().getRawValue (EXAMPLE);
+    }
 
     /**
      * OpenAPI Schema

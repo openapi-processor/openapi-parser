@@ -21,8 +21,6 @@ class SchemaSpec: StringSpec({
     // todo
     // discriminator
     // xml
-    // externalDocs
-    // example
 
     "gets schema type" {
         schema("type: string").type shouldBe "string"

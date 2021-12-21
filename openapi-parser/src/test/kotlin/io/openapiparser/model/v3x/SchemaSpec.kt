@@ -306,6 +306,26 @@ class SchemaSpec: StringSpec({
         schema31().writeOnly.shouldBeFalse()
     }
 
+    "gets schema externalDocs" {
+        schema30("externalDocs: {}").externalDocs.shouldNotBeNull()
+        schema31("externalDocs: {}").externalDocs.shouldNotBeNull()
+    }
+
+    "gets schema externalDocs is null if missing" {
+        schema30().externalDocs.shouldBeNull()
+        schema31().externalDocs.shouldBeNull()
+    }
+
+    "gets schema example" {
+        schema30("example: {}").example.shouldNotBeNull()
+        schema31("example: {}").example.shouldNotBeNull()
+    }
+
+    "gets schema example is null if missing" {
+        schema30().example.shouldBeNull()
+        schema31().example.shouldBeNull()
+    }
+
     include(testExtensions("schema 30", ::schema30) { it.extensions })
     include(testExtensions("schema 31", ::schema31) { it.extensions })
 })

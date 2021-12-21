@@ -37,10 +37,8 @@ class SchemaSpec: StringSpec({
     // then
     // else
 
-    // descriminator
+    // discriminator
     // xml
-    // externalDocs
-    // example
 
     "gets schema type" {
         schema("type: string").type shouldBe listOf("string")
