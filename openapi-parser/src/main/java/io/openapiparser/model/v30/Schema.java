@@ -30,18 +30,18 @@ public class Schema implements Reference, Extensions {
     public Schema (Context context, Node node) {
         this.context = context;
         this.node = node;
-        refNode = null;
+        refNode = context.getRefNodeOrNull (node);
     }
 
     @Override
     public boolean isRef () {
-        return false;
+        return node.hasProperty (REF);
     }
 
     @Override
     @Required
     public String getRef () {
-        return null;
+        return node.getRequiredStringValue (REF);
     }
 
     /**
