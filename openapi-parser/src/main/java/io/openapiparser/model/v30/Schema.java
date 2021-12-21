@@ -186,21 +186,33 @@ public class Schema implements Reference, Extensions {
         return getSource ().getRequiredStringValue (TYPE);
     }
 
-    /* todo allOf
+    /**
      * JSON Schema Validation: validation keyword
      */
+    public Collection<Schema> getAllOf () {
+        return getSource ().getObjectValuesOrEmpty (ALL_OF, node -> new Schema (context, node));
+    }
 
-    /* todo anyOf
+    /**
      * JSON Schema Validation: validation keyword
      */
+    public Collection<Schema> getAnyOf () {
+        return getSource ().getObjectValuesOrEmpty (ANY_OF, node -> new Schema (context, node));
+    }
 
-    /* todo oneOf
+    /**
      * JSON Schema Validation: validation keyword
      */
+    public Collection<Schema> getOneOf () {
+        return getSource ().getObjectValuesOrEmpty (ONE_OF, node -> new Schema (context, node));
+    }
 
-    /* todo not
+    /**
      * JSON Schema Validation: validation keyword
      */
+    public @Nullable Schema getNot () {
+        return getSource ().getObjectValue (NOT, node -> new Schema (context, node));
+    }
 
     /**
      * JSON Schema Validation: metadata keyword

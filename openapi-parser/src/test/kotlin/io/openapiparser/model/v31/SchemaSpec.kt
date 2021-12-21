@@ -35,10 +35,6 @@ class SchemaSpec: StringSpec({
     // examples
 
     // $defs
-    // allOf
-    // anyOf
-    // oneOf
-    // not
     // if
     // then
     // else

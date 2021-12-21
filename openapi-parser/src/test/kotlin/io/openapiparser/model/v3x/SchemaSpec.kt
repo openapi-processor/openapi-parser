@@ -246,6 +246,46 @@ class SchemaSpec: StringSpec({
         schema31().items.shouldBeNull()
     }
 
+    "gets schema allOf" {
+        schema30("allOf: [{}]").allOf.size shouldBe 1
+        schema31("allOf: [{}]").allOf.size shouldBe 1
+    }
+
+    "gets schema allOf is empty if missing" {
+        schema30().allOf.shouldBeEmpty()
+        schema31().allOf.shouldBeEmpty()
+    }
+
+    "gets schema anyOf" {
+        schema30("anyOf: [{}]").anyOf.size shouldBe 1
+        schema31("anyOf: [{}]").anyOf.size shouldBe 1
+    }
+
+    "gets schema anyOf is empty if missing" {
+        schema30().anyOf.shouldBeEmpty()
+        schema31().anyOf.shouldBeEmpty()
+    }
+
+    "gets schema oneOf" {
+        schema30("oneOf: [{}]").oneOf.size shouldBe 1
+        schema31("oneOf: [{}]").oneOf.size shouldBe 1
+    }
+
+    "gets schema oneOf is empty if missing" {
+        schema30().oneOf.shouldBeEmpty()
+        schema31().oneOf.shouldBeEmpty()
+    }
+
+    "gets schema not" () {
+        schema30("not: {}").not.shouldNotBeNull()
+        schema31("not: {}").not.shouldNotBeNull()
+    }
+
+    "gets schema not is null if missing" () {
+        schema30().not.shouldBeNull()
+        schema31().not.shouldBeNull()
+    }
+
     include(testExtensions("schema 30", ::schema30) { it.extensions })
     include(testExtensions("schema 31", ::schema31) { it.extensions })
 })

@@ -11,8 +11,10 @@ import java.util.stream.Collectors;
 public interface Keywords {
 
     String ADDITIONAL_PROPERTIES = "additionalProperties";
+    String ALL_OF = "allOf";
     String ALLOW_EMPTY_VALUE = "allowEmptyValue";
     String ALLOW_RESERVED = "allowReserved";
+    String ANY_OF = "anyOf";
     String COMPONENTS = "components";
     String CONST = "const";
     String CONTACT = "contact";
@@ -56,7 +58,9 @@ public interface Keywords {
     String MINIMUM = "minimum";
     String MULTIPLE_OF = "multipleOf";
     String NAME = "name";
+    String NOT = "not";
     String NULLABLE = "nullable";
+    String ONE_OF = "oneOf";
     String OPENAPI = "openapi";
     String OPERATION_ID = "operationId";
     String OPTIONS = "options";

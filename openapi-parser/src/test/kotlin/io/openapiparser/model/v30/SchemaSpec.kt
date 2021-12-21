@@ -19,10 +19,6 @@ import io.openapiparser.NoValueException
 class SchemaSpec: StringSpec({
 
     // todo
-    // allOf - Inline or referenced schema MUST be of a Schema Object and not a standard JSON Schema.
-    // oneOf - Inline or referenced schema MUST be of a Schema Object and not a standard JSON Schema.
-    // anyOf - Inline or referenced schema MUST be of a Schema Object and not a standard JSON Schema.
-    // not - Inline or referenced schema MUST be of a Schema Object and not a standard JSON Schema.
     // readOnly
     // writeOnly
     // discriminator

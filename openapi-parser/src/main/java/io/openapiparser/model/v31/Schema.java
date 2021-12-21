@@ -60,10 +60,33 @@ public class Schema implements Reference, Extensions {
     // JSON Schema: core keyword $defs
     // JSON Schema: core keyword $comment
 
-    // JSON Schema: subschemas logic keyword allOf
-    // JSON Schema: subschemas logic keyword anyOf
-    // JSON Schema: subschemas logic keyword oneOf
-    // JSON Schema: subschemas logic keyword not
+    /**
+     * JSON Schema: subschemas logic keyword
+     */
+    public Collection<Schema> getAllOf () {
+        return getSource ().getObjectValuesOrEmpty (ALL_OF, node -> new Schema (context, node));
+    }
+
+    /**
+     * JSON Schema: subschemas logic keyword
+     */
+    public Collection<Schema> getAnyOf () {
+        return getSource ().getObjectValuesOrEmpty (ANY_OF, node -> new Schema (context, node));
+    }
+
+    /**
+     * JSON Schema: subschemas logic keyword
+     */
+    public Collection<Schema> getOneOf () {
+        return getSource ().getObjectValuesOrEmpty (ONE_OF, node -> new Schema (context, node));
+    }
+
+    /**
+     * JSON Schema: subschemas logic keyword
+     */
+    public @Nullable Schema getNot () {
+        return getSource ().getObjectValue (NOT, node -> new Schema (context, node));
+    }
 
     // JSON Schema: subschemas conditional keyword if
     // JSON Schema: subschemas conditional keyword then
