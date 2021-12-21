@@ -13,6 +13,7 @@ import io.openapiparser.Required;
  *
  * <p>See specification:
  * <a href="https://spec.openapis.org/oas/v3.0.3.html#reference-object">4.7.23 Reference Object</a>
+ * <a href="https://datatracker.ietf.org/doc/html/draft-pbryan-zyp-json-ref-03">JSON Reference</a>
  */
 public interface Reference {
 
