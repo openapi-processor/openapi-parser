@@ -353,9 +353,12 @@ public class Schema implements Reference, Extensions {
      * JSON Schema Validation: metadata
      */
 
-    /* todo discriminator
+    /**
      * OpenAPI base vocabulary
      */
+    public @Nullable Discriminator getDiscriminator () {
+        return getSource ().getObjectValue (DISCRIMINATOR, node -> new Discriminator (context, node));
+    }
 
     /* todo xml
      * OpenAPI base vocabulary

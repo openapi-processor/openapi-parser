@@ -19,7 +19,6 @@ import io.openapiparser.NoValueException
 class SchemaSpec: StringSpec({
 
     // todo
-    // discriminator
     // xml
 
     "gets schema type" {

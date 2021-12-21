@@ -26,6 +26,7 @@ public interface Keywords {
     String DEPENDENT_REQUIRED = "dependentRequired";
     String DEPRECATED = "deprecated";
     String DESCRIPTION = "description";
+    String DISCRIMINATOR = "discriminator";
     String ENUM = "enum";
     String EMAIL = "email";
     String ENCODING = "encoding";

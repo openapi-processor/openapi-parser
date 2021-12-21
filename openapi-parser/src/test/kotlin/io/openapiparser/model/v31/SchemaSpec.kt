@@ -37,7 +37,6 @@ class SchemaSpec: StringSpec({
     // then
     // else
 
-    // discriminator
     // xml
 
     "gets schema type" {

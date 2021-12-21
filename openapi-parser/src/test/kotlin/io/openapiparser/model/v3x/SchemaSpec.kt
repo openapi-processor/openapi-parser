@@ -326,6 +326,16 @@ class SchemaSpec: StringSpec({
         schema31().example.shouldBeNull()
     }
 
+    "gets schema discriminator" {
+        schema30("discriminator: {}").discriminator.shouldNotBeNull()
+        schema31("discriminator: {}").discriminator.shouldNotBeNull()
+    }
+
+    "gets schema discriminator is null if missing" {
+        schema30().discriminator.shouldBeNull()
+        schema31().discriminator.shouldBeNull()
+    }
+
     include(testExtensions("schema 30", ::schema30) { it.extensions })
     include(testExtensions("schema 31", ::schema31) { it.extensions })
 })

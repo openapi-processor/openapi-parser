@@ -249,9 +249,12 @@ public class Schema implements Reference, Extensions {
         return getSource ().getBooleanValue (NULLABLE, false);
     }
 
-    /* todo discriminator
+    /**
      * OpenAPI Schema
      */
+    public @Nullable Discriminator getDiscriminator () {
+        return getSource ().getObjectValue (DISCRIMINATOR, node -> new Discriminator (context, node));
+    }
 
     /**
      * OpenAPI Schema
