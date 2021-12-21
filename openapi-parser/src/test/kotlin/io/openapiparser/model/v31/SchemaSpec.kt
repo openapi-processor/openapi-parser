@@ -44,8 +44,6 @@ class SchemaSpec: StringSpec({
     // items
     // additionalItems
     // contains
-    // propertyNames
-    // additionalProperties
 
     // descriminator
     // xml
@@ -110,6 +108,22 @@ class SchemaSpec: StringSpec({
 
     "gets schema patternProperties is empty if missing" {
         schema().patternProperties.shouldBeEmpty()
+    }
+
+    "gets schema additionalProperties" {
+        schema("additionalProperties: {}").additionalProperties.shouldNotBeNull()
+    }
+
+    "gets schema additionalProperties is null if missing" {
+        schema().additionalProperties.shouldBeNull()
+    }
+
+    "gets schema propertyNames" {
+        schema("propertyNames: {}").propertyNames.shouldNotBeNull()
+    }
+
+    "gets schema propertyNames is null if missing" {
+        schema().propertyNames.shouldBeNull()
     }
 
 })

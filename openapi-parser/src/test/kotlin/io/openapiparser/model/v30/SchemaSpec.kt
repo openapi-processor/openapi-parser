@@ -10,6 +10,7 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 import io.openapiparser.NoValueException
 
 /**
@@ -18,8 +19,6 @@ import io.openapiparser.NoValueException
 class SchemaSpec: StringSpec({
 
     // todo
-    // additionalProperties - Value can be boolean or object. Inline or referenced schema MUST be of a Schema Object and not a standard JSON Schema. Consistent with JSON Schema, additionalProperties defaults to true.
-
     // allOf - Inline or referenced schema MUST be of a Schema Object and not a standard JSON Schema.
     // oneOf - Inline or referenced schema MUST be of a Schema Object and not a standard JSON Schema.
     // anyOf - Inline or referenced schema MUST be of a Schema Object and not a standard JSON Schema.
@@ -27,8 +26,7 @@ class SchemaSpec: StringSpec({
     // items - Value MUST be an object and not an array. Inline or referenced schema MUST be of a Schema Object and not a standard JSON Schema. items MUST be present if the type is array.
     // readOnly
     // writeOnly
-
-    // descriminator
+    // discriminator
     // xml
     // externalDocs
     // example
@@ -49,4 +47,12 @@ class SchemaSpec: StringSpec({
         schema().nullable.shouldBeFalse()
     }
 
+    "gets schema additionalProperties" {
+        schema("additionalProperties: false").additionalProperties.shouldBeInstanceOf<Boolean>()
+        schema("additionalProperties: {}").additionalProperties.shouldBeInstanceOf<Schema>()
+    }
+
+    "gets schema additionalProperties is true if missing" {
+        schema().additionalProperties shouldBe true
+    }
 })

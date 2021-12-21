@@ -9,7 +9,6 @@ import io.openapiparser.*;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.*;
-import java.util.regex.Pattern;
 
 import static io.openapiparser.Keywords.*;
 
@@ -49,79 +48,66 @@ public class Schema implements Reference, Extensions {
         return null;
     }
 
+    /**
+     * JSON Schema Validation: metadata
+     */
     @Override
     public @Nullable String getDescription () {
         return getSource ().getStringValue (DESCRIPTION);
     }
 
-    public @Nullable Number getMultipleOf() {
-        return getSource ().getNumberValue (MULTIPLE_OF);
+    // JSON Schema: core keyword $dynamicRef
+    // JSON Schema: core keyword $defs
+    // JSON Schema: core keyword $comment
+
+    // JSON Schema: subschemas logic keyword allOf
+    // JSON Schema: subschemas logic keyword anyOf
+    // JSON Schema: subschemas logic keyword oneOf
+    // JSON Schema: subschemas logic keyword not
+
+    // JSON Schema: subschemas conditional keyword if
+    // JSON Schema: subschemas conditional keyword then
+    // JSON Schema: subschemas conditional keyword else
+    // JSON Schema: subschemas conditional keyword dependentSchemas
+
+    // JSON Schema: subschemas array keyword prefixItems
+    // JSON Schema: subschemas array keyword items
+    // JSON Schema: subschemas array keyword contains
+
+    /**
+     * JSON Schema: subschemas object keyword properties
+     */
+    public Map<String, Schema> getProperties () {
+        return node.getMapObjectValuesOrEmpty (PROPERTIES, node -> new Schema (context, node));
     }
 
-    public @Nullable Number getMaximum() {
-        return getSource ().getNumberValue (MAXIMUM);
+    /**
+     * JSON Schema: subschemas object keyword properties
+     */
+    public Map<String, Schema> getPatternProperties () {
+        return node.getMapObjectValuesOrEmpty (PATTERN_PROPERTIES, node -> new Schema (context, node));
     }
 
-    public Boolean getExclusiveMaximum() {
-        return getSource ().getBooleanValue (EXCLUSIVE_MAXIMUM, false);
+    /**
+     * JSON Schema: subschemas object keyword properties
+     */
+    public @Nullable Schema getAdditionalProperties () {
+        return node.getObjectValue (ADDITIONAL_PROPERTIES, node -> new Schema (context, node));
     }
 
-    public @Nullable Number getMinimum() {
-        return getSource ().getNumberValue (MINIMUM);
+    /**
+     * JSON Schema: subschemas object keyword properties
+     */
+    public @Nullable Schema getPropertyNames () {
+        return node.getObjectValue (PROPERTY_NAMES, node -> new Schema (context, node));
     }
 
-    public Boolean getExclusiveMinimum() {
-        return getSource ().getBooleanValue (EXCLUSIVE_MINIMUM, false);
-    }
+    // JSON Schema: subschemas unevaluated keyword unevaluatedItems
+    // JSON Schema: subschemas unevaluated keyword unevaluatedProperties
 
-    public @Nullable Number getMaxLength() {
-        return getSource ().getNumberValue (MAX_LENGTH);
-    }
-
-    public @Nullable Number getMinLength() {
-        return getSource ().getNumberValue (MIN_LENGTH);
-    }
-
-    public @Nullable String getPattern() {
-        return getSource ().getStringValue (PATTERN);
-    }
-
-    public Integer getMinItems() {
-        return getSource ().getIntegerValue (MIN_ITEMS, 0);
-    }
-
-    public @Nullable Integer getMaxItems() {
-        return getSource ().getIntegerValue (MAX_ITEMS);
-    }
-
-    public Boolean getUniqueItems() {
-        return getSource ().getBooleanValue (UNIQUE_ITEMS, false);
-    }
-
-    public Integer getMinContains() {
-        return getSource ().getIntegerValue (MIN_CONTAINS, 1);
-    }
-
-    public @Nullable Integer getMaxContains() {
-        return getSource ().getIntegerValue (MAX_CONTAINS);
-    }
-
-    public Integer getMinProperties() {
-        return getSource ().getIntegerValue (MIN_PROPERTIES, 0);
-    }
-
-    public @Nullable Integer getMaxProperties() {
-        return getSource ().getIntegerValue (MAX_PROPERTIES);
-    }
-
-    public Collection<String> getRequired() {
-        return getSource ().getStringValuesOrEmpty (REQUIRED);
-    }
-
-    public Map<String, Set<String>> getDependentRequired() {
-        return getSource ().getObjectSetValuesOrEmpty (DEPENDENT_REQUIRED);
-    }
-
+    /**
+     * JSON Schema Validation: validation keyword for any instance type
+     */
     public Collection<String> getType() {
         final Object value = getSource ().getRawValue (TYPE);
         if (value instanceof String) {
@@ -133,38 +119,215 @@ public class Schema implements Reference, Extensions {
         }
     }
 
-    public @Nullable String getFormat() {
-        return getSource ().getStringValue (FORMAT);
-    }
-
+    /**
+     * JSON Schema Validation: validation keyword for any instance type
+     */
     public @Nullable Collection<?> getEnum() {
         return getSource ().getStringValues (ENUM);
     }
 
+    /**
+     * JSON Schema Validation: validation keyword for any instance type
+     */
     public @Nullable String getConst() {
         return getSource ().getStringValue (CONST);
     }
 
+    /**
+     * JSON Schema Validation: validation Keywords for numeric instances (number and integer)
+     */
+    public @Nullable Number getMultipleOf() {
+        return getSource ().getNumberValue (MULTIPLE_OF);
+    }
+
+    /**
+     * JSON Schema Validation: validation Keywords for numeric instances (number and integer)
+     */
+    public @Nullable Number getMaximum() {
+        return getSource ().getNumberValue (MAXIMUM);
+    }
+
+    /**
+     * JSON Schema Validation: validation Keywords for numeric instances (number and integer)
+     */
+    public Boolean getExclusiveMaximum() {
+        return getSource ().getBooleanValue (EXCLUSIVE_MAXIMUM, false);
+    }
+
+    /**
+     * JSON Schema Validation: validation Keywords for numeric instances (number and integer)
+     */
+    public @Nullable Number getMinimum() {
+        return getSource ().getNumberValue (MINIMUM);
+    }
+
+    /**
+     * JSON Schema Validation: validation Keywords for numeric instances (number and integer)
+     */
+    public Boolean getExclusiveMinimum() {
+        return getSource ().getBooleanValue (EXCLUSIVE_MINIMUM, false);
+    }
+
+    /**
+     * JSON Schema Validation: validation Keywords for strings
+     */
+    public @Nullable Number getMaxLength() {
+        return getSource ().getNumberValue (MAX_LENGTH);
+    }
+
+    /**
+     * JSON Schema Validation: validation Keywords for strings
+     */
+    public @Nullable Number getMinLength() {
+        return getSource ().getNumberValue (MIN_LENGTH);
+    }
+
+    /**
+     * JSON Schema Validation: validation Keywords for strings
+     */
+    public @Nullable String getPattern() {
+        return getSource ().getStringValue (PATTERN);
+    }
+
+    /**
+     * JSON Schema Validation: validation Keywords for arrays
+     */
+    public @Nullable Integer getMaxItems() {
+        return getSource ().getIntegerValue (MAX_ITEMS);
+    }
+
+    /**
+     * JSON Schema Validation: validation Keywords for arrays
+     */
+    public Integer getMinItems() {
+        return getSource ().getIntegerValue (MIN_ITEMS, 0);
+    }
+
+    /**
+     * JSON Schema Validation: validation Keywords for arrays
+     */
+    public Boolean getUniqueItems() {
+        return getSource ().getBooleanValue (UNIQUE_ITEMS, false);
+    }
+
+    /**
+     * JSON Schema Validation: validation Keywords for arrays
+     */
+    public @Nullable Integer getMaxContains() {
+        return getSource ().getIntegerValue (MAX_CONTAINS);
+    }
+
+    /**
+     * JSON Schema Validation: validation Keywords for arrays
+     */
+    public Integer getMinContains() {
+        return getSource ().getIntegerValue (MIN_CONTAINS, 1);
+    }
+
+    /**
+     * JSON Schema Validation: validation Keywords for objects
+     */
+    public @Nullable Integer getMaxProperties() {
+        return getSource ().getIntegerValue (MAX_PROPERTIES);
+    }
+
+    /**
+     * JSON Schema Validation: validation Keywords for objects
+     */
+    public Integer getMinProperties() {
+        return getSource ().getIntegerValue (MIN_PROPERTIES, 0);
+    }
+
+    /**
+     * JSON Schema Validation: validation Keywords for objects
+     */
+    public Collection<String> getRequired() {
+        return getSource ().getStringValuesOrEmpty (REQUIRED);
+    }
+
+    /**
+     * JSON Schema Validation: validation Keywords for objects
+     */
+    public Map<String, Set<String>> getDependentRequired() {
+        return getSource ().getObjectSetValuesOrEmpty (DEPENDENT_REQUIRED);
+    }
+
+    /**
+     * JSON Schema Validation: semantic format
+     */
+    public @Nullable String getFormat() {
+        return getSource ().getStringValue (FORMAT);
+    }
+
+    /* todo contentEncoding
+     * JSON Schema Validation: string-encoded data
+     */
+
+    /* todo contentMediaType
+     * JSON Schema Validation: string-encoded data
+     */
+
+    /* todo contentSchema
+     * JSON Schema Validation: string-encoded data
+     */
+
+    /**
+     * JSON Schema Validation: metadata
+     */
     public @Nullable String getTitle () {
         return getSource ().getStringValue (TITLE);
     }
 
+    /**
+     * JSON Schema Validation: metadata
+     */
     public @Nullable Object getDefault () {
         return getSource ().getRawValue (DEFAULT);
     }
 
+    /**
+     * JSON Schema Validation: metadata
+     */
     public Boolean getDeprecated () {
         return getSource ().getBooleanValue (DEPRECATED, false);
     }
 
-    public Map<String, Schema> getProperties () {
-        return node.getMapObjectValuesOrEmpty (PROPERTIES, node -> new Schema (context, node));
-    }
+    /* todo readOnly
+     * JSON Schema Validation: metadata
+     */
 
-    public Map<String, Schema> getPatternProperties () {
-        return node.getMapObjectValuesOrEmpty (PATTERN_PROPERTIES, node -> new Schema (context, node));
-    }
+    /* todo writeOnly
+     * JSON Schema Validation: metadata
+     */
 
+    /* todo examples
+     * JSON Schema Validation: metadata
+     */
+
+    /* todo examples
+     * JSON Schema Validation: metadata
+     */
+
+    /* todo discriminator
+     * OpenAPI base vocabulary
+     */
+
+    /* todo xml
+     * OpenAPI base vocabulary
+     */
+
+    /* todo externalDocs
+     * OpenAPI base vocabulary
+     */
+
+    /* todo example
+     * OpenAPI base vocabulary
+     * @Deprecated
+     */
+
+    /**
+     * todo not required to have x- prefix
+     */
     @Override
     public Map<String, Object> getExtensions () {
         return node.getExtensions ();

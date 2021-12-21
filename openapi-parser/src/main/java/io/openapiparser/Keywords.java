@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 public interface Keywords {
 
+    String ADDITIONAL_PROPERTIES = "additionalProperties";
     String ALLOW_EMPTY_VALUE = "allowEmptyValue";
     String ALLOW_RESERVED = "allowReserved";
     String COMPONENTS = "components";
@@ -64,6 +65,7 @@ public interface Keywords {
     String PATTERN_PROPERTIES = "patternProperties";
     String POST = "post";
     String PROPERTIES = "properties";
+    String PROPERTY_NAMES = "propertyNames";
     String PUT = "put";
     String REF = "$ref";
     String REQUIRED = "required";
