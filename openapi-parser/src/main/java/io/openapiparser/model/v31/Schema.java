@@ -56,6 +56,9 @@ public class Schema implements Reference, Extensions {
         return getSource ().getStringValue (DESCRIPTION);
     }
 
+    // JSON Schema: metadata keyword $schema
+    // JSON Schema: metadata keyword $vocabulary
+    // JSON Schema: metadata keyword $id
     // JSON Schema: core keyword $dynamicRef
     // JSON Schema: core keyword $defs
     // JSON Schema: core keyword $comment
@@ -332,13 +335,19 @@ public class Schema implements Reference, Extensions {
         return getSource ().getBooleanValue (DEPRECATED, false);
     }
 
-    /* todo readOnly
+    /**
      * JSON Schema Validation: metadata
      */
+    public Boolean getReadOnly () {
+        return getSource ().getBooleanValue (READ_ONLY, false);
+    }
 
-    /* todo writeOnly
+    /**
      * JSON Schema Validation: metadata
      */
+    public Boolean getWriteOnly () {
+        return getSource ().getBooleanValue (WRITE_ONLY, false);
+    }
 
     /* todo examples
      * JSON Schema Validation: metadata

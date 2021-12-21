@@ -253,13 +253,19 @@ public class Schema implements Reference, Extensions {
      * OpenAPI Schema
      */
 
-    /* todo readOnly
+    /**
      * OpenAPI Schema
      */
+    public Boolean getReadOnly () {
+        return getSource ().getBooleanValue (READ_ONLY, false);
+    }
 
-    /* todo writeOnly
+    /**
      * OpenAPI Schema
      */
+    public Boolean getWriteOnly () {
+        return getSource ().getBooleanValue (WRITE_ONLY, false);
+    }
 
     /* todo xml
      * OpenAPI Schema

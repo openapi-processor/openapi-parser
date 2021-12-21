@@ -30,8 +30,6 @@ class SchemaSpec: StringSpec({
     // contentEncoding
     // contentMediaType
     // contentSchema
-    // readOnly
-    // writeOnly
     // examples
 
     // $defs

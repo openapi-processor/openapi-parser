@@ -19,8 +19,6 @@ import io.openapiparser.NoValueException
 class SchemaSpec: StringSpec({
 
     // todo
-    // readOnly
-    // writeOnly
     // discriminator
     // xml
     // externalDocs

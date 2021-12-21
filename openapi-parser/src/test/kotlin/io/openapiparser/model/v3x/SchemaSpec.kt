@@ -286,6 +286,26 @@ class SchemaSpec: StringSpec({
         schema31().not.shouldBeNull()
     }
 
+    "gets schema readOnly" {
+        schema30("readOnly: true").readOnly.shouldBeTrue()
+        schema31("readOnly: true").readOnly.shouldBeTrue()
+    }
+
+    "gets schema readOnly is false if missing" {
+        schema30().readOnly.shouldBeFalse()
+        schema31().readOnly.shouldBeFalse()
+    }
+
+    "gets schema writeOnly" {
+        schema30("writeOnly: true").writeOnly.shouldBeTrue()
+        schema31("writeOnly: true").writeOnly.shouldBeTrue()
+    }
+
+    "gets schema writeOnly is false if missing" {
+        schema30().writeOnly.shouldBeFalse()
+        schema31().writeOnly.shouldBeFalse()
+    }
+
     include(testExtensions("schema 30", ::schema30) { it.extensions })
     include(testExtensions("schema 31", ::schema31) { it.extensions })
 })

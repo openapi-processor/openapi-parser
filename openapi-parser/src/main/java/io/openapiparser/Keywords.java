@@ -74,6 +74,7 @@ public interface Keywords {
     String PROPERTIES = "properties";
     String PROPERTY_NAMES = "propertyNames";
     String PUT = "put";
+    String READ_ONLY = "readOnly";
     String REF = "$ref";
     String REQUIRED = "required";
     String SCHEMA = "schema";
@@ -92,6 +93,7 @@ public interface Keywords {
     String VARIABLES = "variables";
     String VERSION = "version";
     String WEBHOOKS = "webhooks";
+    String WRITE_ONLY = "writeOnly";
 
     static Collection<String> getProperties(Collection<Keyword> keywords) {
         return keywords
