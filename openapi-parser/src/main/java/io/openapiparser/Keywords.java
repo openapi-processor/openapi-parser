@@ -46,6 +46,7 @@ public interface Keywords {
     String ITEMS = "items";
     String JSON_SCHEMA_DIALECT = "jsonSchemaDialect";
     String LICENSE = "license";
+    String MAPPING = "mapping";
     String MAX_CONTAINS = "maxContains";
     String MAX_ITEMS = "maxItems";
     String MAX_LENGTH = "maxLength";
@@ -72,6 +73,7 @@ public interface Keywords {
     String PREFIX_ITEMS = "prefixItems";
     String POST = "post";
     String PROPERTIES = "properties";
+    String PROPERTY_NAME = "propertyName";
     String PROPERTY_NAMES = "propertyNames";
     String PUT = "put";
     String READ_ONLY = "readOnly";

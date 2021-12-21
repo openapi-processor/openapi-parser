@@ -11,6 +11,10 @@ fun contact(content: String = "{}"): Contact {
     return buildObject(Contact::class.java, content)
 }
 
+fun discriminator(content: String = "{}"): Discriminator {
+    return buildObject(Discriminator::class.java, content)
+}
+
 fun encoding(content: String = "{}"): Encoding {
     return buildObject(Encoding::class.java, content)
 }

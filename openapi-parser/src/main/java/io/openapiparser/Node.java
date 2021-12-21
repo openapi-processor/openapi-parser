@@ -190,6 +190,21 @@ public class Node {
     }
 
     /**
+     * get the raw value of the given property as {@link Map<String, String>} or an empty map if the
+     * property value is missing.
+     *
+     * @param property property name
+     * @return map of values
+     */
+    public Map<String, String> getMapStringValuesOrEmpty (String property) {
+        final Object value = getRawValue (property);
+        if (value == null)
+            return Collections.emptyMap ();
+
+        return convertMap (getPath (property), value, String.class);
+    }
+
+    /**
      * converts the value of the given property name to a map of {@link String} to {@link Set<String>}.
      *
      * @param property property name

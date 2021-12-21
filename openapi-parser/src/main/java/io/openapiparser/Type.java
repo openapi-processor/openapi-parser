@@ -10,6 +10,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.*;
 
 import static java.util.Collections.unmodifiableCollection;
+import static java.util.Collections.unmodifiableMap;
 
 public class Type {
 
@@ -58,6 +59,17 @@ public class Type {
     @SuppressWarnings ("unchecked")
     static Map<String, Object> convertMap (String path, @Nullable Object value) {
         return convert (path, value, Map.class);
+    }
+
+    @SuppressWarnings ("unchecked")
+    static <T> Map<String, T> convertMap (String path, @Nullable Object value, Class<T> itemType) {
+        final Map<String, ?> map = convertMap (path, value);
+
+        for (Map.Entry<String, ?> entry : map.entrySet ()) {
+            convertOrThrow (String.format ("%s[%s]", path, entry.getKey ()), entry.getValue (), itemType);
+        }
+
+        return (Map<String, T>) unmodifiableMap (map);
     }
 
     @SuppressWarnings ("unchecked")
