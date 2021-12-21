@@ -66,3 +66,7 @@ fun server(content: String = "{}"): Server {
 fun serverVariable(content: String = "{}"): ServerVariable {
     return buildObject(ServerVariable::class.java, content)
 }
+
+fun xml(content: String = "{}"): Xml {
+    return buildObject(Xml::class.java, content)
+}

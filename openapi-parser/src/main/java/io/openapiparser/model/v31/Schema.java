@@ -360,9 +360,12 @@ public class Schema implements Reference, Extensions {
         return getSource ().getObjectValue (DISCRIMINATOR, node -> new Discriminator (context, node));
     }
 
-    /* todo xml
+    /**
      * OpenAPI base vocabulary
      */
+    public @Nullable Xml getXml () {
+        return getSource ().getObjectValue (XML, node -> new Xml (context, node));
+    }
 
     /**
      * OpenAPI base vocabulary

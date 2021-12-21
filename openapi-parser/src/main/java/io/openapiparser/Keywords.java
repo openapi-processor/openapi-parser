@@ -97,6 +97,7 @@ public interface Keywords {
     String VERSION = "version";
     String WEBHOOKS = "webhooks";
     String WRITE_ONLY = "writeOnly";
+    String XML = "xml";
 
     static Collection<String> getProperties(Collection<Keyword> keywords) {
         return keywords

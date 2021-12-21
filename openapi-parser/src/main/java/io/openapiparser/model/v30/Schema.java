@@ -270,9 +270,12 @@ public class Schema implements Reference, Extensions {
         return getSource ().getBooleanValue (WRITE_ONLY, false);
     }
 
-    /* todo xml
+    /**
      * OpenAPI Schema
      */
+    public @Nullable Xml getXml () {
+        return getSource ().getObjectValue (XML, node -> new Xml (context, node));
+    }
 
     /**
      * OpenAPI Schema
