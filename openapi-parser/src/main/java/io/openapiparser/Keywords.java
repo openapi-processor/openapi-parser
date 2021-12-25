@@ -82,6 +82,7 @@ public interface Keywords {
     String PUT = "put";
     String READ_ONLY = "readOnly";
     String REF = "$ref";
+    String REQUEST_BODY = "requestBody";
     String REQUEST_BODIES = "requestBodies";
     String REQUIRED = "required";
     String RESPONSES = "responses";

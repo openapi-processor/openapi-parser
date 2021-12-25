@@ -16,7 +16,7 @@ import static io.openapiparser.Keywords.REF;
  * the <em>Response</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.0.3.html#response-object">4.7.16 Response Object</a>
+ * <a href="https://spec.openapis.org/oas/v3.0.3.html#response-object">4.7.17 Response Object</a>
  */
 public class Response implements Reference, Extensions {
     private final Context context;

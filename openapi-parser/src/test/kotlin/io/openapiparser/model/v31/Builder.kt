@@ -47,6 +47,10 @@ fun openapi(content: String = "{}"): OpenApi {
     return buildObject(OpenApi::class.java, content)
 }
 
+fun operation(content: String = "{}"): Operation {
+    return buildObject(Operation::class.java, content)
+}
+
 fun pathItem(content: String = "{}"): PathItem {
     return buildObject(PathItem::class.java, content)
 }

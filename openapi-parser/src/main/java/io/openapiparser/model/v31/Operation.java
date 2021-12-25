@@ -3,7 +3,7 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.model.v30;
+package io.openapiparser.model.v31;
 
 import io.openapiparser.*;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -17,7 +17,7 @@ import static io.openapiparser.Keywords.*;
  * the <em>Operation</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.0.3.html#operation-object">4.7.10 Operation Object</a>
+ * <a href="https://spec.openapis.org/oas/v3.1.0.html#operation-object">4.8.10 Operation Object</a>
  */
 public class Operation implements Extensions {
     private final Context context;
@@ -58,7 +58,7 @@ public class Operation implements Extensions {
     }
 
     public @Nullable Responses getResponses () {
-        return node.getRequiredObjectValue (RESPONSES, node -> new Responses (context, node));
+        return node.getObjectValue (RESPONSES, node -> new Responses (context, node));
     }
 
     @Override
