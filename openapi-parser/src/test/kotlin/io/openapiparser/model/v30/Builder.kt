@@ -27,6 +27,10 @@ fun example(content: String = "{}"): Example {
     return buildObject(Example::class.java, content)
 }
 
+fun externalDocumentation(content: String = "{}"): ExternalDocumentation {
+    return buildObject(ExternalDocumentation::class.java, content)
+}
+
 fun header(content: String = "{}"): Header {
     return buildObject(Header::class.java, content)
 }

@@ -5,10 +5,13 @@
 
 package io.openapiparser.model.v31;
 
-import io.openapiparser.Context;
-import io.openapiparser.Node;
+import io.openapiparser.*;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
+
+import static io.openapiparser.Keywords.DESCRIPTION;
+import static io.openapiparser.Keywords.URL;
 
 /**
  * the <em>External Documentation</em> object.
@@ -27,8 +30,17 @@ public class ExternalDocumentation implements Extensions {
         this.node = node;
     }
 
+    public @Nullable String getDescription () {
+        return node.getStringValue (DESCRIPTION);
+    }
+
+    @Required
+    public String getUrl () {
+        return node.getRequiredStringValue (URL);
+    }
+
     @Override
     public Map<String, Object> getExtensions () {
-        return null;
+        return node.getExtensions ();
     }
 }
