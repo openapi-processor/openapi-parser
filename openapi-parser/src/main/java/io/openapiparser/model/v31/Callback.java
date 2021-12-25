@@ -5,8 +5,8 @@
 
 package io.openapiparser.model.v31;
 
-import io.openapiparser.Context;
-import io.openapiparser.Node;
+import io.openapiparser.*;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
 
@@ -23,6 +23,15 @@ public class Callback implements Extensions {
     public Callback (Context context, Node node) {
         this.context = context;
         this.node = node;
+    }
+
+    @Required
+    public Map<String, PathItem> getPathItems() {
+        return node.getMapObjectValuesOrEmpty (node -> new PathItem (context, node));
+    }
+
+    public @Nullable PathItem getPathItem(String path) {
+        return node.getObjectValue (path, node -> new PathItem (context, node));
     }
 
     @Override

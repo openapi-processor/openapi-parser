@@ -7,6 +7,10 @@ package io.openapiparser.model.v30
 
 import io.openapiparser.support.buildObject
 
+fun callback(content: String = "{}"): Callback {
+    return buildObject(Callback::class.java, content)
+}
+
 fun components(content: String = "{}"): Components {
     return buildObject(Components::class.java, content)
 }
