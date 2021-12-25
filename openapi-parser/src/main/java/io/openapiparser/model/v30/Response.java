@@ -10,7 +10,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
 
-import static io.openapiparser.Keywords.REF;
+import static io.openapiparser.Keywords.*;
 
 /**
  * the <em>Response</em> object.
@@ -40,6 +40,23 @@ public class Response implements Reference, Extensions {
     @Override
     public String getRef () {
         return node.getRequiredStringValue (REF);
+    }
+
+    @Required
+    public String getDescription () {
+        return getSource ().getRequiredStringValue (DESCRIPTION);
+    }
+
+    public Map<String, Header> getHeaders () {
+        return getSource ().getMapObjectValuesOrEmpty (HEADERS, node -> new Header (context, node));
+    }
+
+    public Map<String, MediaType> getContent () {
+        return node.getMapObjectValuesOrEmpty (CONTENT, node -> new MediaType (context, node));
+    }
+
+    public Map<String, Link> getLinks () {
+        return node.getMapObjectValuesOrEmpty (LINKS, node -> new Link (context, node));
     }
 
     @Override

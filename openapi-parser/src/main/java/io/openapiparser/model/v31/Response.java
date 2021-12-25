@@ -47,9 +47,22 @@ public class Response implements Reference, Extensions {
         return getSource ().getStringValue (SUMMARY);
     }
 
+    @Required
     @Override
     public @Nullable String getDescription () {
-        return getSource ().getStringValue (DESCRIPTION);
+        return getSource ().getRequiredStringValue (DESCRIPTION);
+    }
+
+    public Map<String, Header> getHeaders () {
+        return getSource ().getMapObjectValuesOrEmpty (HEADERS, node -> new Header (context, node));
+    }
+
+    public Map<String, MediaType> getContent () {
+        return node.getMapObjectValuesOrEmpty (CONTENT, node -> new MediaType (context, node));
+    }
+
+    public Map<String, Link> getLinks () {
+        return node.getMapObjectValuesOrEmpty (LINKS, node -> new Link (context, node));
     }
 
     @Override

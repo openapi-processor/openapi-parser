@@ -52,7 +52,7 @@ class RequestBodySpec: StringSpec ({
         content["application/xml"].shouldBeInstanceOf<MediaType31>()
     }
 
-    "gets header content is empty if missing" {
+    "gets requestBody content is empty if missing" {
         requestBody30().content.shouldBeEmpty()
         requestBody31().content.shouldBeEmpty()
     }
