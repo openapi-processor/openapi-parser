@@ -61,6 +61,22 @@ public class Operation implements Extensions {
         return node.getObjectValue (RESPONSES, node -> new Responses (context, node));
     }
 
+    public Map<String, Callback> getCallbacks () {
+        return node.getMapObjectValuesOrEmpty (CALLBACKS, node -> new Callback (context, node));
+    }
+
+    public Boolean getDeprecated () {
+        return node.getBooleanValue (DEPRECATED, false);
+    }
+
+    public Collection<SecurityRequirement> getSecurity () {
+        return node.getObjectValuesOrEmpty (SECURITY, node -> new SecurityRequirement (context, node));
+    }
+
+    public Collection<Server> getServers () {
+        return node.getObjectValuesOrEmpty (SERVERS, node -> new Server (context, node));
+    }
+
     @Override
     public Map<String, Object> getExtensions () {
         return node.getExtensions ();
