@@ -105,7 +105,7 @@ class MediaTypeSpec: StringSpec({
         encoding["bar"].shouldBeInstanceOf<Encoding31>()
     }
 
-    "gets media type content is empty if missing" {
+    "gets media type encoding is empty if missing" {
         mediaType30().encoding.shouldBeEmpty()
         mediaType31().encoding.shouldBeEmpty()
     }

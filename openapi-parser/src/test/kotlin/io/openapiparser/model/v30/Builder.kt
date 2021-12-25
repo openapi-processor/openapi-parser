@@ -75,6 +75,10 @@ fun response(content: String = "{}"): Response {
     return buildObject(Response::class.java, content)
 }
 
+fun responses(content: String = "{}"): Responses {
+    return buildObject(Responses::class.java, content)
+}
+
 fun schema(content: String = "{}"): Schema {
     return buildObject(Schema::class.java, content)
 }
