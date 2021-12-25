@@ -7,6 +7,10 @@ package io.openapiparser.model.v31
 
 import io.openapiparser.support.buildObject
 
+fun components(content: String = "{}"): Components {
+    return buildObject(Components::class.java, content)
+}
+
 fun contact(content: String = "{}"): Contact {
     return buildObject(Contact::class.java, content)
 }
@@ -53,6 +57,14 @@ fun paths(content: String = "{}"): Paths {
 
 fun parameter(content: String = "{}"): Parameter {
     return buildObject(Parameter::class.java, content)
+}
+
+fun requestBody(content: String = "{}"): RequestBody {
+    return buildObject(RequestBody::class.java, content)
+}
+
+fun response(content: String = "{}"): Response {
+    return buildObject(Response::class.java, content)
 }
 
 fun schema(content: String = "{}"): Schema {

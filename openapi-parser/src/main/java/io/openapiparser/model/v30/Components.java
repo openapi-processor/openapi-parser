@@ -10,6 +10,8 @@ import io.openapiparser.Node;
 
 import java.util.Map;
 
+import static io.openapiparser.Keywords.*;
+
 /**
  * the <em>Components</em> object.
  *
@@ -25,8 +27,44 @@ public class Components implements Extensions {
         this.node = node;
     }
 
+    public Map<String, Schema> getSchemas () {
+        return node.getMapObjectValuesOrEmpty (SCHEMAS, node -> new Schema (context, node));
+    }
+
+    public Map<String, Response> getResponses () {
+        return node.getMapObjectValuesOrEmpty (RESPONSES, node -> new Response (context, node));
+    }
+
+    public Map<String, Parameter> getParameters () {
+        return node.getMapObjectValuesOrEmpty (PARAMETERS, node -> new Parameter (context, node));
+    }
+
+    public Map<String, Example> getExamples () {
+        return node.getMapObjectValuesOrEmpty (EXAMPLES, node -> new Example (context, node));
+    }
+
+    public Map<String, RequestBody> getRequestBodies () {
+        return node.getMapObjectValuesOrEmpty (REQUEST_BODIES, node -> new RequestBody (context, node));
+    }
+
+    public Map<String, Header> getHeaders () {
+        return node.getMapObjectValuesOrEmpty (HEADERS, node -> new Header (context, node));
+    }
+
+    public Map<String, SecurityScheme> getSecuritySchemes () {
+        return node.getMapObjectValuesOrEmpty (SECURITY_SCHEMES, node -> new SecurityScheme (context, node));
+    }
+
+    public Map<String, Link> getLinks () {
+        return node.getMapObjectValuesOrEmpty (LINKS, node -> new Link (context, node));
+    }
+
+    public Map<String, Callback> getCallbacks () {
+        return node.getMapObjectValuesOrEmpty (CALLBACKS, node -> new Callback (context, node));
+    }
+
     @Override
     public Map<String, Object> getExtensions () {
-        return null;
+        return node.getExtensions ();
     }
 }

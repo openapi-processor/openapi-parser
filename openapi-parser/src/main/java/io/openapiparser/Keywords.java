@@ -15,6 +15,7 @@ public interface Keywords {
     String ALLOW_EMPTY_VALUE = "allowEmptyValue";
     String ALLOW_RESERVED = "allowReserved";
     String ANY_OF = "anyOf";
+    String CALLBACKS = "callbacks";
     String COMPONENTS = "components";
     String CONST = "const";
     String CONTACT = "contact";
@@ -47,6 +48,7 @@ public interface Keywords {
     String ITEMS = "items";
     String JSON_SCHEMA_DIALECT = "jsonSchemaDialect";
     String LICENSE = "license";
+    String LINKS = "links";
     String MAPPING = "mapping";
     String MAX_CONTAINS = "maxContains";
     String MAX_ITEMS = "maxItems";
@@ -67,8 +69,9 @@ public interface Keywords {
     String OPERATION_ID = "operationId";
     String OPTIONS = "options";
     String PARAMETERS = "parameters";
-    String PATHS = "paths";
     String PATCH = "patch";
+    String PATHS = "paths";
+    String PATH_ITEMS = "pathItems";
     String PATTERN = "pattern";
     String PATTERN_PROPERTIES = "patternProperties";
     String PREFIX_ITEMS = "prefixItems";
@@ -79,9 +82,13 @@ public interface Keywords {
     String PUT = "put";
     String READ_ONLY = "readOnly";
     String REF = "$ref";
+    String REQUEST_BODIES = "requestBodies";
     String REQUIRED = "required";
+    String RESPONSES = "responses";
     String SCHEMA = "schema";
+    String SCHEMAS = "schemas";
     String SECURITY = "security";
+    String SECURITY_SCHEMES = "securitySchemes";
     String SERVERS = "servers";
     String STYLE = "style";
     String SUMMARY = "summary";
