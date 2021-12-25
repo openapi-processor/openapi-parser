@@ -9,8 +9,6 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.openapiparser.NoValueException
-import io.openapiparser.model.v30.server
-import io.openapiparser.model.v31.server
 import io.openapiparser.model.v30.externalDocumentation as externalDocumentation30
 import io.openapiparser.model.v31.externalDocumentation as externalDocumentation31
 
@@ -29,6 +27,6 @@ class ExternalDocumentationSpec: StringSpec({
         shouldThrow<NoValueException> { externalDocumentation31().url }
     }
 
-    include(testExtensions("externalDocumentation", ::externalDocumentation30) { it.extensions })
-    include(testExtensions("externalDocumentation", ::externalDocumentation31) { it.extensions })
+    include(testExtensions("externalDocumentation 30", ::externalDocumentation30) { it.extensions })
+    include(testExtensions("externalDocumentation 31", ::externalDocumentation31) { it.extensions })
 })

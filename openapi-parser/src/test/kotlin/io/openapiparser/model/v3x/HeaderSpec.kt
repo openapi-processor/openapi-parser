@@ -13,10 +13,11 @@ import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
-import io.openapiparser.model.v30.MediaType
 import io.openapiparser.model.v30.Example as Example30
+import io.openapiparser.model.v30.MediaType as MediaType30
 import io.openapiparser.model.v30.header as header30
 import io.openapiparser.model.v31.Example as Example31
+import io.openapiparser.model.v31.MediaType as MediaType31
 import io.openapiparser.model.v31.header as header31
 
 class HeaderSpec: StringSpec({
@@ -156,8 +157,8 @@ class HeaderSpec: StringSpec({
 
         content.shouldNotBeNull()
         content.size shouldBe 2
-        content["application/json"].shouldBeInstanceOf<MediaType>()
-        content["application/xml"].shouldBeInstanceOf<MediaType>()
+        content["application/json"].shouldBeInstanceOf<MediaType30>()
+        content["application/xml"].shouldBeInstanceOf<MediaType30>()
     }
 
     "gets header content 31" {
@@ -171,8 +172,8 @@ class HeaderSpec: StringSpec({
 
         content.shouldNotBeNull()
         content.size shouldBe 2
-        content["application/json"].shouldBeInstanceOf<io.openapiparser.model.v31.MediaType>()
-        content["application/xml"].shouldBeInstanceOf<io.openapiparser.model.v31.MediaType>()
+        content["application/json"].shouldBeInstanceOf<MediaType31>()
+        content["application/xml"].shouldBeInstanceOf<MediaType31>()
     }
 
     "gets header content is empty if missing" {

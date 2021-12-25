@@ -1,0 +1,74 @@
+/*
+ * Copyright 2021 https://github.com/openapi-processor/openapi-parser
+ * PDX-License-Identifier: Apache-2.0
+ */
+
+package io.openapiparser.model.v3x
+
+import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.maps.shouldBeEmpty
+import io.kotest.matchers.nulls.shouldNotBeNull
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
+import io.openapiparser.model.v30.MediaType as MediaType30
+import io.openapiparser.model.v30.requestBody as requestBody30
+import io.openapiparser.model.v31.MediaType as MediaType31
+import io.openapiparser.model.v31.requestBody as requestBody31
+
+class RequestBodySpec: StringSpec ({
+
+    include(testDescription("requestBody 30", ::requestBody30) { it.description })
+    include(testDescription("requestBody 31", ::requestBody31) { it.description })
+
+    "gets requestBody content 30" {
+        val source = """
+            content:
+             application/json: {}
+             application/xml: {}
+        """
+
+        val content = requestBody30(source).content
+
+        content.shouldNotBeNull()
+        content.size shouldBe 2
+        content["application/json"].shouldBeInstanceOf<MediaType30>()
+        content["application/xml"].shouldBeInstanceOf<MediaType30>()
+    }
+
+    "gets requestBody content 31" {
+        val source = """
+            content:
+             application/json: {}
+             application/xml: {}
+        """
+
+        val content = requestBody31(source).content
+
+        content.shouldNotBeNull()
+        content.size shouldBe 2
+        content["application/json"].shouldBeInstanceOf<MediaType31>()
+        content["application/xml"].shouldBeInstanceOf<MediaType31>()
+    }
+
+    "gets header content is empty if missing" {
+        requestBody30().content.shouldBeEmpty()
+        requestBody31().content.shouldBeEmpty()
+    }
+
+    "gets requestBody required" {
+        requestBody30("required: true").required.shouldBeTrue()
+        requestBody30("required: false").required.shouldBeFalse()
+        requestBody31("required: true").required.shouldBeTrue()
+        requestBody31("required: false").required.shouldBeFalse()
+    }
+
+    "gets requestBody required is false if missing" {
+        requestBody30().required.shouldBeFalse()
+        requestBody31().required.shouldBeFalse()
+    }
+
+    include(testExtensions("requestBody 30", ::requestBody30) { it.extensions })
+    include(testExtensions("requestBody 31", ::requestBody31) { it.extensions })
+})
