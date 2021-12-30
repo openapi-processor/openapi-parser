@@ -1,12 +1,13 @@
 package io.openapiparser.converter;
 
-import io.openapiparser.schema.Content;
+import io.openapiparser.schema.Properties;
 import io.openapiparser.schema.JsonPointer;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
 
-public class ContentConverter implements TypeConverter<Content> {
+// todo name
+public class ContentConverter implements TypeConverter<Properties> {
     private final JsonPointer parent;
 
     public ContentConverter (JsonPointer parent) {
@@ -14,7 +15,7 @@ public class ContentConverter implements TypeConverter<Content> {
     }
 
     @Override
-    public @Nullable Content convert (String name, Object value) {
+    public @Nullable Properties convert (String name, Object value) {
         if (value == null)
             return null;
 
@@ -22,6 +23,6 @@ public class ContentConverter implements TypeConverter<Content> {
             throw new TypeMismatchException (parent.append (name).toString (), Map.class);
 
         //noinspection unchecked
-        return new Content ((Map<String, Object>) value);
+        return new Properties ((Map<String, Object>) value);
     }
 }

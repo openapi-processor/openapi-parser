@@ -5,6 +5,7 @@
 
 package io.openapiparser.schema;
 
+import io.openapiparser.converter.PropertiesConverter;
 import io.openapiparser.converter.TypeConverter;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -13,11 +14,11 @@ import java.util.Map;
 /**
  * .. todo
  */
-public class Content {
+public class Properties {
     // JsonPointer ???
     private final Map<String, Object> properties;
 
-    public Content (Map<String, Object> properties) {
+    public Properties (Map<String, Object> properties) {
         this.properties = properties;
     }
 
@@ -31,6 +32,10 @@ public class Content {
      */
     public <T> @Nullable T convert (String property, TypeConverter<T> converter) {
         return converter.convert (property, getRawValue (property));
+    }
+
+    public <T> @Nullable T convert (PropertiesConverter<T> converter) {
+        return converter.convert (properties);
     }
 
 //    @Deprecated
