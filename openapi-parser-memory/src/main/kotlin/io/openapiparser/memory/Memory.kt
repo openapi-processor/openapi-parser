@@ -3,7 +3,7 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.support
+package io.openapiparser.memory
 
 /**
  * in-memory content by path.

@@ -3,7 +3,7 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.support
+package io.openapiparser.memory
 
 import java.io.ByteArrayInputStream
 import java.io.IOException
@@ -33,7 +33,7 @@ class MemoryStreamHandlerProvider: URLStreamHandlerProvider() {
 
                     override fun connect() {
                         connected = true
-                        data = Memory.get (url.path)
+                        data = Memory.get(url.path)
                     }
 
                     override fun getContentLengthLong(): Long {
