@@ -31,6 +31,7 @@ import static io.openapiparser.Keywords.OPENAPI;
  * </li>
  * </ul>
  */
+@Deprecated
 public class VersionValidator implements Validator {
     private static final Pattern VERSION = Pattern.compile ("\\d\\.\\d\\.\\d");
 

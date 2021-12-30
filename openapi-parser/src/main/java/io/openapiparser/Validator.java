@@ -7,6 +7,7 @@ package io.openapiparser;
 
 import java.util.Collection;
 
+@Deprecated
 public interface Validator {
 
     Collection<ValidationMessage> validate(ValidationContext context, Node node);

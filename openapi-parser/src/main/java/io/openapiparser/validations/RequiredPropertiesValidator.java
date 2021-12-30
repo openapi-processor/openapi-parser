@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 /**
  * validates existence of required properties on the given node.
  */
+@Deprecated
 public class RequiredPropertiesValidator implements Validator {
     private final Collection<String> properties;
 

@@ -10,6 +10,7 @@ import io.openapiparser.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Deprecated
 public class AtLeastOnePropertyValidator implements Validator {
     private final Collection<String> properties;
 

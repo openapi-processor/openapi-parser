@@ -16,6 +16,7 @@ import static io.openapiparser.Keywords.getRequiredProperties;
 import static io.openapiparser.model.v30.Keywords.*;
 import static io.openapiparser.validations.AllowedPropertiesValidator.Extensions.*;
 
+@Deprecated
 public class OpenapiValidator implements Validator {
 
     private final Collection<Validator> validations = Arrays.asList(

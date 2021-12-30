@@ -10,6 +10,7 @@ import io.openapiparser.*;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+@Deprecated
 public class AllowedPropertiesValidator implements Validator {
     public enum Extensions {INCLUDE_X, EXCLUDE_X}
 
