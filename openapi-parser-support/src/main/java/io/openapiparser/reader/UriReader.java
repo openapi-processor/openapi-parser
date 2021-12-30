@@ -3,7 +3,7 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.support;
+package io.openapiparser.reader;
 
 import io.openapiparser.Reader;
 

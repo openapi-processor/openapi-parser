@@ -8,6 +8,7 @@ package io.openapiparser.support
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.openapiparser.memory.Memory
+import io.openapiparser.reader.UriReader
 import java.net.URI
 
 class UriReaderSpec: StringSpec({
