@@ -8,6 +8,7 @@ package io.openapiparser;
 /**
  * thrown if a property is not a json/yaml array, i.e. not a {@code Collection<Object>}.
  */
+@Deprecated
 public class NoArrayException extends RuntimeException {
 
     public NoArrayException (String property) {

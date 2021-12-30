@@ -8,6 +8,7 @@ package io.openapiparser;
 /**
  * thrown if a property is not a json/yaml object, i.e. not a {@code Map<String,Object>}.
  */
+@Deprecated
 public class NoObjectException extends RuntimeException {
 
     public NoObjectException (String property) {
