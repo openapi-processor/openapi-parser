@@ -7,6 +7,7 @@ package io.openapiparser.model.v30.validations;
 
 import io.openapiparser.*;
 import io.openapiparser.validations.*;
+import io.openapiparser.validator.ValidationMessage;
 
 import java.util.*;
 import java.util.stream.Collectors;

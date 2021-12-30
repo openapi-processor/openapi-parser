@@ -13,6 +13,8 @@ import static io.openapiparser.Type.*;
 import static java.util.Collections.*;
 import static java.util.stream.Collectors.toList;
 
+import io.openapiparser.converter.NoValueException;
+import io.openapiparser.converter.TypeConverter;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**

@@ -7,6 +7,7 @@ package io.openapiparser.support
 
 import io.openapiparser.*
 import io.openapiparser.jackson.JacksonConverter
+import io.openapiparser.reader.StringReader
 import java.net.URI
 import io.openapiparser.model.v30.OpenApi as OpenApi30
 import io.openapiparser.model.v31.OpenApi as OpenApi31

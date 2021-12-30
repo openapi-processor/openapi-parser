@@ -6,6 +6,7 @@
 package io.openapiparser.model.v31;
 
 import io.openapiparser.*;
+import io.openapiparser.converter.NoValueException;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.*;

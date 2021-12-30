@@ -6,6 +6,7 @@
 package io.openapiparser.validations;
 
 import io.openapiparser.*;
+import io.openapiparser.validator.ValidationMessage;
 
 import java.util.Collection;
 import java.util.stream.Collectors;

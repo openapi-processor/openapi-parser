@@ -11,7 +11,7 @@ import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
 import io.openapiparser.jackson.JacksonConverter
-import io.openapiparser.support.StringReader
+import io.openapiparser.reader.StringReader
 import java.io.IOException
 import java.net.URI
 

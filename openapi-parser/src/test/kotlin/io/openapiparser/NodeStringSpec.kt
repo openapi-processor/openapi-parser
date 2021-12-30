@@ -12,6 +12,8 @@ import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
+import io.openapiparser.converter.NoValueException
+import io.openapiparser.converter.TypeMismatchException
 
 class NodeStringSpec : StringSpec({
 

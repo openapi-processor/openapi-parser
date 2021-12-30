@@ -5,6 +5,8 @@
 
 package io.openapiparser;
 
+import io.openapiparser.converter.NoValueException;
+import io.openapiparser.converter.TypeMismatchException;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.*;
@@ -33,7 +35,7 @@ public class Type {
         return (T) value;
     }
 
-    static <T> @Nullable T convertOrNull (String path, @Nullable Object value, Class<T> type) {
+    public static <T> @Nullable T convertOrNull (String path, @Nullable Object value, Class<T> type) {
         if (value == null)
             return null;
 
@@ -48,7 +50,7 @@ public class Type {
     }
 
     @SuppressWarnings ("return")
-    static <T> T convertOrThrow (String path, @Nullable Object value, Class<T> type) {
+    public static <T> T convertOrThrow (String path, @Nullable Object value, Class<T> type) {
         final T result = convertOrNull (path, value, type);
         if (value == null)
             throw new NoValueException (path);
@@ -59,6 +61,11 @@ public class Type {
     @SuppressWarnings ("unchecked")
     static Map<String, Object> convertMap (String path, @Nullable Object value) {
         return convert (path, value, Map.class);
+    }
+
+    @SuppressWarnings ("unchecked")
+    static Map<String, Object> convertMapOrNull (String path, @Nullable Object value) {
+        return convertOrNull (path, value, Map.class);
     }
 
     @SuppressWarnings ("unchecked")

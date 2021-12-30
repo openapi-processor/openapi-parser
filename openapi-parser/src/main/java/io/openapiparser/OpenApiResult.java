@@ -5,6 +5,8 @@
 
 package io.openapiparser;
 
+import io.openapiparser.validator.ValidationMessage;
+
 import java.util.Collection;
 
 public interface OpenApiResult {

@@ -12,7 +12,8 @@ import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.mockk.mockk
 import io.openapiparser.jackson.JacksonConverter
-import io.openapiparser.support.Memory
+import io.openapiparser.memory.Memory
+import io.openapiparser.reader.UriReader
 import java.net.URI
 
 class ReferenceResolverRefSpec: StringSpec ({

@@ -5,8 +5,8 @@
 
 package io.openapiparser.model.v30;
 
-import io.openapiparser.NoValueException;
 import io.openapiparser.Required;
+import io.openapiparser.converter.NoValueException;
 
 /**
  * the <em>Reference</em> object.
@@ -31,5 +31,5 @@ public interface Reference {
      * @throws NoValueException if {@link #isRef()} is false
      */
     @Required
-    String getRef () throws NoValueException;
+    String getRef ();
 }

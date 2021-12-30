@@ -6,6 +6,7 @@
 package io.openapiparser.model.v31;
 
 import io.openapiparser.*;
+import io.openapiparser.converter.NoValueException;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -30,7 +31,7 @@ public interface Reference {
      * @throws NoValueException if {@link #isRef()} is false
      */
     @Required
-    String getRef () throws NoValueException;
+    String getRef ();
 
     @Nullable String getSummary();
 
