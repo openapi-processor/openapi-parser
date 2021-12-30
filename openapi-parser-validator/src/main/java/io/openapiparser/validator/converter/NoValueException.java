@@ -3,7 +3,7 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser;
+package io.openapiparser.validator.converter;
 
 /**
  * thrown if a property has no value ({@code null} or is missing).

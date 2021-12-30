@@ -3,10 +3,10 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser;
+package io.openapiparser.validator.converter;
 
 /**
- * thrown if a property cast from {@link Object} to a concrete type fails.
+ * thrown if type conversion (i.e. cast) from {@link Object} to the required type fails.
  */
 public class TypeMismatchException extends RuntimeException {
 

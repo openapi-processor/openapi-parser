@@ -3,8 +3,9 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser;
+package io.openapiparser.validator;
 
+import io.openapiparser.validator.converter.NoValueException;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.io.UnsupportedEncodingException;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
  *     rfc6901</a>.
  */
 public class JsonPointer {
-    final static JsonPointer EMPTY = new JsonPointer();
+    public final static JsonPointer EMPTY = new JsonPointer();
 
     final private @Nullable String pointer;
     final private Collection<String> tokens;
@@ -82,6 +83,21 @@ public class JsonPointer {
             .collect (Collectors.toList ());
     }
 
+    // todo
+
+    /**
+     *
+     * @param token
+     * @return
+     */
+    public JsonPointer append (String token) {
+        if (pointer == null) {
+            return new JsonPointer ("/" + token);
+        } else {
+            return new JsonPointer (pointer + "/" + token);
+        }
+    }
+
     /**
      * extracts the value the json pointer point to from the given document object. Throws if there
      * is no value or the pointer does not match the document structure.
@@ -104,6 +120,11 @@ public class JsonPointer {
         return value;
     }
 
+    @Override
+    public String toString () {
+        return pointer;
+    }
+
     private Object getArrayValue (Object value, String token) {
         value = asArray (value).toArray ()[indexFrom (token)];
         if (value == null) {
@@ -115,7 +136,7 @@ public class JsonPointer {
     private Object getObjectValue (Object value, String token) {
         value = asObject (value).get (token);
         if (value == null) {
-            throw new NoValueException(pointer);
+            throw new NoValueException (pointer);
         }
         return value;
     }
