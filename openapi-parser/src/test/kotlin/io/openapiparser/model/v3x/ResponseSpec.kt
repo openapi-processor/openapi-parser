@@ -6,8 +6,8 @@
 package io.openapiparser.model.v3x
 
 import io.kotest.assertions.throwables.shouldThrow
-import io.kotest.core.datatest.forAll
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.datatest.withData
 import io.kotest.matchers.maps.shouldBeEmpty
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
@@ -37,7 +37,7 @@ class ResponseSpec: StringSpec({
             bar: {}
         """
 
-        forAll(
+        withData(
             response30(source).headers,
             response31(source).headers
         ) { headers ->
@@ -94,7 +94,7 @@ class ResponseSpec: StringSpec({
             bar: {}
         """
 
-        forAll(
+        withData(
             response30(source).links,
             response31(source).links
         ) { links ->

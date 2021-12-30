@@ -5,8 +5,8 @@
 
 package io.openapiparser.model.v3x
 
-import io.kotest.core.datatest.forAll
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.datatest.withData
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.collections.shouldBeEmpty
@@ -221,7 +221,7 @@ class SchemaSpec: StringSpec({
             bar: {}
         """
 
-        forAll(
+        withData(
             schema30(source).properties,
             schema31(source).properties,
         ) { properties ->

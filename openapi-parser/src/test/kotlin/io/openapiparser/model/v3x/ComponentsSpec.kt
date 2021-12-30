@@ -5,8 +5,8 @@
 
 package io.openapiparser.model.v3x
 
-import io.kotest.core.datatest.forAll
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.datatest.withData
 import io.kotest.matchers.maps.shouldBeEmpty
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
@@ -22,7 +22,7 @@ class ComponentsSpec: StringSpec({
             bar: {}
         """
 
-        forAll(
+        withData(
             components30(source).schemas,
             components31(source).schemas,
         ) { schemas ->
@@ -44,7 +44,7 @@ class ComponentsSpec: StringSpec({
             bar: {}
         """
 
-        forAll(
+        withData(
             components30(source).responses,
             components31(source).responses
         ) { responses ->
@@ -66,7 +66,7 @@ class ComponentsSpec: StringSpec({
             bar: {}
         """
 
-        forAll(
+        withData(
             components30(source).parameters,
             components31(source).parameters
         ) { parameters ->
@@ -88,7 +88,7 @@ class ComponentsSpec: StringSpec({
             bar: {}
         """
 
-        forAll(
+        withData(
             components30(source).examples,
             components31(source).examples
         ) { examples ->
@@ -110,7 +110,7 @@ class ComponentsSpec: StringSpec({
             bar: {}
         """
 
-        forAll(
+        withData(
             components30(source).requestBodies,
             components31(source).requestBodies
         ) { requestBodies ->
@@ -132,7 +132,7 @@ class ComponentsSpec: StringSpec({
             bar: {}
         """
 
-        forAll(
+        withData(
             components30(source).headers,
             components31(source).headers
         ) { headers ->
@@ -154,7 +154,7 @@ class ComponentsSpec: StringSpec({
             bar: {}
         """
 
-        forAll(
+        withData(
             components30(source).securitySchemes,
             components31(source).securitySchemes
         ) { securitySchemes ->
@@ -176,7 +176,7 @@ class ComponentsSpec: StringSpec({
             bar: {}
         """
 
-        forAll(
+        withData(
             components30(source).links,
             components31(source).links
         ) { links ->
@@ -198,7 +198,7 @@ class ComponentsSpec: StringSpec({
             bar: {}
         """
 
-        forAll(
+        withData(
             components30(source).callbacks,
             components31(source).callbacks
         ) { callbacks ->

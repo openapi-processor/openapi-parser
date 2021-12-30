@@ -6,8 +6,8 @@
 package io.openapiparser.model.v3x
 
 import io.kotest.assertions.throwables.shouldThrow
-import io.kotest.core.datatest.forAll
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.datatest.withData
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.nulls.shouldBeNull
@@ -40,7 +40,7 @@ class OpenApiSpec: StringSpec({
     }
 
     "gets server objects" {
-        forAll(
+        withData(
             openapi30("servers: [{}, {}]").servers,
             openapi31("servers: [{}, {}]").servers
         ) { servers ->
@@ -61,7 +61,7 @@ class OpenApiSpec: StringSpec({
               bar: {}
         """
 
-        forAll(
+        withData(
             openapi30(source).components!!,
             openapi31(source).components!!
         ) { components ->
@@ -75,7 +75,7 @@ class OpenApiSpec: StringSpec({
     }
 
     "gets security requirements objects" {
-        forAll(
+        withData(
             openapi30("security: [{}, {}]").security,
             openapi31("security: [{}, {}]").security
         ) { security ->
@@ -90,7 +90,7 @@ class OpenApiSpec: StringSpec({
     }
 
     "gets tags array" {
-        forAll(
+        withData(
             openapi30("tags: [{}, {}]").tags,
             openapi31("tags: [{}, {}]").tags,
         ) { tags ->

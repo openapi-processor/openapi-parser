@@ -5,8 +5,8 @@
 
 package io.openapiparser.model.v3x
 
-import io.kotest.core.datatest.forAll
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.datatest.withData
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.collections.shouldBeEmpty
@@ -15,10 +15,6 @@ import io.kotest.matchers.maps.shouldBeEmpty
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import io.openapiparser.model.v30.header
-import io.openapiparser.model.v30.openapi
-import io.openapiparser.model.v31.header
-import io.openapiparser.model.v31.openapi
 import io.openapiparser.model.v30.operation as operation30
 import io.openapiparser.model.v31.operation as operation31
 
@@ -70,7 +66,7 @@ class OperationSpec: StringSpec({
     "gets operation parameters" {
         val source = """parameters: [{}, {}]"""
 
-        forAll(
+        withData(
             operation30(source).parameters,
             operation31(source).parameters
         ) { parameters ->
@@ -100,7 +96,7 @@ class OperationSpec: StringSpec({
             bar: {}
         """
 
-        forAll(
+        withData(
             operation30(source).callbacks,
             operation31(source).callbacks
         ) { callbacks ->
@@ -128,7 +124,7 @@ class OperationSpec: StringSpec({
     }
 
     "gets operation security requirements" {
-        forAll(
+        withData(
             operation30("security: [{}, {}]").security,
             operation31("security: [{}, {}]").security
         ) { security ->
@@ -143,7 +139,7 @@ class OperationSpec: StringSpec({
     }
 
     "gets server objects" {
-        forAll(
+        withData(
             operation30("servers: [{}, {}]").servers,
             operation31("servers: [{}, {}]").servers
         ) { servers ->

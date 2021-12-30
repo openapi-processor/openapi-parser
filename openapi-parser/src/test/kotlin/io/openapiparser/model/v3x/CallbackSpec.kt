@@ -5,8 +5,8 @@
 
 package io.openapiparser.model.v3x
 
-import io.kotest.core.datatest.forAll
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.datatest.withData
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.openapiparser.model.v30.callback as callback30
@@ -29,7 +29,7 @@ class CallbackSpec: StringSpec ({
           /bar: {}
         """
 
-        forAll(
+        withData(
             callback30(source).pathItems,
             callback31(source).pathItems,
         ) { pathItems ->

@@ -5,8 +5,8 @@
 
 package io.openapiparser.model.v3x
 
-import io.kotest.core.datatest.forAll
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.datatest.withData
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.openapiparser.model.v30.paths as paths30
@@ -29,7 +29,7 @@ class PathsSpec: StringSpec({
           /bar: {}
         """
 
-        forAll(
+        withData(
             paths30(source).pathItems,
             paths31(source).pathItems,
         ) { pathItems ->

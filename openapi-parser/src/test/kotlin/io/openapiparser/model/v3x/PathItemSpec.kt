@@ -5,8 +5,8 @@
 
 package io.openapiparser.model.v3x;
 
-import io.kotest.core.datatest.forAll
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.datatest.withData
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.nulls.shouldBeNull
@@ -62,7 +62,7 @@ class PathItemSpec: StringSpec({
     // todo operations
 
     "gets path item server objects" {
-        forAll(
+        withData(
             pathItem30("servers: [{}, {}]").servers,
             pathItem31("servers: [{}, {}]").servers
         ) { servers ->
@@ -77,7 +77,7 @@ class PathItemSpec: StringSpec({
     }
 
     "gets path item parameters" {
-        forAll(
+        withData(
             pathItem30("parameters: [{}, {}]").parameters,
             pathItem31("parameters: [{}, {}]").parameters
         ) { parameters ->
