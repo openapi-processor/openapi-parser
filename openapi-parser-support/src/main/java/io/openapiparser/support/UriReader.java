@@ -3,7 +3,9 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser;
+package io.openapiparser.support;
+
+import io.openapiparser.Reader;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,6 +29,7 @@ public class UriReader implements Reader {
         Objects.requireNonNull (uri);
 
         URL root = uri.toURL ();
+//        root.openStream ();
         URLConnection connection = root.openConnection ();
         connection.connect ();
         return connection.getInputStream ();
