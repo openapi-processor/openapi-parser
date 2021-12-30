@@ -3,7 +3,7 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.validator
+package io.openapiparser.schema
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe

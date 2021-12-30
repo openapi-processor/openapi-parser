@@ -3,7 +3,7 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.validator.converter;
+package io.openapiparser.converter;
 
 /**
  * thrown if type conversion (i.e. cast) from {@link Object} to the required type fails.

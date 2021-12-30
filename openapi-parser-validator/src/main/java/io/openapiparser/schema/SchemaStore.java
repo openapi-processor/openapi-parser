@@ -1,9 +1,10 @@
-package io.openapiparser.validator;
+package io.openapiparser.schema;
 
 import io.openapiparser.Converter;
 import io.openapiparser.Reader;
 import io.openapiparser.support.Strings;
-import io.openapiparser.validator.messages.ValidationMessage;
+import io.openapiparser.validator.Validator;
+import io.openapiparser.validator.ValidationMessage;
 
 import java.net.URI;
 import java.util.Collection;

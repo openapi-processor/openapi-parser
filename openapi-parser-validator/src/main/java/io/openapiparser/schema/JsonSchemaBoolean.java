@@ -1,4 +1,4 @@
-package io.openapiparser.validator;
+package io.openapiparser.schema;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 

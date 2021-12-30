@@ -3,7 +3,7 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.validator;
+package io.openapiparser.schema;
 
 /**
  * thrown if the schema store is unable to load a json schema.

@@ -1,8 +1,8 @@
-package io.openapiparser.validator.converter;
+package io.openapiparser.converter;
 
-import io.openapiparser.validator.JsonPointer;
+import io.openapiparser.schema.JsonPointer;
 
-import static io.openapiparser.validator.converter.Types.convertNotNull;
+import static io.openapiparser.converter.Types.convertNotNull;
 
 public class StringConvertRequired implements TypeConverter<String> {
     private final JsonPointer parent;

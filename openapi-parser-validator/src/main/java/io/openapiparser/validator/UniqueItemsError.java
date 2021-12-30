@@ -1,4 +1,4 @@
-package io.openapiparser.validator.messages;
+package io.openapiparser.validator;
 
 public class UniqueItemsError extends ValidationMessage {
     public UniqueItemsError (String path) {

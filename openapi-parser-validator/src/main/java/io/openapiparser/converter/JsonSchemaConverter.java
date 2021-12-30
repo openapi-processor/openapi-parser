@@ -1,6 +1,6 @@
-package io.openapiparser.validator.converter;
+package io.openapiparser.converter;
 
-import io.openapiparser.validator.*;
+import io.openapiparser.schema.*;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;

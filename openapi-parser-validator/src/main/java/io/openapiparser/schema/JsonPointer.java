@@ -3,9 +3,9 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.validator;
+package io.openapiparser.schema;
 
-import io.openapiparser.validator.converter.NoValueException;
+import io.openapiparser.converter.NoValueException;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.io.UnsupportedEncodingException;

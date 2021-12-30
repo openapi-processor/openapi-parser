@@ -3,7 +3,7 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.validator;
+package io.openapiparser.schema;
 
 public class JsonPointerInvalidException extends RuntimeException {
 

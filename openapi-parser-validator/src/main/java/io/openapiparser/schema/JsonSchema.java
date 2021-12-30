@@ -1,4 +1,4 @@
-package io.openapiparser.validator;
+package io.openapiparser.schema;
 
 import java.net.URI;
 

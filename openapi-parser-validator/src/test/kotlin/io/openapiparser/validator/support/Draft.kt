@@ -10,6 +10,8 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.kotest.core.spec.style.freeSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldNotBeEmpty
+import io.openapiparser.schema.JsonSchema
+import io.openapiparser.schema.JsonSchemaObject
 import io.openapiparser.validator.support.Suite
 import java.nio.file.Files
 import java.nio.file.Path

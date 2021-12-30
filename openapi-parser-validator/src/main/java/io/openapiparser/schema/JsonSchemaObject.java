@@ -1,6 +1,6 @@
-package io.openapiparser.validator;
+package io.openapiparser.schema;
 
-import io.openapiparser.validator.converter.*;
+import io.openapiparser.converter.*;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;

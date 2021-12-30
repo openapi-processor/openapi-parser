@@ -1,9 +1,9 @@
-package io.openapiparser.validator.converter;
+package io.openapiparser.converter;
 
-import io.openapiparser.validator.JsonPointer;
+import io.openapiparser.schema.JsonPointer;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import static io.openapiparser.validator.converter.Types.convertOrNull;
+import static io.openapiparser.converter.Types.convertOrNull;
 
 public class BooleanConverter implements TypeConverter<Boolean> {
     private final JsonPointer parent;

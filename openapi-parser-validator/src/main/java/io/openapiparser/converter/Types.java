@@ -3,7 +3,7 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.validator.converter;
+package io.openapiparser.converter;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 

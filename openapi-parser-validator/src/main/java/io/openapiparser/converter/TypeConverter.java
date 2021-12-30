@@ -3,7 +3,7 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.validator.converter;
+package io.openapiparser.converter;
 
 /**
  * convert {@code Object} value to {@code T}.
