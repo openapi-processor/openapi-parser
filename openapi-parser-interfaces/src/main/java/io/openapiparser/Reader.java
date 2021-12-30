@@ -10,17 +10,15 @@ import java.io.InputStream;
 import java.net.URI;
 
 /**
- * reader to load the OpenAPI description (base and $ref's). Should handle security if required.
+ * reader to load a document by its URI/URL. Should handle security if required.
  */
 public interface Reader {
 
     /**
-     * load OpenAPI description.
+     * load document.
      *
-     * @param uri uri of the OpenAPI description.
-     * @return stream of the description.
+     * @param uri uri of the document.
+     * @return input stream of document.
      */
-
     InputStream read(URI uri) throws IOException;
-
 }
