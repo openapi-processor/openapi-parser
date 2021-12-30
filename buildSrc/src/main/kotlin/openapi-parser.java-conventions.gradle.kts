@@ -9,6 +9,9 @@ plugins {
     id("com.github.ben-manes.versions")
 }
 
+group = rootProject.group
+version = rootProject.version
+
 repositories {
     mavenCentral()
 }
@@ -60,8 +63,8 @@ tasks.jacocoTestReport {
 
 @Suppress("UnstableApiUsage")
 fun libs(dependency: String): Provider<MinimalExternalModuleDependency> {
-    val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
-    return libs.findDependency(dependency).orElseThrow {
-        Exception("can't find dependency: $dependency")
-    }
+    val libs: VersionCatalog = extensions.getByType<VersionCatalogsExtension>().named("libs")
+
+    return libs.findDependency(dependency)
+        .orElseThrow { Exception("can't find dependency: $dependency") }
 }

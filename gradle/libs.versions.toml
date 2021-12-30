@@ -1,5 +1,5 @@
 [versions]
-openapi-parser = "2021.0-SNAPSHOT.0"
+openapiparser = "2021.0-SNAPSHOT.0"
 
 [libraries]
 plugin-kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10"

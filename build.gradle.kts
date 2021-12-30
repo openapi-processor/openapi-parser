@@ -12,4 +12,5 @@ tasks.named("check") {
 }
 
 group = "io.openapiprocessor"
-version = libs.versions.openapi.parser
+version = libs.versions.openapiparser.get()
+println("version: $version")
