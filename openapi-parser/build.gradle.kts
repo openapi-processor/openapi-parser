@@ -18,7 +18,12 @@ dependencies {
 
     testImplementation(project(":openapi-parser-memory"))
     testImplementation(project(":openapi-parser-jackson"))
-    testImplementation("org.spockframework:spock-core:2.1-M2-groovy-3.0")
+    testImplementation(platform(libs.jackson.bom))
+    testImplementation(libs.jackson.databind)
+    testImplementation(libs.jackson.yaml)
+    testImplementation(libs.jackson.kotlin)
+
+//    testImplementation("org.spockframework:spock-core:2.1-M2-groovy-3.0")
 }
 
 tasks {
