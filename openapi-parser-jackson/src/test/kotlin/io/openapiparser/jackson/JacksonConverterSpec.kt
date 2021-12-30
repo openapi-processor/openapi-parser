@@ -10,6 +10,7 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import io.openapiparser.ConverterException
+import io.openapiparser.jackson.support.convertToMap
 
 class JacksonConverterSpec : StringSpec({
 
@@ -36,7 +37,7 @@ class JacksonConverterSpec : StringSpec({
     "converts json object input" {
         val converter = JacksonConverter()
 
-        val result = converter.convert(
+        val result = converter.convertToMap(
             """{ "foo": "bar" }"""
         )
 
@@ -47,7 +48,7 @@ class JacksonConverterSpec : StringSpec({
     "converts json object input with leading whitespace" {
         val converter = JacksonConverter()
 
-        val result = converter.convert(
+        val result = converter.convertToMap(
             """
                 
                 { "foo": "bar" }
@@ -76,7 +77,7 @@ class JacksonConverterSpec : StringSpec({
     "converts yaml input" {
         val converter = JacksonConverter()
 
-        val result = converter.convert(
+        val result = converter.convertToMap(
             """foo: bar"""
         )
 
@@ -87,7 +88,7 @@ class JacksonConverterSpec : StringSpec({
     "converts yaml input with leading whitespace" {
         val converter = JacksonConverter()
 
-        val result = converter.convert(
+        val result = converter.convertToMap(
             """
                 
                 foo: bar
@@ -96,20 +97,6 @@ class JacksonConverterSpec : StringSpec({
 
         result.size shouldBe 1
         result["foo"] shouldBe "bar"
-    }
-
-    "throws on bad yaml input" {
-        val converter = JacksonConverter()
-
-        val exception = shouldThrow<ConverterException> {
-            converter.convert(
-                """
-                    foo 
-                """.trimIndent()
-            )
-        }
-
-        exception.message shouldContain "yaml"
     }
 
 })

@@ -5,12 +5,10 @@
 
 package io.openapiparser.jackson;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import io.openapiparser.*;
 
-import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -23,8 +21,13 @@ public class JacksonConverter implements Converter {
     private static final ObjectMapper json = new ObjectMapper();
     private static final ObjectMapper yaml = new ObjectMapper(new YAMLFactory ());
 
+    public JacksonConverter () {
+//        json.disable (MapperFeature.USE_ANNOTATIONS);
+//        yaml.disable (MapperFeature.USE_ANNOTATIONS);
+    }
+
     @Override
-    public Map<String, Object> convert (String api) throws ConverterException {
+    public Object convert (String api) throws ConverterException {
         if (isEmpty (api)) {
             throw new ConverterException (String.format (CONVERT_ERROR, "empty"));
         }
@@ -36,24 +39,20 @@ public class JacksonConverter implements Converter {
         }
     }
 
-    private Map<String, Object> convertJson (String api) throws ConverterException {
+    private Object convertJson (String api) throws ConverterException {
         try {
-            return json.readValue (api, getMapTypeReference ());
+            return json.readValue (api, Object.class);
         } catch (Exception e) {
             throw new ConverterException (String.format (CONVERT_ERROR, "json"), e);
         }
     }
 
-    private Map<String, Object> convertYaml (String api) throws ConverterException {
+    private Object convertYaml (String api) throws ConverterException {
         try {
-            return yaml.readValue (api, getMapTypeReference ());
+            return yaml.readValue (api, Object.class);
         } catch (Exception e) {
             throw new ConverterException (String.format (CONVERT_ERROR, "yaml"), e);
         }
-    }
-
-    private TypeReference<Map<String, Object>> getMapTypeReference () {
-        return new TypeReference<Map<String, Object>> () {};
     }
 
     private boolean isJson (String source) {
