@@ -11,10 +11,12 @@ plugins {
 
 dependencies {
     implementation(project(":openapi-parser-base"))
-    implementation(project(":openapi-parser-interfaces"))
+    implementation(project(":openapi-parser-support"))
     implementation(project(":openapi-parser-validator"))
+    implementation(project(":openapi-parser-interfaces"))
 //    implementation("net.jimblackler.jsonschemafriend:core:0.11.2")
 
+    testImplementation(project(":openapi-parser-memory"))
     testImplementation(project(":openapi-parser-jackson"))
     testImplementation("org.spockframework:spock-core:2.1-M2-groovy-3.0")
 }
