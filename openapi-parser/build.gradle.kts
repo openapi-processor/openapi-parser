@@ -1,14 +1,19 @@
 plugins {
-    groovy
+//    groovy
     id("openapi-parser.java-conventions")
-    id("org.unbroken-dome.test-sets") version "4.0.0"
-    id("com.github.ben-manes.versions") version "0.39.0"
-    id( "org.checkerframework") version "0.6.3"
 }
+
+//repositories {
+//    maven {
+//        url = uri("https://jitpack.io")
+//    }
+//}
 
 dependencies {
     implementation(project(":openapi-parser-base"))
-    checkerFramework("org.checkerframework:checker:3.19.0")
+    implementation(project(":openapi-parser-interfaces"))
+    implementation(project(":openapi-parser-validator"))
+//    implementation("net.jimblackler.jsonschemafriend:core:0.11.2")
 
     testImplementation(project(":openapi-parser-jackson"))
     testImplementation("org.spockframework:spock-core:2.1-M2-groovy-3.0")
@@ -16,10 +21,10 @@ dependencies {
 
 tasks {
     // groovy tests depend on kotlin tests
-    compileTestGroovy {
-        dependsOn(compileTestKotlin)
-        classpath += files(compileTestKotlin)
-    }
+//    compileTestGroovy {
+//        dependsOn(compileTestKotlin)
+//        classpath += files(compileTestKotlin)
+//    }
 }
 
 configure<org.checkerframework.gradle.plugin.CheckerFrameworkExtension> {

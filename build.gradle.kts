@@ -10,3 +10,6 @@ repositories {
 tasks.named("check") {
     dependsOn ("jacocoLogAggregatedCoverage")
 }
+
+group = "io.openapiprocessor"
+version = libs.versions.openapi.parser

@@ -3,9 +3,10 @@ plugins {
 }
 
 dependencies {
-    implementation(platform("com.fasterxml.jackson:jackson-bom:2.12.5"))
-    implementation("com.fasterxml.jackson.core:jackson-databind")
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
-
     implementation(project(":openapi-parser-base"))
+    implementation(project(":openapi-parser-interfaces"))
+
+    implementation(platform(libs.jackson.bom))
+    implementation(libs.jackson.databind)
+    implementation(libs.jackson.yaml)
 }

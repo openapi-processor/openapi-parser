@@ -3,26 +3,28 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     `java-library`
     jacoco
-    id("org.jetbrains.kotlin.jvm")
-    //id("org.unbroken-dome.test-sets")
-    //id("com.github.ben-manes.versions")
-}
+    kotlin("jvm")
 
-group = "io.openapiprocessor"
-version = "1.0-SNAPSHOT"
+    id( "org.checkerframework")
+    id("com.github.ben-manes.versions")
+}
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testImplementation (platform("org.junit:junit-bom:5.7.2"))
-    testImplementation ("org.junit.jupiter:junit-jupiter-api")
-    testImplementation ("org.junit.jupiter:junit-jupiter-params")
-    testRuntimeOnly ("org.junit.jupiter:junit-jupiter-engine")
-    testImplementation("io.kotest:kotest-runner-junit5:4.6.1")
-    testImplementation("io.kotest:kotest-framework-datatest:4.6.1")
-    testImplementation("io.mockk:mockk:1.12.0")
+    checkerFramework(libs("checker"))
+
+    testImplementation(platform(libs("kotest.bom")))
+    testImplementation(libs("kotest.runner"))
+    testImplementation(libs("kotest.datatest"))
+    testImplementation(libs("mockk"))
+
+//    testImplementation (platform("org.junit:junit-bom:5.7.2"))
+//    testImplementation ("org.junit.jupiter:junit-jupiter-api")
+//    testImplementation ("org.junit.jupiter:junit-jupiter-params")
+//    testRuntimeOnly ("org.junit.jupiter:junit-jupiter-engine")
 }
 
 java {
@@ -53,5 +55,13 @@ tasks.jacocoTestReport {
 //        csv.required.set(false)
 //        html.required.set(false)
 //        html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
+    }
+}
+
+@Suppress("UnstableApiUsage")
+fun libs(dependency: String): Provider<MinimalExternalModuleDependency> {
+    val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
+    return libs.findDependency(dependency).orElseThrow {
+        Exception("can't find dependency: $dependency")
     }
 }
