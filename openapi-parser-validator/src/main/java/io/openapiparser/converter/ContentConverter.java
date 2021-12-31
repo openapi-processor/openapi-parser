@@ -1,13 +1,13 @@
 package io.openapiparser.converter;
 
-import io.openapiparser.schema.PropertiesBucket;
+import io.openapiparser.schema.PropertyBucket;
 import io.openapiparser.schema.JsonPointer;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
 
 // todo name
-public class ContentConverter implements PropertyConverter<PropertiesBucket> {
+public class ContentConverter implements PropertyConverter<PropertyBucket> {
     private final JsonPointer parent;
 
     public ContentConverter (JsonPointer parent) {
@@ -15,7 +15,7 @@ public class ContentConverter implements PropertyConverter<PropertiesBucket> {
     }
 
     @Override
-    public @Nullable PropertiesBucket convert (String name, Object value) {
+    public @Nullable PropertyBucket convert (String name, Object value) {
         if (value == null)
             return null;
 
@@ -23,6 +23,6 @@ public class ContentConverter implements PropertyConverter<PropertiesBucket> {
             throw new TypeMismatchException (parent.append (name).toString (), Map.class);
 
         //noinspection unchecked
-        return new PropertiesBucket ((Map<String, Object>) value);
+        return new PropertyBucket ((Map<String, Object>) value);
     }
 }

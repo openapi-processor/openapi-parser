@@ -5,23 +5,24 @@
 
 package io.openapiparser;
 
-import io.openapiparser.schema.PropertiesBucket;
+import io.openapiparser.schema.PropertyBucket;
 
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
 public class DocumentRegistry {
-    private final Map<URI, PropertiesBucket> documents = new HashMap<> ();
+    private final Map<URI, PropertyBucket> documents = new HashMap<> ();
 
-    public void add (URI uri, PropertiesBucket document) {
+    public void add (URI uri, PropertyBucket document) {
         documents.put (uri, document);
     }
 
-    public PropertiesBucket get (URI uri) {
-        final PropertiesBucket document = documents.get (uri);
+    public PropertyBucket get (URI uri) {
+        final PropertyBucket document = documents.get (uri);
         if (document == null)
-            throw new RuntimeException (); // todo
+            // todo
+            throw new RuntimeException ();
 
         return document;
     }
