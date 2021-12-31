@@ -104,7 +104,7 @@ public class PropertyBucket {
     }
 
     // todo use converter??
-    public @Nullable Object findProperty (JsonPointer location) {
+    public @Nullable Object getProperty (JsonPointer location) {
         return location.getValue (properties);
 
         //        if (!isPath (path)) {
