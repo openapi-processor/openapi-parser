@@ -38,6 +38,10 @@ public class Context {
         return object;
     }
 
+    public Map<String, Object> getRawObject () {
+        return object.getRawValues ();
+    }
+
     public Reference getReference (String ref) {
         return resolver.resolve (baseUri, ref);
     }

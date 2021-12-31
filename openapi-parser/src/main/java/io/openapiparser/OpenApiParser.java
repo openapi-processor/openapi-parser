@@ -5,6 +5,9 @@
 
 package io.openapiparser;
 
+import io.openapiparser.converter.StringConverterRequired;
+import io.openapiparser.schema.PropertyBucket;
+
 import static io.openapiparser.Keywords.OPENAPI;
 
 public class OpenApiParser {
@@ -17,36 +20,25 @@ public class OpenApiParser {
     public OpenApiResult parse() throws Exception {
         try {
             context.read ();
-            return createResult (context.getBaseNode ());
+            return createResult (context.getObject ());
         } catch (Exception e) {
             // todo
             throw e;
         }
     }
 
-    private OpenApiResult createResult (Node api) {
-        String version = api.getRequiredStringValue (OPENAPI);
+    private OpenApiResult createResult (PropertyBucket api) {
+//        String version = api.getRequiredStringValue (OPENAPI);
+        String version = api.convert (OPENAPI, new StringConverterRequired ());
 
         if (isVersion30 (version)) {
-            return createOpenApiResult30 ();
+            return new OpenApiResult30 (context);
         } else if (isVersion31 (version)) {
-            return createOpenApiResult31 ();
+            return new OpenApiResult31 (context);
         } else {
-            // todo
+            // todo unknown version
             throw new RuntimeException ();
         }
-    }
-
-    private OpenApiResult31 createOpenApiResult31 () {
-        OpenApiResult31 result = new OpenApiResult31 (context);
-        result.validate();
-        return result;
-    }
-
-    private OpenApiResult30 createOpenApiResult30 () {
-        OpenApiResult30 result = new OpenApiResult30 (context);
-        result.validate();
-        return result;
     }
 
     private boolean isVersion30(String version) {

@@ -5,15 +5,20 @@
 
 package io.openapiparser;
 
-import io.openapiparser.model.v31.validations.OpenapiValidator;
 import io.openapiparser.model.v31.OpenApi;
+import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.schema.SchemaStore;
 import io.openapiparser.validator.ValidationMessage;
+import io.openapiparser.validator.Validator;
 
 import java.util.Collection;
 import java.util.Collections;
 
 public class OpenApiResult31 implements OpenApiResult {
+    public static final String OPENAPI_SCHEMA = "/openapi/schemas/v3.0/schema.yaml";
+
     private final Context context;
+
     private Collection<ValidationMessage> validationMessages;
 
     public OpenApiResult31 (Context context) {
@@ -37,13 +42,14 @@ public class OpenApiResult31 implements OpenApiResult {
     }
 
     @Override
+    public boolean validate (Validator validator, SchemaStore schemaStore) {
+        final JsonSchema schema = schemaStore.addSchema (OPENAPI_SCHEMA);
+        validationMessages = validator.validate (schema, context.getRawObject ());
+        return validationMessages.isEmpty ();
+    }
+
+    @Override
     public Collection<ValidationMessage> getValidationMessages () {
         return validationMessages;
     }
-
-    void validate() {
-        validationMessages = new OpenapiValidator ().validate (
-            new ValidationContext (context.getBaseUri ()), context.getBaseNode ());
-    }
-
 }

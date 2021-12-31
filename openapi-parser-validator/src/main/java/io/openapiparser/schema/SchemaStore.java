@@ -1,3 +1,8 @@
+/*
+ * Copyright 2021 https://github.com/openapi-processor/openapi-parser
+ * PDX-License-Identifier: Apache-2.0
+ */
+
 package io.openapiparser.schema;
 
 import io.openapiparser.Converter;
@@ -24,8 +29,8 @@ public class SchemaStore {
         this.converter = converter;
     }
 
-    public JsonSchema addSchema (Object content) {
-        return registerSchema (content);
+    public JsonSchema addSchemaDocument (Object document) {
+        return registerSchema (document);
     }
 
     /**
@@ -38,8 +43,7 @@ public class SchemaStore {
         return registerSchema (loadDocument (resourcePath));
     }
 
-    // todo better name
-    public JsonSchema addMetaSchema (URI documentUri) {
+    public JsonSchema addSchema (URI documentUri) {
         return registerSchema (loadDocument (documentUri));
     }
 
@@ -50,7 +54,7 @@ public class SchemaStore {
         if (metaSchemaUri != null) {
             JsonSchema metaSchema = schemas.get (metaSchemaUri);
             if (metaSchema == null) {
-                 metaSchema = addMetaSchema (metaSchemaUri);
+                 metaSchema = addSchema (metaSchemaUri);
             }
 
             Validator validator = new Validator ();
@@ -62,7 +66,7 @@ public class SchemaStore {
             }
         }
 
-        URI key = schema.getId();
+        URI key = schema.getId ();
         if (key == null) {
             key = generateUri ();
         }
