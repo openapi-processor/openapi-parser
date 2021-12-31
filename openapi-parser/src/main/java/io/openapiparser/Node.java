@@ -8,7 +8,6 @@ package io.openapiparser;
 import java.util.*;
 import java.util.regex.Pattern;
 
-import static io.openapiparser.Keywords.TYPE;
 import static io.openapiparser.Type.*;
 import static java.util.Collections.*;
 import static java.util.stream.Collectors.toList;
@@ -21,6 +20,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * OpenAPI object wrapper. It provides utility functions to extract the properties from the raw map
  * object.
  */
+@Deprecated
 public class Node {
     private static final Pattern EXTENSION_PATTERN = Pattern.compile("^x-");
 
@@ -47,6 +47,11 @@ public class Node {
      */
     public @Nullable Object getRawValue (String property) {
         return properties.get (property);
+    }
+
+    // todo: temporay
+    public @Nullable  Map<String, Object> getRawValue () {
+        return properties;
     }
 
     /**

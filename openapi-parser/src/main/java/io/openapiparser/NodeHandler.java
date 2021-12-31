@@ -8,6 +8,7 @@ package io.openapiparser;
 /**
  * represents a function that processes a source {@link Node}.
  */
+@Deprecated
 @FunctionalInterface
 public interface NodeHandler {
 
