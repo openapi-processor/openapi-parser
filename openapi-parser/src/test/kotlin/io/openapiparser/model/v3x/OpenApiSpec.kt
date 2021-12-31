@@ -13,7 +13,7 @@ import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import io.openapiparser.NoValueException
+import io.openapiparser.converter.NoValueException
 import io.openapiparser.model.v30.openapi as openapi30
 import io.openapiparser.model.v31.openapi as openapi31
 

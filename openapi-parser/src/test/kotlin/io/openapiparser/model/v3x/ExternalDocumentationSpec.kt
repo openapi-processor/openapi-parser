@@ -8,7 +8,7 @@ package io.openapiparser.model.v3x
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
-import io.openapiparser.NoValueException
+import io.openapiparser.converter.NoValueException
 import io.openapiparser.model.v30.externalDocumentation as externalDocumentation30
 import io.openapiparser.model.v31.externalDocumentation as externalDocumentation31
 

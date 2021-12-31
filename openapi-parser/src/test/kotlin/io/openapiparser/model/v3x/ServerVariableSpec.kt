@@ -10,7 +10,7 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
-import io.openapiparser.NoValueException
+import io.openapiparser.converter.NoValueException
 import io.openapiparser.model.v30.serverVariable as serverVariable30
 import io.openapiparser.model.v31.serverVariable as serverVariable31
 

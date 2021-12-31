@@ -12,7 +12,7 @@ import io.kotest.matchers.maps.shouldBeEmpty
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
-import io.openapiparser.NoValueException
+import io.openapiparser.converter.NoValueException
 import io.openapiparser.model.v30.MediaType as MediaType30
 import io.openapiparser.model.v30.response as response30
 import io.openapiparser.model.v31.MediaType as MediaType31
