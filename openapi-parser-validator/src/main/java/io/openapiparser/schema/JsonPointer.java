@@ -83,18 +83,31 @@ public class JsonPointer {
             .collect (Collectors.toList ());
     }
 
-    // todo
-
     /**
+     * creates a new json pointer appending the given token.
      *
-     * @param token
-     * @return
+     * @param token token to append
+     * @return new json pointer
      */
     public JsonPointer append (String token) {
         if (pointer == null) {
             return new JsonPointer ("/" + token);
         } else {
             return new JsonPointer (pointer + "/" + token);
+        }
+    }
+
+    /**
+     * creates a ewn json pointer appending the giveen token.
+     *
+     * @param token token to append
+     * @return new json pointer string
+     */
+    public String getJsonPointer (String token) {
+        if (pointer == null) {
+            return "/" + token;
+        } else {
+            return pointer + "/" + token;
         }
     }
 
