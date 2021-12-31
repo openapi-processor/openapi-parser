@@ -1,3 +1,8 @@
+/*
+ * Copyright 2021 https://github.com/openapi-processor/openapi-parser
+ * PDX-License-Identifier: Apache-2.0
+ */
+
 package io.openapiparser.converter;
 
 import io.openapiparser.schema.*;
@@ -5,28 +10,24 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
 
+/**
+ * converts property {@code value} to {@link JsonSchema} object.
+ */
 public class JsonSchemaConverter implements PropertyConverter<JsonSchema> {
-    private final JsonPointer parent;
-
-    public JsonSchemaConverter (JsonPointer parent) {
-        this.parent = parent;
-    }
 
     @Override
-    public @Nullable JsonSchema convert (String name, Object value) {
+    public @Nullable JsonSchema convert (String name, Object value, String location) {
         if (value == null)
             return null;
 
-        JsonPointer property = parent.append (name);
-
         if (value instanceof Boolean) {
-            return new JsonSchemaBoolean (property, (Boolean) value);
+            return new JsonSchemaBoolean (JsonPointer.fromJsonPointer (location), (Boolean) value);
 
         } else if (value instanceof Map) {
             //noinspection unchecked
-            return new JsonSchemaObject (property, (Map<String, Object>) value);
+            return new JsonSchemaObject (JsonPointer.fromJsonPointer (location), (Map<String, Object>) value);
         } else {
-            throw new TypeMismatchException (property.toString (), JsonSchema.class);
+            throw new TypeMismatchException (location, JsonSchema.class);
         }
     }
 }
