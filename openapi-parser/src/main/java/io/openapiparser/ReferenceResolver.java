@@ -5,11 +5,14 @@
 
 package io.openapiparser;
 
+import io.openapiparser.schema.JsonPointer;
+import io.openapiparser.schema.Properties;
 import io.openapiparser.support.Strings;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
 import java.util.Map;
+
+import static io.openapiparser.converter.Types.convertOrNull;
 
 /**
  * resolves all $ref'erences of the base document loading all referenced documents.
@@ -23,14 +26,14 @@ public class ReferenceResolver {
     private final ReferenceRegistry references;
     private final DocumentRegistry documents = new DocumentRegistry ();
 
-    private Node baseNode;
+    private Properties properties;
 
     public ReferenceResolver (URI baseUri, Reader reader, Converter converter, ReferenceRegistry references) {
         this.baseUri = baseUri;
         this.reader = reader;
         this.converter = converter;
         this.references = references;
-        this.baseNode = Node.empty ();
+        this.properties = Properties.empty ();
     }
 
     public void resolve () throws ResolverException {
@@ -68,44 +71,59 @@ public class ReferenceResolver {
      *
      * @return base node.
      */
-    public Node getBaseNode () {
-        return baseNode;
+//    public Node getBaseNode () {
+//        return baseNode;
+//    }
+
+    public Properties getProperties() {
+        return properties;
     }
 
     private void initBaseDocument () throws ResolverException {
-        baseNode = new Node("$", loadDocument (baseUri));
-        documents.add (baseUri, baseNode);
+        final Map<String, Object> document = loadDocument (baseUri);
+        properties = new Properties (baseUri, document);
+        documents.add (baseUri, properties);
+    }
+
+    private void collectReferences () throws ResolverException {
+        collectReferences (baseUri, properties);
     }
 
     private void resolveReferences() {
         references.resolve((documentUri, ref) -> {
-            Node documentNode = documents.get (documentUri);
-            String fragment = ref.substring(ref.indexOf (HASH));
-            return getRawRefNode (documentNode, fragment);
+            final Properties document = documents.get (documentUri);
+            return document.findProperty (JsonPointer.fromFragment (ref));
+
+//            String fragment = ref.substring(ref.indexOf (HASH));
+//            return getProperties (document, fragment);
+
+//            Node documentNode = documents.get (documentUri);
+//            String fragment = ref.substring(ref.indexOf (HASH));
+//            return getRawRefNode (documentNode, fragment);
         });
     }
 
-    private void collectReferences () throws ResolverException {
-        collectReferences (baseUri, baseNode);
-    }
+    private void collectReferences (URI uri, Properties properties) throws ResolverException {
+        properties.forEach((name, value) -> {
+            if (name.equals (Keywords.REF)) {
+                String ref = getRef (uri, name, value);
 
-    private void collectReferences (URI uri, Node node) throws ResolverException {
-        for (String k: node.getPropertyNames ()) {
-            if (k.equals (Keywords.REF)) {
-                String ref = getRef (uri, node);
                 if (ref.startsWith (HASH)) {
                     // into same document
                     references.add (uri, uri, ref);
                 } else {
                     // into other document
                     if (ref.contains (HASH)) {
-                        String document = ref.substring(0, ref.indexOf(HASH));
+                        String document = ref.substring (0, ref.indexOf (HASH));
                         URI documentUri = uri.resolve (document);
 
                         if (!documents.contains (documentUri)) {
-                            Node documentNode = new Node(documentUri.toString (), loadDocument (documentUri));
-                            documents.add (documentUri, documentNode);
-                            collectReferences (documentUri, documentNode);
+                            Properties documentProperties = new Properties (
+                                documentUri, loadDocument (documentUri)
+                            );
+
+                            documents.add (documentUri, documentProperties);
+                            collectReferences (documentUri, documentProperties);
                         }
 
                         references.add (baseUri, documentUri, ref);
@@ -114,29 +132,27 @@ public class ReferenceResolver {
                     }
                 }
             } else {
-                node.traverseProperty (k, n -> {
-                    collectReferences (uri, n);
+                // todo correct uri?
+                properties.traverseProperty (name, props -> {
+                    collectReferences (uri, props);
                 });
             }
-        }
+        });
     }
 
-    private String getRef (URI uri, Node node) {
-        final String ref = node.getStringValue (Keywords.REF);
+    private String getRef (URI uri, String name, Object value) {
+        // todo path, JsonPointer?
+        String ref = convertOrNull (name, value, String.class);
         if (ref == null) {
             throw new ResolverException (String.format ("unable to resolve empty $ref in %s.", uri));
         }
         return ref;
     }
 
-    private @Nullable Object getRawRefNode (Node documentNode, String fragment) {
-        NodePathFinder finder = new NodePathFinder (documentNode);
-        return finder.find (fragment.substring (1));
-    }
-
+    @SuppressWarnings ("unchecked")
     private Map<String, Object> loadDocument (URI documentUri) throws ResolverException {
         try {
-            return converter.convert (Strings.of (reader.read (documentUri)));
+            return (Map<String, Object>) converter.convert (Strings.of (reader.read (documentUri)));
         } catch (Exception e) {
             throw new ResolverException (String.format ("failed to resolve %s.", documentUri), e);
         }

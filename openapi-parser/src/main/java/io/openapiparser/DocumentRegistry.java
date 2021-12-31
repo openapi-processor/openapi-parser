@@ -5,19 +5,21 @@
 
 package io.openapiparser;
 
+import io.openapiparser.schema.Properties;
+
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
 public class DocumentRegistry {
-    private final Map<URI, Node> documents = new HashMap<> ();
+    private final Map<URI, Properties> documents = new HashMap<> ();
 
-    public void add (URI uri, Node document) {
+    public void add (URI uri, Properties document) {
         documents.put (uri, document);
     }
 
-    public Node get (URI uri) {
-        final Node document = documents.get (uri);
+    public Properties get (URI uri) {
+        final Properties document = documents.get (uri);
         if (document == null)
             throw new RuntimeException (); // todo
 
