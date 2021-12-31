@@ -26,14 +26,14 @@ public class ReferenceResolver {
     private final ReferenceRegistry references;
     private final DocumentRegistry documents = new DocumentRegistry ();
 
-    private PropertyBucket properties;
+    private PropertyBucket object;
 
     public ReferenceResolver (URI baseUri, Reader reader, Converter converter, ReferenceRegistry references) {
         this.baseUri = baseUri;
         this.reader = reader;
         this.converter = converter;
         this.references = references;
-        this.properties = PropertyBucket.empty ();
+        this.object = PropertyBucket.empty ();
     }
 
     public void resolve () throws ResolverException {
@@ -76,17 +76,17 @@ public class ReferenceResolver {
 //    }
 
     public PropertyBucket getProperties() {
-        return properties;
+        return object;
     }
 
     private void initBaseDocument () throws ResolverException {
         final Map<String, Object> document = loadDocument (baseUri);
-        properties = new PropertyBucket (baseUri, document);
-        documents.add (baseUri, properties);
+        object = new PropertyBucket (baseUri, document);
+        documents.add (baseUri, object);
     }
 
     private void collectReferences () throws ResolverException {
-        collectReferences (baseUri, properties);
+        collectReferences (baseUri, object);
     }
 
     private void resolveReferences() {
