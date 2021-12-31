@@ -4,10 +4,10 @@ import io.openapiparser.schema.JsonPointer;
 
 import static io.openapiparser.converter.Types.convertNotNull;
 
-public class StringConvertRequired implements TypeConverter<String> {
+public class StringConverterRequired implements TypeConverter<String> {
     private final JsonPointer parent;
 
-    public StringConvertRequired (JsonPointer parent) {
+    public StringConverterRequired (JsonPointer parent) {
         this.parent = parent;
     }
 
