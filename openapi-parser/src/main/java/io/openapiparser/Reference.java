@@ -20,26 +20,26 @@ import java.net.URI;
  */
 public class Reference {
     private final URI parentUri;
-    private final URI docUri;
+    private final URI documentUri;
     private final String ref;
     private final Object rawValue;
 
-    public Reference (URI parentUri, URI docUri, String ref) {
+    public Reference (URI parentUri, URI documentUri, String ref) {
         this.parentUri = parentUri;
-        this.docUri = docUri;
+        this.documentUri = documentUri;
         this.ref = ref;
         this.rawValue = "unresolved reference";
     }
 
-    public Reference (URI parentUri, URI docUri, String ref, Object rawValue) {
+    public Reference (URI parentUri, URI documentUri, String ref, Object rawValue) {
         this.parentUri = parentUri;
-        this.docUri = docUri;
+        this.documentUri = documentUri;
         this.ref = ref;
         this.rawValue = rawValue;
     }
 
     public Reference withRawValue (Object rawValue) {
-        return new Reference (parentUri, docUri, ref, rawValue);
+        return new Reference (parentUri, documentUri, ref, rawValue);
     }
 
     /**
@@ -47,8 +47,8 @@ public class Reference {
      *
      * @return the referenced document.
      */
-    public URI getDocUri () {
-        return docUri;
+    public URI getDocumentUri () {
+        return documentUri;
     }
 
     /**
@@ -65,7 +65,7 @@ public class Reference {
      *
      * @return the raw value.
      */
-    public Object getRawValue () {
+    public Object getDocumentValue () {
         return rawValue;
     }
 

@@ -36,7 +36,7 @@ class ReferenceResolverRefSpec: StringSpec ({
         resolver.resolve()
 
         val ref = resolver.resolve(uri, "foo.yaml#/foo")
-        val value = ref.rawValue
+        val value = ref.documentValue
         value shouldBe "FOO!"
     }
 

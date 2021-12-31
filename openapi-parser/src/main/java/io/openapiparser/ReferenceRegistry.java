@@ -24,7 +24,7 @@ public class ReferenceRegistry {
 
     public void resolve(BiFunction<URI, String, Object> resolver) {
         references.forEach ((key, ref) -> {
-            replace (key, ref, resolver.apply (ref.getDocUri (), ref.getRef ()));
+            replace (key, ref, resolver.apply (ref.getDocumentUri (), ref.getRef ()));
         });
     }
 
