@@ -24,7 +24,7 @@ public class SchemaStore {
 
     private Map<URI, JsonSchema> schemas;
 
-    public SchemaStore(Reader reader, Converter converter) {
+    public SchemaStore (Reader reader, Converter converter) {
         this.reader = reader;
         this.converter = converter;
     }
@@ -39,12 +39,16 @@ public class SchemaStore {
      * @param resourcePath path of the json schema in the resources
      * @return a json schema
      */
-    public JsonSchema addSchema(String resourcePath) {
+    public JsonSchema addSchema (String resourcePath) {
         return registerSchema (loadDocument (resourcePath));
     }
 
     public JsonSchema addSchema (URI documentUri) {
         return registerSchema (loadDocument (documentUri));
+    }
+
+    public boolean hasSchema (URI id) {
+        return schemas.containsKey (id);
     }
 
     private JsonSchema registerSchema (Object document) {
