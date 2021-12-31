@@ -7,35 +7,36 @@ import java.net.URI;
 import java.util.Map;
 
 public class JsonSchemaObject implements JsonSchema {
-    private final JsonPointer pointer;
-    private final Properties content;
-    private final Properties properties;
+    @Deprecated
+    private final JsonPointer location;
+    private final Properties content; // properties
+    private final Properties properties; // propertiesProperty
 
     public JsonSchemaObject (Map<String, Object> document) {
-        pointer = JsonPointer.EMPTY;
-        content = new Properties (document);
+        location = JsonPointer.EMPTY;
+        content = new Properties (location, document);
         properties = getProperties ();
     }
 
-    public JsonSchemaObject (JsonPointer pointer, Map<String, Object> document) {
-        this.pointer = pointer;
-        this.content = new Properties (document);
+    public JsonSchemaObject (JsonPointer location, Map<String, Object> document) {
+        this.location = location;
+        this.content = new Properties (location, document);
         properties = getProperties ();
     }
 
-    private JsonSchemaObject (JsonPointer pointer, Properties content) {
-        this.pointer = pointer;
+    private JsonSchemaObject (JsonPointer location, Properties content) {
+        this.location = location;
         this.content = content;
         properties = getProperties ();
     }
 
-    public JsonPointer getPointer (String property) {
-        return pointer.append (property);
+    public JsonPointer getLocation (String property) {
+        return location.append (property);
     }
 
     @Override
     public @Nullable URI getMetaSchema () {
-        return content.convert ("$schema", new UriConverter (pointer));
+        return content.convert ("$schema", new UriConverter ());
 
 //        String uri = (String) content.getRawValue ("$schema");
 //        if (uri == null)
@@ -46,7 +47,7 @@ public class JsonSchemaObject implements JsonSchema {
 
     @Override
     public @Nullable URI getId () {
-        return content.convert ("id", new UriConverter (pointer));
+        return content.convert ("id", new UriConverter ());
 
 //        String uri = (String) content.getRawValue ("id");
 //        if (uri == null)
@@ -57,7 +58,7 @@ public class JsonSchemaObject implements JsonSchema {
 
     @Override
     public boolean isUniqueItems () {
-        Boolean unique = content.convert ("uniqueItems", new BooleanConverter (pointer));
+        Boolean unique = content.convert ("uniqueItems", new BooleanConverter (location));
 
 //        Boolean unique = (Boolean) content.getRawValue ("uniqueItems");
         if (unique == null)
@@ -68,7 +69,7 @@ public class JsonSchemaObject implements JsonSchema {
 
     @Override
     public @Nullable JsonSchema getPropertySchema (String name) {
-        return properties.convert (name, new JsonSchemaConverter (pointer.append ("properties")));
+        return properties.convert (name, new JsonSchemaConverter (location.append ("properties")));
 
 //        JsonPointer propsPointer = pointer.append ("properties");
 
@@ -80,7 +81,7 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     private Properties getProperties () {
-        return content.convert ("properties", new ContentConverter (pointer));
+        return content.convert ("properties", new ContentConverter (location));
 //        return content.getContentValue (pointer, "properties");
     }
 }
