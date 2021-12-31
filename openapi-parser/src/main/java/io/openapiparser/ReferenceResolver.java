@@ -66,16 +66,12 @@ public class ReferenceResolver {
     }
 
     /**
-     * get the {@link Node} of the root OpenAPI document. The node is empty {@link Node} if the
-     * document was not {@link #resolve()}d.
+     * get the root {@link PropertyBucket} of the document. The bucket is empty if the document was
+     * not {@link #resolve()}d.
      *
-     * @return base node.
+     * @return root property bucket.
      */
-//    public Node getBaseNode () {
-//        return baseNode;
-//    }
-
-    public PropertyBucket getProperties() {
+    public PropertyBucket getRootObject () {
         return object;
     }
 

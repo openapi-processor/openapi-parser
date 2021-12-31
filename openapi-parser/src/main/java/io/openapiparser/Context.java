@@ -28,7 +28,7 @@ public class Context {
     public void read () throws ContextException {
         try {
             resolver.resolve ();
-            object = resolver.getObject ();
+            object = resolver.getRootObject ();
         } catch (Exception e) {
             throw new ContextException (String.format ("failed to read %s.", baseUri), e);
         }
