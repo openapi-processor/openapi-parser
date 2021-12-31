@@ -1,18 +1,20 @@
-package io.openapiparser.converter;
+/*
+ * Copyright 2021 https://github.com/openapi-processor/openapi-parser
+ * PDX-License-Identifier: Apache-2.0
+ */
 
-import io.openapiparser.schema.JsonPointer;
+package io.openapiparser.converter;
 
 import static io.openapiparser.converter.Types.convertNotNull;
 
+/**
+ * converts property {@code value} to {@link String} object and throws {@link NoValueException} if
+ * the value does not exist.
+ */
 public class StringConverterRequired implements PropertyConverter<String> {
-    private final JsonPointer parent;
-
-    public StringConverterRequired (JsonPointer parent) {
-        this.parent = parent;
-    }
 
     @Override
-    public String convert (String name, Object value) {
-        return convertNotNull (parent.append (name).toString (), value, String.class);
+    public String convert (String name, Object value, String location) {
+        return convertNotNull (location, value, String.class);
     }
 }

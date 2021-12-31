@@ -10,23 +10,23 @@ package io.openapiparser.converter;
  *
  * @param <T> target type.
  */
-// PropertyConverter
 public interface PropertyConverter<T> {
     /**
-     * converts the value of a property name & value pair to a {@code T} object or null. May throw
-     * if the value doesn't fulfill the expected conditions, e.g. if it is required but null.
+     * converts the {@code value} of a property to a {@code T} object or null. May throw if
+     * conversion fails, e.g. if the property is required but null.
      *
      * @param name  property name
      * @param value property value
+     * @param location property location, json pointer
      * @return T converted value
      */
-    @Deprecated
-    default T convert (String name, Object value) {
-        return null;
-    }
-
     // todo remove default
     default T convert (String name, Object value, String location) {
         return convert (name, value);
+    }
+
+    @Deprecated
+    default T convert (String name, Object value) {
+        return null;
     }
 }

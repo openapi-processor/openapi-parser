@@ -1,9 +1,17 @@
+/*
+ * Copyright 2021 https://github.com/openapi-processor/openapi-parser
+ * PDX-License-Identifier: Apache-2.0
+ */
+
 package io.openapiparser.converter;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
 
+/**
+ * converts property {@code value} to {@link URI} object.
+ */
 public class UriConverter implements PropertyConverter<URI> {
 
     @Override
