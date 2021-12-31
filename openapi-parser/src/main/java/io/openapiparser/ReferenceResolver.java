@@ -87,15 +87,9 @@ public class ReferenceResolver {
 
     private void resolveReferences() {
         references.resolve((documentUri, ref) -> {
-            final PropertyBucket document = documents.get (documentUri);
-            return document.getProperty (JsonPointer.fromFragment (ref));
-
-//            String fragment = ref.substring(ref.indexOf (HASH));
-//            return getProperties (document, fragment);
-
-//            Node documentNode = documents.get (documentUri);
-//            String fragment = ref.substring(ref.indexOf (HASH));
-//            return getRawRefNode (documentNode, fragment);
+            PropertyBucket document = documents.get (documentUri);
+            String fragment = ref.substring(ref.indexOf (HASH));
+            return document.getProperty (JsonPointer.fromFragment (fragment));
         });
     }
 
