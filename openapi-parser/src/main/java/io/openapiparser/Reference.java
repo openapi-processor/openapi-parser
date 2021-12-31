@@ -65,7 +65,7 @@ public class Reference {
      *
      * @return the raw value.
      */
-    public Object getDocumentValue () {
+    public Object getRawValue () {
         return rawValue;
     }
 
