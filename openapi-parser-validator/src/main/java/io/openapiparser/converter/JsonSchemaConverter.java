@@ -5,7 +5,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
 
-public class JsonSchemaConverter implements TypeConverter<JsonSchema> {
+public class JsonSchemaConverter implements PropertyConverter<JsonSchema> {
     private final JsonPointer parent;
 
     public JsonSchemaConverter (JsonPointer parent) {

@@ -5,7 +5,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import static io.openapiparser.converter.Types.convertOrNull;
 
-public class BooleanConverter implements TypeConverter<Boolean> {
+public class BooleanConverter implements PropertyConverter<Boolean> {
     private final JsonPointer parent;
 
     public BooleanConverter (JsonPointer parent) {

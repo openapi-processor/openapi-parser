@@ -7,7 +7,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.Map;
 
 // todo name
-public class ContentConverter implements TypeConverter<Properties> {
+public class ContentConverter implements PropertyConverter<Properties> {
     private final JsonPointer parent;
 
     public ContentConverter (JsonPointer parent) {

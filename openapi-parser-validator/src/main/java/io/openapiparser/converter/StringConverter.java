@@ -5,7 +5,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import static io.openapiparser.converter.Types.convertOrNull;
 
-public class StringConverter implements TypeConverter<String> {
+public class StringConverter implements PropertyConverter<String> {
     private final JsonPointer parent;
 
     public StringConverter (JsonPointer parent) {

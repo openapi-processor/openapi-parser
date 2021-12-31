@@ -6,7 +6,7 @@
 package io.openapiparser.schema;
 
 import io.openapiparser.converter.PropertiesConverter;
-import io.openapiparser.converter.TypeConverter;
+import io.openapiparser.converter.PropertyConverter;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
@@ -54,7 +54,7 @@ public class Properties {
      * @param <T> target type
      * @return a {@code T} object or null
      */
-    public <T> @Nullable T convert (String property, TypeConverter<T> converter) {
+    public <T> @Nullable T convert (String property, PropertyConverter<T> converter) {
         return converter.convert (property, getRawValue (property), getLocation (property));
     }
 

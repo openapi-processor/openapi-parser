@@ -4,7 +4,7 @@ import io.openapiparser.schema.JsonPointer;
 
 import static io.openapiparser.converter.Types.convertNotNull;
 
-public class StringConverterRequired implements TypeConverter<String> {
+public class StringConverterRequired implements PropertyConverter<String> {
     private final JsonPointer parent;
 
     public StringConverterRequired (JsonPointer parent) {

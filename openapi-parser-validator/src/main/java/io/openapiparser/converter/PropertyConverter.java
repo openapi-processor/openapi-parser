@@ -11,7 +11,7 @@ package io.openapiparser.converter;
  * @param <T> target type.
  */
 // PropertyConverter
-public interface TypeConverter<T> {
+public interface PropertyConverter<T> {
     /**
      * converts the value of a property name & value pair to a {@code T} object or null. May throw
      * if the value doesn't fulfill the expected conditions, e.g. if it is required but null.

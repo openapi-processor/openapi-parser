@@ -1,11 +1,10 @@
 package io.openapiparser.converter;
 
-import io.openapiparser.schema.JsonPointer;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
 
-public class UriConverter implements TypeConverter<URI> {
+public class UriConverter implements PropertyConverter<URI> {
 
     @Override
     public @Nullable URI convert (String name, Object value, String location) {
