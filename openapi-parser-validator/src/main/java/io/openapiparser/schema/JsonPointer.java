@@ -25,7 +25,7 @@ public class JsonPointer {
     final private Collection<String> tokens;
 
     /**
-     * creates a json pointer from a json pointer string. Throws if the string is no valid json
+     * creates a json pointer from a json pointer string. Throws if the string is not a valid json
      * pointer.
      *
      * @param jsonPointer json pointer
@@ -40,7 +40,7 @@ public class JsonPointer {
     }
 
     /**
-     * creates a json pointer from a uri fragment string. Throws if the fragment is no valid json
+     * creates a json pointer from a uri fragment string. Throws if the fragment is not a valid json
      * pointer.
      *
      * @param fragment json pointer fragment
