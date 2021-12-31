@@ -21,7 +21,9 @@ public interface TypeConverter<T> {
      * @return T converted value
      */
     @Deprecated
-    T convert (String name, Object value);
+    default T convert (String name, Object value) {
+        return null;
+    }
 
     // todo remove default
     default T convert (String name, Object value, String location) {
