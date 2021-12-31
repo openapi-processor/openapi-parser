@@ -104,16 +104,16 @@ public class ReferenceResolver {
                 } else {
                     // into other document
                     if (ref.contains (HASH)) {
-                        String document = ref.substring (0, ref.indexOf (HASH));
-                        URI documentUri = uri.resolve (document);
+                        String documentName = ref.substring (0, ref.indexOf (HASH));
+                        URI documentUri = uri.resolve (documentName);
 
                         if (!documents.contains (documentUri)) {
-                            PropertyBucket documentProperties = new PropertyBucket (
-                                documentUri, loadDocument (documentUri)
-                            );
+                            PropertyBucket document = new PropertyBucket (
+                                documentUri,
+                                loadDocument (documentUri));
 
-                            documents.add (documentUri, documentProperties);
-                            collectReferences (documentUri, documentProperties);
+                            documents.add (documentUri, document);
+                            collectReferences (documentUri, document);
                         }
 
                         references.add (baseUri, documentUri, ref);
@@ -131,7 +131,6 @@ public class ReferenceResolver {
     }
 
     private String getRef (URI uri, String name, Object value) {
-        // todo path, JsonPointer?
         String ref = convertOrNull (name, value, String.class);
         if (ref == null) {
             throw new ResolverException (String.format ("unable to resolve empty $ref in %s.", uri));
