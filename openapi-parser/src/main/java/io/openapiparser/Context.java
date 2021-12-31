@@ -17,26 +17,25 @@ public class Context {
     private final URI baseUri;
     private final ReferenceResolver resolver;
 
-    private PropertyBucket properties;
+    private PropertyBucket object;
 
     public Context (URI baseUri, ReferenceResolver resolver) {
         this.baseUri = baseUri;
         this.resolver = resolver;
-        this.properties = PropertyBucket.empty ();
+        this.object = PropertyBucket.empty ();
     }
 
     public void read () throws ContextException {
         try {
             resolver.resolve ();
-            properties = resolver.getProperties ();
+            object = resolver.getProperties ();
         } catch (Exception e) {
             throw new ContextException (String.format ("failed to read %s.", baseUri), e);
         }
     }
 
-    // todo getDocument()
     public PropertyBucket getProperties () {
-        return properties;
+        return object;
     }
 
     public Reference getReference (String ref) {
@@ -84,7 +83,7 @@ public class Context {
 
     @Deprecated
     public Node getBaseNode() {
-        return new Node(baseUri.toString (), properties.getRawValues ());
+        return new Node(baseUri.toString (), object.getRawValues ());
     }
 
     @Deprecated
