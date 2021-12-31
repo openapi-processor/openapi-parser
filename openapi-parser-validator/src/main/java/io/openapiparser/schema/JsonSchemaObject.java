@@ -7,31 +7,22 @@ import java.net.URI;
 import java.util.Map;
 
 public class JsonSchemaObject implements JsonSchema {
-    @Deprecated // todo needed?
-    private final JsonPointer location;
     private final PropertyBucket object;
     private final PropertyBucket properties;
 
     public JsonSchemaObject (Map<String, Object> document) {
-        location = JsonPointer.EMPTY;
-        object = new PropertyBucket (location, document);
+        object = new PropertyBucket (JsonPointer.EMPTY, document);
         properties = getProperties ();
     }
 
     public JsonSchemaObject (JsonPointer location, Map<String, Object> document) {
-        this.location = location;
         this.object = new PropertyBucket (location, document);
         properties = getProperties ();
     }
 
-    private JsonSchemaObject (JsonPointer location, PropertyBucket object) {
-        this.location = location;
+    private JsonSchemaObject (PropertyBucket object) {
         this.object = object;
         properties = getProperties ();
-    }
-
-    public JsonPointer getLocation (String property) {
-        return location.append (property);
     }
 
     @Override
