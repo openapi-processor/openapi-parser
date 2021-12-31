@@ -52,7 +52,7 @@ public class Reference {
     }
 
     /**
-     * the original $ref value.
+     * the original $ref value. This may contain a file name, e.g. "foo.yaml#/Foo".
      *
      * @return the original ref.
      */
