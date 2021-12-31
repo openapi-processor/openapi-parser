@@ -9,22 +9,22 @@ import java.util.Map;
 public class JsonSchemaObject implements JsonSchema {
     @Deprecated
     private final JsonPointer location;
-    private final Properties content; // properties
-    private final Properties properties; // propertiesProperty
+    private final PropertiesBucket content; // properties
+    private final PropertiesBucket properties; // propertiesProperty
 
     public JsonSchemaObject (Map<String, Object> document) {
         location = JsonPointer.EMPTY;
-        content = new Properties (location, document);
+        content = new PropertiesBucket (location, document);
         properties = getProperties ();
     }
 
     public JsonSchemaObject (JsonPointer location, Map<String, Object> document) {
         this.location = location;
-        this.content = new Properties (location, document);
+        this.content = new PropertiesBucket (location, document);
         properties = getProperties ();
     }
 
-    private JsonSchemaObject (JsonPointer location, Properties content) {
+    private JsonSchemaObject (JsonPointer location, PropertiesBucket content) {
         this.location = location;
         this.content = content;
         properties = getProperties ();
@@ -80,7 +80,7 @@ public class JsonSchemaObject implements JsonSchema {
 //        return new JsonSchemaObject (propsPointer, value);
     }
 
-    private Properties getProperties () {
+    private PropertiesBucket getProperties () {
         return content.convert ("properties", new ContentConverter (location));
 //        return content.getContentValue (pointer, "properties");
     }

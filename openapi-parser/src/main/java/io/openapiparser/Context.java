@@ -5,7 +5,7 @@
 
 package io.openapiparser;
 
-import io.openapiparser.schema.Properties;
+import io.openapiparser.schema.PropertiesBucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
@@ -17,12 +17,12 @@ public class Context {
     private final URI baseUri;
     private final ReferenceResolver resolver;
 
-    private Properties properties;
+    private PropertiesBucket properties;
 
     public Context (URI baseUri, ReferenceResolver resolver) {
         this.baseUri = baseUri;
         this.resolver = resolver;
-        this.properties = Properties.empty ();
+        this.properties = PropertiesBucket.empty ();
     }
 
     public void read () throws ContextException {
@@ -35,7 +35,7 @@ public class Context {
     }
 
     // todo getDocument()
-    public Properties getProperties () {
+    public PropertiesBucket getProperties () {
         return properties;
     }
 

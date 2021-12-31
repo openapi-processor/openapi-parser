@@ -16,31 +16,29 @@ import java.util.function.BiConsumer;
 /**
  * .. todo
  */
-// todo PropertyContainer
-    // PropertyBucket
-public class Properties {
+public class PropertiesBucket {
     private final URI source;
     private final JsonPointer location;
     private final Map<String, Object> properties;
 
-    public static Properties empty() {
-        return new Properties (Collections.emptyMap ());
+    public static PropertiesBucket empty() {
+        return new PropertiesBucket (Collections.emptyMap ());
     }
 
     @Deprecated
-    public Properties (Map<String, Object> properties) {
+    public PropertiesBucket (Map<String, Object> properties) {
         this.source = null;
         this.location = JsonPointer.EMPTY;
         this.properties = properties;
     }
 
-    public Properties (JsonPointer location, Map<String, Object> properties) {
+    public PropertiesBucket (JsonPointer location, Map<String, Object> properties) {
         this.source = null;
         this.location = location;
         this.properties = properties;
     }
 
-    public Properties (URI source, Map<String, Object> properties) {
+    public PropertiesBucket (URI source, Map<String, Object> properties) {
         this.source = source;
         this.location = JsonPointer.fromFragment (source.getRawFragment ());
         this.properties = properties;
@@ -144,7 +142,7 @@ public class Properties {
         JsonPointer propertyLocation = location.append (property);
 
         if (value instanceof Map) {
-            handler.handle (new Properties (propertyLocation, (Map<String, Object>) value));
+            handler.handle (new PropertiesBucket (propertyLocation, (Map<String, Object>) value));
 
         } else if (value instanceof Collection) {
             int index = -1;
@@ -155,7 +153,7 @@ public class Properties {
                     continue;
 
                 JsonPointer itemLocation = propertyLocation.append (String.valueOf (index));
-                handler.handle (new Properties (itemLocation, (Map<String, Object>) o));
+                handler.handle (new PropertiesBucket (itemLocation, (Map<String, Object>) o));
             }
         }
     }
