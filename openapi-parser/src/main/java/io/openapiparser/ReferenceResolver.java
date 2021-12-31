@@ -71,7 +71,7 @@ public class ReferenceResolver {
      *
      * @return root property bucket.
      */
-    public PropertyBucket getRootObject () {
+    public PropertyBucket getObject () {
         return object;
     }
 

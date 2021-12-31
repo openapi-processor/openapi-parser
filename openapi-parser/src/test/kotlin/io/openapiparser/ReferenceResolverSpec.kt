@@ -30,9 +30,9 @@ class ReferenceResolverSpec : StringSpec({
 
         resolver.resolve()
 
-        val properties = resolver.properties
-        properties.count shouldBe 1
-        properties.getRawValue("openapi") shouldBe "3.0.3"
+        val bucket = resolver.`object`
+        bucket.size shouldBe 1
+        bucket.getRawValue("openapi") shouldBe "3.0.3"
     }
 
     "throws if reading fails" {

@@ -60,7 +60,7 @@ public class PropertyBucket {
         return converter.convert (properties, location.toString ());
     }
 
-    public int getCount() {
+    public int getSize () {
         return properties.size ();
     }
 

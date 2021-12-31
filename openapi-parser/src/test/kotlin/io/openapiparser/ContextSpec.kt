@@ -33,9 +33,9 @@ class ContextSpec : StringSpec({
 
         ctx.read()
 
-        val props = ctx.properties
-        props.count shouldBe 1
-        props.getRawValue("openapi") shouldBe "3.0.3"
+        val bucket = ctx.`object`
+        bucket.size shouldBe 1
+        bucket.getRawValue("openapi") shouldBe "3.0.3"
     }
 
     "throws if reading fails" {
