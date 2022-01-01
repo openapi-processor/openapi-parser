@@ -21,14 +21,17 @@ import java.util.Map;
 public class Callback implements Extensions {
     private final Context context;
     private final PropertyBucket properties;
+    private final Properties self;
 
     public Callback (Context context, PropertyBucket properties) {
         this.context = context;
         this.properties = properties;
+        this.self = new Properties (context, properties);
     }
 
     public Map<String, PathItem> getPathItems() {
-        return getMapObjectsOrEmpty (PathItem.class);
+        return self.getMapObjectsOrEmpty (PathItem.class);
+//        return getMapObjectsOrEmpty (PathItem.class);
     }
 
     public @Nullable PathItem getPathItem(String path) {
