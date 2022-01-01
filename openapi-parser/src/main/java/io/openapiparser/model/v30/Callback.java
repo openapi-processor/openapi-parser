@@ -7,8 +7,6 @@ package io.openapiparser.model.v30;
 
 import io.openapiparser.*;
 import io.openapiparser.converter.*;
-import io.openapiparser.model.v30.converter.PathItemConverter;
-import io.openapiparser.model.v30.converter.PathItemsConverter;
 import io.openapiparser.schema.PropertyBucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -36,12 +34,10 @@ public class Callback implements Extensions {
 
     public Map<String, PathItem> getPathItems() {
         return properties.convert (new ObjectMapConverter<> (context, PathItem.class));
-        //return properties.convert (new PathItemsConverter (context));
     }
 
     public @Nullable PathItem getPathItem(String path) {
         return properties.convert (path, new ObjectConverter<> (context, PathItem.class));
-        //return properties.convert (path, new PathItemConverter (context));
     }
 
     @Override
