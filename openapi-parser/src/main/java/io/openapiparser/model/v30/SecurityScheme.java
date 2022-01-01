@@ -6,7 +6,7 @@
 package io.openapiparser.model.v30;
 
 import io.openapiparser.Context;
-import io.openapiparser.Node;
+import io.openapiparser.schema.PropertyBucket;
 
 import java.util.Map;
 
@@ -20,11 +20,11 @@ import java.util.Map;
  */
 public class SecurityScheme implements Extensions {
     private final Context context;
-    private final Node node;
+    private final PropertyBucket properties;
 
-    public SecurityScheme (Context context, Node node) {
+    public SecurityScheme (Context context, PropertyBucket properties) {
         this.context = context;
-        this.node = node;
+        this.properties = properties;
     }
 
     @Override

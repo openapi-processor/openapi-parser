@@ -57,7 +57,7 @@ public class Components implements Extensions {
     }
 
     public Map<String, SecurityScheme> getSecuritySchemes () {
-        return node.getMapObjectValuesOrEmpty (SECURITY_SCHEMES, node -> new SecurityScheme (context, node));
+        return getObjectMapFromProperty (SECURITY_SCHEMES, SecurityScheme.class);
     }
 
     public Map<String, Link> getLinks () {
