@@ -20,11 +20,18 @@ import io.openapiparser.model.v31.pathItem as pathItem31
 class PathItemSpec: StringSpec({
 
     "get path item \$ref" {
-        val item30 = pathItem30("\$ref: '#/path'")
+        val source = """
+            paths:
+              /foo:
+                ${'$'}ref: '#/path'
+            path: {}
+        """
+
+        val item30 = openapi30(source).paths.getPathItem("/foo")!!
         item30.isRef.shouldBeTrue()
         item30.ref shouldBe "#/path"
 
-        val item31 = pathItem31("\$ref: '#/path'")
+        val item31 = openapi30(source).paths.getPathItem("/foo")!!
         item31.isRef.shouldBeTrue()
         item31.ref shouldBe "#/path"
     }
