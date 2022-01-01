@@ -89,4 +89,10 @@ class JsonPointerSpec : StringSpec({
         }
     }
 
+    "appends token to json pointer" {
+        JsonPointer.fromJsonPointer(null).append("/foo").toString() shouldBe "/foo"
+        JsonPointer.fromJsonPointer(null).append("foo").toString() shouldBe "/foo"
+        JsonPointer.fromJsonPointer("/root").append("/foo").toString() shouldBe "/root/foo"
+        JsonPointer.fromJsonPointer("/root").append("foo").toString() shouldBe "/root/foo"
+    }
 })

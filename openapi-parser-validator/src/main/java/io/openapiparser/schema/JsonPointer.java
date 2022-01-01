@@ -91,19 +91,23 @@ public class JsonPointer {
      */
     public JsonPointer append (String token) {
         if (pointer == null) {
-            return new JsonPointer ("/" + token);
+            return new JsonPointer (getJsonPointer (token));
         } else {
-            return new JsonPointer (pointer + "/" + token);
+            return new JsonPointer (getJsonPointer (token));
         }
     }
 
     /**
-     * creates a ewn json pointer appending the giveen token.
+     * creates a new json pointer appending the given token.
      *
      * @param token token to append
      * @return new json pointer string
      */
     public String getJsonPointer (String token) {
+        if (token.startsWith ("/")) {
+            return getJsonPointer (token.substring (1));
+        }
+
         if (pointer == null) {
             return "/" + token;
         } else {
