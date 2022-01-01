@@ -5,10 +5,11 @@
 
 package io.openapiparser.model.v31
 
+import io.openapiparser.support.buildObject
 import io.openapiparser.support.buildObjectObsolete
 
 fun callback(content: String = "{}"): Callback {
-    return buildObjectObsolete(Callback::class.java, content)
+    return buildObject(Callback::class.java, content)
 }
 
 fun components(content: String = "{}"): Components {

@@ -6,6 +6,8 @@
 package io.openapiparser.model.v31;
 
 import io.openapiparser.*;
+import io.openapiparser.converter.ObjectMapPropertyConverter;
+import io.openapiparser.schema.PropertyBucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Collection;
@@ -22,10 +24,12 @@ import static io.openapiparser.Keywords.*;
 public class Operation implements Extensions {
     private final Context context;
     private final Node node;
+    private final PropertyBucket properties;
 
     public Operation (Context context, Node node) {
         this.context = context;
         this.node = node;
+        this.properties = node.toBucket ();
     }
 
     public Collection<String> getTags () {
@@ -62,7 +66,7 @@ public class Operation implements Extensions {
     }
 
     public Map<String, Callback> getCallbacks () {
-        return node.getMapObjectValuesOrEmpty (CALLBACKS, node -> new Callback (context, node));
+        return getObjectMapFromProperty (CALLBACKS, Callback.class);
     }
 
     public Boolean getDeprecated () {
@@ -80,5 +84,9 @@ public class Operation implements Extensions {
     @Override
     public Map<String, Object> getExtensions () {
         return node.getExtensions ();
+    }
+
+    private <T> Map<String, T> getObjectMapFromProperty (String property, Class<T> clazz) {
+        return properties.convert (property, new ObjectMapPropertyConverter<> (context, clazz));
     }
 }

@@ -6,6 +6,7 @@
 package io.openapiparser.model.v30;
 
 import io.openapiparser.*;
+import io.openapiparser.converter.StringConverterRequired;
 import io.openapiparser.schema.PropertyBucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -24,29 +25,34 @@ public class PathItem implements Reference, Extensions {
     private final Context context;
     private final Node node;
     private final @Nullable Node refNode;
+    private final PropertyBucket properties;
+    private final @Nullable PropertyBucket refProperties;
 
     @Deprecated
     public PathItem (Context context, Node node) {
         this.context = context;
         this.node = node;
-        refNode = context.getRefNodeOrNull (node);
+        this.refNode = context.getRefNodeOrNull (node);
+        this.properties = node.toBucket ();
+        this.refProperties = context.getRefObjectOrNull (this.properties);
     }
 
     public PathItem (Context context, PropertyBucket properties) {
-        // todo
         this.context = context;
         this.node = null;
         this.refNode = null;
+        this.properties = properties;
+        this.refProperties = context.getRefObjectOrNull (this.properties);
     }
 
     @Override
     public boolean isRef () {
-        return node.hasProperty (REF);
+        return properties.hasProperty (REF);
     }
 
     @Override
     public String getRef () {
-        return node.getRequiredStringValue (REF);
+        return properties.convert (REF, new StringConverterRequired());
     }
 
     public  @Nullable String getSummary () {

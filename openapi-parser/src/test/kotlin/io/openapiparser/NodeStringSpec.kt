@@ -46,13 +46,14 @@ class NodeStringSpec : StringSpec({
         }
     }
 
-    "getting required string property (as String) reports full json path if it is missing" {
-        val ex = shouldThrow<NoValueException> {
-            Node("$", emptyMap()).getRequiredStringValue("property")
-        }
-
-        ex.message shouldContain "$.property"
-    }
+    // obsolete
+//    "getting required string property (as String) reports full json path if it is missing" {
+//        val ex = shouldThrow<NoValueException> {
+//            Node("$", emptyMap()).getRequiredStringValue("property")
+//        }
+//
+//        ex.message shouldContain "$.property"
+//    }
 
     // string array
 

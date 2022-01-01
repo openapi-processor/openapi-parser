@@ -5,14 +5,18 @@
 
 package io.openapiparser;
 
+import java.net.URI;
 import java.util.*;
 import java.util.regex.Pattern;
 
 import static io.openapiparser.Type.*;
+import static io.openapiparser.schema.JsonPointer.fromJsonPointer;
 import static java.util.Collections.*;
 import static java.util.stream.Collectors.toList;
 
 import io.openapiparser.converter.NoValueException;
+import io.openapiparser.schema.JsonPointer;
+import io.openapiparser.schema.PropertyBucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -36,6 +40,11 @@ public class Node {
     public Node (String path, Map<String, Object> properties) {
         this.path = path;
         this.properties = new HashMap<> (properties);
+    }
+
+    public PropertyBucket toBucket () {
+        String fragment = URI.create (path).getRawFragment ();
+        return new PropertyBucket (fromJsonPointer (fragment), properties);
     }
 
     /**
@@ -466,15 +475,15 @@ public class Node {
     }
 
     public String getPath (String property) {
-        return String.format ("%s.%s", path, property);
+        return String.format ("%s/%s", path, property);
     }
 
     private String getPath (String parent, int index) {
-        return String.format ("%s[%d]", parent, index);
+        return String.format ("%s/%d", parent, index);
     }
 
     private String getPath (String parent, String item) {
-        return String.format ("%s[%s]", parent, item);
+        return String.format ("%s/%s", parent, item);
     }
 
     private String getCollectionPath (String property, int index) {

@@ -22,11 +22,6 @@ public class Callback implements Extensions {
     private final Context context;
     private final PropertyBucket properties;
 
-    @Deprecated
-    public Callback (Context context, Node node) {
-        this.context = context;
-        this.properties = null;
-    }
     public Callback (Context context, PropertyBucket properties) {
         this.context = context;
         this.properties = properties;

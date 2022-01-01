@@ -7,6 +7,8 @@ package io.openapiparser.model.v31;
 
 import io.openapiparser.Context;
 import io.openapiparser.Node;
+import io.openapiparser.converter.ObjectMapPropertyConverter;
+import io.openapiparser.schema.PropertyBucket;
 
 import java.util.Map;
 
@@ -21,10 +23,12 @@ import static io.openapiparser.Keywords.*;
 public class Components implements Extensions {
     private final Context context;
     private final Node node;
+    private final PropertyBucket properties;
 
     public Components (Context context, Node node) {
         this.context = context;
         this.node = node;
+        this.properties = node.toBucket ();
     }
 
     public Map<String, Schema> getSchemas () {
@@ -60,7 +64,7 @@ public class Components implements Extensions {
     }
 
     public Map<String, Callback> getCallbacks () {
-        return node.getMapObjectValuesOrEmpty (CALLBACKS, node -> new Callback (context, node));
+        return convertObjectMapOfProperty (CALLBACKS, Callback.class);
     }
 
     public Map<String, PathItem> getPathItems () {
@@ -70,5 +74,9 @@ public class Components implements Extensions {
     @Override
     public Map<String, Object> getExtensions () {
         return node.getExtensions ();
+    }
+
+    private <T> Map<String, T> convertObjectMapOfProperty (String property, Class<T> clazz) {
+        return properties.convert (property, new ObjectMapPropertyConverter<> (context, clazz));
     }
 }

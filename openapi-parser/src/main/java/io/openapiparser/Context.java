@@ -5,6 +5,8 @@
 
 package io.openapiparser;
 
+import io.openapiparser.converter.StringConverter;
+import io.openapiparser.schema.JsonPointer;
 import io.openapiparser.schema.PropertyBucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -44,6 +46,25 @@ public class Context {
 
     public Reference getReference (String ref) {
         return resolver.resolve (baseUri, ref);
+    }
+
+    public @Nullable PropertyBucket getRefObjectOrNull (PropertyBucket properties) {
+        String ref = properties.convert (REF, new StringConverter());
+        if (ref == null)
+            return null;
+
+        return getRefObject (ref, ref);
+    }
+
+    public @Nullable PropertyBucket getRefObject(String path, String ref) {
+        final Reference reference = getReference (ref);
+        final Map<String, Object> value = reference.getValue();
+        if (value == null) {
+            // todo throw ResolverException ?
+            return null;
+        }
+
+        return new PropertyBucket (JsonPointer.fromFragment (reference.getRef ()), value);
     }
 
     @Deprecated
