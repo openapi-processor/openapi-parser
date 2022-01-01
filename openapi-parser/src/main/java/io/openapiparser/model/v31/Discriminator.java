@@ -48,6 +48,6 @@ public class Discriminator implements Extensions {
     }
 
     private Map<String, String> getMapStringsOrEmpty (String property) {
-        return properties.convert (property, new ObjectMapPropertyConverter<> (context, String.class));
+        return properties.convert (property, new MapObjectsOrEmptyFromPropertyConverter<> (context, String.class));
     }
 }

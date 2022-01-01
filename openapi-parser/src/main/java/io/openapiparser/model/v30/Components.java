@@ -7,7 +7,7 @@ package io.openapiparser.model.v30;
 
 import io.openapiparser.Context;
 import io.openapiparser.converter.ExtensionsConverter;
-import io.openapiparser.converter.ObjectMapPropertyConverter;
+import io.openapiparser.converter.MapObjectsOrEmptyFromPropertyConverter;
 import io.openapiparser.schema.PropertyBucket;
 
 import java.util.Map;
@@ -71,6 +71,6 @@ public class Components implements Extensions {
     }
 
     private <T> Map<String, T> getMapObjectsOrEmpty (String property, Class<T> clazz) {
-        return properties.convert (property, new ObjectMapPropertyConverter<> (context, clazz));
+        return properties.convert (property, new MapObjectsOrEmptyFromPropertyConverter<> (context, clazz));
     }
 }

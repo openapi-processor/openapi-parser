@@ -24,7 +24,7 @@ public class MapObjectsOrEmptyConverter<T> implements PropertiesConverter<Map<St
 
     @Override
     public Map<String, T> convert (Map<String, Object> properties, String location) {
-        ObjectConverter<T> converter = new ObjectConverter<> (context, object);
+        ObjectOrNullConverter<T> converter = new ObjectOrNullConverter<> (context, object);
         Map<String, T> objects = new LinkedHashMap<> ();
 
         properties.forEach ((property, value) -> {

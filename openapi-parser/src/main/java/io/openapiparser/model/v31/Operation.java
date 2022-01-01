@@ -6,7 +6,7 @@
 package io.openapiparser.model.v31;
 
 import io.openapiparser.*;
-import io.openapiparser.converter.ObjectMapPropertyConverter;
+import io.openapiparser.converter.MapObjectsOrEmptyFromPropertyConverter;
 import io.openapiparser.schema.PropertyBucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -87,6 +87,6 @@ public class Operation implements Extensions {
     }
 
     private <T> Map<String, T> getObjectMapFromProperty (String property, Class<T> clazz) {
-        return properties.convert (property, new ObjectMapPropertyConverter<> (context, clazz));
+        return properties.convert (property, new MapObjectsOrEmptyFromPropertyConverter<> (context, clazz));
     }
 }

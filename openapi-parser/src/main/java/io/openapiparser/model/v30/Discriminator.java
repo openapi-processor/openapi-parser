@@ -6,7 +6,7 @@
 package io.openapiparser.model.v30;
 
 import io.openapiparser.*;
-import io.openapiparser.converter.ObjectMapPropertyConverter;
+import io.openapiparser.converter.MapObjectsOrEmptyFromPropertyConverter;
 import io.openapiparser.converter.StringConverterRequired;
 import io.openapiparser.schema.PropertyBucket;
 
@@ -43,6 +43,6 @@ public class Discriminator {
     }
 
     private Map<String, String> getMapStringsOrEmpty (String property) {
-        return properties.convert (property, new ObjectMapPropertyConverter<> (context, String.class));
+        return properties.convert (property, new MapObjectsOrEmptyFromPropertyConverter<> (context, String.class));
     }
 }

@@ -14,12 +14,11 @@ import java.util.Map;
 /**
  * get a map of {@link T}s from {@code name} property {@code value}.
  */
-// todo MapObjectsFromPropertyOrEmptyConverter
-public class ObjectMapPropertyConverter<T> implements PropertyConverter<Map<String, T>> {
+public class MapObjectsOrEmptyFromPropertyConverter<T> implements PropertyConverter<Map<String, T>> {
     private final Context context;
     private final Class<T> object;
 
-    public ObjectMapPropertyConverter (Context context, Class<T> object) {
+    public MapObjectsOrEmptyFromPropertyConverter (Context context, Class<T> object) {
         this.context = context;
         this.object = object;
     }
