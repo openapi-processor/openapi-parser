@@ -113,7 +113,7 @@ class TestBuilder {
 
 }
 
-fun <T> buildObject(clazz: Class<T>, content: String = "{}"): T {
+fun <T> buildObjectObsolete(clazz: Class<T>, content: String = "{}"): T {
     return TestBuilder()
         .withApi(content)
         .build(clazz)
