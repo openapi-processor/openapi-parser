@@ -6,6 +6,7 @@
 package io.openapiparser.model.v31;
 
 import io.openapiparser.*;
+import io.openapiparser.schema.PropertyBucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
@@ -22,11 +23,23 @@ public class Header implements Reference, Extensions {
     private final Context context;
     private final Node node;
     private final @Nullable Node refNode;
+    private final PropertyBucket properties;
+    private final @Nullable PropertyBucket refProperties;
 
     public Header (Context context, Node node) {
         this.context = context;
         this.node = node;
         refNode = context.getRefNodeOrNull (node);
+        this.properties = node.toBucket ();
+        this.refProperties = context.getRefObjectOrNull (this.properties);
+    }
+
+    public Header (Context context, PropertyBucket properties) {
+        this.context = context;
+        this.node = null;
+        this.refNode = null;
+        this.properties = properties;
+        this.refProperties = context.getRefObjectOrNull (this.properties);
     }
 
     /** {@inheritDoc} */

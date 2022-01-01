@@ -52,7 +52,7 @@ public class Components implements Extensions {
     }
 
     public Map<String, Header> getHeaders () {
-        return node.getMapObjectValuesOrEmpty (HEADERS, node -> new Header (context, node));
+        return getObjectMapFromProperty (HEADERS, Header.class);
     }
 
     public Map<String, SecurityScheme> getSecuritySchemes () {

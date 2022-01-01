@@ -5,6 +5,8 @@
 
 package io.openapiparser.converter;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 import java.util.Map;
 
 /**
@@ -20,5 +22,5 @@ public interface PropertiesConverter<T> {
      * @param location property location, json pointer
      * @return T converted value
      */
-    T convert (Map<String, Object> value, String location);
+    @Nullable T convert (Map<String, Object> value, String location);
 }
