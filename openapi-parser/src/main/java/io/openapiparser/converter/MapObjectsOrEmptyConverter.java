@@ -13,11 +13,11 @@ import java.util.*;
 /**
  * get a map of {@link T}s.
  */
-public class ObjectMapConverter<T> implements PropertiesConverter<Map<String, T>> {
+public class MapObjectsOrEmptyConverter<T> implements PropertiesConverter<Map<String, T>> {
     private final Context context;
     private final Class<T> object;
 
-    public ObjectMapConverter (Context context, Class<T> object) {
+    public MapObjectsOrEmptyConverter (Context context, Class<T> object) {
         this.context = context;
         this.object = object;
     }

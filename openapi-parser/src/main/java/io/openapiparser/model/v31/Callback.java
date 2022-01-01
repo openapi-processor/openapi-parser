@@ -41,7 +41,7 @@ public class Callback implements Extensions {
     }
 
     private <T> Map<String, T> getMapObjectsOrEmpty (Class<T> clazz) {
-        return properties.convert (new ObjectMapConverter<> (context, clazz));
+        return properties.convert (new MapObjectsOrEmptyConverter<> (context, clazz));
     }
 
     private <T> T getObjectOrNull (String property, Class<T> clazz) {
