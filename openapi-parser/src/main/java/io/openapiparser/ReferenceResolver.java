@@ -6,7 +6,7 @@
 package io.openapiparser;
 
 import io.openapiparser.schema.JsonPointer;
-import io.openapiparser.schema.PropertyBucket;
+import io.openapiparser.schema.Bucket;
 import io.openapiparser.support.Strings;
 
 import java.net.URI;
@@ -26,14 +26,14 @@ public class ReferenceResolver {
     private final ReferenceRegistry references;
     private final DocumentRegistry documents = new DocumentRegistry ();
 
-    private PropertyBucket object;
+    private Bucket object;
 
     public ReferenceResolver (URI baseUri, Reader reader, Converter converter, ReferenceRegistry references) {
         this.baseUri = baseUri;
         this.reader = reader;
         this.converter = converter;
         this.references = references;
-        this.object = PropertyBucket.empty ();
+        this.object = Bucket.empty ();
     }
 
     public void resolve () throws ResolverException {
@@ -66,18 +66,18 @@ public class ReferenceResolver {
     }
 
     /**
-     * get the root {@link PropertyBucket} of the document. The bucket is empty if the document was
+     * get the root {@link Bucket} of the document. The bucket is empty if the document was
      * not {@link #resolve()}d.
      *
      * @return root property bucket.
      */
-    public PropertyBucket getObject () {
+    public Bucket getObject () {
         return object;
     }
 
     private void initBaseDocument () throws ResolverException {
         final Map<String, Object> document = loadDocument (baseUri);
-        object = new PropertyBucket (baseUri, document);
+        object = new Bucket (baseUri, document);
         documents.add (baseUri, object);
     }
 
@@ -87,13 +87,13 @@ public class ReferenceResolver {
 
     private void resolveReferences() {
         references.resolve((documentUri, ref) -> {
-            PropertyBucket document = documents.get (documentUri);
+            Bucket document = documents.get (documentUri);
             String fragment = ref.substring(ref.indexOf (HASH));
             return document.getProperty (JsonPointer.fromFragment (fragment));
         });
     }
 
-    private void collectReferences (URI uri, PropertyBucket properties) throws ResolverException {
+    private void collectReferences (URI uri, Bucket properties) throws ResolverException {
         properties.forEach((name, value) -> {
             if (name.equals (Keywords.REF)) {
                 String ref = getRef (uri, name, value);
@@ -108,7 +108,7 @@ public class ReferenceResolver {
                         URI documentUri = uri.resolve (documentName);
 
                         if (!documents.contains (documentUri)) {
-                            PropertyBucket document = new PropertyBucket (
+                            Bucket document = new Bucket (
                                 documentUri,
                                 loadDocument (documentUri));
 

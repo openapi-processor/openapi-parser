@@ -6,7 +6,7 @@
 package io.openapiparser.converter;
 
 import io.openapiparser.Context;
-import io.openapiparser.schema.PropertyBucket;
+import io.openapiparser.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -23,16 +23,16 @@ public class ObjectOrNullConverter<T> implements PropertyConverter<T> {
 
     @Override
     public @Nullable T convert (String name, Object value, String location) {
-        PropertyBucket bucket = new PropertyBucketConverter ().convert (name, value, location);
+        Bucket bucket = new PropertyBucketConverter ().convert (name, value, location);
         if (bucket == null)
             return null;
 
         return create (context, bucket);
     }
 
-    private T create (Context context, PropertyBucket bucket) {
+    private T create (Context context, Bucket bucket) {
         try {
-            return object.getDeclaredConstructor (Context.class, PropertyBucket.class)
+            return object.getDeclaredConstructor (Context.class, Bucket.class)
                 .newInstance (context, bucket);
         } catch (Exception e) {
             throw new RuntimeException (String.format("failed to create %s", object.getName ()), e);

@@ -7,7 +7,7 @@ package io.openapiparser;
 
 import io.openapiparser.converter.StringConverter;
 import io.openapiparser.schema.JsonPointer;
-import io.openapiparser.schema.PropertyBucket;
+import io.openapiparser.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
@@ -19,12 +19,12 @@ public class Context {
     private final URI baseUri;
     private final ReferenceResolver resolver;
 
-    private PropertyBucket object;
+    private Bucket object;
 
     public Context (URI baseUri, ReferenceResolver resolver) {
         this.baseUri = baseUri;
         this.resolver = resolver;
-        this.object = PropertyBucket.empty ();
+        this.object = Bucket.empty ();
     }
 
     public void read () throws ContextException {
@@ -36,7 +36,7 @@ public class Context {
         }
     }
 
-    public PropertyBucket getObject () {
+    public Bucket getObject () {
         return object;
     }
 
@@ -48,7 +48,7 @@ public class Context {
         return resolver.resolve (baseUri, ref);
     }
 
-    public @Nullable PropertyBucket getRefObjectOrNull (PropertyBucket properties) {
+    public @Nullable Bucket getRefObjectOrNull (Bucket properties) {
         String ref = properties.convert (REF, new StringConverter());
         if (ref == null)
             return null;
@@ -56,7 +56,7 @@ public class Context {
         return getRefObject (ref, ref);
     }
 
-    public @Nullable PropertyBucket getRefObject(String path, String ref) {
+    public @Nullable Bucket getRefObject(String path, String ref) {
         final Reference reference = getReference (ref);
         final Map<String, Object> value = reference.getValue();
         if (value == null) {
@@ -64,7 +64,7 @@ public class Context {
             return null;
         }
 
-        return new PropertyBucket (JsonPointer.fromFragment (reference.getRef ()), value);
+        return new Bucket (JsonPointer.fromFragment (reference.getRef ()), value);
     }
 
     @Deprecated

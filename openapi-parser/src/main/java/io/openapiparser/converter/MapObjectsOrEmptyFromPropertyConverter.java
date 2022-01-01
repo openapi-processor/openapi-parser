@@ -6,7 +6,7 @@
 package io.openapiparser.converter;
 
 import io.openapiparser.Context;
-import io.openapiparser.schema.PropertyBucket;
+import io.openapiparser.schema.Bucket;
 
 import java.util.Collections;
 import java.util.Map;
@@ -25,7 +25,7 @@ public class MapObjectsOrEmptyFromPropertyConverter<T> implements PropertyConver
 
     @Override
     public Map<String, T> convert (String name, Object value, String location) {
-        PropertyBucket bucket = new PropertyBucketConverter ().convert (name, value, location);
+        Bucket bucket = new PropertyBucketConverter ().convert (name, value, location);
         if (bucket == null)
             return Collections.emptyMap ();
 

@@ -8,7 +8,7 @@ package io.openapiparser.model.v30;
 import io.openapiparser.*;
 import io.openapiparser.converter.MapObjectsOrEmptyFromPropertyConverter;
 import io.openapiparser.converter.StringConverterRequired;
-import io.openapiparser.schema.PropertyBucket;
+import io.openapiparser.schema.Bucket;
 
 import java.util.Map;
 
@@ -23,9 +23,9 @@ import static io.openapiparser.Keywords.PROPERTY_NAME;
  */
 public class Discriminator {
     private final Context context;
-    private final PropertyBucket properties;
+    private final Bucket properties;
 
-    public Discriminator (Context context, PropertyBucket properties) {
+    public Discriminator (Context context, Bucket properties) {
         this.context = context;
         this.properties = properties;
     }

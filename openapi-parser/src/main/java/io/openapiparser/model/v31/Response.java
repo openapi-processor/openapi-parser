@@ -7,7 +7,7 @@ package io.openapiparser.model.v31;
 
 import io.openapiparser.*;
 import io.openapiparser.converter.MapObjectsOrEmptyFromPropertyConverter;
-import io.openapiparser.schema.PropertyBucket;
+import io.openapiparser.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
@@ -24,8 +24,8 @@ public class Response implements Reference, Extensions {
     private final Context context;
     private final Node node;
     private final @Nullable Node refNode;
-    private final PropertyBucket properties;
-    private final @Nullable PropertyBucket refProperties;
+    private final Bucket properties;
+    private final @Nullable Bucket refProperties;
 
     public Response (Context context, Node node) {
         this.context = context;

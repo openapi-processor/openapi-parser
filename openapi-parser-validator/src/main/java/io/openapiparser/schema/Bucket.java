@@ -14,31 +14,31 @@ import java.util.*;
 import java.util.function.BiConsumer;
 
 /**
- * .. todo
+ * wraps the properties {@link Map} of a json/yaml object and its location.
  */
-public class PropertyBucket {
+public class Bucket {
     private final URI source;
     private final JsonPointer location;
     private final Map<String, Object> properties;
 
-    public static PropertyBucket empty() {
-        return new PropertyBucket (Collections.emptyMap ());
+    public static Bucket empty() {
+        return new Bucket (Collections.emptyMap ());
     }
 
     @Deprecated
-    public PropertyBucket (Map<String, Object> properties) {
+    public Bucket (Map<String, Object> properties) {
         this.source = null;
         this.location = JsonPointer.EMPTY;
         this.properties = properties;
     }
 
-    public PropertyBucket (JsonPointer location, Map<String, Object> properties) {
+    public Bucket (JsonPointer location, Map<String, Object> properties) {
         this.source = null;
         this.location = location;
         this.properties = properties;
     }
 
-    public PropertyBucket (URI source, Map<String, Object> properties) {
+    public Bucket (URI source, Map<String, Object> properties) {
         this.source = source;
         this.location = JsonPointer.fromFragment (source.getRawFragment ());
         this.properties = properties;
@@ -142,7 +142,7 @@ public class PropertyBucket {
         JsonPointer propertyLocation = location.append (property);
 
         if (value instanceof Map) {
-            handler.handle (new PropertyBucket (propertyLocation, (Map<String, Object>) value));
+            handler.handle (new Bucket (propertyLocation, (Map<String, Object>) value));
 
         } else if (value instanceof Collection) {
             int index = -1;
@@ -153,7 +153,7 @@ public class PropertyBucket {
                     continue;
 
                 JsonPointer itemLocation = propertyLocation.append (String.valueOf (index));
-                handler.handle (new PropertyBucket (itemLocation, (Map<String, Object>) o));
+                handler.handle (new Bucket (itemLocation, (Map<String, Object>) o));
             }
         }
     }

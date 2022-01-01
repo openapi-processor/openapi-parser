@@ -6,7 +6,9 @@
 package io.openapiparser.model.v30;
 
 import io.openapiparser.Context;
-import io.openapiparser.Node;
+import io.openapiparser.converter.BooleanConverter;
+import io.openapiparser.converter.StringConverter;
+import io.openapiparser.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
@@ -21,15 +23,15 @@ import static io.openapiparser.Keywords.*;
  */
 public class Encoding implements Extensions {
     private final Context context;
-    private final Node node;
+    private final Bucket properties;
 
-    public Encoding (Context context, Node node) {
+    public Encoding (Context context, Bucket properties) {
         this.context = context;
-        this.node = node;
+        this.properties = properties;
     }
 
     public @Nullable String getContentType () {
-        return node.getStringValue (CONTENT_TYPE);
+        return getStringOrNull (CONTENT_TYPE);
     }
 
     public Map<String, Header> getHeaders () {
@@ -37,7 +39,7 @@ public class Encoding implements Extensions {
     }
 
     public String getStyle () {
-        String style = node .getStringValue (STYLE);
+        String style = getStringOrNull (STYLE);
         if (style != null) {
             return style;
         }
@@ -46,7 +48,7 @@ public class Encoding implements Extensions {
     }
 
     public Boolean getExplode () {
-        Boolean explode = node.getBooleanValue (EXPLODE);
+        Boolean explode = getBooleanOrNull (EXPLODE);
         if (explode != null) {
             return explode;
         }
@@ -62,5 +64,21 @@ public class Encoding implements Extensions {
     @Override
     public Map<String, Object> getExtensions () {
         return node.getExtensions ();
+    }
+
+    private @Nullable String getStringOrNull (String property) {
+        return properties.convert (property, new StringConverter ());
+    }
+
+    private @Nullable Boolean getBooleanOrNull (String property) {
+        return properties.convert (property, new BooleanConverter ());
+    }
+
+    private Boolean getBooleanOrDefault (String property, boolean defaultValue) {
+        Boolean value = getBooleanOrNull (property);
+        if (value == null)
+            return defaultValue;
+
+        return value;
     }
 }

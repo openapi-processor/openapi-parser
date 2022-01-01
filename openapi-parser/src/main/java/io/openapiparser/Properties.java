@@ -2,15 +2,15 @@ package io.openapiparser;
 
 import io.openapiparser.converter.MapObjectsOrEmptyConverter;
 import io.openapiparser.converter.ObjectOrNullConverter;
-import io.openapiparser.schema.PropertyBucket;
+import io.openapiparser.schema.Bucket;
 
 import java.util.Map;
 
 public class Properties {
     private final Context context;
-    private final PropertyBucket properties;
+    private final Bucket properties;
 
-    public Properties (Context context, PropertyBucket properties) {
+    public Properties (Context context, Bucket properties) {
         this.context = context;
         this.properties = properties;
     }

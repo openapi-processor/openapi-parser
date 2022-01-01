@@ -8,7 +8,7 @@ package io.openapiparser.support
 import io.openapiparser.*
 import io.openapiparser.jackson.JacksonConverter
 import io.openapiparser.reader.StringReader
-import io.openapiparser.schema.PropertyBucket
+import io.openapiparser.schema.Bucket
 import java.net.URI
 import io.openapiparser.model.v30.OpenApi as OpenApi30
 import io.openapiparser.model.v31.OpenApi as OpenApi31
@@ -86,7 +86,7 @@ class TestBuilder {
 
     fun <T> build(clazz: Class<T>): T {
         return build { c, n -> clazz
-            .getDeclaredConstructor(Context::class.java, PropertyBucket::class.java)
+            .getDeclaredConstructor(Context::class.java, Bucket::class.java)
             .newInstance(c, n)
         }
     }
@@ -109,7 +109,7 @@ class TestBuilder {
         }
     }
 
-    private fun <T> build(factory: (context: Context, bucket: PropertyBucket) -> T): T {
+    private fun <T> build(factory: (context: Context, bucket: Bucket) -> T): T {
         val resolver = ReferenceResolver(
             baseUri,
             StringReader(api),

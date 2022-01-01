@@ -7,7 +7,7 @@ package io.openapiparser.model.v31;
 
 import io.openapiparser.Context;
 import io.openapiparser.converter.ExtensionsConverter;
-import io.openapiparser.schema.PropertyBucket;
+import io.openapiparser.schema.Bucket;
 
 import java.util.Map;
 
@@ -19,9 +19,9 @@ import java.util.Map;
  */
 public class Link implements Extensions {
     private final Context context;
-    private final PropertyBucket properties;
+    private final Bucket properties;
 
-    public Link (Context context, PropertyBucket properties) {
+    public Link (Context context, Bucket properties) {
         this.context = context;
         this.properties = properties;
     }

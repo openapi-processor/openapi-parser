@@ -15,8 +15,7 @@ import static java.util.Collections.*;
 import static java.util.stream.Collectors.toList;
 
 import io.openapiparser.converter.NoValueException;
-import io.openapiparser.schema.JsonPointer;
-import io.openapiparser.schema.PropertyBucket;
+import io.openapiparser.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -42,9 +41,9 @@ public class Node {
         this.properties = new HashMap<> (properties);
     }
 
-    public PropertyBucket toBucket () {
+    public Bucket toBucket () {
         String fragment = URI.create (path).getRawFragment ();
-        return new PropertyBucket (fromJsonPointer (fragment), properties);
+        return new Bucket (fromJsonPointer (fragment), properties);
     }
 
     /**

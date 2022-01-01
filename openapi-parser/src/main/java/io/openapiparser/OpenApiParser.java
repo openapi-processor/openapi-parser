@@ -6,7 +6,7 @@
 package io.openapiparser;
 
 import io.openapiparser.converter.StringConverterRequired;
-import io.openapiparser.schema.PropertyBucket;
+import io.openapiparser.schema.Bucket;
 
 import static io.openapiparser.Keywords.OPENAPI;
 
@@ -27,7 +27,7 @@ public class OpenApiParser {
         }
     }
 
-    private OpenApiResult createResult (PropertyBucket api) {
+    private OpenApiResult createResult (Bucket api) {
 //        String version = api.getRequiredStringValue (OPENAPI);
         String version = api.convert (OPENAPI, new StringConverterRequired ());
 

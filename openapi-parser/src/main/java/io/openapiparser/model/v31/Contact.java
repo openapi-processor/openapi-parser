@@ -8,7 +8,7 @@ package io.openapiparser.model.v31;
 import io.openapiparser.Context;
 import io.openapiparser.converter.ExtensionsConverter;
 import io.openapiparser.converter.StringConverter;
-import io.openapiparser.schema.PropertyBucket;
+import io.openapiparser.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
@@ -23,9 +23,9 @@ import static io.openapiparser.Keywords.*;
  */
 public class Contact implements Extensions {
     private final Context context;
-    private final PropertyBucket properties;
+    private final Bucket properties;
 
-    public Contact (Context context, PropertyBucket properties) {
+    public Contact (Context context, Bucket properties) {
         this.context = context;
         this.properties = properties;
     }

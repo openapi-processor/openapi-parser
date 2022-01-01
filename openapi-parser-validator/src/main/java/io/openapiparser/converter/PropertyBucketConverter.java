@@ -6,18 +6,18 @@
 package io.openapiparser.converter;
 
 import io.openapiparser.schema.JsonPointer;
-import io.openapiparser.schema.PropertyBucket;
+import io.openapiparser.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
 
 /**
- * converts property {@code value} to {@link PropertyBucket} object.
+ * converts property {@code value} to {@link Bucket} object.
  */
-public class PropertyBucketConverter implements PropertyConverter<PropertyBucket> {
+public class PropertyBucketConverter implements PropertyConverter<Bucket> {
 
     @Override
-    public @Nullable PropertyBucket convert (String name, Object value, String location) {
+    public @Nullable Bucket convert (String name, Object value, String location) {
         if (value == null)
             return null;
 
@@ -25,6 +25,6 @@ public class PropertyBucketConverter implements PropertyConverter<PropertyBucket
             throw new TypeMismatchException (location, Map.class);
 
         //noinspection unchecked
-        return new PropertyBucket (JsonPointer.fromJsonPointer (location), (Map< String, Object >) value);
+        return new Bucket (JsonPointer.fromJsonPointer (location), (Map< String, Object >) value);
     }
 }

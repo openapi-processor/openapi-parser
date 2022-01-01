@@ -7,20 +7,20 @@ import java.net.URI;
 import java.util.Map;
 
 public class JsonSchemaObject implements JsonSchema {
-    private final PropertyBucket object;
-    private final PropertyBucket properties;
+    private final Bucket object;
+    private final Bucket properties;
 
     public JsonSchemaObject (Map<String, Object> document) {
-        object = new PropertyBucket (JsonPointer.EMPTY, document);
+        object = new Bucket (JsonPointer.EMPTY, document);
         properties = getProperties ();
     }
 
     public JsonSchemaObject (JsonPointer location, Map<String, Object> document) {
-        this.object = new PropertyBucket (location, document);
+        this.object = new Bucket (location, document);
         properties = getProperties ();
     }
 
-    private JsonSchemaObject (PropertyBucket object) {
+    private JsonSchemaObject (Bucket object) {
         this.object = object;
         properties = getProperties ();
     }
@@ -49,7 +49,7 @@ public class JsonSchemaObject implements JsonSchema {
         return properties.convert (name, new JsonSchemaConverter ());
     }
 
-    private PropertyBucket getProperties () {
+    private Bucket getProperties () {
         return object.convert ("properties", new PropertyBucketConverter ());
     }
 }

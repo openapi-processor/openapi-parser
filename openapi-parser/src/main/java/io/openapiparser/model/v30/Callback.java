@@ -7,7 +7,7 @@ package io.openapiparser.model.v30;
 
 import io.openapiparser.*;
 import io.openapiparser.converter.*;
-import io.openapiparser.schema.PropertyBucket;
+import io.openapiparser.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
@@ -20,10 +20,10 @@ import java.util.Map;
  */
 public class Callback implements Extensions {
     private final Context context;
-    private final PropertyBucket properties;
+    private final Bucket properties;
     private final Properties self;
 
-    public Callback (Context context, PropertyBucket properties) {
+    public Callback (Context context, Bucket properties) {
         this.context = context;
         this.properties = properties;
         this.self = new Properties (context, properties);

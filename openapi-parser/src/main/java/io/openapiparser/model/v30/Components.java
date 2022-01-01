@@ -8,7 +8,7 @@ package io.openapiparser.model.v30;
 import io.openapiparser.Context;
 import io.openapiparser.converter.ExtensionsConverter;
 import io.openapiparser.converter.MapObjectsOrEmptyFromPropertyConverter;
-import io.openapiparser.schema.PropertyBucket;
+import io.openapiparser.schema.Bucket;
 
 import java.util.Map;
 
@@ -22,9 +22,9 @@ import static io.openapiparser.Keywords.*;
  */
 public class Components implements Extensions {
     private final Context context;
-    private final PropertyBucket properties;
+    private final Bucket properties;
 
-    public Components (Context context, PropertyBucket properties) {
+    public Components (Context context, Bucket properties) {
         this.context = context;
         this.properties = properties;
     }

@@ -7,7 +7,7 @@ package io.openapiparser.model.v30;
 
 import io.openapiparser.*;
 import io.openapiparser.converter.MapObjectsOrEmptyFromPropertyConverter;
-import io.openapiparser.schema.PropertyBucket;
+import io.openapiparser.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Collection;
@@ -24,7 +24,7 @@ import static io.openapiparser.Keywords.*;
 public class Operation implements Extensions {
     private final Context context;
     private final Node node;
-    private final PropertyBucket properties;
+    private final Bucket properties;
 
     public Operation (Context context, Node node) {
         this.context = context;

@@ -6,7 +6,7 @@
 package io.openapiparser.model.v31;
 
 import io.openapiparser.*;
-import io.openapiparser.schema.PropertyBucket;
+import io.openapiparser.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Collection;
@@ -24,8 +24,8 @@ public class PathItem implements Extensions, Reference {
     private final Context context;
     private final Node node;
     private final @Nullable Node refNode;
-    private final PropertyBucket properties;
-    private final PropertyBucket refProperties;
+    private final Bucket properties;
+    private final Bucket refProperties;
 
     @Deprecated
     public PathItem (Context context, Node node) {
@@ -36,7 +36,7 @@ public class PathItem implements Extensions, Reference {
         this.refProperties = context.getRefObjectOrNull (this.properties);
     }
 
-    public PathItem (Context context, PropertyBucket properties) {
+    public PathItem (Context context, Bucket properties) {
         this.context = context;
         this.node = null;
         this.refNode = null;
