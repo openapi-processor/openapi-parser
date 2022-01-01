@@ -28,15 +28,23 @@ public class Callback implements Extensions {
     }
 
     public Map<String, PathItem> getPathItems () {
-        return properties.convert (new ObjectMapConverter<> (context, PathItem.class));
+        return getMapObjectsOrEmpty (PathItem.class);
     }
 
     public @Nullable PathItem getPathItem (String path) {
-        return properties.convert (path, new ObjectConverter<> (context, PathItem.class));
+        return getObjectOrNull (path, PathItem.class);
     }
 
     @Override
     public Map<String, Object> getExtensions () {
         return properties.convert (new ExtensionsConverter ());
+    }
+
+    private <T> Map<String, T> getMapObjectsOrEmpty (Class<T> clazz) {
+        return properties.convert (new ObjectMapConverter<> (context, clazz));
+    }
+
+    private <T> T getObjectOrNull (String property, Class<T> clazz) {
+        return properties.convert (property, new ObjectConverter<> (context, clazz));
     }
 }

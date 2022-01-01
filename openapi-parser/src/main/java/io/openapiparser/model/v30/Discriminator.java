@@ -6,6 +6,9 @@
 package io.openapiparser.model.v30;
 
 import io.openapiparser.*;
+import io.openapiparser.converter.ObjectMapPropertyConverter;
+import io.openapiparser.converter.StringConverterRequired;
+import io.openapiparser.schema.PropertyBucket;
 
 import java.util.Map;
 
@@ -20,19 +23,26 @@ import static io.openapiparser.Keywords.PROPERTY_NAME;
  */
 public class Discriminator {
     private final Context context;
-    private final Node node;
+    private final PropertyBucket properties;
 
-    public Discriminator (Context context, Node node) {
+    public Discriminator (Context context, PropertyBucket properties) {
         this.context = context;
-        this.node = node;
+        this.properties = properties;
     }
 
-    @Required
     public String getPropertyName () {
-        return node.getRequiredStringValue (PROPERTY_NAME);
+        return getStringOrThrow (PROPERTY_NAME);
     }
 
     public Map<String, String> getMapping () {
-        return node.getMapStringValuesOrEmpty (MAPPING);
+        return getMapStringsOrEmpty (MAPPING);
+    }
+
+    private String getStringOrThrow (String property) {
+        return properties.convert (property, new StringConverterRequired ());
+    }
+
+    private Map<String, String> getMapStringsOrEmpty (String property) {
+        return properties.convert (property, new ObjectMapPropertyConverter<> (context, String.class));
     }
 }

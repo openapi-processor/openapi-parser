@@ -6,6 +6,8 @@
 package io.openapiparser.model.v31;
 
 import io.openapiparser.*;
+import io.openapiparser.converter.*;
+import io.openapiparser.schema.PropertyBucket;
 
 import java.util.Map;
 
@@ -20,24 +22,32 @@ import static io.openapiparser.Keywords.PROPERTY_NAME;
  */
 public class Discriminator implements Extensions {
     private final Context context;
-    private final Node node;
+    private final PropertyBucket properties;
 
-    public Discriminator (Context context, Node node) {
+    public Discriminator (Context context, PropertyBucket properties) {
         this.context = context;
-        this.node = node;
+        this.properties = properties;
     }
 
     @Required
     public String getPropertyName () {
-        return node.getRequiredStringValue (PROPERTY_NAME);
+        return getStringOrThrow (PROPERTY_NAME);
     }
 
     public Map<String, String> getMapping () {
-        return node.getMapStringValuesOrEmpty (MAPPING);
+        return getMapStringsOrEmpty (MAPPING);
     }
 
     @Override
     public Map<String, Object> getExtensions () {
-        return node.getExtensions ();
+        return properties.convert (new ExtensionsConverter ());
+    }
+
+    private String getStringOrThrow (String property) {
+        return properties.convert (property, new StringConverterRequired ());
+    }
+
+    private Map<String, String> getMapStringsOrEmpty (String property) {
+        return properties.convert (property, new ObjectMapPropertyConverter<> (context, String.class));
     }
 }
