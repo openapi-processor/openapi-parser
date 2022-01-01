@@ -6,6 +6,10 @@
 package io.openapiparser.model.v30;
 
 import io.openapiparser.*;
+import io.openapiparser.converter.*;
+import io.openapiparser.model.v30.converter.PathItemConverter;
+import io.openapiparser.model.v30.converter.PathItemsConverter;
+import io.openapiparser.schema.PropertyBucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
@@ -18,24 +22,30 @@ import java.util.Map;
  */
 public class Callback implements Extensions {
     private final Context context;
-    private final Node node;
+    private final PropertyBucket properties;
 
+    @Deprecated
     public Callback (Context context, Node node) {
         this.context = context;
-        this.node = node;
+        this.properties = null;
+    }
+    public Callback (Context context, PropertyBucket properties) {
+        this.context = context;
+        this.properties = properties;
     }
 
-    @Required
     public Map<String, PathItem> getPathItems() {
-        return node.getMapObjectValuesOrEmpty (node -> new PathItem (context, node));
+        return properties.convert (new ObjectMapConverter<> (context, PathItem.class));
+        //return properties.convert (new PathItemsConverter (context));
     }
 
     public @Nullable PathItem getPathItem(String path) {
-        return node.getObjectValue (path, node -> new PathItem (context, node));
+        return properties.convert (path, new ObjectConverter<> (context, PathItem.class));
+        //return properties.convert (path, new PathItemConverter (context));
     }
 
     @Override
     public Map<String, Object> getExtensions () {
-        return node.getExtensions ();
+        return properties.convert (new ExtensionsConverter ());
     }
 }
