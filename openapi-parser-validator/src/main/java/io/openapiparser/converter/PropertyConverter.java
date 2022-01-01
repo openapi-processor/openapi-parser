@@ -5,6 +5,8 @@
 
 package io.openapiparser.converter;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 /**
  * convert {@code Object} value to {@code T}.
  *
@@ -21,7 +23,7 @@ public interface PropertyConverter<T> {
      * @return T converted value
      */
     // todo remove default
-    default T convert (String name, Object value, String location) {
+    default @Nullable T convert (String name, Object value, String location) {
         return convert (name, value);
     }
 

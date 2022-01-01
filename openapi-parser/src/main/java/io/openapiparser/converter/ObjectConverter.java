@@ -7,6 +7,7 @@ package io.openapiparser.converter;
 
 import io.openapiparser.Context;
 import io.openapiparser.schema.PropertyBucket;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  *  get a {@link T} object from the property.
@@ -21,7 +22,7 @@ public class ObjectConverter<T> implements PropertyConverter<T> {
     }
 
     @Override
-    public T convert (String name, Object value, String location) {
+    public @Nullable T convert (String name, Object value, String location) {
         PropertyBucket bucket = new PropertyBucketConverter ().convert (name, value, location);
         if (bucket == null)
             return null;
