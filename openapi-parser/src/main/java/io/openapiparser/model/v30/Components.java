@@ -6,7 +6,6 @@
 package io.openapiparser.model.v30;
 
 import io.openapiparser.Context;
-import io.openapiparser.Node;
 import io.openapiparser.converter.ExtensionsConverter;
 import io.openapiparser.converter.ObjectMapPropertyConverter;
 import io.openapiparser.schema.PropertyBucket;
@@ -23,49 +22,47 @@ import static io.openapiparser.Keywords.*;
  */
 public class Components implements Extensions {
     private final Context context;
-    private final Node node;
     private final PropertyBucket properties;
 
-    public Components (Context context, Node node) {
+    public Components (Context context, PropertyBucket properties) {
         this.context = context;
-        this.node = node;
-        this.properties = node.toBucket ();
+        this.properties = properties;
     }
 
     public Map<String, Schema> getSchemas () {
-        return node.getMapObjectValuesOrEmpty (SCHEMAS, node -> new Schema (context, node));
+        return getMapObjectsOrEmpty (SCHEMAS, Schema.class);
     }
 
     public Map<String, Response> getResponses () {
-        return node.getMapObjectValuesOrEmpty (RESPONSES, node -> new Response (context, node));
+        return getMapObjectsOrEmpty (RESPONSES, Response.class);
     }
 
     public Map<String, Parameter> getParameters () {
-        return node.getMapObjectValuesOrEmpty (PARAMETERS, node -> new Parameter (context, node));
+        return getMapObjectsOrEmpty (PARAMETERS, Parameter.class);
     }
 
     public Map<String, Example> getExamples () {
-        return node.getMapObjectValuesOrEmpty (EXAMPLES, node -> new Example (context, node));
+        return getMapObjectsOrEmpty (EXAMPLES, Example.class);
     }
 
     public Map<String, RequestBody> getRequestBodies () {
-        return node.getMapObjectValuesOrEmpty (REQUEST_BODIES, node -> new RequestBody (context, node));
+        return getMapObjectsOrEmpty (REQUEST_BODIES, RequestBody.class);
     }
 
     public Map<String, Header> getHeaders () {
-        return node.getMapObjectValuesOrEmpty (HEADERS, node -> new Header (context, node));
+        return getMapObjectsOrEmpty (HEADERS, Header.class);
     }
 
     public Map<String, SecurityScheme> getSecuritySchemes () {
-        return getObjectMapFromProperty (SECURITY_SCHEMES, SecurityScheme.class);
+        return getMapObjectsOrEmpty (SECURITY_SCHEMES, SecurityScheme.class);
     }
 
     public Map<String, Link> getLinks () {
-        return getObjectMapFromProperty (LINKS, Link.class);
+        return getMapObjectsOrEmpty (LINKS, Link.class);
     }
 
     public Map<String, Callback> getCallbacks () {
-        return getObjectMapFromProperty (CALLBACKS, Callback.class);
+        return getMapObjectsOrEmpty (CALLBACKS, Callback.class);
     }
 
     @Override
@@ -73,7 +70,7 @@ public class Components implements Extensions {
         return properties.convert (new ExtensionsConverter ());
     }
 
-    private <T> Map<String, T> getObjectMapFromProperty (String property, Class<T> clazz) {
+    private <T> Map<String, T> getMapObjectsOrEmpty (String property, Class<T> clazz) {
         return properties.convert (property, new ObjectMapPropertyConverter<> (context, clazz));
     }
 }

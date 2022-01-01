@@ -6,7 +6,9 @@
 package io.openapiparser.model.v31;
 
 import io.openapiparser.Context;
-import io.openapiparser.Node;
+import io.openapiparser.converter.ExtensionsConverter;
+import io.openapiparser.converter.StringConverter;
+import io.openapiparser.schema.PropertyBucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
@@ -21,27 +23,31 @@ import static io.openapiparser.Keywords.*;
  */
 public class Contact implements Extensions {
     private final Context context;
-    private final Node node;
+    private final PropertyBucket properties;
 
-    public Contact (Context context, Node node) {
+    public Contact (Context context, PropertyBucket properties) {
         this.context = context;
-        this.node = node;
+        this.properties = properties;
     }
 
     public @Nullable String getName () {
-        return node.getStringValue (NAME);
+        return getStringOrNull (NAME);
     }
 
     public @Nullable String getUrl () {
-        return node.getStringValue (URL);
+        return getStringOrNull (URL);
     }
 
     public @Nullable String getEmail () {
-        return node.getStringValue (EMAIL);
+        return getStringOrNull (EMAIL);
     }
 
     @Override
     public Map<String, Object> getExtensions () {
-        return node.getExtensions ();
+        return properties.convert (new ExtensionsConverter ());
+    }
+
+    private @Nullable String getStringOrNull (String property) {
+        return properties.convert (property, new StringConverter ());
     }
 }
