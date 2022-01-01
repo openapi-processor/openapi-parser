@@ -104,14 +104,14 @@ public class JsonPointer {
      * @return new json pointer string
      */
     public String getJsonPointer (String token) {
-        if (token.startsWith ("/")) {
-            return getJsonPointer (token.substring (1));
-        }
+        String encoded = token
+            .replace ("~", "~0")
+            .replace ("/", "~1");
 
         if (pointer == null) {
-            return "/" + token;
+            return "/" + encoded;
         } else {
-            return pointer + "/" + token;
+            return pointer + "/" + encoded;
         }
     }
 

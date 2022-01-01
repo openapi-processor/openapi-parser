@@ -8,6 +8,7 @@ package io.openapiparser.schema
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.openapiparser.jackson.JacksonConverter
+import io.openapiparser.schema.JsonPointer.fromJsonPointer
 
 class JsonPointerSpec : StringSpec({
 
@@ -46,7 +47,7 @@ class JsonPointerSpec : StringSpec({
             Pointer("/ ", 7),
             Pointer("/m~0n", 8),
         ).forEach {
-            JsonPointer.fromJsonPointer(it.pointer).getValue(document) shouldBe it.expected
+            fromJsonPointer(it.pointer).getValue(document) shouldBe it.expected
         }
     }
 
@@ -89,10 +90,10 @@ class JsonPointerSpec : StringSpec({
         }
     }
 
-    "appends token to json pointer" {
-        JsonPointer.fromJsonPointer(null).append("/foo").toString() shouldBe "/foo"
-        JsonPointer.fromJsonPointer(null).append("foo").toString() shouldBe "/foo"
-        JsonPointer.fromJsonPointer("/root").append("/foo").toString() shouldBe "/root/foo"
-        JsonPointer.fromJsonPointer("/root").append("foo").toString() shouldBe "/root/foo"
+    "appends encoded token to json pointer" {
+        fromJsonPointer(null).append("/foo").toString() shouldBe "/~1foo"
+        fromJsonPointer(null).append("foo").toString() shouldBe "/foo"
+        fromJsonPointer("/root").append("/foo").toString() shouldBe "/root/~1foo"
+        fromJsonPointer("/root").append("foo").toString() shouldBe "/root/foo"
     }
 })
