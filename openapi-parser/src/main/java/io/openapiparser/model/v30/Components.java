@@ -61,7 +61,7 @@ public class Components implements Extensions {
     }
 
     public Map<String, Link> getLinks () {
-        return node.getMapObjectValuesOrEmpty (LINKS, node -> new Link (context, node));
+        return getObjectMapFromProperty (LINKS, Link.class);
     }
 
     public Map<String, Callback> getCallbacks () {

@@ -6,6 +6,8 @@
 package io.openapiparser.model.v30;
 
 import io.openapiparser.*;
+import io.openapiparser.converter.ObjectMapPropertyConverter;
+import io.openapiparser.schema.PropertyBucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
@@ -22,11 +24,15 @@ public class Response implements Reference, Extensions {
     private final Context context;
     private final Node node;
     private final @Nullable Node refNode;
+    private final PropertyBucket properties;
+    private final @Nullable PropertyBucket refProperties;
 
     public Response (Context context, Node node) {
         this.context = context;
         this.node = node;
         refNode = context.getRefNodeOrNull (node);
+        this.properties = node.toBucket ();
+        this.refProperties = context.getRefObjectOrNull (this.properties);
     }
 
     /** {@inheritDoc} */
@@ -56,7 +62,7 @@ public class Response implements Reference, Extensions {
     }
 
     public Map<String, Link> getLinks () {
-        return node.getMapObjectValuesOrEmpty (LINKS, node -> new Link (context, node));
+        return getObjectMapFromProperty (LINKS, Link.class);
     }
 
     @Override
@@ -66,5 +72,9 @@ public class Response implements Reference, Extensions {
 
     private Node getSource () {
         return (refNode != null) ? refNode : node;
+    }
+
+    private <T> Map<String, T> getObjectMapFromProperty (String property, Class<T> clazz) {
+        return properties.convert (property, new ObjectMapPropertyConverter<> (context, clazz));
     }
 }

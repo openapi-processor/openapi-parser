@@ -60,11 +60,11 @@ public class Components implements Extensions {
     }
 
     public Map<String, Link> getLinks () {
-        return node.getMapObjectValuesOrEmpty (LINKS, node -> new Link (context, node));
+        return getObjectMapFromProperty (LINKS, Link.class);
     }
 
     public Map<String, Callback> getCallbacks () {
-        return convertObjectMapOfProperty (CALLBACKS, Callback.class);
+        return getObjectMapFromProperty (CALLBACKS, Callback.class);
     }
 
     public Map<String, PathItem> getPathItems () {
@@ -76,7 +76,7 @@ public class Components implements Extensions {
         return node.getExtensions ();
     }
 
-    private <T> Map<String, T> convertObjectMapOfProperty (String property, Class<T> clazz) {
+    private <T> Map<String, T> getObjectMapFromProperty (String property, Class<T> clazz) {
         return properties.convert (property, new ObjectMapPropertyConverter<> (context, clazz));
     }
 }
