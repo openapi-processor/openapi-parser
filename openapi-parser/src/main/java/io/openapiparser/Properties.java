@@ -112,7 +112,7 @@ public class Properties {
     /* Maps */
 
     protected Map<String, String> getMapStringsOrEmpty (String property) {
-        return getMapObjectsOrEmpty (property, String.class);
+        return bucket.convert (property, new MapStringsOrEmptyConverter());
     }
 
     protected <T> Map<String, T> getMapObjectsOrEmpty (Class<T> clazz) {
