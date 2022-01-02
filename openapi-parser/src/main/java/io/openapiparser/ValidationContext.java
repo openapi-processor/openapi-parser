@@ -8,6 +8,7 @@ package io.openapiparser;
 import java.net.URI;
 import java.util.Collection;
 
+@Deprecated
 public class ValidationContext {
     private final URI source;
     private final String path;

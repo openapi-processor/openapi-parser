@@ -10,6 +10,7 @@ package io.openapiparser;
  *
  * @param <R> the result model object type
  */
+@Deprecated
 @FunctionalInterface
 public interface ObjectFactory<R> {
     /**

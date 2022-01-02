@@ -14,6 +14,7 @@ import java.util.*;
 import static java.util.Collections.unmodifiableCollection;
 import static java.util.Collections.unmodifiableMap;
 
+@Deprecated
 public class Type {
 
     @FunctionalInterface
