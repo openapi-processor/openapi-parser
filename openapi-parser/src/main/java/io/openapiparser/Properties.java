@@ -123,6 +123,10 @@ public class Properties {
         return bucket.convert (property, new MapObjectsOrEmptyConverter<> (context, clazz));
     }
 
+    protected Map<String, Set<String>> getMapSetStringsOrEmpty (String property) {
+        return bucket.convert (property, new MapSetStringsOrEmptyConverter ());
+    }
+
     /* other */
 
     protected Map<String, Object> getExtensions () {

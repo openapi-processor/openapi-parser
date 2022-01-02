@@ -7,6 +7,7 @@ package io.openapiparser.converter;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -74,6 +75,10 @@ public class Types {
     @SuppressWarnings ("unchecked")
     public static Map<String, Object> asMap (Object o) {
         return (Map<String, Object>) o;
+    }
+
+    static Collection<Object> convertCollection (String path, @Nullable Object value) {
+        return convert (path, value, Collection.class);
     }
 
 //    @SuppressWarnings ("unchecked")

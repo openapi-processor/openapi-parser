@@ -290,8 +290,7 @@ public class Schema extends Properties implements Reference, Extensions {
      * JSON Schema Validation: validation Keywords for objects
      */
     public Map<String, Set<String>> getDependentRequired () {
-        // todo
-        return null; // return getObjectSetValuesOrEmpty (DEPENDENT_REQUIRED);
+        return getMapSetStringsOrEmpty (DEPENDENT_REQUIRED);
     }
 
     /**
