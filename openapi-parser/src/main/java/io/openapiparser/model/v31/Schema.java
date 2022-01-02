@@ -162,9 +162,9 @@ public class Schema extends Properties implements Reference, Extensions {
     /**
      * JSON Schema Validation: validation keyword for any instance type
      */
-    // todo
+    // todo any type
     public @Nullable Collection<?> getEnum () {
-        return getStringsOrEmpty (ENUM);
+        return getStringsOrNull (ENUM);
     }
 
     /**

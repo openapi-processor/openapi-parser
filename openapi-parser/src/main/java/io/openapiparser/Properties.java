@@ -109,6 +109,10 @@ public class Properties {
         return bucket.convert (property, new StringsOrEmptyConverter ());
     }
 
+    protected Collection<String> getStringsOrNull (String property) {
+        return bucket.convert (property, new StringsNullableConverter ());
+    }
+
     /* Maps */
 
     protected Map<String, String> getMapStringsOrEmpty (String property) {
