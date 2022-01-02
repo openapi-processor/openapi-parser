@@ -10,7 +10,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.Map;
 
 /**
- * convert {@code Map} value to {@code T}.
+ * convert a {@code Map} value to {@code T}. Primary use is to pass the all properties of the
+ * <em>current</em> object to the converter.
  *
  * @param <T> target type.
  */

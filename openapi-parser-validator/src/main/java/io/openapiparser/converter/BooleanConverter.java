@@ -10,7 +10,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import static io.openapiparser.converter.Types.convertOrNull;
 
 /**
- * converts property {@code value} to {@link Boolean} object.
+ * converts the property {@code value} to {@link Boolean}.
  */
 public class BooleanConverter implements PropertyConverter<Boolean> {
 

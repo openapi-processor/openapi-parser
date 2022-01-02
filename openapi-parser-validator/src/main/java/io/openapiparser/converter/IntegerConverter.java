@@ -10,7 +10,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import static io.openapiparser.converter.Types.convertOrNull;
 
 /**
- * converts property {@code value} to {@link Integer} object.
+ * converts the property {@code value} to {@link Integer}.
  */
 public class IntegerConverter implements PropertyConverter<Integer> {
 

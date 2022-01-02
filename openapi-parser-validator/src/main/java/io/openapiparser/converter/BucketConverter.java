@@ -5,14 +5,16 @@
 
 package io.openapiparser.converter;
 
-import io.openapiparser.schema.JsonPointer;
 import io.openapiparser.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
 
+import static io.openapiparser.converter.Types.asMap;
+import static io.openapiparser.schema.JsonPointer.fromJsonPointer;
+
 /**
- * converts property {@code value} to {@link Bucket} object.
+ * converts the property {@link Map} {@code value} to a {@link Bucket}.
  */
 public class BucketConverter implements PropertyConverter<Bucket> {
 
@@ -24,7 +26,6 @@ public class BucketConverter implements PropertyConverter<Bucket> {
         if (!(value instanceof Map))
             throw new TypeMismatchException (location, Map.class);
 
-        //noinspection unchecked
-        return new Bucket (JsonPointer.fromJsonPointer (location), (Map< String, Object >) value);
+        return new Bucket (fromJsonPointer (location), asMap (value));
     }
 }

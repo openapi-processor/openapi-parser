@@ -10,7 +10,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.net.URI;
 
 /**
- * converts property {@code value} to {@link URI} object.
+ * converts the property {@code value} to an {@link URI}.
  */
 public class UriConverter implements PropertyConverter<URI> {
 

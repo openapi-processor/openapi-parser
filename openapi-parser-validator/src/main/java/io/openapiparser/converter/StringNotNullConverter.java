@@ -8,8 +8,8 @@ package io.openapiparser.converter;
 import static io.openapiparser.converter.Types.convertNotNull;
 
 /**
- * converts property {@code value} to {@link String} object and throws {@link NoValueException} if
- * the value does not exist.
+ * converts the property {@code value} to {@link String} and throws {@link NoValueException} if the
+ * value is {@code null}.
  */
 public class StringNotNullConverter implements PropertyConverter<String> {
 

@@ -10,7 +10,7 @@ package io.openapiparser.converter;
  */
 public class NoValueException extends RuntimeException {
 
-    public NoValueException (String property) {
-        super(String.format ("property '%s' has no value", property));
+    public NoValueException (String location) {
+        super(String.format ("property '%s' has no value", location));
     }
 }

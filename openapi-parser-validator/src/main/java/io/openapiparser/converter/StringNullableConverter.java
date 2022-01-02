@@ -10,7 +10,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import static io.openapiparser.converter.Types.convertOrNull;
 
 /**
- * converts property {@code value} to {@link String} object.
+ * converts the property {@code value} to {@link String}. May be null.
  */
 public class StringNullableConverter implements PropertyConverter<String> {
 

@@ -71,6 +71,11 @@ public class Types {
         return convertOrNull (path, value, Map.class);
     }
 
+    @SuppressWarnings ("unchecked")
+    public static Map<String, Object> asMap (Object o) {
+        return (Map<String, Object>) o;
+    }
+
 //    @SuppressWarnings ("unchecked")
 //    static <T> Map<String, T> convertMap (String path, @Nullable Object value, Class<T> itemType) {
 //        final Map<String, ?> map = convertMap (path, value);
