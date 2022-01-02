@@ -6,7 +6,6 @@
 package io.openapiparser.model.v30;
 
 import io.openapiparser.*;
-import io.openapiparser.converter.StringConverterRequired;
 import io.openapiparser.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -21,46 +20,28 @@ import static io.openapiparser.Keywords.*;
  * <p>See specification:
  * <a href="https://spec.openapis.org/oas/v3.0.3.html#path-item-object">4.7.9 Path Item Object</a>
  */
-public class PathItem implements Reference, Extensions {
-    private final Context context;
-    private final Node node;
-    private final @Nullable Node refNode;
-    private final Bucket properties;
-    private final @Nullable Bucket refProperties;
+public class PathItem extends Properties implements Reference, Extensions {
 
-    @Deprecated
-    public PathItem (Context context, Node node) {
-        this.context = context;
-        this.node = node;
-        this.refNode = context.getRefNodeOrNull (node);
-        this.properties = node.toBucket ();
-        this.refProperties = context.getRefObjectOrNull (this.properties);
-    }
-
-    public PathItem (Context context, Bucket properties) {
-        this.context = context;
-        this.node = null;
-        this.refNode = null;
-        this.properties = properties;
-        this.refProperties = context.getRefObjectOrNull (this.properties);
+    public PathItem (Context context, Bucket bucket) {
+        super (context, bucket);
     }
 
     @Override
     public boolean isRef () {
-        return properties.hasProperty (REF);
+        return hasProperty (REF);
     }
 
     @Override
     public String getRef () {
-        return properties.convert (REF, new StringConverterRequired());
+        return getStringOrThrow (REF);
     }
 
     public  @Nullable String getSummary () {
-        return getSource ().getStringValue (SUMMARY);
+        return getStringOrNull (SUMMARY);
     }
 
     public @Nullable String getDescription () {
-        return getSource ().getStringValue (DESCRIPTION);
+        return getStringOrNull (DESCRIPTION);
     }
 
     public @Nullable Operation getGet () {
@@ -96,23 +77,19 @@ public class PathItem implements Reference, Extensions {
     }
 
     public Collection<Server> getServers () {
-        return getSource ().getObjectValuesOrEmpty (SERVERS, node -> new Server(context, node));
+        return getObjectsOrEmpty (SERVERS, Server.class);
     }
 
     public Collection<Parameter> getParameters () {
-        return getSource ().getObjectValuesOrEmpty (PARAMETERS, node -> new Parameter (context, node));
+        return getObjectsOrEmpty (PARAMETERS, Parameter.class);
     }
 
     private Operation getOperation(String property) {
-        return getSource ().getObjectValue (property, node -> new Operation (context, node));
+        return getObjectOrNull (property, Operation.class);
     }
 
     @Override
     public Map<String, Object> getExtensions () {
-        return node.getExtensions ();
-    }
-
-    private Node getSource () {
-        return (refNode != null) ? refNode : node;
+        return super.getExtensions ();
     }
 }

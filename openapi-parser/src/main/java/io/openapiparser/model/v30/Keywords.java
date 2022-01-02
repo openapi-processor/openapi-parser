@@ -11,6 +11,7 @@ import java.util.*;
 
 import static io.openapiparser.Keywords.*;
 
+@Deprecated
 public interface Keywords {
 
     Collection<Keyword> OPENAPI_KEYS = Arrays.asList (

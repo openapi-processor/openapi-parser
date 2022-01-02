@@ -5,8 +5,8 @@
 
 package io.openapiparser.model.v30;
 
-import io.openapiparser.Context;
-import io.openapiparser.Node;
+import io.openapiparser.*;
+import io.openapiparser.schema.Bucket;
 
 /**
  * the <em>Security Requirement</em> object.
@@ -16,12 +16,9 @@ import io.openapiparser.Node;
  *   4.7.30 Security Requirement Object
  * </a>
  */
-public class SecurityRequirement {
-    private final Context context;
-    private final Node node;
+public class SecurityRequirement extends Properties {
 
-    public SecurityRequirement (Context context, Node node) {
-        this.context = context;
-        this.node = node;
+    public SecurityRequirement (Context context, Bucket bucket) {
+        super (context, bucket);
     }
 }

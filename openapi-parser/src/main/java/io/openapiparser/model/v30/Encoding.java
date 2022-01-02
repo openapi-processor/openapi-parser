@@ -6,8 +6,7 @@
 package io.openapiparser.model.v30;
 
 import io.openapiparser.Context;
-import io.openapiparser.converter.BooleanConverter;
-import io.openapiparser.converter.StringConverter;
+import io.openapiparser.Properties;
 import io.openapiparser.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -21,13 +20,10 @@ import static io.openapiparser.Keywords.*;
  * <p>See specification:
  * <a href="https://spec.openapis.org/oas/v3.0.3.html#encoding-object">4.7.15 Encoding Object</a>
  */
-public class Encoding implements Extensions {
-    private final Context context;
-    private final Bucket properties;
+public class Encoding extends Properties implements Extensions {
 
-    public Encoding (Context context, Bucket properties) {
-        this.context = context;
-        this.properties = properties;
+    public Encoding (Context context, Bucket bucket) {
+        super (context, bucket);
     }
 
     public @Nullable String getContentType () {
@@ -35,7 +31,7 @@ public class Encoding implements Extensions {
     }
 
     public Map<String, Header> getHeaders () {
-        return node.getMapObjectValuesOrEmpty (HEADERS, node -> new Header (context, node));
+        return getMapObjectsOrEmpty (HEADERS, Header.class);
     }
 
     public String getStyle () {
@@ -58,27 +54,11 @@ public class Encoding implements Extensions {
     }
 
     public Boolean getAllowReserved () {
-        return node.getBooleanValue (ALLOW_RESERVED, false);
+        return getBooleanOrDefault (ALLOW_RESERVED, false);
     }
 
     @Override
     public Map<String, Object> getExtensions () {
-        return node.getExtensions ();
-    }
-
-    private @Nullable String getStringOrNull (String property) {
-        return properties.convert (property, new StringConverter ());
-    }
-
-    private @Nullable Boolean getBooleanOrNull (String property) {
-        return properties.convert (property, new BooleanConverter ());
-    }
-
-    private Boolean getBooleanOrDefault (String property, boolean defaultValue) {
-        Boolean value = getBooleanOrNull (property);
-        if (value == null)
-            return defaultValue;
-
-        return value;
+        return super.getExtensions ();
     }
 }

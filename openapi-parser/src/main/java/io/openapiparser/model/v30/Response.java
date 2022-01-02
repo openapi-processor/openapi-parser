@@ -6,9 +6,7 @@
 package io.openapiparser.model.v30;
 
 import io.openapiparser.*;
-import io.openapiparser.converter.MapObjectsOrEmptyFromPropertyConverter;
 import io.openapiparser.schema.Bucket;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
 
@@ -20,61 +18,44 @@ import static io.openapiparser.Keywords.*;
  * <p>See specification:
  * <a href="https://spec.openapis.org/oas/v3.0.3.html#response-object">4.7.17 Response Object</a>
  */
-public class Response implements Reference, Extensions {
-    private final Context context;
-    private final Node node;
-    private final @Nullable Node refNode;
-    private final Bucket properties;
-    private final @Nullable Bucket refProperties;
+public class Response extends Properties implements Reference, Extensions {
 
-    public Response (Context context, Node node) {
-        this.context = context;
-        this.node = node;
-        refNode = context.getRefNodeOrNull (node);
-        this.properties = node.toBucket ();
-        this.refProperties = context.getRefObjectOrNull (this.properties);
+    public Response (Context context, Bucket bucket) {
+        super (context, bucket);
     }
 
     /** {@inheritDoc} */
     @Override
     public boolean isRef () {
-        return node.hasProperty (REF);
+        return hasProperty (REF);
     }
 
     /** {@inheritDoc} */
     @Required
     @Override
     public String getRef () {
-        return node.getRequiredStringValue (REF);
+        return getStringOrNull (REF);
     }
 
     @Required
     public String getDescription () {
-        return getSource ().getRequiredStringValue (DESCRIPTION);
+        return getStringOrThrow (DESCRIPTION);
     }
 
     public Map<String, Header> getHeaders () {
-        return getSource ().getMapObjectValuesOrEmpty (HEADERS, node -> new Header (context, node));
+        return getMapObjectsOrEmpty (HEADERS, Header.class);
     }
 
     public Map<String, MediaType> getContent () {
-        return node.getMapObjectValuesOrEmpty (CONTENT, node -> new MediaType (context, node));
+        return getMapObjectsOrEmpty (CONTENT, MediaType.class);
     }
 
     public Map<String, Link> getLinks () {
-        return getObjectMapFromProperty (LINKS, Link.class);
+        return getMapObjectsOrEmpty (LINKS, Link.class);
     }
 
     @Override
     public Map<String, Object> getExtensions () {
-        return getSource ().getExtensions ();
-    }
-
-    private Node getSource () {
-        return (refNode != null) ? refNode : node;
-    }
-
-    private <T> Map<String, T> getObjectMapFromProperty (String property, Class<T> clazz) {
-        return properties.convert (property, new MapObjectsOrEmptyFromPropertyConverter<> (context, clazz));
+        return super.getExtensions ();
     }
 }

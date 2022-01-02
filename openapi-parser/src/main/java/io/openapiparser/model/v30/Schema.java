@@ -6,6 +6,7 @@
 package io.openapiparser.model.v30;
 
 import io.openapiparser.*;
+import io.openapiparser.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Collection;
@@ -22,138 +23,132 @@ import static io.openapiparser.Keywords.*;
  * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-00">JSON
  * Schema Validation</a>
  */
-public class Schema implements Reference, Extensions {
-    private final Context context;
-    private final Node node;
-    private final @Nullable Node refNode;
+public class Schema extends Properties implements Reference, Extensions {
 
-    public Schema (Context context, Node node) {
-        this.context = context;
-        this.node = node;
-        refNode = context.getRefNodeOrNull (node);
+    public Schema (Context context, Bucket bucket) {
+        super (context, bucket);
     }
 
     @Override
     public boolean isRef () {
-        return node.hasProperty (REF);
+        return hasProperty (REF);
     }
 
     @Override
-    @Required
     public String getRef () {
-        return node.getRequiredStringValue (REF);
+        return getStringOrThrow (REF);
     }
 
     /**
      * JSON Schema Validation: validation keyword
      */
-    public @Nullable Number getMultipleOf() {
-        return getSource ().getNumberValue (MULTIPLE_OF);
+    public @Nullable Number getMultipleOf () {
+        return getNumberOrNull (MULTIPLE_OF);
     }
 
     /**
      * JSON Schema Validation: validation keyword
      */
-    public @Nullable Number getMaximum() {
-        return getSource ().getNumberValue (MAXIMUM);
+    public @Nullable Number getMaximum () {
+        return getNumberOrNull (MAXIMUM);
     }
 
     /**
      * JSON Schema Validation: validation keyword
      */
-    public Boolean getExclusiveMaximum() {
-        return getSource ().getBooleanValue (EXCLUSIVE_MAXIMUM, false);
+    public Boolean getExclusiveMaximum () {
+        return getBooleanOrDefault (EXCLUSIVE_MAXIMUM, false);
     }
 
     /**
      * JSON Schema Validation: validation keyword
      */
-    public @Nullable Number getMinimum() {
-        return getSource ().getNumberValue (MINIMUM);
+    public @Nullable Number getMinimum () {
+        return getNumberOrNull (MINIMUM);
     }
 
     /**
      * JSON Schema Validation: validation keyword
      */
-    public Boolean getExclusiveMinimum() {
-        return getSource ().getBooleanValue (EXCLUSIVE_MINIMUM, false);
+    public Boolean getExclusiveMinimum () {
+        return getBooleanOrDefault (EXCLUSIVE_MINIMUM, false);
     }
 
     /**
      * JSON Schema Validation: validation keyword
      */
-    public @Nullable Number getMaxLength() {
-        return getSource ().getNumberValue (MAX_LENGTH);
+    public @Nullable Number getMaxLength () {
+        return getNumberOrNull (MAX_LENGTH);
     }
 
     /**
      * JSON Schema Validation: validation keyword
      */
-    public @Nullable Number getMinLength() {
-        return getSource ().getNumberValue (MIN_LENGTH);
+    public @Nullable Number getMinLength () {
+        return getNumberOrNull (MIN_LENGTH);
     }
 
     /**
      * JSON Schema Validation: validation keyword
      */
     public @Nullable Schema getItems () {
-        return getSource ().getObjectValue (ITEMS, node -> new Schema (context, node));
+        return getObjectOrNull (ITEMS, Schema.class);
     }
 
     /**
      * JSON Schema Validation: validation keyword
      */
-    public @Nullable String getPattern() {
-        return getSource ().getStringValue (PATTERN);
+    public @Nullable String getPattern () {
+        return getStringOrNull (PATTERN);
     }
 
     /**
      * JSON Schema Validation: validation keyword
      */
-    public @Nullable Integer getMaxItems() {
-        return getSource ().getIntegerValue (MAX_ITEMS);
+    public @Nullable Integer getMaxItems () {
+        return getIntegerOrNull (MAX_ITEMS);
     }
 
     /**
      * JSON Schema Validation: validation keyword
      */
-    public Integer getMinItems() {
-        return getSource ().getIntegerValue (MIN_ITEMS, 0);
+    public Integer getMinItems () {
+        return getIntegerOrDefault (MIN_ITEMS, 0);
     }
 
     /**
      * JSON Schema Validation: validation keyword
      */
-    public Boolean getUniqueItems() {
-        return getSource ().getBooleanValue (UNIQUE_ITEMS, false);
+    public Boolean getUniqueItems () {
+        return getBooleanOrDefault (UNIQUE_ITEMS, false);
     }
 
     /**
      * JSON Schema Validation: validation keyword
      */
-    public @Nullable Integer getMaxProperties() {
-        return getSource ().getIntegerValue (MAX_PROPERTIES);
+    public @Nullable Integer getMaxProperties () {
+        return getIntegerOrNull (MAX_PROPERTIES);
     }
 
     /**
      * JSON Schema Validation: validation keyword
      */
-    public Integer getMinProperties() {
-        return getSource ().getIntegerValue (MIN_PROPERTIES, 0);
+    public Integer getMinProperties () {
+        return getIntegerOrDefault (MIN_PROPERTIES, 0);
     }
 
     /**
      * JSON Schema Validation: validation keyword
      */
-    public Collection<String> getRequired() {
-        return getSource ().getStringValuesOrEmpty (REQUIRED);
+    public Collection<String> getRequired () {
+        return getStringsOrEmpty (REQUIRED);
     }
 
     /**
      * JSON Schema Validation: validation keyword
      */
     public Map<String, Schema> getProperties () {
-        return node.getMapObjectValuesOrEmpty (PROPERTIES, node -> new Schema (context, node));
+        return getMapObjectsOrEmpty (PROPERTIES, Schema.class);
     }
 
     /**
@@ -162,148 +157,146 @@ public class Schema implements Reference, Extensions {
      * @return {@link Boolean} or {@link Schema}, true if missing
      */
     public @Nullable Object getAdditionalProperties () {
-        final Object value = node.getRawValue (ADDITIONAL_PROPERTIES);
+        final Object value = getRawValue (ADDITIONAL_PROPERTIES);
         if (value == null)
             return true;
 
         if (value instanceof Boolean)
-            return node.getBooleanValue (ADDITIONAL_PROPERTIES);
+            return getBooleanOrNull (ADDITIONAL_PROPERTIES);
 
-        return node.getObjectValue (ADDITIONAL_PROPERTIES, node -> new Schema (context, node));
+        return getObjectOrNull (ADDITIONAL_PROPERTIES, Schema.class);
     }
 
     /**
      * JSON Schema Validation: validation keyword
      */
-    public @Nullable Collection<?> getEnum() {
-        return getSource ().getStringValues (ENUM);
+    // todo
+    public @Nullable Collection<?> getEnum () {
+        return getStringsOrEmpty (ENUM);
     }
 
     /**
      * JSON Schema Validation: validation keyword
      */
-    public String getType() {
-        return getSource ().getRequiredStringValue (TYPE);
+    @Required
+    public String getType () {
+        return getStringOrThrow (TYPE);
     }
 
     /**
      * JSON Schema Validation: validation keyword
      */
     public Collection<Schema> getAllOf () {
-        return getSource ().getObjectValuesOrEmpty (ALL_OF, node -> new Schema (context, node));
+        return getObjectsOrEmpty (ALL_OF, Schema.class);
     }
 
     /**
      * JSON Schema Validation: validation keyword
      */
     public Collection<Schema> getAnyOf () {
-        return getSource ().getObjectValuesOrEmpty (ANY_OF, node -> new Schema (context, node));
+        return getObjectsOrEmpty (ANY_OF, Schema.class);
     }
 
     /**
      * JSON Schema Validation: validation keyword
      */
     public Collection<Schema> getOneOf () {
-        return getSource ().getObjectValuesOrEmpty (ONE_OF, node -> new Schema (context, node));
+        return getObjectsOrEmpty (ONE_OF, Schema.class);
     }
 
     /**
      * JSON Schema Validation: validation keyword
      */
     public @Nullable Schema getNot () {
-        return getSource ().getObjectValue (NOT, node -> new Schema (context, node));
+        return getObjectOrNull (NOT, Schema.class);
     }
 
     /**
      * JSON Schema Validation: metadata keyword
      */
     public @Nullable String getTitle () {
-        return getSource ().getStringValue (TITLE);
+        return getStringOrNull (TITLE);
     }
 
     /**
      * JSON Schema Validation: metadata keyword. May contain Markdown formatting (common mark).
      */
     public @Nullable String getDescription () {
-        return getSource ().getStringValue (DESCRIPTION);
+        return getStringOrNull (DESCRIPTION);
     }
 
     /**
      * JSON Schema Validation: metadata keyword
      */
     public @Nullable Object getDefault () {
-        return getSource ().getRawValue (DEFAULT);
+        return getRawValue (DEFAULT);
     }
 
     /**
      * JSON Schema Validation: semantic validation keyword
      */
     public @Nullable String getFormat() {
-        return getSource ().getStringValue (FORMAT);
+        return getStringOrNull (FORMAT);
     }
 
     /**
      * OpenAPI Schema
      */
     public Boolean getNullable () {
-        return getSource ().getBooleanValue (NULLABLE, false);
+        return getBooleanOrDefault (NULLABLE, false);
     }
 
     /**
      * OpenAPI Schema
      */
     public @Nullable Discriminator getDiscriminator () {
-        return getSource ().getObjectValue (DISCRIMINATOR, node -> new Discriminator (context, node));
+        return getObjectOrNull (DISCRIMINATOR, Discriminator.class);
     }
 
     /**
      * OpenAPI Schema
      */
     public Boolean getReadOnly () {
-        return getSource ().getBooleanValue (READ_ONLY, false);
+        return getBooleanOrDefault (READ_ONLY, false);
     }
 
     /**
      * OpenAPI Schema
      */
     public Boolean getWriteOnly () {
-        return getSource ().getBooleanValue (WRITE_ONLY, false);
+        return getBooleanOrDefault (WRITE_ONLY, false);
     }
 
     /**
      * OpenAPI Schema
      */
     public @Nullable Xml getXml () {
-        return getSource ().getObjectValue (XML, node -> new Xml (context, node));
+        return getObjectOrNull (XML, Xml.class);
     }
 
     /**
      * OpenAPI Schema
      */
     public @Nullable ExternalDocumentation getExternalDocs () {
-        return node.getObjectValue (EXTERNAL_DOCS, node -> new ExternalDocumentation (context, node));
+        return getObjectOrNull (EXTERNAL_DOCS, ExternalDocumentation.class);
     }
 
     /**
      * OpenAPI Schema
      */
     public @Nullable Object getExample () {
-        return getSource ().getRawValue (EXAMPLE);
+        return getRawValue (EXAMPLE);
     }
 
     /**
      * OpenAPI Schema
      */
     public Boolean getDeprecated () {
-        return getSource ().getBooleanValue (DEPRECATED, false);
+        return getBooleanOrDefault (DEPRECATED, false);
     }
 
     @Override
     public Map<String, Object> getExtensions () {
-        return getSource ().getExtensions ();
-    }
-
-    private Node getSource () {
-        return (refNode != null) ? refNode : node;
+        return super.getExtensions ();
     }
 }

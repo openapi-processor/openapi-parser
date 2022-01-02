@@ -6,8 +6,6 @@
 package io.openapiparser.model.v30;
 
 import io.openapiparser.*;
-import io.openapiparser.converter.MapObjectsOrEmptyFromPropertyConverter;
-import io.openapiparser.converter.StringConverterRequired;
 import io.openapiparser.schema.Bucket;
 
 import java.util.Map;
@@ -21,28 +19,18 @@ import static io.openapiparser.Keywords.PROPERTY_NAME;
  * <p>See specification:
  * <a href="https://spec.openapis.org/oas/v3.0.3.html#discriminator-object">4.7.25 Discriminator Object</a>
  */
-public class Discriminator {
-    private final Context context;
-    private final Bucket properties;
+public class Discriminator extends Properties {
 
-    public Discriminator (Context context, Bucket properties) {
-        this.context = context;
-        this.properties = properties;
+    public Discriminator (Context context, Bucket bucket) {
+        super (context, bucket);
     }
 
+    @Required
     public String getPropertyName () {
         return getStringOrThrow (PROPERTY_NAME);
     }
 
     public Map<String, String> getMapping () {
         return getMapStringsOrEmpty (MAPPING);
-    }
-
-    private String getStringOrThrow (String property) {
-        return properties.convert (property, new StringConverterRequired ());
-    }
-
-    private Map<String, String> getMapStringsOrEmpty (String property) {
-        return properties.convert (property, new MapObjectsOrEmptyFromPropertyConverter<> (context, String.class));
     }
 }

@@ -6,6 +6,7 @@
 package io.openapiparser.model.v30;
 
 import io.openapiparser.Context;
+import io.openapiparser.Properties;
 import io.openapiparser.schema.Bucket;
 
 import java.util.Map;
@@ -18,17 +19,14 @@ import java.util.Map;
  *   4.7.28 Security Scheme Object
  * </a>
  */
-public class SecurityScheme implements Extensions {
-    private final Context context;
-    private final Bucket properties;
+public class SecurityScheme extends Properties implements Extensions {
 
-    public SecurityScheme (Context context, Bucket properties) {
-        this.context = context;
-        this.properties = properties;
+    public SecurityScheme (Context context, Bucket bucket) {
+        super (context, bucket);
     }
 
     @Override
     public Map<String, Object> getExtensions () {
-        return null;
+        return super.getExtensions ();
     }
 }

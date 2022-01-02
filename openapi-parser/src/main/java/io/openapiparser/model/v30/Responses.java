@@ -5,8 +5,8 @@
 
 package io.openapiparser.model.v30;
 
-import io.openapiparser.Context;
-import io.openapiparser.Node;
+import io.openapiparser.*;
+import io.openapiparser.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
@@ -19,29 +19,26 @@ import static io.openapiparser.Keywords.DEFAULT;
  * <p>See specification:
  * <a href="https://spec.openapis.org/oas/v3.0.3.html#responses-object">4.7.16 Responses Object</a>
  */
-public class Responses implements Extensions {
-    private final Context context;
-    private final Node node;
+public class Responses extends Properties implements Extensions {
 
-    public Responses (Context context, Node node) {
-        this.context = context;
-        this.node = node;
+    public Responses (Context context, Bucket bucket) {
+        super (context, bucket);
     }
 
     public Map<String, Response> getResponses () {
-        return node.getMapObjectValuesOrEmpty (node -> new Response (context, node));
+        return getMapObjectsOrEmpty (Response.class);
     }
 
-    public @Nullable Response getResponse(String httpStatus) {
-        return node.getObjectValue (httpStatus, node -> new Response (context, node));
+    public @Nullable Response getResponse (String httpStatus) {
+        return getObjectOrNull (httpStatus, Response.class);
     }
 
     public @Nullable Response getDefault () {
-        return node.getObjectValue (DEFAULT, node -> new Response (context, node));
+        return getObjectOrNull (DEFAULT, Response.class);
     }
 
     @Override
     public Map<String, Object> getExtensions () {
-        return node.getExtensions ();
+        return super.getExtensions ();
     }
 }

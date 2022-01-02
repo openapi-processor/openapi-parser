@@ -6,6 +6,7 @@
 package io.openapiparser.model.v30;
 
 import io.openapiparser.*;
+import io.openapiparser.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
@@ -19,26 +20,23 @@ import static io.openapiparser.Keywords.URL;
  * <p>See specification:
  * <a href="https://spec.openapis.org/oas/v3.0.3.html#license-object">4.7.4 License Object</a>
  */
-public class License implements Extensions {
-    private final Context context;
-    private final Node node;
+public class License extends Properties implements Extensions {
 
-    public License (Context context, Node node) {
-        this.context = context;
-        this.node = node;
+    public License (Context context, Bucket bucket) {
+        super (context, bucket);
     }
 
     @Required
     public String getName () {
-        return node.getRequiredStringValue (NAME);
+        return getStringOrThrow (NAME);
     }
 
     public @Nullable String getUrl () {
-        return node.getStringValue (URL);
+        return getStringOrNull (URL);
     }
 
     @Override
     public Map<String, Object> getExtensions () {
-        return node.getExtensions ();
+        return super.getExtensions ();
     }
 }
