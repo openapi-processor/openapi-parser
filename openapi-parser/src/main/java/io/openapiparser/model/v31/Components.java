@@ -6,8 +6,7 @@
 package io.openapiparser.model.v31;
 
 import io.openapiparser.Context;
-import io.openapiparser.converter.ExtensionsConverter;
-import io.openapiparser.converter.MapObjectsOrEmptyFromPropertyConverter;
+import io.openapiparser.Properties;
 import io.openapiparser.schema.Bucket;
 
 import java.util.Map;
@@ -20,13 +19,10 @@ import static io.openapiparser.Keywords.*;
  * <p>See specification:
  * <a href="https://spec.openapis.org/oas/v3.1.0.html#components-object">4.8.7 Components Object</a>
  */
-public class Components implements Extensions {
-    private final Context context;
-    private final Bucket properties;
+public class Components extends Properties implements Extensions {
 
-    public Components (Context context, Bucket properties) {
-        this.context = context;
-        this.properties = properties;
+    public Components (Context context, Bucket bucket) {
+        super (context, bucket);
     }
 
     public Map<String, Schema> getSchemas () {
@@ -71,10 +67,6 @@ public class Components implements Extensions {
 
     @Override
     public Map<String, Object> getExtensions () {
-        return properties.convert (new ExtensionsConverter ());
-    }
-
-    private <T> Map<String, T> getMapObjectsOrEmpty (String property, Class<T> clazz) {
-        return properties.convert (property, new MapObjectsOrEmptyFromPropertyConverter<> (context, clazz));
+        return super.getExtensions ();
     }
 }

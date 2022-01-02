@@ -6,6 +6,7 @@
 package io.openapiparser.model.v31;
 
 import io.openapiparser.*;
+import io.openapiparser.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
@@ -18,33 +19,30 @@ import static io.openapiparser.Keywords.*;
  * <p>See specification:
  * <a href="https://spec.openapis.org/oas/v3.1.0.html#media-type-object">4.8.14 Media Type Object</a>
  */
-public class MediaType implements Extensions {
-    private final Context context;
-    private final Node node;
+public class MediaType extends Properties implements Extensions {
 
-    public MediaType (Context context, Node node) {
-        this.context = context;
-        this.node = node;
+    public MediaType (Context context, Bucket bucket) {
+        super (context, bucket);
     }
 
     public @Nullable Schema getSchema () {
-        return node.getObjectValue (SCHEMA, node -> new Schema (context, node));
+        return getObjectOrNull (SCHEMA, Schema.class);
     }
 
     public @Nullable Object getExample () {
-        return node.getRawValue (EXAMPLE);
+        return getRawValue (EXAMPLE);
     }
 
     public Map<String, Example> getExamples () {
-        return node.getMapObjectValuesOrEmpty (EXAMPLES, node -> new Example(context, node));
+        return getMapObjectsOrEmpty (EXAMPLES, Example.class);
     }
 
     public Map<String, Encoding> getEncoding () {
-        return node.getMapObjectValuesOrEmpty (ENCODING, node -> new Encoding (context, node));
+        return getMapObjectsOrEmpty (ENCODING, Encoding.class);
     }
 
     @Override
     public Map<String, Object> getExtensions () {
-        return node.getExtensions ();
+        return super.getExtensions ();
     }
 }

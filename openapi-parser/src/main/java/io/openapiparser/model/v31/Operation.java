@@ -6,7 +6,6 @@
 package io.openapiparser.model.v31;
 
 import io.openapiparser.*;
-import io.openapiparser.converter.MapObjectsOrEmptyFromPropertyConverter;
 import io.openapiparser.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -21,72 +20,63 @@ import static io.openapiparser.Keywords.*;
  * <p>See specification:
  * <a href="https://spec.openapis.org/oas/v3.1.0.html#operation-object">4.8.10 Operation Object</a>
  */
-public class Operation implements Extensions {
-    private final Context context;
-    private final Node node;
-    private final Bucket properties;
+public class Operation extends Properties implements Extensions {
 
-    public Operation (Context context, Node node) {
-        this.context = context;
-        this.node = node;
-        this.properties = node.toBucket ();
+    public Operation (Context context, Bucket bucket) {
+        super (context, bucket);
     }
 
     public Collection<String> getTags () {
-        return node.getStringValuesOrEmpty (TAGS);
+        return getStringsOrEmpty (TAGS);
     }
 
     public @Nullable String getSummary () {
-        return node.getStringValue (SUMMARY);
+        return getStringOrNull (SUMMARY);
     }
 
     public @Nullable String getDescription () {
-        return node.getStringValue (DESCRIPTION);
+        return getStringOrNull (DESCRIPTION);
     }
 
     public @Nullable ExternalDocumentation getExternalDocs () {
-        return node.getObjectValue (EXTERNAL_DOCS, node -> new ExternalDocumentation (context, node));
+        return getObjectOrNull (EXTERNAL_DOCS, ExternalDocumentation.class);
     }
 
     public @Nullable String getOperationId () {
-        return node.getStringValue (OPERATION_ID);
+        return getStringOrNull (OPERATION_ID);
     }
 
     // todo include pathItem parameter
     public Collection<Parameter> getParameters () {
-        return node.getObjectValuesOrEmpty (PARAMETERS, node -> new Parameter (context, node));
+        return getObjectsOrEmpty (PARAMETERS, Parameter.class);
     }
 
     public @Nullable RequestBody getRequestBody () {
-        return node.getObjectValue (REQUEST_BODY, node -> new RequestBody (context, node));
+        return getObjectOrNull (REQUEST_BODY, RequestBody.class);
     }
 
     public @Nullable Responses getResponses () {
-        return node.getObjectValue (RESPONSES, node -> new Responses (context, node));
+        return getObjectOrNull (RESPONSES, Responses.class);
     }
 
     public Map<String, Callback> getCallbacks () {
-        return getObjectMapFromProperty (CALLBACKS, Callback.class);
+        return getMapObjectsOrEmpty (CALLBACKS, Callback.class);
     }
 
     public Boolean getDeprecated () {
-        return node.getBooleanValue (DEPRECATED, false);
+        return getBooleanOrFalse (DEPRECATED);
     }
 
     public Collection<SecurityRequirement> getSecurity () {
-        return node.getObjectValuesOrEmpty (SECURITY, node -> new SecurityRequirement (context, node));
+        return getObjectsOrEmpty (SECURITY, SecurityRequirement.class);
     }
 
     public Collection<Server> getServers () {
-        return node.getObjectValuesOrEmpty (SERVERS, node -> new Server (context, node));
+        return getObjectsOrEmpty (SERVERS, Server.class);
     }
 
     @Override
     public Map<String, Object> getExtensions () {
-        return node.getExtensions ();
-    }
-
-    private <T> Map<String, T> getObjectMapFromProperty (String property, Class<T> clazz) {
-        return properties.convert (property, new MapObjectsOrEmptyFromPropertyConverter<> (context, clazz));
+        return super.getExtensions ();
     }
 }

@@ -29,6 +29,8 @@ public interface Reference {
      *
      * @return ref
      * @throws NoValueException if {@link #isRef()} is false
+     *
+     * // todo do not throw, let getRefObject() throw
      */
     @Required
     String getRef ();

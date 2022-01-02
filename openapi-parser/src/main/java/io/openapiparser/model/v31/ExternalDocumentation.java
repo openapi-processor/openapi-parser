@@ -6,6 +6,7 @@
 package io.openapiparser.model.v31;
 
 import io.openapiparser.*;
+import io.openapiparser.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
@@ -21,26 +22,23 @@ import static io.openapiparser.Keywords.URL;
  *  4.8.11 External Documentation Object
  * </a>
  */
-public class ExternalDocumentation implements Extensions {
-    private final Context context;
-    private final Node node;
+public class ExternalDocumentation extends Properties implements Extensions {
 
-    public ExternalDocumentation (Context context, Node node) {
-        this.context = context;
-        this.node = node;
+    public ExternalDocumentation (Context context, Bucket bucket) {
+        super (context, bucket);
     }
 
     public @Nullable String getDescription () {
-        return node.getStringValue (DESCRIPTION);
+        return getStringOrNull (DESCRIPTION);
     }
 
     @Required
     public String getUrl () {
-        return node.getRequiredStringValue (URL);
+        return getStringOrThrow (URL);
     }
 
     @Override
     public Map<String, Object> getExtensions () {
-        return node.getExtensions ();
+        return super.getExtensions ();
     }
 }

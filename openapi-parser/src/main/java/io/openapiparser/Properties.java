@@ -75,6 +75,10 @@ public class Properties {
         return bucket.convert (property, new BooleanConverter ());
     }
 
+    protected @Nullable Boolean getBooleanOrFalse (String property) {
+        return getBooleanOrDefault (property, false);
+    }
+
     protected Boolean getBooleanOrDefault (String property, boolean defaultValue) {
         Boolean value = getBooleanOrNull (property);
         if (value == null)

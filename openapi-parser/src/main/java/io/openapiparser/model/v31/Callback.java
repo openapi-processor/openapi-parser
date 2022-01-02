@@ -6,7 +6,6 @@
 package io.openapiparser.model.v31;
 
 import io.openapiparser.*;
-import io.openapiparser.converter.*;
 import io.openapiparser.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -18,13 +17,10 @@ import java.util.Map;
  * <p>See specification:
  * <a href="https://spec.openapis.org/oas/v3.1.0.html#callback-object">4.8.18 Callback Object</a>
  */
-public class Callback implements Extensions {
-    private final Context context;
-    private final Bucket properties;
+public class Callback extends Properties implements Extensions {
 
-    public Callback (Context context, Bucket properties) {
-        this.context = context;
-        this.properties = properties;
+    public Callback (Context context, Bucket bucket) {
+        super (context, bucket);
     }
 
     public Map<String, PathItem> getPathItems () {
@@ -37,14 +33,6 @@ public class Callback implements Extensions {
 
     @Override
     public Map<String, Object> getExtensions () {
-        return properties.convert (new ExtensionsConverter ());
-    }
-
-    private <T> Map<String, T> getMapObjectsOrEmpty (Class<T> clazz) {
-        return properties.convert (new MapObjectsOrEmptyConverter<> (context, clazz));
-    }
-
-    private <T> T getObjectOrNull (String property, Class<T> clazz) {
-        return properties.convert (property, new ObjectOrNullConverter<> (context, clazz));
+        return super.getExtensions ();
     }
 }

@@ -6,12 +6,12 @@
 package io.openapiparser.model.v31;
 
 import io.openapiparser.*;
+import io.openapiparser.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
 
-import static io.openapiparser.Keywords.CONTACT;
-import static io.openapiparser.Keywords.LICENSE;
+import static io.openapiparser.Keywords.*;
 
 /**
  * the <em>Info</em> object.
@@ -19,47 +19,44 @@ import static io.openapiparser.Keywords.LICENSE;
  * <p>See specification:
  * <a href="https://spec.openapis.org/oas/v3.1.0.html#info-object">4.8.2 Info Object</a>
  */
-public class Info implements Extensions {
-    private final Context context;
-    private final Node node;
+public class Info extends Properties implements Extensions {
 
-    public Info (Context context, Node node) {
-        this.context = context;
-        this.node = node;
+    public Info (Context context, Bucket bucket) {
+        super (context, bucket);
     }
 
     @Required
     public String getTitle () {
-        return node.getRequiredStringValue ("title");
+        return getStringOrThrow (TITLE);
     }
 
     public @Nullable String getSummary () {
-        return node.getStringValue ("summary");
+        return getStringOrNull (SUMMARY);
     }
 
     public @Nullable String getDescription () {
-        return node.getStringValue ("description");
+        return getStringOrNull (DESCRIPTION);
     }
 
     public @Nullable String getTermsOfService () {
-        return node.getStringValue ("termsOfService");
+        return getStringOrNull (TERMS_OF_SERVICE);
     }
 
     public @Nullable Contact getContact () {
-        return node.getObjectValue (CONTACT, node -> new Contact (context, node));
+        return getObjectOrNull (CONTACT, Contact.class);
     }
 
     public @Nullable License getLicense () {
-        return node.getObjectValue (LICENSE, node -> new License (context, node));
+        return getObjectOrNull (LICENSE, License.class);
     }
 
     @Required
     public String getVersion () {
-        return node.getRequiredStringValue ("version");
+        return getStringOrThrow (VERSION);
     }
 
     @Override
     public Map<String, Object> getExtensions () {
-        return node.getExtensions ();
+        return super.getExtensions ();
     }
 }

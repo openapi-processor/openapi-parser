@@ -6,6 +6,7 @@
 package io.openapiparser.model.v31;
 
 import io.openapiparser.*;
+import io.openapiparser.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
@@ -18,54 +19,44 @@ import static io.openapiparser.Keywords.*;
  * <p>See specification:
  * <a href="https://spec.openapis.org/oas/v3.1.0.html#example-object">4.8.19 Example Object</a>
  */
-public class Example implements Reference, Extensions {
-    private final Context context;
-    private final Node node;
-    private final @Nullable Node refNode;
+public class Example extends Properties implements Reference, Extensions {
 
-    public Example (Context context, Node node) {
-        this.context = context;
-        this.node = node;
-        refNode = context.getRefNodeOrNull (node);
+    public Example (Context context, Bucket bucket) {
+        super (context, bucket);
     }
 
     /** {@inheritDoc} */
     @Override
     public boolean isRef () {
-        return node.hasProperty (REF);
+        return hasProperty (REF);
     }
 
     /** {@inheritDoc} */
-    @Required
     @Override
     public String getRef () {
-        return node.getRequiredStringValue (REF);
+        return getStringOrThrow (REF);
     }
 
     @Override
     public @Nullable String getSummary () {
-        return getSource ().getStringValue (SUMMARY);
+        return getStringOrNull (SUMMARY);
     }
 
     @Override
     public @Nullable String getDescription () {
-        return getSource ().getStringValue (DESCRIPTION);
+        return getStringOrNull (DESCRIPTION);
     }
 
     public @Nullable Object getValue () {
-        return getSource ().getRawValue (VALUE);
+        return getRawValue (VALUE);
     }
 
     public @Nullable String getExternalValue () {
-        return getSource ().getStringValue (EXTERNAL_VALUE);
+        return getStringOrNull (EXTERNAL_VALUE);
     }
 
     @Override
     public Map<String, Object> getExtensions () {
-        return getSource ().getExtensions ();
-    }
-
-    private Node getSource () {
-        return (refNode != null) ? refNode : node;
+        return super.getExtensions ();
     }
 }

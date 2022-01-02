@@ -5,8 +5,8 @@
 
 package io.openapiparser.model.v31;
 
-import io.openapiparser.Context;
-import io.openapiparser.Node;
+import io.openapiparser.*;
+import io.openapiparser.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
@@ -19,25 +19,22 @@ import static io.openapiparser.Keywords.*;
  * <p>See specification:
  * <a href="https://spec.openapis.org/oas/v3.1.0.html#encoding-object">4.8.15 Encoding Object</a>
  */
-public class Encoding implements Extensions {
-    private final Context context;
-    private final Node node;
+public class Encoding extends Properties implements Extensions {
 
-    public Encoding (Context context, Node node) {
-        this.context = context;
-        this.node = node;
+    public Encoding (Context context, Bucket bucket) {
+        super (context, bucket);
     }
 
     public @Nullable String getContentType () {
-        return node.getStringValue (CONTENT_TYPE);
+        return getStringOrNull (CONTENT_TYPE);
     }
 
     public Map<String, Header> getHeaders () {
-        return node.getMapObjectValuesOrEmpty (HEADERS, node -> new Header (context, node));
+        return getMapObjectsOrEmpty (HEADERS, Header.class);
     }
 
     public String getStyle () {
-        String style = node .getStringValue (STYLE);
+        String style = getStringOrNull (STYLE);
         if (style != null) {
             return style;
         }
@@ -46,7 +43,7 @@ public class Encoding implements Extensions {
     }
 
     public Boolean getExplode () {
-        Boolean explode = node.getBooleanValue (EXPLODE);
+        Boolean explode = getBooleanOrNull (EXPLODE);
         if (explode != null) {
             return explode;
         }
@@ -56,11 +53,11 @@ public class Encoding implements Extensions {
     }
 
     public Boolean getAllowReserved () {
-        return node.getBooleanValue (ALLOW_RESERVED, false);
+        return getBooleanOrFalse (ALLOW_RESERVED);
     }
 
     @Override
     public Map<String, Object> getExtensions () {
-        return node.getExtensions ();
+        return super.getExtensions ();
     }
 }

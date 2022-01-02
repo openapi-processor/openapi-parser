@@ -7,6 +7,7 @@ package io.openapiparser.model.v31;
 
 import io.openapiparser.*;
 import io.openapiparser.model.v30.PathItem;
+import io.openapiparser.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
@@ -17,26 +18,23 @@ import java.util.Map;
  * <p>See specification:
  * <a href="https://spec.openapis.org/oas/v3.1.0.html#paths-object">4.8.8 Paths Object</a>
  */
-public class Paths implements Extensions {
-    private final Context context;
-    private final Node node;
+public class Paths extends Properties implements Extensions {
 
-    public Paths (Context context, Node node) {
-        this.context = context;
-        this.node = node;
+    public Paths (Context context, Bucket bucket) {
+        super (context, bucket);
     }
 
     @Required
-    public Map<String, PathItem> getPathItems() {
-        return node.getMapObjectValuesOrEmpty (node -> new PathItem (context, node));
+    public Map<String, PathItem> getPathItems () {
+        return getMapObjectsOrEmpty (PathItem.class);
     }
 
-    public @Nullable PathItem getPathItem(String path) {
-        return node.getObjectValue (path, node -> new PathItem (context, node));
+    public @Nullable PathItem getPathItem (String path) {
+        return getObjectOrNull (path, PathItem.class);
     }
 
     @Override
     public Map<String, Object> getExtensions () {
-        return node.getExtensions ();
+        return super.getExtensions ();
     }
 }

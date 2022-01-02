@@ -20,64 +20,42 @@ import static io.openapiparser.Keywords.*;
  * <p>See specification:
  * <a href="https://spec.openapis.org/oas/v3.1.0.html#path-item-object">4.8.9 Path Item Object</a>
  */
-public class PathItem implements Extensions, Reference {
-    private final Context context;
-    private final Node node;
-    private final @Nullable Node refNode;
-    private final Bucket properties;
-    private final Bucket refProperties;
+public class PathItem extends Properties implements Extensions, Reference {
 
-    @Deprecated
-    public PathItem (Context context, Node node) {
-        this.context = context;
-        this.node = node;
-        refNode = context.getRefNodeOrNull (node);
-        this.properties = node.toBucket ();
-        this.refProperties = context.getRefObjectOrNull (this.properties);
-    }
-
-    public PathItem (Context context, Bucket properties) {
-        this.context = context;
-        this.node = null;
-        this.refNode = null;
-        this.properties = properties;
-        this.refProperties = context.getRefObjectOrNull (this.properties);
+    public PathItem (Context context, Bucket bucket) {
+        super (context, bucket);
     }
 
     @Override
     public boolean isRef () {
-        return node.hasProperty (REF);
+        return hasProperty (REF);
     }
 
     @Override
     public String getRef () {
-        return node.getRequiredStringValue (REF);
+        return getStringOrThrow (REF);
     }
 
     @Override
     public @Nullable String getSummary () {
-        return getSource ().getStringValue (SUMMARY);
+        return getStringOrNull (SUMMARY);
     }
 
     @Override
     public  @Nullable String getDescription () {
-        return getSource ().getStringValue (DESCRIPTION);
+        return getStringOrNull (DESCRIPTION);
     }
 
     public Collection<Server> getServers () {
-        return getSource ().getObjectValuesOrEmpty (SERVERS, node -> new Server (context, node));
+        return getObjectsOrEmpty (SERVERS, Server.class);
     }
 
     public Collection<Parameter> getParameters () {
-        return getSource ().getObjectValuesOrEmpty (PARAMETERS, node -> new Parameter (context, node));
+        return getObjectsOrEmpty (PARAMETERS, Parameter.class);
     }
 
     @Override
     public Map<String, Object> getExtensions () {
-        return node.getExtensions ();
-    }
-
-    private Node getSource () {
-        return (refNode != null) ? refNode : node;
+        return super.getExtensions ();
     }
 }

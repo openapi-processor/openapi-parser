@@ -6,6 +6,7 @@
 package io.openapiparser.model.v31;
 
 import io.openapiparser.*;
+import io.openapiparser.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Collection;
@@ -19,62 +20,59 @@ import static io.openapiparser.Keywords.*;
  * <p>See specification:
  * <a href="https://spec.openapis.org/oas/v3.1.0.html#openapi-object">4.7.1 OpenAPI Object</a>
  */
-public class OpenApi implements Extensions {
-    private final Context context;
-    private final Node node;
+public class OpenApi extends Properties implements Extensions {
 
-    public OpenApi (Context context, Node node) {
-        this.context = context;
-        this.node = node;
+    public OpenApi (Context context, Bucket bucket) {
+        super (context, bucket);
     }
 
     @Required
     public String getOpenapi () {
-        return node.getRequiredStringValue (OPENAPI);
+        return getStringOrThrow (OPENAPI);
     }
 
     @Required
     public Info getInfo () {
-        return node.getRequiredObjectValue (INFO, node -> new Info (context, node));
+        return getObjectOrThrow (INFO, Info.class);
     }
 
     public @Nullable String getJsonSchemaDialect () {
-        return node.getStringValue (JSON_SCHEMA_DIALECT);
+        return getStringOrNull (JSON_SCHEMA_DIALECT);
     }
 
     public Collection<Server> getServers () {
-        return node.getObjectValuesOrEmpty (SERVERS, node -> new Server (context, node));
+        return getObjectsOrEmpty (SERVERS, Server.class);
     }
 
     // @Required (if webhooks or components are null)
     public @Nullable Paths getPaths () {
-        return node.getObjectValue (PATHS, node -> new Paths (context, node));
+        return getObjectOrNull (PATHS, Paths.class);
     }
 
      // @Required (if paths or components are null)
     public Map<String, PathItem> getWebhooks () {
-        return node.getMapObjectValuesOrEmpty (WEBHOOKS, node -> new PathItem (context, node));
+        return getMapObjectsOrEmpty (WEBHOOKS, PathItem.class);
     }
 
     // @Required (if paths or webhooks are null)
     public @Nullable Components getComponents () {
-        return node.getObjectValue (COMPONENTS, node -> new Components (context, node));
+        return getObjectOrNull (COMPONENTS, Components.class);
     }
 
     public Collection<SecurityRequirement> getSecurity () {
-        return node.getObjectValuesOrEmpty (SECURITY, node -> new SecurityRequirement (context, node));
+        return getObjectsOrEmpty (SECURITY, SecurityRequirement.class);
     }
 
     public Collection<Tag> getTags () {
-        return node.getObjectValuesOrEmpty (TAGS, node -> new Tag (context, node));
+        return getObjectsOrEmpty (TAGS, Tag.class);
     }
 
     public @Nullable ExternalDocumentation getExternalDocs () {
-        return node.getObjectValue (EXTERNAL_DOCS, node -> new ExternalDocumentation (context, node));
+        return getObjectOrNull (EXTERNAL_DOCS, ExternalDocumentation.class);
     }
 
     @Override
     public Map<String, Object> getExtensions () {
-        return node.getExtensions ();
+        return super.getExtensions ();
     }
 }

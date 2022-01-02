@@ -19,66 +19,48 @@ import static io.openapiparser.Keywords.*;
  * <p>See specification:
  * <a href="https://spec.openapis.org/oas/v3.1.0.html#header-object">4.8.21 Header Object</a>
  */
-public class Header implements Reference, Extensions {
-    private final Context context;
-    private final Node node;
-    private final @Nullable Node refNode;
-    private final Bucket properties;
-    private final @Nullable Bucket refProperties;
+public class Header extends Properties implements Reference, Extensions {
 
-    public Header (Context context, Node node) {
-        this.context = context;
-        this.node = node;
-        refNode = context.getRefNodeOrNull (node);
-        this.properties = node.toBucket ();
-        this.refProperties = context.getRefObjectOrNull (this.properties);
-    }
-
-    public Header (Context context, Bucket properties) {
-        this.context = context;
-        this.node = null;
-        this.refNode = null;
-        this.properties = properties;
-        this.refProperties = context.getRefObjectOrNull (this.properties);
+    public Header (Context context, Bucket bucket) {
+        super (context, bucket);
     }
 
     /** {@inheritDoc} */
     @Override
     public boolean isRef () {
-        return node.hasProperty (REF);
+        return hasProperty (REF);
     }
 
     /** {@inheritDoc} */
-    @Required
     @Override
     public String getRef () {
-        return node.getRequiredStringValue (REF);
+        return getStringOrThrow (REF);
     }
 
     @Override
     public @Nullable String getSummary () {
-        return getSource ().getStringValue (SUMMARY);
+        return getStringOrNull (SUMMARY);
     }
 
     @Override
     public @Nullable String getDescription () {
-        return getSource ().getStringValue (DESCRIPTION);
+        return getStringOrNull (DESCRIPTION);
     }
 
     public Boolean getRequired () {
-        return getSource ().getBooleanValue (REQUIRED, false);
+        return getBooleanOrFalse (REQUIRED);
     }
 
     public Boolean getDeprecated () {
-        return getSource ().getBooleanValue (DEPRECATED, false);
+        return getBooleanOrFalse (DEPRECATED);
     }
 
     public Boolean getAllowEmptyValue () {
-        return getSource ().getBooleanValue (ALLOW_EMPTY_VALUE, false);
+        return getBooleanOrFalse (ALLOW_EMPTY_VALUE);
     }
 
     public String getStyle () {
-        String style = getSource ().getStringValue (STYLE);
+        String style = getStringOrNull (STYLE);
         if (style != null) {
             return style;
         }
@@ -87,7 +69,7 @@ public class Header implements Reference, Extensions {
     }
 
     public Boolean getExplode () {
-        Boolean explode = getSource ().getBooleanValue (EXPLODE);
+        Boolean explode = getBooleanOrNull (EXPLODE);
         if (explode != null) {
             return explode;
         }
@@ -96,31 +78,27 @@ public class Header implements Reference, Extensions {
     }
 
     public Boolean getAllowReserved () {
-        return getSource ().getBooleanValue (ALLOW_RESERVED, false);
+        return getBooleanOrFalse (ALLOW_RESERVED);
     }
 
     public @Nullable Schema getSchema () {
-        return getSource ().getObjectValue (SCHEMA, node -> new Schema (context, node));
+        return getObjectOrNull (SCHEMA, Schema.class);
     }
 
     public @Nullable Object getExample () {
-        return getSource ().getRawValue (EXAMPLE);
+        return getRawValue (EXAMPLE);
     }
 
     public Map<String, Example> getExamples () {
-        return getSource ().getMapObjectValuesOrEmpty (EXAMPLES, node -> new Example(context, node));
+        return getMapObjectsOrEmpty (EXAMPLES, Example.class);
     }
 
     public Map<String, MediaType> getContent () {
-        return getSource ().getMapObjectValuesOrEmpty (CONTENT, node -> new MediaType (context, node));
+        return getMapObjectsOrEmpty (CONTENT, MediaType.class);
     }
 
     @Override
     public Map<String, Object> getExtensions () {
-        return getSource ().getExtensions ();
-    }
-
-    private Node getSource () {
-        return (refNode != null) ? refNode : node;
+        return super.getExtensions ();
     }
 }
