@@ -6,14 +6,15 @@
 package io.openapiparser.converter;
 
 import io.openapiparser.Context;
-import io.openapiparser.schema.JsonPointer;
+import io.openapiparser.schema.Bucket;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Map;
 
 /**
- * get a map of {@link T}s.
+ * get a map of {@link T}s from {@code name} property {@code value}.
  */
-public class MapObjectsOrEmptyConverter<T> implements PropertiesConverter<Map<String, T>> {
+public class MapObjectsOrEmptyConverter<T> implements PropertyConverter<Map<String, T>> {
     private final Context context;
     private final Class<T> object;
 
@@ -23,25 +24,11 @@ public class MapObjectsOrEmptyConverter<T> implements PropertiesConverter<Map<St
     }
 
     @Override
-    public Map<String, T> convert (Map<String, Object> properties, String location) {
-        ObjectOrNullConverter<T> converter = new ObjectOrNullConverter<> (context, object);
-        Map<String, T> objects = new LinkedHashMap<> ();
+    public Map<String, T> convert (String name, Object value, String location) {
+        Bucket bucket = new PropertyBucketConverter ().convert (name, value, location);
+        if (bucket == null)
+            return Collections.emptyMap ();
 
-        properties.forEach ((property, value) -> {
-            String propertyLocation = getLocation (location, property);
-
-            T pathItem = converter.convert (property, value, propertyLocation);
-            if (pathItem == null) {
-                throw new NoValueException (propertyLocation);
-            }
-
-            objects.put (property, pathItem);
-        });
-
-        return Collections.unmodifiableMap (objects);
-    }
-
-    private String getLocation (String location, String property) {
-        return JsonPointer.fromJsonPointer (location).getJsonPointer (property);
+        return bucket.convert (new MapObjectsOrEmptySelfConverter<> (context, object));
     }
 }

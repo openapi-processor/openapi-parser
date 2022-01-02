@@ -117,11 +117,11 @@ public class Properties {
     }
 
     protected <T> Map<String, T> getMapObjectsOrEmpty (Class<T> clazz) {
-        return bucket.convert (new MapObjectsOrEmptyConverter<> (context, clazz));
+        return bucket.convert (new MapObjectsOrEmptySelfConverter<> (context, clazz));
     }
 
     protected <T> Map<String, T> getMapObjectsOrEmpty (String property, Class<T> clazz) {
-        return bucket.convert (property, new MapObjectsOrEmptyFromPropertyConverter<> (context, clazz));
+        return bucket.convert (property, new MapObjectsOrEmptyConverter<> (context, clazz));
     }
 
     /* other */
