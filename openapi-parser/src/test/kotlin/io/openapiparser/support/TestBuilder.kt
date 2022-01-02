@@ -70,7 +70,7 @@ class TestBuilder {
             ReferenceRegistry())
         val context = Context(baseUri, resolver)
         context.read()
-        return OpenApi30(context, context.baseNode)
+        return OpenApi30(context, context.bucket)
     }
 
     fun buildOpenApi31(): OpenApi31 {
@@ -81,30 +81,12 @@ class TestBuilder {
             ReferenceRegistry())
         val context = Context(baseUri, resolver)
         context.read()
-        return OpenApi31(context, context.baseNode)
+        return OpenApi31(context, context.bucket)
     }
 
     fun <T> build(clazz: Class<T>): T {
         return build { c, n -> clazz
             .getDeclaredConstructor(Context::class.java, Bucket::class.java)
-            .newInstance(c, n)
-        }
-    }
-
-    @Deprecated("obsolete")
-    fun <T> buildWithNode(clazz: Class<T>): T {
-        return buildWithNode { c, n -> clazz
-            .getDeclaredConstructor(Context::class.java, Node::class.java)
-            .newInstance(c, n)
-        }
-    }
-
-    @Deprecated("obsolete")
-    fun <T> buildWithNode(content: String, clazz: Class<T>): T {
-        withApi(content)
-
-        return buildWithNode { c, n -> clazz
-            .getDeclaredConstructor(Context::class.java, Node::class.java)
             .newInstance(c, n)
         }
     }
@@ -118,28 +100,8 @@ class TestBuilder {
         )
         val context = Context(baseUri, resolver)
         context.read()
-        return factory(context, context.`object`)
+        return factory(context, context.bucket)
     }
-
-    @Deprecated("obsolete")
-    private fun <T> buildWithNode(factory: (context: Context, node: Node) -> T): T {
-        val resolver = ReferenceResolver(
-            baseUri,
-            StringReader(api),
-            JacksonConverter(),
-            ReferenceRegistry()
-        )
-        val context = Context(baseUri, resolver)
-        context.read()
-        return factory(context, context.baseNode)
-    }
-}
-
-@Deprecated(message = "obsolete", replaceWith = ReplaceWith("buildObject(clazz, content)"))
-fun <T> buildObjectObsolete(clazz: Class<T>, content: String = "{}"): T {
-    return TestBuilder()
-        .withApi(content)
-        .buildWithNode(clazz)
 }
 
 /**

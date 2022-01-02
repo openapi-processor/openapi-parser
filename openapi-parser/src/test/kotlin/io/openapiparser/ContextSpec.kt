@@ -33,7 +33,7 @@ class ContextSpec : StringSpec({
 
         ctx.read()
 
-        val bucket = ctx.`object`
+        val bucket = ctx.bucket
         bucket.size shouldBe 1
         bucket.getRawValue("openapi") shouldBe "3.0.3"
     }

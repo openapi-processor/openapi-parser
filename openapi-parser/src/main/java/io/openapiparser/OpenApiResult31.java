@@ -38,7 +38,7 @@ public class OpenApiResult31 implements OpenApiResult {
             throw new IllegalArgumentException ();
         }
 
-        return (T) new OpenApi (context, context.getBaseNode ());
+        return (T) new OpenApi (context, context.getBucket ());
     }
 
     @Override

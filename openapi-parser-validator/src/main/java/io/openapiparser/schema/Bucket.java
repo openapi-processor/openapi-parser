@@ -32,6 +32,12 @@ public class Bucket {
         this.properties = properties;
     }
 
+    public Bucket (String location, Map<String, Object> properties) {
+        this.source = null;
+        this.location = JsonPointer.fromJsonPointer (location);
+        this.properties = properties;
+    }
+
     public Bucket (JsonPointer location, Map<String, Object> properties) {
         this.source = null;
         this.location = location;

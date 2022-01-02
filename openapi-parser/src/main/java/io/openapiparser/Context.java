@@ -19,37 +19,37 @@ public class Context {
     private final URI baseUri;
     private final ReferenceResolver resolver;
 
-    private Bucket object;
+    private Bucket bucket;
 
     public Context (URI baseUri, ReferenceResolver resolver) {
         this.baseUri = baseUri;
         this.resolver = resolver;
-        this.object = Bucket.empty ();
+        this.bucket = Bucket.empty ();
     }
 
     public void read () throws ContextException {
         try {
             resolver.resolve ();
-            object = resolver.getObject ();
+            bucket = resolver.getObject ();
         } catch (Exception e) {
             throw new ContextException (String.format ("failed to read %s.", baseUri), e);
         }
     }
 
-    public Bucket getObject () {
-        return object;
+    public Bucket getBucket () {
+        return bucket;
     }
 
     public Map<String, Object> getRawObject () {
-        return object.getRawValues ();
+        return bucket.getRawValues ();
     }
 
     public Reference getReference (String ref) {
         return resolver.resolve (baseUri, ref);
     }
 
-    public @Nullable Bucket getRefObjectOrNull (Bucket properties) {
-        String ref = properties.convert (REF, new StringConverter());
+    public @Nullable Bucket getRefObjectOrNull (Bucket bucket) {
+        String ref = bucket.convert (REF, new StringConverter());
         if (ref == null)
             return null;
 
@@ -65,54 +65,5 @@ public class Context {
         }
 
         return new Bucket (JsonPointer.fromFragment (reference.getRef ()), value);
-    }
-
-    @Deprecated
-    public @Nullable Node getRefNodeOrNull(Node current) {
-        String ref = current.getStringValue (REF);
-        if (ref == null)
-            return null;
-
-        return getRefNode (current.getPath (), ref);
-    }
-
-    @Deprecated
-    public @Nullable Node getRefNodeOrNull(@Nullable String ref) {
-        if (ref == null)
-            return null;
-
-        return getRefNode (ref);
-    }
-
-    @Deprecated
-    public @Nullable Node getRefNode(String ref) {
-        final Reference reference = getReference (ref);
-        final Map<String, Object> value = reference.getValue();
-        if (value == null) {
-            // todo throw ResolverException ?
-            return null;
-        }
-        return new Node (String.format ("%s.$ref(%s)", "....", reference.getRef ()), value);
-    }
-
-    @Deprecated
-    public @Nullable Node getRefNode(String path, String ref) {
-        final Reference reference = getReference (ref);
-        final Map<String, Object> value = reference.getValue();
-        if (value == null) {
-            // todo throw ResolverException ?
-            return null;
-        }
-        return new Node (String.format ("%s.$ref(%s)", path, reference.getRef ()), value);
-    }
-
-    @Deprecated
-    public Node getBaseNode() {
-        return new Node(baseUri.toString (), object.getRawValues ());
-    }
-
-    @Deprecated
-    public URI getBaseUri () {
-        return baseUri;
     }
 }
