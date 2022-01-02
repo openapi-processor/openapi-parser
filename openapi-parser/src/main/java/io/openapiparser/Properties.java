@@ -105,9 +105,8 @@ public class Properties {
 
     /* String Collections */
 
-    protected <T> Collection<String> getStringsOrEmpty (String property) {
-        // todo
-        return Collections.emptyList ();
+    protected Collection<String> getStringsOrEmpty (String property) {
+        return bucket.convert (property, new StringsOrEmptyConverter ());
     }
 
     /* Maps */
