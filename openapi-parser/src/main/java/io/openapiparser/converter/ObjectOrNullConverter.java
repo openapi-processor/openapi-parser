@@ -23,7 +23,7 @@ public class ObjectOrNullConverter<T> implements PropertyConverter<T> {
 
     @Override
     public @Nullable T convert (String name, Object value, String location) {
-        Bucket bucket = new PropertyBucketConverter ().convert (name, value, location);
+        Bucket bucket = new BucketConverter ().convert (name, value, location);
         if (bucket == null)
             return null;
 

@@ -42,7 +42,7 @@ public class Properties {
     /* Strings */
 
     protected @Nullable String getStringOrNull (String property) {
-        return bucket.convert (property, new StringConverter ());
+        return bucket.convert (property, new StringOrNullConverter ());
     }
 
     protected String getStringOrThrow (String property) {

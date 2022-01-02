@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * converts property {@code value} to {@link Bucket} object.
  */
-public class PropertyBucketConverter implements PropertyConverter<Bucket> {
+public class BucketConverter implements PropertyConverter<Bucket> {
 
     @Override
     public @Nullable Bucket convert (String name, Object value, String location) {

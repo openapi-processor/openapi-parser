@@ -50,6 +50,6 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     private Bucket getProperties () {
-        return object.convert ("properties", new PropertyBucketConverter ());
+        return object.convert ("properties", new BucketConverter ());
     }
 }

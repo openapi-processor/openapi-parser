@@ -12,7 +12,7 @@ import static io.openapiparser.converter.Types.convertOrNull;
 /**
  * converts property {@code value} to {@link String} object.
  */
-public class StringConverter implements PropertyConverter<String> {
+public class StringOrNullConverter implements PropertyConverter<String> {
 
     @Override
     public @Nullable String convert (String name, Object value, String location) {

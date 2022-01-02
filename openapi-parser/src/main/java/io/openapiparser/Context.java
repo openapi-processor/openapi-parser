@@ -5,7 +5,7 @@
 
 package io.openapiparser;
 
-import io.openapiparser.converter.StringConverter;
+import io.openapiparser.converter.StringOrNullConverter;
 import io.openapiparser.schema.JsonPointer;
 import io.openapiparser.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -49,7 +49,7 @@ public class Context {
     }
 
     public @Nullable Bucket getRefObjectOrNull (Bucket bucket) {
-        String ref = bucket.convert (REF, new StringConverter());
+        String ref = bucket.convert (REF, new StringOrNullConverter ());
         if (ref == null)
             return null;
 
