@@ -5,7 +5,7 @@
 
 package io.openapiparser;
 
-import io.openapiparser.converter.StringConverterRequired;
+import io.openapiparser.converter.StringNotNullConverter;
 import io.openapiparser.schema.Bucket;
 
 import static io.openapiparser.Keywords.OPENAPI;
@@ -29,7 +29,7 @@ public class OpenApiParser {
 
     private OpenApiResult createResult (Bucket api) {
 //        String version = api.getRequiredStringValue (OPENAPI);
-        String version = api.convert (OPENAPI, new StringConverterRequired ());
+        String version = api.convert (OPENAPI, new StringNotNullConverter ());
 
         if (isVersion30 (version)) {
             return new OpenApiResult30 (context);

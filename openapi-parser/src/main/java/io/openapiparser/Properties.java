@@ -46,7 +46,7 @@ public class Properties {
     }
 
     protected String getStringOrThrow (String property) {
-        return bucket.convert (property, new StringConverterRequired ());
+        return bucket.convert (property, new StringNotNullConverter ());
     }
 
     /* Numbers */

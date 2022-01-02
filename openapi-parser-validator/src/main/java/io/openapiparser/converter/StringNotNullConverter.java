@@ -11,7 +11,7 @@ import static io.openapiparser.converter.Types.convertNotNull;
  * converts property {@code value} to {@link String} object and throws {@link NoValueException} if
  * the value does not exist.
  */
-public class StringConverterRequired implements PropertyConverter<String> {
+public class StringNotNullConverter implements PropertyConverter<String> {
 
     @Override
     public String convert (String name, Object value, String location) {
