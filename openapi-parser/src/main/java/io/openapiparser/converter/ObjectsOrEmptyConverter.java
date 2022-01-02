@@ -30,15 +30,21 @@ public class ObjectsOrEmptyConverter<T> implements PropertyConverter<Collection<
         if (objects == null)
             return Collections.emptyList ();
 
-        JsonPointer rootLocation = JsonPointer.fromJsonPointer (location);
+        JsonPointer parentLocation = JsonPointer.fromJsonPointer (location);
 
-        Collection<T> result = new ArrayList<> ();
         int index = 0;
-        for (Object obj : objects) {
-            String itemLocation = rootLocation.getJsonPointer (String.valueOf (index++));
-            T item = new ObjectOrThrowConverter<T> (context, object).convert (name, obj, itemLocation);
-            result.add (item);
+        Collection<T> result = new ArrayList<> ();
+        for (Object item : objects) {
+            result.add (create (name, item, getLocation(parentLocation, index++)));
         }
         return Collections.unmodifiableCollection (result);
+    }
+
+    private T create (String name, Object value, String location) {
+        return new ObjectNotNullConverter<T> (context, object).convert (name, value, location);
+    }
+
+    private String getLocation (JsonPointer parent, int index) {
+        return parent.getJsonPointer (String.valueOf (index));
     }
 }

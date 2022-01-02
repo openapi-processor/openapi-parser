@@ -90,11 +90,11 @@ public class Properties {
     /* Objects */
 
     protected <T> @Nullable T getObjectOrNull (String property, Class<T> clazz) {
-        return bucket.convert (property, new ObjectOrNullConverter<> (context, clazz));
+        return bucket.convert (property, new ObjectNullableConverter<> (context, clazz));
     }
 
     protected <T> T getObjectOrThrow (String property, Class<T> clazz) {
-        return bucket.convert (property, new ObjectOrThrowConverter<> (context, clazz));
+        return bucket.convert (property, new ObjectNotNullConverter<> (context, clazz));
     }
 
     /* Collections */

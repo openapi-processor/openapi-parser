@@ -10,9 +10,9 @@ import io.openapiparser.Context;
 /**
  *  get a {@link T} object from the property or throw if the property has no value.
  */
-public class ObjectOrThrowConverter<T> extends ObjectOrNullConverter<T> {
+public class ObjectNotNullConverter<T> extends ObjectNullableConverter<T> {
 
-    public ObjectOrThrowConverter (Context context, Class<T> object) {
+    public ObjectNotNullConverter (Context context, Class<T> object) {
         super (context, object);
     }
 

@@ -12,11 +12,11 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 /**
  *  get a {@link T} object from the property.
  */
-public class ObjectOrNullConverter<T> implements PropertyConverter<T> {
+public class ObjectNullableConverter<T> implements PropertyConverter<T> {
     private final Context context;
     private final Class<T> object;
 
-    public ObjectOrNullConverter (Context context, Class<T> object) {
+    public ObjectNullableConverter (Context context, Class<T> object) {
         this.context = context;
         this.object = object;
     }

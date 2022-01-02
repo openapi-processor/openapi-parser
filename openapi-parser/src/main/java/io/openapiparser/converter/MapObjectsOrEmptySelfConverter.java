@@ -24,18 +24,14 @@ public class MapObjectsOrEmptySelfConverter<T> implements PropertiesConverter<Ma
 
     @Override
     public Map<String, T> convert (Map<String, Object> properties, String location) {
-        ObjectOrNullConverter<T> converter = new ObjectOrNullConverter<> (context, object);
+        ObjectNullableConverter<T> converter = new ObjectNotNullConverter<> (context, object);
+
         Map<String, T> objects = new LinkedHashMap<> ();
 
         properties.forEach ((property, value) -> {
             String propertyLocation = getLocation (location, property);
-
-            T pathItem = converter.convert (property, value, propertyLocation);
-            if (pathItem == null) {
-                throw new NoValueException (propertyLocation);
-            }
-
-            objects.put (property, pathItem);
+            T propertyObject = converter.convert (property, value, propertyLocation);
+            objects.put (property, propertyObject);
         });
 
         return Collections.unmodifiableMap (objects);
