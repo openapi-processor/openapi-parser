@@ -37,6 +37,10 @@ public class Parameter extends Properties implements Reference, Extensions {
         return getStringOrThrow (REF);
     }
 
+    public Parameter getRefObject () {
+        return getRefObjectOrThrow (Parameter.class);
+    }
+
     @Override
     public @Nullable String getSummary () {
         return getStringOrNull (SUMMARY);

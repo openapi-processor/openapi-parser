@@ -38,7 +38,7 @@ public class Example extends Properties implements Reference, Extensions {
     }
 
     public Example getRefObject () {
-        return getRefObject (Example.class);
+        return getRefObjectOrThrow (Example.class);
     }
 
     public  @Nullable String getSummary () {

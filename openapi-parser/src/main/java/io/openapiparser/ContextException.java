@@ -7,6 +7,10 @@ package io.openapiparser;
 
 public class ContextException extends Exception {
 
+    public ContextException (String message) {
+        super(message);
+    }
+
     public ContextException (String message, Exception e) {
         super(message, e);
     }

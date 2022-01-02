@@ -36,8 +36,8 @@ public class PathItem extends Properties implements Reference, Extensions {
         return getStringOrThrow (REF);
     }
 
-    public Example getRefObject () {
-        return getRefObject (Example.class);
+    public PathItem getRefObject () {
+        return getRefObjectOrThrow (PathItem.class);
     }
 
     public  @Nullable String getSummary () {

@@ -81,8 +81,9 @@ class PathItemSpec : StringSpec({
             """.trimIndent())
             .buildOpenApi30()
 
-        val path = api.paths.getPathItem("/foo")
+        var path = api.paths.getPathItem("/foo")
         path?.ref shouldBe "#/path"
+        path = path?.refObject
         path?.summary shouldBe "a summary"
         path?.description shouldBe "a description"
     }

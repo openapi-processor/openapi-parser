@@ -32,10 +32,13 @@ public class Parameter extends Properties implements Reference, Extensions {
     }
 
     /** {@inheritDoc} */
-    @Required
     @Override
     public String getRef () {
         return getStringOrThrow (REF);
+    }
+
+    public Parameter getRefObject () {
+        return getRefObjectOrThrow (Parameter.class);
     }
 
     @Required

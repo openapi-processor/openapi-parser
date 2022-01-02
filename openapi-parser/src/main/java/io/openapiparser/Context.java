@@ -5,6 +5,7 @@
 
 package io.openapiparser;
 
+import io.openapiparser.converter.StringNotNullConverter;
 import io.openapiparser.converter.StringNullableConverter;
 import io.openapiparser.schema.JsonPointer;
 import io.openapiparser.schema.Bucket;
@@ -56,12 +57,19 @@ public class Context {
         return getRefObject (ref, ref);
     }
 
+    public @Nullable Bucket getRefObjectOrThrow (Bucket bucket) {
+        String ref = bucket.convert (REF, new StringNotNullConverter ());
+        return getRefObject (ref, ref);
+    }
+
+    // todo parameters
     public @Nullable Bucket getRefObject(String path, String ref) {
         final Reference reference = getReference (ref);
-        final Map<String, Object> value = reference.getValue();
+        final Map<String, Object> value = reference.getValue ();
         if (value == null) {
-            // todo throw ResolverException ?
             return null;
+            // todo throw?
+//            throw new ContextException (String.format ("$ref'erenced value %s is null", path));
         }
 
         return new Bucket (JsonPointer.fromFragment (reference.getRef ()), value);

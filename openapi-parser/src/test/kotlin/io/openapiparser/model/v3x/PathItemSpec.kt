@@ -47,10 +47,10 @@ class PathItemSpec: StringSpec({
         """
 
         val parameter30 = openapi30(source).paths .getPathItem("/foo")?.parameters?.first()
-        parameter30?.name shouldBe "ref name"
+        parameter30?.refObject?.name shouldBe "ref name"
 
         val parameter31 = openapi31(source).paths?.getPathItem("/foo")?.parameters?.first()
-        parameter31?.name shouldBe "ref name"
+        parameter31?.refObject?.name shouldBe "ref name"
     }
 
     "gets path item summary" {

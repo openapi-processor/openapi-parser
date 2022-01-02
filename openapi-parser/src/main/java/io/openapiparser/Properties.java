@@ -132,9 +132,12 @@ public class Properties {
 
     /* ref */
 
-    // todo OrThrow??
     protected <T> T getRefObject (Class<T> clazz) {
         return create (context.getRefObjectOrNull (bucket), clazz);
+    }
+
+    protected <T> T getRefObjectOrThrow (Class<T> clazz) {
+        return create (context.getRefObjectOrThrow (bucket), clazz);
     }
 
     private <T> T create (Bucket bucket, Class<T> clazz) {
