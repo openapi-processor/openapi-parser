@@ -42,6 +42,10 @@ public interface JsonSchema {
         return null;
     }
 
+    default int getMinItems () {
+        return 0;
+    }
+
     default boolean isUniqueItems () {
         return false;
     }

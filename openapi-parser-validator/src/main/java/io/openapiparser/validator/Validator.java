@@ -60,6 +60,12 @@ public class Validator {
                 }
             }
 
+            // draft4 - 5.11
+            int minItems = schema.getMinItems ();
+            if (array.size () < minItems) {
+                messages.add (new MinItemsError (uri.toString (), minItems));
+            }
+
             // draft4 - 5.12
             if (schema.isUniqueItems ()) {
                 Set<Object> items = new HashSet<> ();

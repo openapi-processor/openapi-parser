@@ -73,6 +73,15 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     @Override
+    public int getMinItems () {
+        Integer minItems = object.convert ("minItems", new IntegerConverter ());
+        if (minItems == null)
+            return 0;
+
+        return minItems;
+    }
+
+    @Override
     public boolean isUniqueItems () {
         Boolean unique = object.convert ("uniqueItems", new BooleanConverter ());
         if (unique == null)
