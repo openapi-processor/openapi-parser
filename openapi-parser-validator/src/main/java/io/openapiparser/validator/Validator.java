@@ -84,8 +84,7 @@ public class Validator {
 
                     final Collection<JsonSchema> items = schema.getItemsCollection ();
                     if (array.size () > items.size ()) {
-                        // todo report items size / schema path "items"
-                        messages.add (new ItemsSizeError (uri.toString ()));
+                        messages.add (new ItemsSizeError (uri.toString (), items.size()));
                     }
                 }
             }
