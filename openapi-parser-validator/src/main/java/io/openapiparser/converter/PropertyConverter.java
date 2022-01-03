@@ -23,12 +23,12 @@ public interface PropertyConverter<T> {
      * @return T converted value
      */
     // todo remove default
-    default @Nullable T convert (String name, Object value, String location) {
-        return convert (name, value);
-    }
-
-    @Deprecated
-    default T convert (String name, Object value) {
-        return null;
-    }
+//    default @Nullable T convert (String name, Object value, String location) {
+//        return convert (name, value);
+//    }
+    @Nullable T convert (String name, Object value, String location);
+//    @Deprecated
+//    default T convert (String name, Object value) {
+//        return null;
+//    }
 }

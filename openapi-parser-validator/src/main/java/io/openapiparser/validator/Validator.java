@@ -1,3 +1,8 @@
+/*
+ * Copyright 2021 https://github.com/openapi-processor/openapi-parser
+ * PDX-License-Identifier: Apache-2.0
+ */
+
 package io.openapiparser.validator;
 
 import io.openapiparser.schema.JsonPointer;
@@ -9,6 +14,9 @@ import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+/**
+ * the validator.
+ */
 public class Validator {
 
     public  Collection<ValidationMessage> validate(JsonSchema schema, Object document) {
@@ -68,6 +76,21 @@ public class Validator {
         if (source instanceof Collection) {
             Collection<Object> array = asArray (source);
 
+            // draft4 - 5.9
+            JsonSchema.Items has = schema.hasItems ();
+            if (has == JsonSchema.Items.MULTIPLE) {
+                JsonSchema additional = schema.getAdditionalItems ();
+                if (additional != null && additional.isFalse()) {
+
+                    final Collection<JsonSchema> items = schema.getItemsCollection ();
+                    if (array.size () > items.size ()) {
+                        // todo report items size / schema path "items"
+                        messages.add (new ItemsSizeError (uri.toString ()));
+                    }
+                }
+            }
+
+            // draft4 - 5.12
             if (schema.isUniqueItems ()) {
                 Set<Object> items = new HashSet<> ();
                 for (Object item : array) {
@@ -83,7 +106,7 @@ public class Validator {
 
             // document get property
             object.forEach ((propName, propValue) -> {
-                final JsonSchema propSchema = schema.getPropertySchema (propName);
+                final JsonSchema propSchema = schema.getJsonSchema (propName);
                 if (propSchema == null) {
                     return;
                 }

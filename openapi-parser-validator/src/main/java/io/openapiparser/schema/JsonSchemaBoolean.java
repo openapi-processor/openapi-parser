@@ -1,12 +1,13 @@
+/*
+ * Copyright 2021 https://github.com/openapi-processor/openapi-parser
+ * PDX-License-Identifier: Apache-2.0
+ */
+
 package io.openapiparser.schema;
-
-import org.checkerframework.checker.nullness.qual.Nullable;
-
-import java.net.URI;
 
 public class JsonSchemaBoolean implements JsonSchema {
     private final JsonPointer pointer;
-    private final Boolean content;
+    private final boolean content;
 
     public JsonSchemaBoolean (Boolean content) {
         this.pointer = JsonPointer.EMPTY;
@@ -19,23 +20,7 @@ public class JsonSchemaBoolean implements JsonSchema {
     }
 
     @Override
-    public @Nullable URI getMetaSchema () {
-        return null;
+    public boolean isFalse () {
+        return !content;
     }
-
-    @Override
-    public @Nullable URI getId () {
-        return null;
-    }
-
-    @Override
-    public boolean isUniqueItems () {
-        return false;
-    }
-
-    @Override
-    public @Nullable JsonSchema getPropertySchema (String propName) {
-        return null;
-    }
-
 }
