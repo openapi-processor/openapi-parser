@@ -7,6 +7,7 @@ package io.openapiparser.validator;
 
 import io.openapiparser.schema.JsonPointer;
 import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.validator.messages.*;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.io.UnsupportedEncodingException;

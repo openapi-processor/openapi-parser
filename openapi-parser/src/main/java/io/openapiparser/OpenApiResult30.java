@@ -9,7 +9,7 @@ import io.openapiparser.model.v30.OpenApi;
 import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.schema.SchemaStore;
 import io.openapiparser.validator.Validator;
-import io.openapiparser.validator.ValidationMessage;
+import io.openapiparser.validator.messages.ValidationMessage;
 
 import java.util.Collection;
 import java.util.Collections;

@@ -3,7 +3,9 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.validator;
+package io.openapiparser.validator.messages;
+
+import io.openapiparser.validator.messages.ValidationMessage;
 
 /**
  * draft4 - 5.12

@@ -6,7 +6,7 @@
 package io.openapiparser;
 
 import io.openapiparser.schema.SchemaStore;
-import io.openapiparser.validator.ValidationMessage;
+import io.openapiparser.validator.messages.ValidationMessage;
 import io.openapiparser.validator.Validator;
 
 import java.util.Collection;
