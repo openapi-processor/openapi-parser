@@ -9,6 +9,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
 import java.util.Collection;
+import java.util.Collections;
 
 public interface JsonSchema {
 
@@ -48,6 +49,10 @@ public interface JsonSchema {
 
     default boolean isUniqueItems () {
         return false;
+    }
+
+    default JsonSchema getAdditionalProperties () {
+        return new JsonSchemaObject (Collections.emptyMap ());
     }
 
     default @Nullable JsonSchema getJsonSchema (String propName) {

@@ -90,6 +90,15 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     @Override
+    public JsonSchema getAdditionalProperties () {
+        final JsonSchema schema = getJsonSchemaOf ("additionalProperties");
+        if (schema == null)
+            return JsonSchema.super.getAdditionalProperties ();
+
+        return schema;
+    }
+
+    @Override
     public @Nullable JsonSchema getJsonSchema (String property) {
         return properties.convert (property, new JsonSchemaConverter ());
     }

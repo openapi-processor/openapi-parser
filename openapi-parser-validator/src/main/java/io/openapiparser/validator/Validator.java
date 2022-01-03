@@ -76,13 +76,16 @@ public class Validator {
             }
         } else if (current instanceof Map) {
             Map<String, Object> object = asObject (current);
-            // schema.getRequiredProperties()
-            // check document has required properties
 
-            // document get property
             object.forEach ((propName, propValue) -> {
                 final JsonSchema propSchema = schema.getJsonSchema (propName);
                 if (propSchema == null) {
+
+                    // draft4 - 5.18
+                    if (schema.getAdditionalProperties().isFalse()) {
+                        messages.add (new AdditionalPropertiesError (append (uri, propName).toString ()));
+                    }
+
                     return;
                 }
                 messages.addAll (validate (propSchema, source, append (uri, propName)));
