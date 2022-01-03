@@ -28,9 +28,7 @@ public class Validator {
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
         // get document "node"
-
-        Object value;
-        value = getValue(source, uri);
+        Object current = getValue(source, uri);
 
         // if
         // then
@@ -45,8 +43,8 @@ public class Validator {
         // collection
         // map
 
-        if (source instanceof Collection) {
-            Collection<Object> array = asArray (source);
+        if (current instanceof Collection) {
+            Collection<Object> array = asArray (current);
 
             // draft4 - 5.9
             JsonSchema.Items has = schema.hasItems ();
@@ -76,8 +74,8 @@ public class Validator {
                     }
                 }
             }
-        } else if (source instanceof Map) {
-            Map<String, Object> object = asObject (source);
+        } else if (current instanceof Map) {
+            Map<String, Object> object = asObject (current);
             // schema.getRequiredProperties()
             // check document has required properties
 
@@ -87,7 +85,7 @@ public class Validator {
                 if (propSchema == null) {
                     return;
                 }
-                validate (propSchema, source, append(uri, propName));
+                messages.addAll (validate (propSchema, source, append (uri, propName)));
             });
         }
 

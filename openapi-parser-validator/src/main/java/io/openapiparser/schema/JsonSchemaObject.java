@@ -9,8 +9,7 @@ import io.openapiparser.converter.*;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
 
 public class JsonSchemaObject implements JsonSchema {
     private final Bucket object;
