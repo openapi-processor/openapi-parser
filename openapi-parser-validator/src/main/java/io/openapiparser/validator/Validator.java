@@ -30,12 +30,6 @@ public class Validator {
 
         Object value;
         value = getValue(source, uri);
-//        Object object;
-//        try {
-//          object = getObject(document, uri);
-//        } catch (MissingPathException e) {
-//          throw new IllegalStateException(e);
-//        }
 
         // if
         // then
@@ -50,29 +44,6 @@ public class Validator {
         // collection
         // map
 
-        /*
-              if (schema.isUniqueItems()) {
-        Collection<Object> items = new HashSet<>();
-        for (Object o : jsonArray) {
-          if (!items.add(makeComparable(o))) {
-            error.accept(new UniqueItemsError(uri, document, schema));
-          }
-        }
-      }
-      package net.jimblackler.jsonschemafriend;
-
-      public class ComparableUtils {
-        static Object makeComparable(Object a) {
-          if (a == null) {
-            return new ComparableNull();
-          } else if (a instanceof Number) {
-            return ((Number) a).doubleValue();
-          }
-          return a;
-        }
-      }
-
-         */
         if (source instanceof Collection) {
             Collection<Object> array = asArray (source);
 
