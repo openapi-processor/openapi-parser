@@ -14,6 +14,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * the validator.
@@ -80,12 +82,20 @@ public class Validator {
             object.forEach ((propName, propValue) -> {
                 final JsonSchema propSchema = schema.getJsonSchema (propName);
                 if (propSchema == null) {
-
                     // draft4 - 5.18
                     if (schema.getAdditionalProperties().isFalse()) {
+
+                        // draft4 - 5.17
+                        Map<String, JsonSchema> patterns = schema.getPatternProperties ();
+                        for (String pattern : patterns.keySet ()) {
+                            Pattern p = Pattern.compile(pattern);
+                            Matcher m = p.matcher(propName);
+                            if (m.find())
+                                return;
+                        }
+
                         messages.add (new AdditionalPropertiesError (append (uri, propName).toString ()));
                     }
-
                     return;
                 }
                 messages.addAll (validate (propSchema, source, append (uri, propName)));

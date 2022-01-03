@@ -8,8 +8,7 @@ package io.openapiparser.schema;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
 public interface JsonSchema {
 
@@ -49,6 +48,10 @@ public interface JsonSchema {
 
     default boolean isUniqueItems () {
         return false;
+    }
+
+    default Map<String, JsonSchema> getPatternProperties () {
+        return Collections.emptyMap ();
     }
 
     default JsonSchema getAdditionalProperties () {

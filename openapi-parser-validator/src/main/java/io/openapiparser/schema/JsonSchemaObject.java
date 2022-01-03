@@ -90,6 +90,12 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     @Override
+    public Map<String, JsonSchema> getPatternProperties () {
+        // todo escape regex \
+        return object.convert ("patternProperties", new MapJsonSchemasConverter ());
+    }
+
+    @Override
     public JsonSchema getAdditionalProperties () {
         final JsonSchema schema = getJsonSchemaOf ("additionalProperties");
         if (schema == null)
@@ -112,6 +118,10 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     private Bucket getProperties () {
-        return object.convert ("properties", new BucketConverter ());
+        Bucket bucket = object.convert ("properties", new BucketConverter ());
+        if (bucket == null)
+            return Bucket.empty ();
+
+        return bucket;
     }
 }
