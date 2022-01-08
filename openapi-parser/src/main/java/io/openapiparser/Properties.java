@@ -7,6 +7,7 @@ package io.openapiparser;
 
 import io.openapiparser.converter.*;
 import io.openapiparser.schema.Bucket;
+import io.openapiparser.schema.JsonPointer;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.*;
@@ -21,6 +22,14 @@ public class Properties {
     protected Properties (Context context, Bucket bucket) {
         this.context = context;
         this.bucket = bucket;
+    }
+
+    /* json pointer */
+
+    // @Experimental
+    public @Nullable Object getRawValueOf (String pointer) {
+        final JsonPointer target = JsonPointer.fromJsonPointer (pointer);
+        return target.getValue (bucket.getRawValues ());
     }
 
     /* raw */
