@@ -39,6 +39,10 @@ public class Schema extends Properties implements Reference, Extensions {
         return getStringOrThrow (REF);
     }
 
+    public Schema getRefObject () {
+        return getRefObjectOrThrow (Schema.class);
+    }
+
     /**
      * JSON Schema Validation: validation keyword
      */
