@@ -7,12 +7,12 @@ package io.openapiparser
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
-import io.openapiparser.support.TestBuilder
+import io.openapiparser.support.ApiBuilder
 
 class OpenApiParserSpec: StringSpec({
 
     "detects openapi 3.0" {
-        val parser = TestBuilder()
+        val parser = ApiBuilder()
             .withApi("""
                 openapi: 3.0.3
             """.trimIndent())
@@ -24,7 +24,7 @@ class OpenApiParserSpec: StringSpec({
     }
 
     "detects openapi 3.1" {
-        val parser = TestBuilder()
+        val parser = ApiBuilder()
             .withApi("""
                 openapi: 3.1.0                
             """.trimIndent())

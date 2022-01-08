@@ -15,21 +15,20 @@ import java.net.URI
 import io.openapiparser.model.v30.OpenApi as OpenApi30
 import io.openapiparser.model.v31.OpenApi as OpenApi31
 
-// ApiBuilder
-class TestBuilder {
+class ApiBuilder {
     private var api: String? = null
     private lateinit var apiUri: URI
 
-    fun withApi(api: String): TestBuilder {
+    fun withApi(api: String): ApiBuilder {
         return withYaml("file:///any", api.trimIndent())
     }
 
-    fun withApi(api: URI): TestBuilder {
+    fun withApi(api: URI): ApiBuilder {
         this.apiUri = api
         return this
     }
 
-    fun withResource(api: String): TestBuilder {
+    fun withResource(api: String): ApiBuilder {
         this.apiUri = this::class.java.getResource(api)!!.toURI()
         return this
     }
@@ -75,7 +74,7 @@ class TestBuilder {
         return Context(apiUri, resolver)
     }
 
-    private fun withYaml(baseUri: String, api: String): TestBuilder {
+    private fun withYaml(baseUri: String, api: String): ApiBuilder {
         this.apiUri = URI(baseUri)
         this.api = api
         return this
@@ -96,7 +95,7 @@ class TestBuilder {
  * @param content the object properties (yaml)
  */
 fun <T> buildObject(clazz: Class<T>, content: String = "{}"): T {
-    return TestBuilder()
+    return ApiBuilder()
         .withApi(content)
         .build(clazz)
 }

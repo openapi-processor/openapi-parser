@@ -9,12 +9,12 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import io.openapiparser.support.TestBuilder
+import io.openapiparser.support.ApiBuilder
 
 class PathItemSpec : StringSpec({
 
     "gets path item object" {
-        val api = TestBuilder()
+        val api = ApiBuilder()
             .withApi("""
                 paths:
                   /foo:
@@ -54,7 +54,7 @@ class PathItemSpec : StringSpec({
     }
 
     "gets path item parameters with \$ref" {
-        val api = TestBuilder()
+        val api = ApiBuilder()
             .withApi("""
                 paths:
                   /foo:
@@ -70,7 +70,7 @@ class PathItemSpec : StringSpec({
     }
 
     "gets \$ref path item object" {
-        val api = TestBuilder()
+        val api = ApiBuilder()
             .withApi("""
                 paths:
                   /foo:

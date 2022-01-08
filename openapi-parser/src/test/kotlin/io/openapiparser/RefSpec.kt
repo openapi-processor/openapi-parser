@@ -7,12 +7,12 @@ package io.openapiparser
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
-import io.openapiparser.support.TestBuilder
+import io.openapiparser.support.ApiBuilder
 
 class RefSpec: StringSpec({
 
     "ref-into-another-file" {
-        val api = TestBuilder()
+        val api = ApiBuilder()
             .withResource("/v30/ref-into-another-file/openapi.yaml")
             .buildOpenApi30()
 
