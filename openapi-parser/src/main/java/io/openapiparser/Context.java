@@ -54,16 +54,16 @@ public class Context {
         if (ref == null)
             return null;
 
-        return getRefObject (ref, ref);
+        return getRefObject (ref);
     }
 
     public @Nullable Bucket getRefObjectOrThrow (Bucket bucket) {
         String ref = bucket.convert (REF, new StringNotNullConverter ());
-        return getRefObject (ref, ref);
+        return getRefObject (ref);
     }
 
     // todo parameters
-    public @Nullable Bucket getRefObject(String path, String ref) {
+    public @Nullable Bucket getRefObject(String ref) {
         final Reference reference = getReference (ref);
         final Map<String, Object> value = reference.getValue ();
         if (value == null) {
