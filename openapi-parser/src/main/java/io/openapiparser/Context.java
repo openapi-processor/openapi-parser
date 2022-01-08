@@ -26,6 +26,7 @@ public class Context {
     private final URI baseUri;
     private final ReferenceResolver resolver;
 
+    @Deprecated
     private Bucket bucket; // do we need this????
 
     public Context (URI baseUri, ReferenceResolver resolver) {
@@ -34,6 +35,7 @@ public class Context {
         this.bucket = Bucket.empty ();
     }
 
+    @Deprecated
     public void read () throws ContextException {
         try {
             resolver.resolve ();
@@ -43,10 +45,22 @@ public class Context {
         }
     }
 
+    // todo rename
+    public Bucket readIt () throws ContextException {
+        try {
+            resolver.resolve ();
+            return resolver.getObject ();
+        } catch (Exception e) {
+            throw new ContextException (String.format ("failed to read %s.", baseUri), e);
+        }
+    }
+
+    @Deprecated // trying to remove
     public Bucket getBucket () {
         return bucket;
     }
 
+    @Deprecated
     public Map<String, Object> getRawObject () {
         return bucket.getRawValues ();
     }

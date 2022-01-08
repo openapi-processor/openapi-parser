@@ -15,7 +15,7 @@ import java.util.Map;
 import static io.openapiparser.converter.Types.convertOrNull;
 
 /**
- * resolves all $ref'erences of the base document loading all referenced documents.
+ * resolves all $ref's of the base document loading all referenced documents.
  */
 public class ReferenceResolver {
     private static final String HASH = "#";
@@ -36,6 +36,7 @@ public class ReferenceResolver {
         this.object = Bucket.empty ();
     }
 
+    // todo could return object ????
     public void resolve () throws ResolverException {
         initBaseDocument ();
         collectReferences ();

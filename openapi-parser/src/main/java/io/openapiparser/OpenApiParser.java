@@ -19,8 +19,8 @@ public class OpenApiParser {
 
     public OpenApiResult parse() throws Exception {
         try {
-            context.read ();
-            return createResult (context.getBucket ());
+//            context.read ();
+            return createResult (context.readIt ());
         } catch (Exception e) {
             // todo
             throw e;
@@ -32,9 +32,9 @@ public class OpenApiParser {
         String version = api.convert (OPENAPI, new StringNotNullConverter ());
 
         if (isVersion30 (version)) {
-            return new OpenApiResult30 (context);
+            return new OpenApiResult30 (context, api);
         } else if (isVersion31 (version)) {
-            return new OpenApiResult31 (context);
+            return new OpenApiResult31 (context, api);
         } else {
             // todo unknown version
             throw new RuntimeException ();
