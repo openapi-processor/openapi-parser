@@ -1,0 +1,36 @@
+openapi: 3.0.3
+info:
+  title: array with item ref
+  version: 1.0.0
+
+paths:
+  /array:
+    get:
+      responses:
+        '200':
+          description: bar
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Bar'
+
+components:
+  schemas:
+
+    Foo:
+      type: object
+      properties:
+        foo:
+          type: string
+
+    Bar:
+      type: object
+      properties:
+        bar:
+          type: string
+        foos:
+          type: array
+          items:
+            $ref: '#/components/schemas/Foo'
