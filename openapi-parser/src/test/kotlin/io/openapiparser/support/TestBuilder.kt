@@ -5,81 +5,47 @@
 
 package io.openapiparser.support
 
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.openapiparser.*
 import io.openapiparser.jackson.JacksonConverter
 import io.openapiparser.reader.StringReader
+import io.openapiparser.reader.UriReader
 import io.openapiparser.schema.Bucket
 import java.net.URI
 import io.openapiparser.model.v30.OpenApi as OpenApi30
 import io.openapiparser.model.v31.OpenApi as OpenApi31
 
+// ApiBuilder
 class TestBuilder {
-    private lateinit var baseUri: URI
     private var api: String? = null
+    private lateinit var apiUri: URI
 
     fun withApi(api: String): TestBuilder {
         return withYaml("file:///any", api.trimIndent())
     }
 
-    fun withYaml(yml: String): TestBuilder {
-        return withYaml("file:///yaml", yml)
-    }
-
-    fun withYaml(baseUri: String, api: String): TestBuilder {
-        this.baseUri = URI(baseUri)
-        this.api = api
+    fun withApi(api: URI): TestBuilder {
+        this.apiUri = api
         return this
     }
 
-//    fun withUri(baseURI: URI): TestBuilder {
-//        this.baseUri = baseURI
-//        return this
-//    }
-
-//    fun withUri(baseUri: String): TestBuilder {
-//        this.baseUri = URI(baseUri)
-//        return this
-//    }
-
-    fun buildParser(): OpenApiParser {
-        val resolver = ReferenceResolver(
-            baseUri,
-            StringReader(api),
-            JacksonConverter(),
-            ReferenceRegistry())
-        val context = Context(baseUri, resolver)
-        return OpenApiParser(context)
+    fun withResource(api: String): TestBuilder {
+        this.apiUri = this::class.java.getResource(api)!!.toURI()
+        return this
     }
 
-    fun buildContext(): Context {
-        val resolver = ReferenceResolver(
-            baseUri,
-            StringReader(api),
-            JacksonConverter(),
-            ReferenceRegistry())
-        val context = Context(baseUri, resolver)
-        context.read()
-        return context
+    fun buildParser(): OpenApiParser {
+        return OpenApiParser(createContext())
     }
 
     fun buildOpenApi30(): OpenApi30 {
-        val resolver = ReferenceResolver(
-            baseUri,
-            StringReader(api),
-            JacksonConverter(),
-            ReferenceRegistry())
-        val context = Context(baseUri, resolver)
+        val context = createContext()
         context.read()
         return OpenApi30(context, context.bucket)
     }
 
     fun buildOpenApi31(): OpenApi31 {
-        val resolver = ReferenceResolver(
-            baseUri,
-            StringReader(api),
-            JacksonConverter(),
-            ReferenceRegistry())
-        val context = Context(baseUri, resolver)
+        val context = createContext()
         context.read()
         return OpenApi31(context, context.bucket)
     }
@@ -92,15 +58,34 @@ class TestBuilder {
     }
 
     private fun <T> build(factory: (context: Context, bucket: Bucket) -> T): T {
+        val context = createContext()
+        context.read()
+        return factory(context, context.bucket)
+    }
+
+    private fun createContext(): Context {
+        apiUri.shouldNotBeNull()
+
         val resolver = ReferenceResolver(
-            baseUri,
-            StringReader(api),
+            apiUri,
+            getReader(),
             JacksonConverter(),
             ReferenceRegistry()
         )
-        val context = Context(baseUri, resolver)
-        context.read()
-        return factory(context, context.bucket)
+        return Context(apiUri, resolver)
+    }
+
+    private fun withYaml(baseUri: String, api: String): TestBuilder {
+        this.apiUri = URI(baseUri)
+        this.api = api
+        return this
+    }
+
+    private fun getReader(): Reader {
+        if (api == null) {
+            return UriReader()
+        }
+        return StringReader(api)
     }
 }
 
