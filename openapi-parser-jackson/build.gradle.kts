@@ -3,7 +3,6 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":openapi-parser-base"))
     implementation(project(":openapi-parser-interfaces"))
 
     implementation(platform(libs.jackson.bom))

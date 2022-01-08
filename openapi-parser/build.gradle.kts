@@ -10,7 +10,6 @@ plugins {
 //}
 
 dependencies {
-    implementation(project(":openapi-parser-base"))
     implementation(project(":openapi-parser-support"))
     implementation(project(":openapi-parser-validator"))
     implementation(project(":openapi-parser-interfaces"))
