@@ -5,6 +5,7 @@
 
 package io.openapiparser.jackson;
 
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import io.openapiparser.*;
@@ -22,8 +23,8 @@ public class JacksonConverter implements Converter {
     private static final ObjectMapper yaml = new ObjectMapper(new YAMLFactory ());
 
     public JacksonConverter () {
-//        json.disable (MapperFeature.USE_ANNOTATIONS);
-//        yaml.disable (MapperFeature.USE_ANNOTATIONS);
+        json.disable (MapperFeature.USE_ANNOTATIONS);
+        yaml.disable (MapperFeature.USE_ANNOTATIONS);
     }
 
     @Override
