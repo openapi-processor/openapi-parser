@@ -1,0 +1,5 @@
+Foo:
+  type: object
+  properties:
+    bar:
+      $ref: 'bar.yaml#/Bar'
