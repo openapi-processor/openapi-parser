@@ -61,7 +61,6 @@ public class Context {
         return getRefObject (ref);
     }
 
-    // todo parameters
     public @Nullable Bucket getRefObject(String ref) {
         final Reference reference = getReference (ref);
         final Map<String, Object> value = reference.getValue ();
@@ -71,6 +70,5 @@ public class Context {
 //            throw new ContextException (String.format ("$ref'erenced value %s is null", path));
         }
         return new Bucket (reference.getDocumentUri (), reference.getRefRelative (), value);
-//        return new Bucket (JsonPointer.fromFragment (reference.getRef ()), value);
     }
 }
