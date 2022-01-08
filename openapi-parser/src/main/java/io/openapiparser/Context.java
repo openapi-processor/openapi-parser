@@ -15,11 +15,18 @@ import java.util.Map;
 
 import static io.openapiparser.Keywords.REF;
 
+/**
+ * the context is used to resolve $ref's.
+ *
+ * All model objects have a context. Objects from the same source file will re-use the same context.
+ * Objects from different source files will have different {@link Context} objects. If a $ref links
+ * to another source file the "current" context will create a new context with the new source file.
+ */
 public class Context {
     private final URI baseUri;
     private final ReferenceResolver resolver;
 
-    private Bucket bucket;
+    private Bucket bucket; // do we need this????
 
     public Context (URI baseUri, ReferenceResolver resolver) {
         this.baseUri = baseUri;
@@ -70,5 +77,21 @@ public class Context {
 //            throw new ContextException (String.format ("$ref'erenced value %s is null", path));
         }
         return new Bucket (reference.getDocumentUri (), reference.getRefRelative (), value);
+    }
+
+    /**
+     * get a context with the given source uri.
+     *
+     * If this context has the same source uri it will return itself otherwise it will create a new
+     * context with the given source uri.
+     *
+     * @param source the new source uri.
+     * @return context with the source uri
+     */ // todo should setup internal bucket...  do we need it???
+    public Context withSource (URI source) {
+        if (baseUri.equals (source)) {
+            return this;
+        }
+        return new Context (source, resolver);
     }
 }

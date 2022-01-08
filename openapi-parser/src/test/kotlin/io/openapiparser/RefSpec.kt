@@ -127,5 +127,25 @@ class RefSpec: StringSpec({
         parameterRef.`in` shouldBe "query"
         parameterRef.name shouldBe "bar"
     }
+
+    "parses ref relative to current file" {
+        val api = ApiBuilder()
+            .withResource("/v30/ref-is-relative-to-current-file/openapi.yaml")
+            .buildOpenApi30()
+
+        val schema = api.getResponseSchema("/foo", "200", "application/json")
+        schema.ref shouldBe "schemas/foo.yaml#/Foo"
+
+        val foo = schema.refObject
+        foo.type shouldBe "object"
+        foo.properties.size shouldBe 1
+        foo.properties["bar"]!!.ref shouldBe "bar.yaml#/Bar"
+
+        val tmp = foo.properties["bar"]
+        val bar = tmp!!.refObject
+        bar.type shouldBe "object"
+        bar.properties.size shouldBe 1
+        bar.properties["bar"]!!.type shouldBe "string"
+    }
 })
 

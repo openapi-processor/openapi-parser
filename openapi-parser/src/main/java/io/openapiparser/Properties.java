@@ -156,11 +156,11 @@ public class Properties {
         return create (context.getRefObjectOrThrow (bucket), clazz);
     }
 
-    private <T> T create (Bucket bucket, Class<T> clazz) {
+    private <T> T create (Bucket targetBucket, Class<T> clazz) {
         try {
             return clazz
                 .getDeclaredConstructor (Context.class, Bucket.class)
-                .newInstance (context, bucket);
+                .newInstance (context.withSource (targetBucket.getSource ()), targetBucket);
         } catch (Exception e) {
             throw new RuntimeException (String.format("failed to create %s", clazz.getName ()), e);
         }
