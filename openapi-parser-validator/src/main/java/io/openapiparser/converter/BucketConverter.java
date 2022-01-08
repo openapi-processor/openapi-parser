@@ -11,12 +11,16 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.Map;
 
 import static io.openapiparser.converter.Types.asMap;
-import static io.openapiparser.schema.JsonPointer.fromJsonPointer;
 
 /**
  * converts the property {@link Map} {@code value} to a {@link Bucket}.
  */
 public class BucketConverter implements PropertyConverter<Bucket> {
+    private final Bucket parent;
+
+    public BucketConverter (Bucket parent) {
+        this.parent = parent;
+    }
 
     @Override
     public @Nullable Bucket convert (String name, Object value, String location) {
@@ -26,6 +30,6 @@ public class BucketConverter implements PropertyConverter<Bucket> {
         if (!(value instanceof Map))
             throw new TypeMismatchException (location, Map.class);
 
-        return new Bucket (fromJsonPointer (location), asMap (value));
+        return new Bucket (parent.getSource (), location, asMap (value));
     }
 }

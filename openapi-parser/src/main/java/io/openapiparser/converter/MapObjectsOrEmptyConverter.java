@@ -25,7 +25,7 @@ public class MapObjectsOrEmptyConverter<T> implements PropertyConverter<Map<Stri
 
     @Override
     public Map<String, T> convert (String name, Object value, String location) {
-        Bucket bucket = new BucketConverter ().convert (name, value, location);
+        Bucket bucket = new BucketConverter (context.getBucket ()).convert (name, value, location);
         if (bucket == null)
             return Collections.emptyMap ();
 

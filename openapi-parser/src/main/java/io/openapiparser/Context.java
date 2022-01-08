@@ -7,7 +7,6 @@ package io.openapiparser;
 
 import io.openapiparser.converter.StringNotNullConverter;
 import io.openapiparser.converter.StringNullableConverter;
-import io.openapiparser.schema.JsonPointer;
 import io.openapiparser.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -71,7 +70,7 @@ public class Context {
             // todo throw?
 //            throw new ContextException (String.format ("$ref'erenced value %s is null", path));
         }
-
-        return new Bucket (JsonPointer.fromFragment (reference.getRef ()), value);
+        return new Bucket (reference.getDocumentUri (), reference.getRefRelative (), value);
+//        return new Bucket (JsonPointer.fromFragment (reference.getRef ()), value);
     }
 }

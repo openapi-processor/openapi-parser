@@ -25,29 +25,41 @@ public class Bucket {
         return new Bucket (Collections.emptyMap ());
     }
 
-    @Deprecated
-    public Bucket (Map<String, Object> properties) {
+    private Bucket (Map<String, Object> properties) {
         this.source = null;
         this.location = JsonPointer.EMPTY;
         this.properties = properties;
     }
 
+    @Deprecated
     public Bucket (String location, Map<String, Object> properties) {
         this.source = null;
         this.location = JsonPointer.fromJsonPointer (location);
         this.properties = properties;
     }
 
+    @Deprecated
     public Bucket (JsonPointer location, Map<String, Object> properties) {
         this.source = null;
         this.location = location;
         this.properties = properties;
     }
 
+    @Deprecated
     public Bucket (URI source, Map<String, Object> properties) {
         this.source = source;
         this.location = JsonPointer.fromFragment (source.getRawFragment ());
         this.properties = properties;
+    }
+
+    public Bucket (URI source, String location, Map<String, Object> properties) {
+        this.source = source;
+        this.location = JsonPointer.fromJsonPointer (location);
+        this.properties = properties;
+    }
+
+    public URI getSource () {
+        return source;
     }
 
     /**
@@ -142,7 +154,7 @@ public class Bucket {
      *
      * @param property property name
      * @param handler node handler
-     */
+     */ // to walkProperty
     public void traverseProperty (String property, PropertiesHandler handler) {
         Object value = getRawValue (property);
         JsonPointer propertyLocation = location.append (property);

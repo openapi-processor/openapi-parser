@@ -118,7 +118,7 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     private Bucket getProperties () {
-        Bucket bucket = object.convert ("properties", new BucketConverter ());
+        Bucket bucket = object.convert ("properties", new BucketConverter (object));
         if (bucket == null)
             return Bucket.empty ();
 
