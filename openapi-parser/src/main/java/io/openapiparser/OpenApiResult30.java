@@ -54,9 +54,3 @@ public class OpenApiResult30 implements OpenApiResult {
 
 }
 
-/*
-        val converter = JacksonConverter()
-        val draftSource = ValidateSpec::class.java.getResourceAsStream("/json/draft-04/schema.json")
-        val draft4Object = converter.convert(Strings.of(draftSource))
-
- */
