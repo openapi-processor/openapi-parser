@@ -12,13 +12,12 @@ import io.openapiparser.support.getResponseSchema
 
 class RefSpec: StringSpec({
 
-    "ref-into-another-file" {
+    "parses ref into another file" {
         val api = ApiBuilder()
             .withResource("/v30/ref-into-another-file/openapi.yaml")
             .buildOpenApi30()
 
         val schema = api.getResponseSchema("/foo", "200", "application/json")
-
         schema.ref shouldBe "foo.yaml#/Foo"
 
         val ref = schema.refObject
@@ -27,7 +26,7 @@ class RefSpec: StringSpec({
         ref.properties["bar"]!!.type shouldBe "string"
     }
 
-    "ref-array-items-nested" {
+    "parses ref array items with nested ref" {
         val api = ApiBuilder()
             .withResource("/v30/ref-array-items-nested/openapi.yaml")
             .buildOpenApi30()
@@ -51,5 +50,23 @@ class RefSpec: StringSpec({
         fooRef.properties["foo"]!!.type shouldBe "string"
     }
 
+    "parses ref loop" {
+        val api = ApiBuilder()
+            .withResource("/v30/ref-loop/openapi.yaml")
+            .buildOpenApi30()
+
+        val schema = api.getResponseSchema("/self-reference", "200", "application/json")
+        schema.ref shouldBe "#/components/schemas/Self"
+
+        val ref = schema.refObject
+        ref.type shouldBe "object"
+        ref.properties.size shouldBe 1
+        ref.properties["self"]!!.ref shouldBe "#/components/schemas/Self"
+
+        val refRef = ref.properties["self"]!!.ref
+        ref.type shouldBe "object"
+        ref.properties.size shouldBe 1
+        ref.properties["self"]!!.ref shouldBe "#/components/schemas/Self"
+    }
 })
 
