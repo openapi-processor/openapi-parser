@@ -7,8 +7,10 @@ package io.openapiparser;
 
 import java.lang.annotation.*;
 
+/**
+ * marks required OpenAPI properties. It is used for documentation only.
+ */
 @Documented
 @Retention (RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE_USE, ElementType.PARAMETER})
-public @interface NotNull {
-}
+@Target({ElementType.METHOD})
+public @interface Required {}

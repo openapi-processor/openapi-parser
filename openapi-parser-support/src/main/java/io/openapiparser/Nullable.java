@@ -7,6 +7,12 @@ package io.openapiparser;
 
 import java.lang.annotation.*;
 
+/**
+ * marks nullable objects.
+ *
+ * This is not used because checkerframework does not recognize @Nullable. It matches the full
+ * package name.
+ */
 @Documented
 @Retention (RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE_USE, ElementType.PARAMETER})
