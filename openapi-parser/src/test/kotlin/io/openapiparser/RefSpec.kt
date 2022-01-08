@@ -63,10 +63,10 @@ class RefSpec: StringSpec({
         ref.properties.size shouldBe 1
         ref.properties["self"]!!.ref shouldBe "#/components/schemas/Self"
 
-        val refRef = ref.properties["self"]!!.ref
-        ref.type shouldBe "object"
-        ref.properties.size shouldBe 1
-        ref.properties["self"]!!.ref shouldBe "#/components/schemas/Self"
+        val refRef = ref.properties["self"]!!.refObject
+        refRef.type shouldBe "object"
+        refRef.properties.size shouldBe 1
+        refRef.properties["self"]!!.ref shouldBe "#/components/schemas/Self"
     }
 })
 
