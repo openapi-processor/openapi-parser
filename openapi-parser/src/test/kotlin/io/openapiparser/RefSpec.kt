@@ -68,5 +68,47 @@ class RefSpec: StringSpec({
         refRef.properties.size shouldBe 1
         refRef.properties["self"]!!.ref shouldBe "#/components/schemas/Self"
     }
+
+    "parses array ref items with nested array and ref items loop" {
+        val api = ApiBuilder()
+            .withResource("/v30/ref-loop-array/openapi.yaml")
+            .buildOpenApi30()
+
+        val schema = api.getResponseSchema("/response-ref", "200", "application/json")
+
+        // response is an array
+        schema.type shouldBe "array"
+
+        // with an items $ref to Foo
+        val foo = schema.items
+        foo!!.ref shouldBe "#/components/schemas/Foo"
+
+        // Foo is an object
+        val fooRef = foo.refObject
+        fooRef.type shouldBe "object"
+        fooRef.properties.size shouldBe 1
+
+        // with a $ref property to Foos
+        val foos = fooRef.properties["foos"]
+        foos!!.ref shouldBe "#/components/schemas/Foos"
+
+        // Foos is an object
+        val foosRef = foos.refObject
+        foosRef.type shouldBe "object"
+        foosRef.properties.size shouldBe 1
+
+        // with an array property
+        val foosArray = foosRef.properties["items"]
+        schema.type shouldBe "array"
+
+        // with an items $ref to Foo
+        val foosItem = foosArray!!.items
+        foosItem!!.ref shouldBe "#/components/schemas/Foo"
+
+        // Foo is the same Foo as above, creating a loop
+        val foosItemRef = foosItem.refObject
+        foosItemRef.type shouldBe "object"
+        foosItemRef.properties.size shouldBe 1
+    }
 })
 

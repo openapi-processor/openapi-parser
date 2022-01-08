@@ -1,0 +1,33 @@
+openapi: 3.0.2
+info:
+  title: test array item $ref loop
+  version: 1.0.0
+
+paths:
+  /response-ref:
+    get:
+      responses:
+        '200':
+          description: array item $ref
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Foo'
+
+components:
+  schemas:
+    Foo:
+      type: object
+      properties:
+        foos:
+          $ref: '#/components/schemas/Foos'
+
+    Foos:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Foo'
