@@ -8,6 +8,7 @@ package io.openapiparser
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.openapiparser.support.ApiBuilder
+import io.openapiparser.support.getParameters
 import io.openapiparser.support.getResponseSchema
 
 class RefSpec: StringSpec({
@@ -109,6 +110,22 @@ class RefSpec: StringSpec({
         val foosItemRef = foosItem.refObject
         foosItemRef.type shouldBe "object"
         foosItemRef.properties.size shouldBe 1
+    }
+
+    "parses ref in parameter" {
+        val api = ApiBuilder()
+            .withResource("/v30/ref-parameter/openapi.yaml")
+            .buildOpenApi30()
+
+        val parameters = api.getParameters("/foo")
+        parameters.size shouldBe 1
+
+        val parameter = parameters.first()
+        parameter.ref shouldBe "#/components/parameters/Bar"
+
+        val parameterRef = parameter.refObject
+        parameterRef.`in` shouldBe "query"
+        parameterRef.name shouldBe "bar"
     }
 })
 
