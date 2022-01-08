@@ -88,8 +88,12 @@ public class ReferenceResolver {
     private void resolveReferences() {
         references.resolve((documentUri, ref) -> {
             Bucket document = documents.get (documentUri);
-            String fragment = ref.substring(ref.indexOf (HASH));
-            return document.getProperty (JsonPointer.fromFragment (fragment));
+            if (ref.contains ("#")) {
+                String fragment = ref.substring(ref.indexOf (HASH));
+                return document.getProperty (JsonPointer.fromFragment (fragment));
+            } else {
+                return document.getRawValues ();
+            }
         });
     }
 
@@ -118,7 +122,18 @@ public class ReferenceResolver {
 
                         references.add (baseUri, documentUri, ref);
                     } else {
-                        // is other document
+                        URI documentUri = uri.resolve (ref);
+
+                        if (!documents.contains (documentUri)) {
+                            Bucket document = new Bucket (
+                                documentUri,
+                                loadDocument (documentUri));
+
+                            documents.add (documentUri, document);
+                            collectReferences (documentUri, document);
+                        }
+
+                        references.add (baseUri, documentUri, ref);
                     }
                 }
             } else {

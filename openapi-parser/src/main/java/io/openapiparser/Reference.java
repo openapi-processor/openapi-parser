@@ -22,12 +22,14 @@ public class Reference {
     private final URI parentUri;
     private final URI documentUri;
     private final String ref;
+    private final String refRelative;
     private final Object rawValue;
 
     public Reference (URI parentUri, URI documentUri, String ref) {
         this.parentUri = parentUri;
         this.documentUri = documentUri;
         this.ref = ref;
+        this.refRelative = createRefRelative (ref);
         this.rawValue = "unresolved reference";
     }
 
@@ -35,6 +37,7 @@ public class Reference {
         this.parentUri = parentUri;
         this.documentUri = documentUri;
         this.ref = ref;
+        this.refRelative = createRefRelative (ref);
         this.rawValue = rawValue;
     }
 
@@ -61,6 +64,15 @@ public class Reference {
     }
 
     /**
+     * the original $ref value but without file name, e.g. "/Foo".
+     *
+     * @return the relative ref.
+     */
+    public String getRefRelative () {
+        return refRelative;
+    }
+
+    /**
      * the raw value of the reference. Maybe a simple value, array or map.
      *
      * @return the raw value.
@@ -72,5 +84,14 @@ public class Reference {
     @SuppressWarnings ({"unchecked", "TypeParameterUnusedInFormals"})
     public <T> T getValue () {
         return (T) rawValue;
+    }
+
+    private String createRefRelative (String ref) {
+        final int hash = ref.indexOf ("#");
+        if (hash == -1) {
+            return ref;
+        }
+
+        return ref.substring (hash + 1);
     }
 }

@@ -33,7 +33,7 @@ public class ReferenceRegistry {
     }
 
     Reference getRef(String absoluteRef) {
-        final Reference reference = references.get (absoluteRef);
+        Reference reference = references.get (absoluteRef);
         if (reference == null)
             throw new RuntimeException (); // todo
 
@@ -45,7 +45,7 @@ public class ReferenceRegistry {
     }
 
     private String createAbsoluteRefUri(URI documentUri, String ref) {
-        final int hash = ref.indexOf("#");
+        int hash = ref.indexOf("#");
         if (hash == -1) {
             return documentUri.toString ();
         }
