@@ -109,6 +109,7 @@ public class ReferenceResolver {
                 } else {
                     // into other document
                     if (ref.contains (HASH)) {
+                        // with pointer
                         String documentName = ref.substring (0, ref.indexOf (HASH));
                         URI documentUri = uri.resolve (documentName);
 
@@ -123,11 +124,13 @@ public class ReferenceResolver {
 
                         references.add (baseUri, documentUri, ref);
                     } else {
+                        // full document
                         URI documentUri = uri.resolve (ref);
 
                         if (!documents.contains (documentUri)) {
                             Bucket document = new Bucket (
                                 documentUri,
+                                null,
                                 loadDocument (documentUri));
 
                             documents.add (documentUri, document);
@@ -138,9 +141,8 @@ public class ReferenceResolver {
                     }
                 }
             } else {
-                // todo correct uri?
-                properties.traverseProperty (name, props -> {
-                    collectReferences (uri, props);
+                properties.walkPropertyTree (name, props -> {
+                    collectReferences (properties.getSource (), props);
                 });
             }
         });

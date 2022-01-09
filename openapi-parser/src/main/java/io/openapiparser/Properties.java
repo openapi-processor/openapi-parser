@@ -32,6 +32,12 @@ public class Properties {
         return target.getValue (bucket.getRawValues ());
     }
 
+    @Experimental
+    public <T> @Nullable T getValueOf (String pointer, Class<T> target) {
+        return new ObjectNotNullConverter<> (bucket.getSource (), new Factory<> (context, target))
+            .convert ("unused", getRawValueOf (pointer), pointer);
+    }
+
     /* raw */
 
     protected @Nullable Object getRawValue (String property) {

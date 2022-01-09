@@ -155,31 +155,37 @@ public class Bucket {
     }
 
     /**
-     * traverses the object tree of the given property and runs the handler on each child
-     * {@link Node}. It traverses into any child map or collection of the property.
+     * walks the object tree of the given property and runs the handler on each child
+     * {@link Bucket}. It walks into any child map or collection of the property.
      *
      * @param property property name
      * @param handler node handler
-     */ // to walkProperty
-    public void traverseProperty (String property, PropertiesHandler handler) {
+     */
+    public void walkPropertyTree (String property, BucketVisitor handler) {
         Object value = getRawValue (property);
         JsonPointer propertyLocation = location.append (property);
 
         if (value instanceof Map) {
-            handler.handle (new Bucket (propertyLocation, (Map<String, Object>) value));
+            handler.visit (getBucket (property));
 
         } else if (value instanceof Collection) {
-            int index = -1;
+            int index = 0;
             for (Object o : (Collection<?>) value) {
-                index++;
-
                 if (!(o instanceof Map))
                     continue;
 
-                JsonPointer itemLocation = propertyLocation.append (String.valueOf (index));
-                handler.handle (new Bucket (itemLocation, (Map<String, Object>) o));
+                handler.visit (new Bucket (
+                    source,
+                    getIndexLocation (propertyLocation, index),
+                    asMap (o)));
+
+                index++;
             }
         }
+    }
+
+    private String getIndexLocation (JsonPointer pointer, int index) {
+        return pointer.append (String.valueOf (index)).toString ();
     }
 
     public void forEach (BiConsumer<String, Object> action) {
