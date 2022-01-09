@@ -14,6 +14,8 @@ import java.util.regex.Pattern;
 
 /**
  * {@link Converter} based on jackson.
+ *
+ * Supports json & yaml.
  */
 public class JacksonConverter implements Converter {
     private static final String CONVERT_ERROR = "failed to convert %s document.";
