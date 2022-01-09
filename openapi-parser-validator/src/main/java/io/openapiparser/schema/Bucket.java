@@ -34,13 +34,6 @@ public class Bucket {
     }
 
     @Deprecated
-    public Bucket (String location, Map<String, Object> properties) {
-        this.source = null;
-        this.location = JsonPointer.fromJsonPointer (location);
-        this.properties = properties;
-    }
-
-    @Deprecated
     public Bucket (JsonPointer location, Map<String, Object> properties) {
         this.source = null;
         this.location = location;
