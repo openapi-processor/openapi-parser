@@ -6,8 +6,6 @@
 package io.openapiparser
 
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.booleans.shouldBeTrue
-import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.openapiparser.support.ApiBuilder
 import io.openapiparser.support.getParameters
@@ -167,6 +165,30 @@ class RefSpec: StringSpec({
 
         val fooSchema = responseSchema.refObject
         fooSchema.properties["bar"]!!.type shouldBe "string"
+    }
+
+    "parses ~ escaped ref path into another file" {
+        val api = ApiBuilder()
+            .withResource("/v30/ref-to-escaped-path-name/openapi.yaml")
+            .buildOpenApi30()
+
+        val paths = api.paths
+
+        val pathFoo = paths.getPathItem("/foo")
+        pathFoo!!.ref shouldBe "./foo.yaml#/paths/~1foo"
+
+        val refFoo = pathFoo.refObject
+        val responseFoo = refFoo.getValueOf(
+            "/get/responses/200/content/application~1json/schema", Schema30::class.java)
+        responseFoo!!.ref shouldBe "#/components/schemas/Foo"
+
+        val pathFooId = paths.getPathItem("/foo/{id}")
+        pathFooId!!.ref shouldBe "./foo.yaml#/paths/~1foo~1{id}"
+
+        val refFooId = pathFooId.refObject
+        val responseFooId = refFooId.getValueOf(
+            "/get/responses/200/content/application~1json/schema", Schema30::class.java)
+        responseFooId!!.ref shouldBe "#/components/schemas/Foo"
     }
 })
 

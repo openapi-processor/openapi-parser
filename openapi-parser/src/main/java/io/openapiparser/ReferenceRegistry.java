@@ -32,7 +32,7 @@ public class ReferenceRegistry {
         return getRef (absoluteRef.toString ());
     }
 
-    Reference getRef(String absoluteRef) {
+    private Reference getRef(String absoluteRef) {
         Reference reference = references.get (absoluteRef);
         if (reference == null)
             throw new RuntimeException (); // todo
@@ -50,7 +50,11 @@ public class ReferenceRegistry {
             return documentUri.toString ();
         }
 
-        return documentUri.resolve (URI.create (ref.substring(hash))).toString ();
-    }
+        String hashPart = ref.substring(hash);
+        String encoded = hashPart
+            .replace ("{", "%7B")
+            .replace ("}", "%7D");
 
+        return documentUri.resolve (URI.create (encoded)).toString ();
+    }
 }

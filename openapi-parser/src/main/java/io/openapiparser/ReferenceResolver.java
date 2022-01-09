@@ -45,22 +45,26 @@ public class ReferenceResolver {
 
     // todo throw if missing
     public Reference resolve(URI baseUri, String ref) {
-        if (ref.startsWith (HASH)) {
+        String encodedRef = ref
+            .replace ("{", "%7B")
+            .replace ("}", "%7D");
+
+        if (encodedRef.startsWith (HASH)) {
             // same document
-            return references.getRef(baseUri.resolve (ref));
+            return references.getRef(baseUri.resolve (encodedRef));
         } else {
             // other document
-            if (ref.contains (HASH)) {
+            if (encodedRef.contains (HASH)) {
                 // with path fragment
-                final int idxHash = ref.indexOf (HASH);
-                String document = ref.substring (0, idxHash);
-                String fragment = ref.substring (idxHash);
+                final int idxHash = encodedRef.indexOf (HASH);
+                String document = encodedRef.substring (0, idxHash);
+                String fragment = encodedRef.substring (idxHash);
                 URI documentUri = baseUri.resolve (document);
                 URI refUri = documentUri.resolve (fragment);
                 return references.getRef(refUri);
             } else {
                 // full document
-                URI refUri = baseUri.resolve (ref);
+                URI refUri = baseUri.resolve (encodedRef);
                 return references.getRef(refUri);
             }
         }

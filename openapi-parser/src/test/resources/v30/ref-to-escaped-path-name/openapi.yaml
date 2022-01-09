@@ -1,0 +1,12 @@
+openapi: 3.0.2
+info:
+  title: test ref to path name, main
+  version: 1.0.0
+
+paths:
+
+  /foo:
+    $ref: ./foo.yaml#/paths/~1foo
+
+  '/foo/{id}':
+    $ref: ./foo.yaml#/paths/~1foo~1{id}

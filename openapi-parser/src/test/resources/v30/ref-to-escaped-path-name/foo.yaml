@@ -1,0 +1,43 @@
+openapi: 3.0.2
+info:
+  title: test ref to path name, foo
+  version: 1.0.0
+
+paths:
+
+  /foo:
+    get:
+      responses:
+        '200':
+          description: the foo result
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/Foo'
+
+  '/foo/{id}':
+    get:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: id parameter
+      responses:
+        '200':
+          description: the foo result
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/Foo'
+
+components:
+  schemas:
+
+    Foo:
+      type: object
+      properties:
+        bar:
+          type: string
+
