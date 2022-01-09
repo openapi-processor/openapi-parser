@@ -5,15 +5,17 @@
 
 package io.openapiparser.converter;
 
-import io.openapiparser.Context;
+import io.openapiparser.Factory;
+
+import java.net.URI;
 
 /**
  *  get a {@link T} object from the property or throw if the property has no value.
  */
 public class ObjectNotNullConverter<T> extends ObjectNullableConverter<T> {
 
-    public ObjectNotNullConverter (Context context, Class<T> object) {
-        super (context, object);
+    public ObjectNotNullConverter (URI uri, Factory<T> factory) {
+        super (uri, factory);
     }
 
     @Override

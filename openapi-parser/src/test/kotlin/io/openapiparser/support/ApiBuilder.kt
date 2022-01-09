@@ -39,14 +39,14 @@ class ApiBuilder {
 
     fun buildOpenApi30(): OpenApi30 {
         val context = createContext()
-        context.read()
-        return OpenApi30(context, context.bucket)
+        val bucket = context.read()
+        return OpenApi30(context, bucket)
     }
 
     fun buildOpenApi31(): OpenApi31 {
         val context = createContext()
-        context.read()
-        return OpenApi31(context, context.bucket)
+        val bucket = context.read()
+        return OpenApi31(context, bucket)
     }
 
     fun <T> build(clazz: Class<T>): T {
@@ -58,8 +58,8 @@ class ApiBuilder {
 
     private fun <T> build(factory: (context: Context, bucket: Bucket) -> T): T {
         val context = createContext()
-        context.read()
-        return factory(context, context.bucket)
+        val bucket = context.read()
+        return factory(context, bucket)
     }
 
     private fun createContext(): Context {

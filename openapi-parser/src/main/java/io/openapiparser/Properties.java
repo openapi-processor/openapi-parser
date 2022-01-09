@@ -26,7 +26,7 @@ public class Properties {
 
     /* json pointer */
 
-    // @Experimental
+    @Experimental
     public @Nullable Object getRawValueOf (String pointer) {
         final JsonPointer target = JsonPointer.fromJsonPointer (pointer);
         return target.getValue (bucket.getRawValues ());
@@ -99,17 +99,18 @@ public class Properties {
     /* Objects */
 
     protected <T> @Nullable T getObjectOrNull (String property, Class<T> clazz) {
-        return bucket.convert (property, new ObjectNullableConverter<> (context, clazz));
+        return getObjectOrNull (bucket, property, clazz);
     }
 
     protected <T> T getObjectOrThrow (String property, Class<T> clazz) {
-        return bucket.convert (property, new ObjectNotNullConverter<> (context, clazz));
+        return getObjectOrThrow (bucket, property, clazz);
     }
 
     /* Collections */
 
     protected <T> Collection<T> getObjectsOrEmpty (String property, Class<T> clazz) {
-        return bucket.convert (property, new ObjectsOrEmptyConverter<> (context, clazz));
+        return bucket.convert (property, new ObjectsOrEmptyConverter<T> (
+            bucket.getSource (), new Factory<> (context, clazz)));
     }
 
     /* String Collections */
@@ -129,11 +130,18 @@ public class Properties {
     }
 
     protected <T> Map<String, T> getMapObjectsOrEmpty (Class<T> clazz) {
-        return bucket.convert (new MapObjectsOrEmptySelfConverter<> (context, clazz));
+        Map<String, T> objects = new LinkedHashMap<> ();
+
+        bucket.forEachProperty (property -> {
+            objects.put (property, getObjectOrThrow (bucket, property, clazz));
+        });
+
+        return Collections.unmodifiableMap (objects);
     }
 
     protected <T> Map<String, T> getMapObjectsOrEmpty (String property, Class<T> clazz) {
-        return bucket.convert (property, new MapObjectsOrEmptyConverter<> (context, clazz));
+        return bucket.convert (property, new MapObjectsOrEmptyConverter<T> (bucket.getSource (),
+            new Factory<T> (context, clazz)));
     }
 
     protected Map<String, Set<String>> getMapSetStringsOrEmpty (String property) {
@@ -149,21 +157,28 @@ public class Properties {
     /* ref */
 
     protected <T> T getRefObject (Class<T> clazz) {
-        return create (context.getRefObjectOrNull (bucket), clazz);
+        return new Factory<T> (context, clazz).create (context.getRefObjectOrNull (bucket));
     }
 
     protected <T> T getRefObjectOrThrow (Class<T> clazz) {
-        return create (context.getRefObjectOrThrow (bucket), clazz);
+        return new Factory<T> (context, clazz).create (context.getRefObjectOrThrow (bucket));
     }
 
-    private <T> T create (Bucket targetBucket, Class<T> clazz) {
-        try {
-            return clazz
-                .getDeclaredConstructor (Context.class, Bucket.class)
-                .newInstance (context.withSource (targetBucket.getSource ()), targetBucket);
-        } catch (Exception e) {
-            throw new RuntimeException (String.format("failed to create %s", clazz.getName ()), e);
-        }
+    /* helper */
+
+    private <T> @Nullable T getObjectOrNull (Bucket source, String property, Class<T> clazz) {
+        final Bucket value = source.getBucket (property);
+        if (value == null)
+            return null;
+
+        return new Factory<T> (context, clazz).create (value);
     }
 
+    private <T> T getObjectOrThrow (Bucket source, String property, Class<T> clazz) {
+        final Bucket value = source.getBucket (property);
+        if (value == null)
+            throw new NoValueException (property);
+
+        return new Factory<T> (context, clazz).create (value);
+    }
 }

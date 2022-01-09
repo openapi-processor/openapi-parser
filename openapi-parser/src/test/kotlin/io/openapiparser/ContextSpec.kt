@@ -31,9 +31,7 @@ class ContextSpec : StringSpec({
             )
         )
 
-        ctx.read()
-
-        val bucket = ctx.bucket
+        val bucket = ctx.read()
         bucket.size shouldBe 1
         bucket.getRawValue("openapi") shouldBe "3.0.3"
     }
@@ -43,11 +41,7 @@ class ContextSpec : StringSpec({
         every { resolver.resolve() } throws ResolverException("failed", Exception())
 
         shouldThrow<ContextException> {
-            val ctx = Context(
-                URI("file:///any"),
-                resolver)
-            ctx.read()
+            Context(URI("file:///any"), resolver).read()
         }
     }
-
 })

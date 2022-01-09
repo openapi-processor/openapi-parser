@@ -20,7 +20,7 @@ public class OpenApiParser {
     public OpenApiResult parse() throws Exception {
         try {
 //            context.read ();
-            return createResult (context.readIt ());
+            return createResult (context.read ());
         } catch (Exception e) {
             // todo
             throw e;

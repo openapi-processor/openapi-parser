@@ -5,13 +5,15 @@
 
 package io.openapiparser.schema;
 
-import io.openapiparser.converter.PropertiesConverter;
-import io.openapiparser.converter.PropertyConverter;
+import io.openapiparser.converter.*;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+
+import static io.openapiparser.converter.Types.asMap;
 
 /**
  * wraps the properties {@link Map} of a json/yaml object and its location.
@@ -76,6 +78,17 @@ public class Bucket {
 
     public <T> @Nullable T convert (PropertiesConverter<T> converter) {
         return converter.convert (properties, location.toString ());
+    }
+
+    public @Nullable Bucket getBucket (String property) {
+        Object value = getRawValue (property);
+        if (value == null)
+            return null;
+
+        if (!(value instanceof Map))
+            throw new TypeMismatchException (getLocation (property), Map.class);
+
+        return new Bucket (source, getLocation (property), asMap (value));
     }
 
     public int getSize () {
@@ -176,9 +189,12 @@ public class Bucket {
         }
     }
 
-    // todo named consumer???
     public void forEach (BiConsumer<String, Object> action) {
         properties.forEach (action);
+    }
+
+    public void forEachProperty (Consumer<String> action) {
+        properties.keySet().forEach (action);
     }
 
     /*

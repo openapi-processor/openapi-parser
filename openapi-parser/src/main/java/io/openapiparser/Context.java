@@ -26,43 +26,18 @@ public class Context {
     private final URI baseUri;
     private final ReferenceResolver resolver;
 
-    @Deprecated
-    private Bucket bucket; // do we need this????
-
     public Context (URI baseUri, ReferenceResolver resolver) {
         this.baseUri = baseUri;
         this.resolver = resolver;
-        this.bucket = Bucket.empty ();
     }
 
-    @Deprecated
-    public void read () throws ContextException {
-        try {
-            resolver.resolve ();
-            bucket = resolver.getObject ();
-        } catch (Exception e) {
-            throw new ContextException (String.format ("failed to read %s.", baseUri), e);
-        }
-    }
-
-    // todo rename
-    public Bucket readIt () throws ContextException {
+    public Bucket read () throws ContextException {
         try {
             resolver.resolve ();
             return resolver.getObject ();
         } catch (Exception e) {
             throw new ContextException (String.format ("failed to read %s.", baseUri), e);
         }
-    }
-
-    @Deprecated // trying to remove
-    public Bucket getBucket () {
-        return bucket;
-    }
-
-    @Deprecated
-    public Map<String, Object> getRawObject () {
-        return bucket.getRawValues ();
     }
 
     public Reference getReference (String ref) {
@@ -101,7 +76,7 @@ public class Context {
      *
      * @param source the new source uri.
      * @return context with the source uri
-     */ // todo should setup internal bucket...  do we need it???
+     */
     public Context withSource (URI source) {
         if (baseUri.equals (source)) {
             return this;

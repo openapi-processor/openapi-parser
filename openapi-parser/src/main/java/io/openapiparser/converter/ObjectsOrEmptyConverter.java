@@ -5,9 +5,10 @@
 
 package io.openapiparser.converter;
 
-import io.openapiparser.Context;
+import io.openapiparser.Factory;
 import io.openapiparser.schema.JsonPointer;
 
+import java.net.URI;
 import java.util.*;
 
 import static io.openapiparser.converter.Types.convertOrNull;
@@ -16,12 +17,14 @@ import static io.openapiparser.converter.Types.convertOrNull;
  * get a collection of {@link T}s.
  */
 public class ObjectsOrEmptyConverter<T> implements PropertyConverter<Collection<T>> {
-    private final Context context;
-    private final Class<T> object;
+    private final URI uri;
+    private final Factory<T> factory;
+    private ObjectNotNullConverter<T> converter;
 
-    public ObjectsOrEmptyConverter (Context context, Class<T> object) {
-        this.context = context;
-        this.object = object;
+    public ObjectsOrEmptyConverter (URI uri, Factory<T> factory) {
+        this.uri = uri;
+        this.factory = factory;
+        this.converter = new ObjectNotNullConverter<T> (uri, factory);
     }
 
     @Override
@@ -30,21 +33,24 @@ public class ObjectsOrEmptyConverter<T> implements PropertyConverter<Collection<
         if (objects == null)
             return Collections.emptyList ();
 
-        JsonPointer parentLocation = JsonPointer.fromJsonPointer (location);
+        JsonPointer parentPointer = JsonPointer.fromJsonPointer (location);
+
+        Collection<T> result = new ArrayList<> ();
 
         int index = 0;
-        Collection<T> result = new ArrayList<> ();
         for (Object item : objects) {
-            result.add (create (name, item, getLocation(parentLocation, index++)));
+            T itemObject = create (name, item, getIndexLocation (parentPointer, index));
+            result.add (itemObject);
+            index++;
         }
         return Collections.unmodifiableCollection (result);
     }
 
-    private T create (String name, Object value, String location) {
-        return new ObjectNotNullConverter<T> (context, object).convert (name, value, location);
+    private T create (String name, Object item, String location) {
+        return converter.convert (name, item, location);
     }
 
-    private String getLocation (JsonPointer parent, int index) {
+    private String getIndexLocation (JsonPointer parent, int index) {
         return parent.getJsonPointer (String.valueOf (index));
     }
 }

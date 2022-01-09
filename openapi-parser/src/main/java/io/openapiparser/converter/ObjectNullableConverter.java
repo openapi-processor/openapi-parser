@@ -5,37 +5,43 @@
 
 package io.openapiparser.converter;
 
-import io.openapiparser.Context;
+import io.openapiparser.Factory;
 import io.openapiparser.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
+
+import java.net.URI;
+import java.util.Map;
+
+import static io.openapiparser.converter.Types.asMap;
 
 /**
  *  get a {@link T} object from the property.
  */
 public class ObjectNullableConverter<T> implements PropertyConverter<T> {
-    private final Context context;
-    private final Class<T> object;
+    private final URI uri;
+    private final Factory<T> factory;
 
-    public ObjectNullableConverter (Context context, Class<T> object) {
-        this.context = context;
-        this.object = object;
+    public ObjectNullableConverter (URI uri, Factory<T> factory) {
+        this.uri = uri;
+        this.factory = factory;
     }
 
     @Override
     public @Nullable T convert (String name, Object value, String location) {
-        Bucket bucket = new BucketConverter (context.getBucket ()).convert (name, value, location);
+        Bucket bucket = getBucket (value, location);
         if (bucket == null)
             return null;
 
-        return create (context, bucket);
+        return factory.create (bucket);
     }
 
-    private T create (Context context, Bucket bucket) {
-        try {
-            return object.getDeclaredConstructor (Context.class, Bucket.class)
-                .newInstance (context, bucket);
-        } catch (Exception e) {
-            throw new RuntimeException (String.format("failed to create %s", object.getName ()), e);
-        }
+    private @Nullable Bucket getBucket (Object value, String location) {
+        if (value == null)
+            return null;
+
+        if (!(value instanceof Map))
+            throw new TypeMismatchException (location, Map.class);
+
+        return new Bucket (uri, location, asMap (value));
     }
 }
