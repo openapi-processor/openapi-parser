@@ -6,10 +6,13 @@
 package io.openapiparser
 
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.openapiparser.support.ApiBuilder
 import io.openapiparser.support.getParameters
 import io.openapiparser.support.getResponseSchema
+import io.openapiparser.model.v30.Schema as Schema30
 
 class RefSpec: StringSpec({
 
@@ -146,6 +149,24 @@ class RefSpec: StringSpec({
         bar.type shouldBe "object"
         bar.properties.size shouldBe 1
         bar.properties["bar"]!!.type shouldBe "string"
+    }
+
+    "parses ref into another file without pointer" {
+        val api = ApiBuilder()
+            .withResource("/v30/ref-into-another-file-path/openapi.yaml")
+            .buildOpenApi30()
+
+        val paths = api.paths
+        val pathItem = paths.getPathItem("/foo")
+        pathItem!!.ref shouldBe "foo.api.yaml"
+
+        val pathItemRef = pathItem.refObject
+        val responseSchema = pathItemRef.getValueOf(
+            "/get/responses/200/content/application~1json/schema", Schema30::class.java)
+        responseSchema!!.ref shouldBe "foo.yaml#/Foo"
+
+        val fooSchema = responseSchema.refObject
+        fooSchema.properties["bar"]!!.type shouldBe "string"
     }
 })
 
