@@ -7,10 +7,10 @@ package io.openapiparser.support
 
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.openapiparser.*
-import io.openapiparser.jackson.JacksonConverter
 import io.openapiparser.reader.StringReader
 import io.openapiparser.reader.UriReader
 import io.openapiparser.schema.Bucket
+import io.openapiparser.snakeyaml.SnakeYamlConverter
 import java.net.URI
 import io.openapiparser.model.v30.OpenApi as OpenApi30
 import io.openapiparser.model.v31.OpenApi as OpenApi31
@@ -18,6 +18,7 @@ import io.openapiparser.model.v31.OpenApi as OpenApi31
 class ApiBuilder {
     private var api: String? = null
     private lateinit var apiUri: URI
+    private var converter: Converter = SnakeYamlConverter()
 
     fun withApi(api: String): ApiBuilder {
         return withYaml("file:///any", api.trimIndent())
@@ -30,6 +31,11 @@ class ApiBuilder {
 
     fun withResource(api: String): ApiBuilder {
         this.apiUri = this::class.java.getResource(api)!!.toURI()
+        return this
+    }
+
+    fun withConverter(converter: Converter): ApiBuilder {
+        this.converter = converter
         return this
     }
 
@@ -68,7 +74,7 @@ class ApiBuilder {
         val resolver = ReferenceResolver(
             apiUri,
             getReader(),
-            JacksonConverter(),
+            converter,
             ReferenceRegistry()
         )
         return Context(apiUri, resolver)

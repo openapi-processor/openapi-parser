@@ -16,6 +16,7 @@ dependencies {
 //    implementation("net.jimblackler.jsonschemafriend:core:0.11.2")
 
     testImplementation(project(":openapi-parser-memory"))
+    testImplementation(project(":openapi-parser-snakeyaml"))
     testImplementation(project(":openapi-parser-jackson"))
     testImplementation(platform(libs.jackson.bom))
     testImplementation(libs.jackson.databind)
