@@ -1,0 +1,3 @@
+== openapi-parser-support
+
+small library with shared code used by openapi-parser and openapi-parser-validator.

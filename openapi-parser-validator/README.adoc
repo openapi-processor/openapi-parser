@@ -1,0 +1,13 @@
+:json-schema-testsuite: https://github.com/json-schema-org/JSON-Schema-Test-Suite
+
+== openapi-parser-validator
+
+*this is work in progress*
+
+dependency-less java 8 json schema validator with pluggable json parser used by openapi-parser.
+
+- minimal draft-4 support
+
+== development
+
+runs the official link:{json-schema-testsuite}[JSON Schema Test Suite].
