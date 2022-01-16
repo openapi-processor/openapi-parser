@@ -50,7 +50,7 @@ public class Properties {
      * @param property property name
      * @return true if the property exists, else false
      */
-    public boolean hasProperty (String property) {
+    protected boolean hasProperty (String property) {
         return bucket.hasProperty (property);
     }
 
