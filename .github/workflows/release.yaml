@@ -1,0 +1,42 @@
+name: release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+
+  publish:
+    name: publish release
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v1
+
+      - name: cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: set up jdk
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: publish release
+        env:
+          PUBLISH_USER: ${{ secrets.PUBLISH_USER }}
+          PUBLISH_KEY: ${{ secrets.PUBLISH_KEY }}
+          SIGN_KEY: ${{ secrets.SIGN_KEY }}
+          SIGN_PWD: ${{ secrets.SIGN_PWD }}
+        run: |
+          ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
+          ./gradlew --stop
+
