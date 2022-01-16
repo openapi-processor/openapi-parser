@@ -1,6 +1,6 @@
 plugins {
-//    groovy
     id("openapi-parser.java-conventions")
+    id("openapi-parser.publish-conventions")
 }
 
 //repositories {
@@ -24,6 +24,17 @@ dependencies {
     testImplementation(libs.jackson.kotlin)
 
 //    testImplementation("org.spockframework:spock-core:2.1-M2-groovy-3.0")
+}
+
+publishing {
+    publications {
+        getByName<MavenPublication>("openapiparser") {
+            pom {
+                name.set("openapi-parser")
+                description.set("OpenAPI 3.0/3.1 parser")
+            }
+        }
+    }
 }
 
 tasks {

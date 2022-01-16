@@ -1,5 +1,6 @@
 plugins {
     id("openapi-parser.java-conventions")
+    id("openapi-parser.publish-conventions")
 }
 
 dependencies {
@@ -11,4 +12,15 @@ dependencies {
     testImplementation(libs.jackson.databind)
     testImplementation(libs.jackson.yaml)
     testImplementation(libs.jackson.kotlin)
+}
+
+publishing {
+    publications {
+        getByName<MavenPublication>("openapiparser") {
+            pom {
+                name.set("openapi-parser-validator")
+                description.set("OpenAPI Parser JSON-Schema Validator")
+            }
+        }
+    }
 }

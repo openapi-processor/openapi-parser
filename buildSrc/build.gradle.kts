@@ -10,20 +10,10 @@ repositories {
 }
 
 dependencies {
-//    idea does not find the catalog
-//    implementation(libs.plugin.kotlin)
-//    implementation(libs.plugin.checker)
-//    implementation(libs.plugin.outdated)
+    // catalog hack: https://github.com/gradle/gradle/issues/15383#issuecomment-779893192
+    implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 
-    implementation(libs("plugin.kotlin"))
-    implementation(libs("plugin.checker"))
-    implementation(libs("plugin.outdated"))
-}
-
-@Suppress("UnstableApiUsage")
-fun libs(dependency: String): Provider<MinimalExternalModuleDependency> {
-    val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
-    return libs.findDependency(dependency).orElseThrow {
-        Exception("can't find dependency $dependency")
-    }
+    implementation(libs.plugin.kotlin)
+    implementation(libs.plugin.checker)
+    implementation(libs.plugin.outdated)
 }

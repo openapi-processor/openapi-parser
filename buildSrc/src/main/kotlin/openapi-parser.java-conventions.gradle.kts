@@ -1,3 +1,6 @@
+@file:Suppress("UnstableApiUsage")
+
+import org.gradle.accessors.dm.LibrariesForLibs
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -5,24 +8,28 @@ plugins {
     jacoco
     kotlin("jvm")
 
-    id( "org.checkerframework")
+    id("org.checkerframework")
     id("com.github.ben-manes.versions")
 }
 
-group = rootProject.group
-version = rootProject.version
+// see buildSrc/build.gradle catalog hack
+val libs = the<LibrariesForLibs>()
+
+group = "io.openapiprocessor"
+version = libs.versions.openapiparser.get()
+println("version: $version")
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    checkerFramework(libs("checker"))
+    checkerFramework(libs.checker)
 
-    testImplementation(platform(libs("kotest.bom")))
-    testImplementation(libs("kotest.runner"))
-    testImplementation(libs("kotest.datatest"))
-    testImplementation(libs("mockk"))
+    testImplementation(platform(libs.kotest.bom))
+    testImplementation(libs.kotest.runner)
+    testImplementation(libs.kotest.datatest)
+    testImplementation(libs.mockk)
 
 //    testImplementation (platform("org.junit:junit-bom:5.7.2"))
 //    testImplementation ("org.junit.jupiter:junit-jupiter-api")
@@ -31,8 +38,11 @@ dependencies {
 }
 
 java {
+    withJavadocJar()
+    withSourcesJar()
+
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
+        languageVersion.set(JavaLanguageVersion.of(8))
     }
 }
 
@@ -40,13 +50,13 @@ tasks.getByName<Test>("test") {
     useJUnitPlatform()
 }
 
-tasks.withType<JavaCompile>().configureEach {
-    options.release.set(8)
-}
+//tasks.withType<JavaCompile>().configureEach {
+//    options.release.set(8)
+//}
 
-tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions.jvmTarget = "1.8"
-}
+//tasks.withType<KotlinCompile>().configureEach {
+//    kotlinOptions.jvmTarget = "8"
+//}
 
 jacoco {
     toolVersion = "0.8.7"
@@ -61,10 +71,3 @@ tasks.jacocoTestReport {
     }
 }
 
-@Suppress("UnstableApiUsage")
-fun libs(dependency: String): Provider<MinimalExternalModuleDependency> {
-    val libs: VersionCatalog = extensions.getByType<VersionCatalogsExtension>().named("libs")
-
-    return libs.findDependency(dependency)
-        .orElseThrow { Exception("can't find dependency: $dependency") }
-}
