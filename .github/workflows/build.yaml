@@ -60,9 +60,10 @@ jobs:
           ${{ runner.os }}-gradle-
 
     - name: set up jdk
-      uses: actions/setup-java@v1
+      uses: actions/setup-java@v2
       with:
-        java-version: 11
+        distribution: 'temurin'
+        java-version: '11'
 
     - name: gradle check
       run: |
@@ -98,9 +99,10 @@ jobs:
           ${{ runner.os }}-gradle-
 
     - name: set up jdk
-      uses: actions/setup-java@v1
+      uses: actions/setup-java@v2
       with:
-        java-version: 8
+        distribution: 'temurin'
+        java-version: '8'
 
     - name: publish snapshot
       env:
