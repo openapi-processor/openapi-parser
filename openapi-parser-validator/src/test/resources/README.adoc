@@ -1,0 +1,22 @@
+:json-schema-testsuite: https://github.com/json-schema-org/JSON-Schema-Test-Suite
+
+=== JSON-Schema-Test-Suite
+
+JSON-Schema-Test-Suite is a git module to the official link:{json-schema-testsuite}[JSON Schema Test Suite].
+
+clone:
+
+    git clone --recurse-submodules
+
+clone and update:
+
+    git clone --recurse-submodules --remote-submodules
+
+
+get changes from submodule repository
+
+    git submodule update --remote
+
+was created with:
+
+    git submodule add https://github.com/json-schema-org/JSON-Schema-Test-Suite openapi-parser-validator/src/test/resources/suites/JSON-Schema-Test-Suite
