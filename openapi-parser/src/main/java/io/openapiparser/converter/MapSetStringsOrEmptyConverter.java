@@ -14,7 +14,8 @@ import static java.util.Collections.unmodifiableMap;
 import static java.util.Collections.unmodifiableSet;
 
 /**
- * get a map of {@link Set<String>} from the {@code name} property {@code value}.
+ * get a {@link Map} of {@link Set}&lt;{@link String}&gt; from the {@code name} property
+ * {@code value}.
  */
 public class MapSetStringsOrEmptyConverter implements PropertyConverter<Map<String, Set<String>>> {
 
