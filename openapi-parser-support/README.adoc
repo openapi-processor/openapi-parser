@@ -1,3 +1,12 @@
+:openapi: https://www.openapis.org/
+:parser: https://github.com/openapi-processor/openapi-parser/tree/master/openapi-parser
+:validator: https://github.com/openapi-processor/openapi-parser/tree/master/openapi-parser-validator
+
 == openapi-parser-support
 
-small library with shared code used by openapi-parser and openapi-parser-validator.
+a small library with shared code of the link:{parser}[parser] and the link:{validator}[validator].
+
+Contains two simple `Reader` implementations:
+
+* `UriReader`: read link:{openapi}[OpenAPI] descriptions from an URI. Based on `java.net.URL`. No security at the moment.
+* `StringReader`: read an link:{openapi}[OpenAPI] description from a string. Used in the test code.

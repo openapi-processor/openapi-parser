@@ -1,0 +1,3 @@
+== openapi-parser-bom
+
+A "bill of materials" POM for openapi-parser dependencies.

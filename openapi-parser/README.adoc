@@ -1,0 +1,123 @@
+:openapi: https://www.openapis.org/
+:converter-jackson: https://github.com/openapi-processor/openapi-parser/tree/master/openapi-parser-jackson
+:converter-snakeyaml: https://github.com/openapi-processor/openapi-parser/tree/master/openapi-parser-snakeyaml
+
+**work in progress, i.e. the api is not yet stable. It is usable to get information from a 3.0.x or 3.1.0 OpenAPI description but there is (nearly) no validation.**
+
+== openapi-parser
+
+a Java 8 based link:{openapi}[OpenAPI] 3.0.x & 3.1 parser with validation and pluggable document reader & json/yaml converter.
+
+* parse OpenAPI 3.0.x & 3.1
+* validate OpenAPI 3.0.x & 3.1 (json schema validation)
+* separate apis for OpenAPI 3.0 & 3.1
+* easily get resolved $ref object
+* minimal dependencies
+* pluggable document reader
+* pluggable json/yaml converter
+
+=== user-friendly api
+
+the parser tries to provide a *user-friendly* api in the sense that it
+
+* minimizes *null* values where possible
+* throws if *required* properties are not set
+* it is *read only*
+* it resolves `$ref` objects, i.e. $ref objects have a `getRefObject()`
+* it is very close to the specification (OpenAPI 3.0 & 3.1)
+
+Drawback is, that with the current api it is not possible to detect if a such a property is set in the OpenAPI description or if it is not given.
+
+=== raw api
+
+It is easy to create an alternative *raw* api that is based on the *structure* of the OpenAPI description that provides the *raw* values of the properties.
+
+I'm not sure yet if I want to mix *raw* and *user-friendly* in a single api. *Do we need both styles at the same time?*
+
+==== implementation
+
+for example, the *usr-friendly* `model.v30.OpenApi` (`model.v31.OpenApi`) model object has a method
+
+    Info getInfo ();
+
+to create a *raw* api
+
+it is possible to extend the existing api with
+
+    Info getInfoRaw ();
+
+or to change the existing api to use `Optional`
+
+    Optional<Info> getInfo ();
+
+or to create a new api `model.v30r.OpenApi` with a `@Nullable` signature
+
+    @Nullable Info getInfo ();
+
+
+=== minimizing null values
+
+Minimizing null values means that
+
+- for a missing/optional array properties it will return an empty collection
+- for other missing/optional properties it will return the default value if any is specified by the OpenAPI specification
+
+For example the `required` property of a `parameter` has a `false` default value and the api will return false in case `required` is not explicitly set in the OpenAPI description.
+
+=== yaml/json converter
+
+the *parser* is internally using `Map<String, Object>` to represent the OpenAPI object tree to be independent of a specific yaml/json parser. It will work with any yaml/json parser that is able to convert an OpenAPI yaml or json to a `Map<String, Object>` object tree.
+
+link:{converter-jackson}[`openapi-parser-jackson`] provides a default implementation that is based on jackson.
+
+== usage
+
+todo: create builder
+
+* create OpenApiParser(Context)
+** Context (Uri, ReferenceResolver)
+** ReferenceResolver (Uri, Reader, Converter, ReferenceRegistry)
+* openapi.parse()
+* result.getVersion()
+* result.getModel(OpenApiResult30)
+
+== todo
+
+just an incomplete & random list of topics:
+
+* empty Schema?
+* there are a couple of places were a property has only a fixed number of possible values that currently return a primitive type, it could return an enum which would be more user-friendly? (but: the specification doesn't really describe the type as enum).
+
+* authentication
+
+* `Link` object
+* `Tag` object
+* `Xml` object
+* `Security Scheme` object
+* `OAuth Flows` object
+* `OAuth Flow` object
+* `Security Requirement` object
+
+* propagating parent properties?
+** path item / operation parameters
+
+* raw api?
+
+* merge schema and ref schema?
+
+* jackson
+** reduce init time: https://github.com/FasterXML/jackson-module-kotlin/issues/69
+** jackson-jr
+
+* alternative json/yaml parser
+** snake yaml
+** gson
+
+* get (typed) element by json pointer. Raw value is available by (experimental)
+
+    Object value = api.getRawValueOf("/paths/~1foo/get/responses/200/content/application~1json")
+
+** follow `$ref`
+
+* testing
+** create `should...` functions to simplify test code

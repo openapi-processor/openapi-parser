@@ -10,4 +10,4 @@ dependency-less java 8 json schema validator with pluggable json parser used by 
 
 == development
 
-runs the official link:{json-schema-testsuite}[JSON Schema Test Suite].
+uses the official link:{json-schema-testsuite}[JSON Schema Test Suite].

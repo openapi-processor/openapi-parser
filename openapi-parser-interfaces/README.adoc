@@ -1,0 +1,31 @@
+:converter: https://github.com/openapi-processor/openapi-parser/blob/master/openapi-parser-interfaces/src/main/java/io/openapiparser/Converter.java
+:reader: https://github.com/openapi-processor/openapi-parser/blob/master/openapi-parser-interfaces/src/main/java/io/openapiparser/Reader.java
+:support: https://github.com/openapi-processor/openapi-parser/tree/master/openapi-parser-support
+:converter-jackson: https://github.com/openapi-processor/openapi-parser/tree/master/openapi-parser-jackson
+:converter-snakeyaml: https://github.com/openapi-processor/openapi-parser/tree/master/openapi-parser-snakeyaml
+
+== openapi-parser-interfaces
+
+a small library that defines the interfaces for the pluggable document reader and json/yaml converter. Only needed for implementing additional reader or converter.
+
+== Reader
+
+the link:{reader}[`Reader`] interface is used to read OpenAPI json/yaml documents:
+
+    InputStream read(URI uri) throws IOException;
+
+See link:{support}[openapi-parser-support]. It contains two simple `Reader` implementations.
+
+== Converter
+
+the link:{converter}[`Converter`] interface is used to convert a json/yaml document into a java `Object` tree. The tree structure should be  a `Map<String, Object>`.
+
+    Object convert (String api) throws ConverterException;
+
+The root may not be `Map` if the document just contains a single value.
+
+See link:{converter-jackson}[openapi-parser-jackson], link:{converter-snakeyaml}[openapi-parser-snakeyaml] for implementation examples.
+
+
+
+
