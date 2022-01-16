@@ -182,7 +182,7 @@ public class Node {
     }
 
     /**
-     * get the raw array values of the given property as {@link Collection<String>} or null if the
+     * get the raw array values of the given property as {@link Collection} or null if the
      * property is missing.
      *
      * @param property property name
@@ -193,7 +193,7 @@ public class Node {
     }
 
     /**
-     * get the raw array values of the given property as {@link Collection<String>} or an empty
+     * get the raw array values of the given property as {@link Collection} or an empty
      * collection if the property value is missing.
      *
      * @param property property name
@@ -204,7 +204,7 @@ public class Node {
     }
 
     /**
-     * get the raw value of the given property as {@link Map<String, String>} or an empty map if the
+     * get the raw value of the given property as {@link Map} or an empty map if the
      * property value is missing.
      *
      * @param property property name
@@ -219,7 +219,7 @@ public class Node {
     }
 
     /**
-     * converts the value of the given property name to a map of {@link String} to {@link Set<String>}.
+     * converts the value of the given property name to a map of {@link String} to {@link Set}.
      *
      * @param property property name
      * @return map of property to set of property string values
