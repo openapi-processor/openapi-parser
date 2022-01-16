@@ -20,6 +20,3 @@ dependencies {
     implementation(libs.plugin.outdated)
 }
 
-tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions.jvmTarget = "11"
-}
