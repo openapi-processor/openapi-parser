@@ -6,7 +6,7 @@ plugins {
 dependencies {
     implementation(project(":openapi-parser-interfaces"))
 
-    testImplementation(project(":openapi-parser-memory"))
+    testImplementation(project(":memory-protocol"))
 }
 
 publishing {
