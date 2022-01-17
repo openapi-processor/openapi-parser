@@ -26,37 +26,33 @@ a Java 8 based link:{openapi}[OpenAPI] 3.0.x & 3.1 parser with validation and pl
 
 == modules
 
-=== io.openapiprocessor.openapi-parser
+=== link:{parser}[openapi-parser]
 
-the link:{openapi}[OpenAPI] parser. See link:{parser}[openapi-parser].
+the link:{openapi}[OpenAPI] parser.
 
-=== io.openapiprocessor.openapi-parser-validator
+=== link:{validator}[openapi-parser-validator]
 
-the JSON Schema validator used by the `openapi-parser`. See link:{validator}[openapi-parser-validator].
+the JSON Schema validator used by the `openapi-parser`.
 
-=== io.openapiprocessor.openapi-parser-jackson
+=== link:{converter-jackson}[openapi-parser-jackson]
 
-json/yaml `Converter` based on link:{jackson}[Jackson]. See link:{converter-jackson}[openapi-parser-jackson].
+json/yaml `Converter` based on link:{jackson}[Jackson].
 
-=== io.openapiprocessor.openapi-parser-snakeyaml
+=== link:{converter-snakeyaml}[openapi-parser-snakeyaml]
 
-yaml `Converter` based on link:{snakeyaml}[snakeyaml]. See link:{converter-snakeyaml}[openapi-parser-snakeyaml].
+yaml `Converter` based on link:{snakeyaml}[snakeyaml].
 
-=== io.openapiprocessor.openapi-parser-support
+=== link:{support}[openapi-parser-support]
 
-a small library with shared code of the link:{parser}[parser] and the link:{validator}[validator]. Contains two simple `Reader` implementations. See link:{support}[openapi-parser-support].
+a small library with shared code of the link:{parser}[parser] and the link:{validator}[validator]. Contains two simple `Reader` implementations.
 
-=== io.openapiprocessor.openapi-parser-interfaces
+=== link:{interfaces}[openapi-parser-interfaces]
 
-a small library that defines the interfaces for the pluggable document reader and json/yaml converter. Only needed for implementing additional reader or converter. See link:{interfaces}[openapi-parser-interfaces].
+defines the interfaces for the pluggable document reader and json/yaml converter. Only needed for implementing additional reader or converter.
 
-=== io.openapiprocessor.openapi-parser-bom
+=== link:{platform}[openapi-parser-bom]
 
-todo. See link:{platform}[openapi-parser-bom].
-
-=== io.openapiprocessor.openapi-parser-memory
-
-a simple `memory:` url stream handler used in the test code.
+A "bill of materials" POM for openapi-parser dependencies.
 
 
 

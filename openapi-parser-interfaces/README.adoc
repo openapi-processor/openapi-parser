@@ -6,7 +6,7 @@
 
 == openapi-parser-interfaces
 
-a small library that defines the interfaces for the pluggable document reader and json/yaml converter. Only needed for implementing additional reader or converter.
+defines the interfaces for the pluggable document reader and json/yaml converter. Only needed for implementing additional reader or converter.
 
 == Reader
 
