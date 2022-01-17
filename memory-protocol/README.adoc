@@ -1,4 +1,4 @@
-=== openapi-parser-memory
+=== memory-protocol
 
 a simple `memory:` url stream handler used in the test code.
 
