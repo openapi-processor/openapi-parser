@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage", "DSL_SCOPE_VIOLATION")
+
 plugins {
 //    java
 //    id("org.barfuin.gradle.jacocolog") version "2.0.0"
