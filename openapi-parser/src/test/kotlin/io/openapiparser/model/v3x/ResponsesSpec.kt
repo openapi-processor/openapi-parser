@@ -30,8 +30,8 @@ class ResponsesSpec: StringSpec({
 
     "gets responses responses 30" {
         val source = """
-            200: {}
-            204: {}
+            '200': {}
+            '204': {}
         """
 
         val responses = responses30(source).responses
@@ -43,8 +43,8 @@ class ResponsesSpec: StringSpec({
 
     "gets responses responses 31" {
         val source = """
-            200: {}
-            204: {}
+            '200': {}
+            '204': {}
         """
 
         val responses = responses31(source).responses
