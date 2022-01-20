@@ -19,6 +19,7 @@ public interface Reader {
      *
      * @param uri uri of the document.
      * @return input stream of document.
+     * @throws IOException if reading fails.
      */
     InputStream read(URI uri) throws IOException;
 }
