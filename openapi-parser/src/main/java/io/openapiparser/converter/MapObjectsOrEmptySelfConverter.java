@@ -15,15 +15,10 @@ import java.util.*;
  * get a map of {@link T}s.
  */
 public class MapObjectsOrEmptySelfConverter<T> implements PropertiesConverter<Map<String, T>> {
-    private final URI uri;
-    private final Factory<T> factory;
-    private ObjectNullableConverter<T> converter;
+    private final ObjectNotNullConverter<T> converter;
 
     public MapObjectsOrEmptySelfConverter (URI uri, Factory<T> factory) {
-        this.uri = uri;
-        this.factory = factory;
         this.converter = new ObjectNotNullConverter<> (uri, factory);
-
     }
 
     @Override
