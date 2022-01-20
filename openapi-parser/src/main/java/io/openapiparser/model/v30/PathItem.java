@@ -88,7 +88,7 @@ public class PathItem extends Properties implements Reference, Extensions {
         return getObjectsOrEmpty (PARAMETERS, Parameter.class);
     }
 
-    private Operation getOperation(String property) {
+    private @Nullable Operation getOperation(String property) {
         return getObjectOrNull (property, Operation.class);
     }
 
