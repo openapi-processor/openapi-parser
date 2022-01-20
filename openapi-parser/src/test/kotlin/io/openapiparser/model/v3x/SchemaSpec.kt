@@ -316,11 +316,13 @@ class SchemaSpec: StringSpec({
         schema31().externalDocs.shouldBeNull()
     }
 
+    @Suppress("DEPRECATION")
     "gets schema example" {
         schema30("example: {}").example.shouldNotBeNull()
         schema31("example: {}").example.shouldNotBeNull()
     }
 
+    @Suppress("DEPRECATION")
     "gets schema example is null if missing" {
         schema30().example.shouldBeNull()
         schema31().example.shouldBeNull()
