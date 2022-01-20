@@ -17,6 +17,7 @@ public interface Converter {
      *
      * @param api a json/yaml document.
      * @return object tree of the document.
+     * @throws ConverterException if conversion fails.
      */
     Object convert (String api) throws ConverterException;
 }
