@@ -28,7 +28,6 @@ public class OpenApiParser {
     }
 
     private OpenApiResult createResult (Bucket api) {
-//        String version = api.getRequiredStringValue (OPENAPI);
         String version = api.convert (OPENAPI, new StringNotNullConverter ());
 
         if (isVersion30 (version)) {
