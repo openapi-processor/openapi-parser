@@ -16,10 +16,10 @@ import java.util.function.Consumer;
 import static io.openapiparser.converter.Types.asMap;
 
 /**
- * wraps the properties {@link Map} of a json/yaml object and its location.
+ * wraps the properties {@link Map} of a json/yaml object and its location in the source document.
  */
 public class Bucket {
-    private final URI source;
+    private final URI source; // document
     private final JsonPointer location;
     private final Map<String, Object> properties;
 
@@ -40,13 +40,25 @@ public class Bucket {
         this.properties = properties;
     }
 
-    @Deprecated
+    /**
+     * create a document "root" bucket with an empty location.
+     *
+     * @param source the document URI
+     * @param properties the document properties
+     */
     public Bucket (URI source, Map<String, Object> properties) {
         this.source = source;
-        this.location = JsonPointer.fromFragment (source.getRawFragment ());
+        this.location = JsonPointer.EMPTY;
         this.properties = properties;
     }
 
+    /**
+     * create an object bucket with the object location in the source document and its properties.
+     *
+     * @param source the document URI
+     * @param location the location inside {@code source}
+     * @param properties the document properties
+     */
     public Bucket (URI source, String location, Map<String, Object> properties) {
         this.source = source;
         this.location = JsonPointer.fromJsonPointer (location);
