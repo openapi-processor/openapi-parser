@@ -5,6 +5,8 @@
 
 package io.openapiparser.converter;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 import java.util.Collection;
 import java.util.Collections;
 
@@ -16,7 +18,7 @@ import static io.openapiparser.converter.Types.convertOrNull;
 public class StringsNullableConverter implements PropertyConverter<Collection<String>> {
 
     @Override
-    public Collection<String> convert (String name, Object value, String location) {
+    public @Nullable Collection<String> convert (String name, Object value, String location) {
         Collection<?> values = convertOrNull (location, value, Collection.class);
         if (values == null)
             return null;
