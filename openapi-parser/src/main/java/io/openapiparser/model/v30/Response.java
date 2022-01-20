@@ -34,7 +34,7 @@ public class Response extends Properties implements Reference, Extensions {
     @Required
     @Override
     public String getRef () {
-        return getStringOrNull (REF);
+        return getStringOrThrow (REF);
     }
 
     @Required
