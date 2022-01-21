@@ -112,39 +112,6 @@ class JsonPointerSpec : StringSpec({
         }
     }
 
-    "throws if array index value is null" {
-        val document = mapOf(
-            "array" to listOf(null)
-        )
-        val pointer = fromJsonPointer("/array/0")
-
-        shouldThrow<NoValueException> {
-            pointer.getValue(document)
-        }
-    }
-
-    "throws if array index is no integer" {
-        val document = mapOf(
-            "array" to listOf(null)
-        )
-        val pointer = fromJsonPointer("/array/a")
-
-        shouldThrow<JsonPointerInvalidException> {
-            pointer.getValue(document)
-        }
-    }
-
-    "throws if object value is null" {
-        val document = mapOf(
-            "object" to null
-        )
-        val pointer = fromJsonPointer("/object")
-
-        shouldThrow<NoValueException> {
-            pointer.getValue(document)
-        }
-    }
-
     "throws if fragment is invalid" {
         shouldThrow<JsonPointerInvalidException> {
             JsonPointer.fromFragment("#/%XX/invalid")
@@ -157,5 +124,15 @@ class JsonPointerSpec : StringSpec({
 
     "append index to pointer" {
         fromJsonPointer("/root").append(1).toString() shouldBe "/root/1"
+    }
+
+    "get tail from pointer" {
+        JsonPointer.EMPTY.tail() shouldBe ""
+        fromJsonPointer("/root").tail() shouldBe "root"
+        fromJsonPointer("/root/tail").tail() shouldBe "tail"
+    }
+
+    "get tail index from pointer" {
+        fromJsonPointer("/root/0").tailIndex() shouldBe 0
     }
 })

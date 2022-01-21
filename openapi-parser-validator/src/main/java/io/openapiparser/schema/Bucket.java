@@ -13,6 +13,7 @@ import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import static io.openapiparser.converter.Types.asCol;
 import static io.openapiparser.converter.Types.asMap;
 import static java.util.Collections.unmodifiableMap;
 
@@ -170,9 +171,54 @@ public class Bucket {
         return properties.containsKey (property);
     }
 
+    /**
+     * get the raw value of the given property pointer.
+     *
+     * @param pointer property location
+     * @return property value or null if the property does not exist
+     */
+    public @Nullable Object getRawValue (JsonPointer pointer) {
+        if (pointer == null)
+            return getRawValues ();
+
+        JsonPointer current = JsonPointer.EMPTY;
+        Object value = properties;
+
+        for (String token: pointer.getTokens ()) {
+            current = current.append (token);
+
+            if (value instanceof Map) {
+                value = getObjectValue (asMap (value), current);
+
+            } else if (value instanceof Collection) {
+                value = getArrayValue (asCol (value), current);
+            }
+        }
+
+        return value;
+    }
+
+    private Object getObjectValue (Map<String, Object> object, JsonPointer pointer) {
+        Object value = object.get (pointer.tail ());
+        if (value == null) {
+            throw new NoValueException (pointer.toString ());
+        }
+        return value;
+    }
+
+    private Object getArrayValue (Collection<Object> array, JsonPointer pointer) {
+        Object value = array.toArray ()[pointer.tailIndex ()];
+        if (value == null) {
+            throw new NoValueException(pointer.toString ());
+        }
+        return value;
+    }
+
     // todo use converter?? implement here
-    public @Nullable Object getProperty (JsonPointer location) {
+    @Deprecated
+    public @Nullable Object getProperty (JsonPointer propertyLocation) {
         return location.getValue (properties);
+
 
         //        if (!isPath (path)) {
 //            return getRawValue (path);

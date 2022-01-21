@@ -13,6 +13,7 @@ import io.kotest.matchers.maps.shouldContainExactly
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
+import io.openapiparser.converter.NoValueException
 import io.openapiparser.converter.TypeMismatchException
 import java.net.URI
 
@@ -99,13 +100,71 @@ class BucketSpec: StringSpec({
         bucket.getBucket("bar").shouldBeNull()
     }
 
-    "get property child bucket thrwos if property is not an object" {
+    "get property child bucket throws if property is not an object" {
         val bucket = Bucket(URI("https//document"), "/me", mapOf(
             "foo" to "bar"
         ))
 
         shouldThrow<TypeMismatchException> {
             bucket.getBucket("foo")
+        }
+    }
+
+    "get object value by pointer" {
+        val bucket = Bucket(URI("https//document"), "/me", mapOf(
+            "foo" to "bar"
+        ))
+        val pointer = JsonPointer.fromJsonPointer("/foo")
+
+        bucket.getRawValue(pointer) shouldBe "bar"
+    }
+
+    "get object value by null pointer" {
+        val bucket = Bucket(URI("https//document"), "/me", mapOf("foo" to "bar"))
+        val pointer = JsonPointer.fromJsonPointer(null)
+
+        bucket.getRawValue(pointer) shouldBe bucket.rawValues
+    }
+
+    "throws if get object value is null" {
+        val bucket = Bucket(URI("https//document"), "/me", mapOf())
+        val pointer = JsonPointer.fromJsonPointer("/object")
+
+        shouldThrow<NoValueException> {
+            bucket.getRawValue(pointer)
+        }
+    }
+
+    "get array value by pointer" {
+        val bucket = Bucket(URI("https//document"), "/me", mapOf(
+            "foo" to listOf("bar"))
+        )
+        val pointer = JsonPointer.fromJsonPointer("/foo/0")
+
+        bucket.getRawValue(pointer) shouldBe "bar"
+    }
+
+    "throws if get array value by pointer index is null" {
+        val bucket = Bucket(URI("https//document"), "/me", mapOf(
+            "array" to listOf(null)
+        ))
+
+        val pointer = JsonPointer.fromJsonPointer("/array/0")
+
+        shouldThrow<NoValueException> {
+            bucket.getRawValue(pointer)
+        }
+    }
+
+    "throws if get array value by pointer index does not exist" {
+        val bucket = Bucket(URI("https//document"), "/me", mapOf(
+            "array" to listOf<Any>()
+        ))
+
+        val pointer = JsonPointer.fromJsonPointer("/array/0")
+
+        shouldThrow<ArrayIndexOutOfBoundsException> {
+            bucket.getRawValue(pointer)
         }
     }
 })

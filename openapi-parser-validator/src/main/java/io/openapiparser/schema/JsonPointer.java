@@ -13,6 +13,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.unmodifiableCollection;
+
 /**
  * JSON pointer abstraction based on <a href="https://datatracker.ietf.org/doc/html/rfc6901">
  *     rfc6901</a>.
@@ -21,7 +23,7 @@ public class JsonPointer {
     public final static JsonPointer EMPTY = new JsonPointer();
 
     final private @Nullable String pointer;
-    final private Collection<String> tokens;
+    final private List<String> tokens;
 
     /**
      * creates a json pointer from a json pointer string. Throws if the string is not a valid json
@@ -30,7 +32,7 @@ public class JsonPointer {
      * @param jsonPointer json pointer
      * @return a json pointer object
      */
-    static public JsonPointer fromJsonPointer (String jsonPointer) {
+    static public JsonPointer fromJsonPointer (@Nullable String jsonPointer) {
         if (jsonPointer == null) {
             return EMPTY;
         }
@@ -89,11 +91,7 @@ public class JsonPointer {
      * @return new json pointer
      */
     public JsonPointer append (String token) {
-        if (pointer == null) {
-            return new JsonPointer (getJsonPointer (token));
-        } else {
-            return new JsonPointer (getJsonPointer (token));
-        }
+        return new JsonPointer (getJsonPointer (token));
     }
 
     /**
@@ -125,12 +123,39 @@ public class JsonPointer {
     }
 
     /**
+     * get the last token of the pointer.
+     *
+     * @return last token
+     */
+    public String tail () {
+        if (tokens.isEmpty ())
+            return "";
+
+        return tokens.get (tokens.size () - 1);
+    }
+
+    /**
+     * get the last token of the pointer as array index.
+     *
+     * @return last token array index
+     */
+    public int tailIndex () {
+        try {
+            return Integer.parseInt (tokens.get (tokens.size () - 1));
+        } catch (NumberFormatException ex) {
+            throw new JsonPointerInvalidException (pointer, tail(), ex);
+        }
+    }
+
+    /**
      * extracts the value the json pointer point to from the given document object. Throws if there
      * is no value or the pointer does not match the document structure.
      *
      * @param document "json" document
      * @return the value at the pointer location
      */
+    // todo move to bucket...
+    @Deprecated
     public Object getValue(Object document) {
         if (pointer == null)
             return document;
@@ -144,6 +169,15 @@ public class JsonPointer {
             }
         }
         return value;
+    }
+
+    /**
+     * gets the unescaped tokens of this pointer.
+     *
+     * @return tokens.
+     */
+    public Iterable<String> getTokens () {
+        return unmodifiableCollection (tokens);
     }
 
     @Override
