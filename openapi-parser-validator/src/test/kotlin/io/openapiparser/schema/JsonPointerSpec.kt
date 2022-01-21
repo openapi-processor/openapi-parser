@@ -148,7 +148,11 @@ class JsonPointerSpec : StringSpec({
 
     "throws if fragment is invalid" {
         shouldThrow<JsonPointerInvalidException> {
-            JsonPointer.fromFragment(String("öäü".toByteArray(), StandardCharsets.US_ASCII))
+            JsonPointer.fromFragment("#/%XX/invalid")
+        }
+
+        shouldThrow<JsonPointerInvalidException> {
+            JsonPointer.fromFragment("/missing/hash")
         }
     }
 

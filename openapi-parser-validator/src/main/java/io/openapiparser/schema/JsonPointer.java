@@ -8,7 +8,6 @@ package io.openapiparser.schema;
 import io.openapiparser.converter.NoValueException;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -179,7 +178,7 @@ public class JsonPointer {
     private static String decodeFragment (String fragment) {
         try {
             return URLDecoder.decode (fragment, StandardCharsets.UTF_8.name());
-        } catch (UnsupportedEncodingException ex) {
+        } catch (Exception ex) {
             throw new JsonPointerInvalidException (fragment, ex);
         }
     }
