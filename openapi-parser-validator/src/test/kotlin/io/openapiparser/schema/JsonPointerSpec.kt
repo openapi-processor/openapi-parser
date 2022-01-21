@@ -12,7 +12,6 @@ import io.kotest.matchers.shouldBe
 import io.openapiparser.converter.NoValueException
 import io.openapiparser.jackson.JacksonConverter
 import io.openapiparser.schema.JsonPointer.fromJsonPointer
-import java.nio.charset.StandardCharsets
 
 class JsonPointerSpec : StringSpec({
 
@@ -104,12 +103,12 @@ class JsonPointerSpec : StringSpec({
 
     "handles null source" {
         JsonPointer.fromFragment(null).toString().shouldBeNull()
-        JsonPointer.fromJsonPointer(null).toString().shouldBeNull()
+        fromJsonPointer(null).toString().shouldBeNull()
     }
 
     "throws on invalid json pointer" {
         shouldThrow<JsonPointerInvalidException> {
-            JsonPointer.fromJsonPointer("should/start/with/slash")
+            fromJsonPointer("should/start/with/slash")
         }
     }
 
@@ -117,7 +116,7 @@ class JsonPointerSpec : StringSpec({
         val document = mapOf(
             "array" to listOf(null)
         )
-        val pointer = JsonPointer.fromJsonPointer("/array/0")
+        val pointer = fromJsonPointer("/array/0")
 
         shouldThrow<NoValueException> {
             pointer.getValue(document)
@@ -128,7 +127,7 @@ class JsonPointerSpec : StringSpec({
         val document = mapOf(
             "array" to listOf(null)
         )
-        val pointer = JsonPointer.fromJsonPointer("/array/a")
+        val pointer = fromJsonPointer("/array/a")
 
         shouldThrow<JsonPointerInvalidException> {
             pointer.getValue(document)
@@ -139,7 +138,7 @@ class JsonPointerSpec : StringSpec({
         val document = mapOf(
             "object" to null
         )
-        val pointer = JsonPointer.fromJsonPointer("/object")
+        val pointer = fromJsonPointer("/object")
 
         shouldThrow<NoValueException> {
             pointer.getValue(document)
@@ -156,4 +155,7 @@ class JsonPointerSpec : StringSpec({
         }
     }
 
+    "append index to pointer" {
+        fromJsonPointer("/root").append(1).toString() shouldBe "/root/1"
+    }
 })

@@ -97,6 +97,16 @@ public class JsonPointer {
     }
 
     /**
+     * creates a new json pointer appending the given index to the pointer.
+     *
+     * @param index the index
+     * @return new json pointer to index
+     */
+    public JsonPointer append (int index) {
+        return append (String.valueOf (index));
+    }
+
+    /**
      * creates a new json pointer appending the given token.
      *
      * @param token token to append
