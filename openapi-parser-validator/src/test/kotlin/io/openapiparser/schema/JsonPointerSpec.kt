@@ -5,10 +5,14 @@
 
 package io.openapiparser.schema
 
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
+import io.openapiparser.converter.NoValueException
 import io.openapiparser.jackson.JacksonConverter
 import io.openapiparser.schema.JsonPointer.fromJsonPointer
+import java.nio.charset.StandardCharsets
 
 class JsonPointerSpec : StringSpec({
 
@@ -52,7 +56,7 @@ class JsonPointerSpec : StringSpec({
     }
 
     "create json pointer from uri fragment" {
-        data class Pointer(val pointer: String, val expected: Any)
+        data class Pointer(val pointer: String?, val expected: Any?)
 
         val source = """
             {
@@ -84,7 +88,8 @@ class JsonPointerSpec : StringSpec({
             Pointer("#/i%5Cj", 5),
             Pointer("#/k%22l", 6),
             Pointer("#/%20", 7),
-            Pointer("#/m~0n", 8)
+            Pointer("#/m~0n", 8),
+            Pointer(null, document)
         ).forEach {
             JsonPointer.fromFragment(it.pointer).getValue(document) shouldBe it.expected
         }
@@ -96,4 +101,55 @@ class JsonPointerSpec : StringSpec({
         fromJsonPointer("/root").append("/foo").toString() shouldBe "/root/~1foo"
         fromJsonPointer("/root").append("foo").toString() shouldBe "/root/foo"
     }
+
+    "handles null source" {
+        JsonPointer.fromFragment(null).toString().shouldBeNull()
+        JsonPointer.fromJsonPointer(null).toString().shouldBeNull()
+    }
+
+    "throws on invalid json pointer" {
+        shouldThrow<JsonPointerInvalidException> {
+            JsonPointer.fromJsonPointer("should/start/with/slash")
+        }
+    }
+
+    "throws if array index value is null" {
+        val document = mapOf(
+            "array" to listOf(null)
+        )
+        val pointer = JsonPointer.fromJsonPointer("/array/0")
+
+        shouldThrow<NoValueException> {
+            pointer.getValue(document)
+        }
+    }
+
+    "throws if array index is no integer" {
+        val document = mapOf(
+            "array" to listOf(null)
+        )
+        val pointer = JsonPointer.fromJsonPointer("/array/a")
+
+        shouldThrow<JsonPointerInvalidException> {
+            pointer.getValue(document)
+        }
+    }
+
+    "throws if object value is null" {
+        val document = mapOf(
+            "object" to null
+        )
+        val pointer = JsonPointer.fromJsonPointer("/object")
+
+        shouldThrow<NoValueException> {
+            pointer.getValue(document)
+        }
+    }
+
+    "throws if fragment is invalid" {
+        shouldThrow<JsonPointerInvalidException> {
+            JsonPointer.fromFragment(String("öäü".toByteArray(), StandardCharsets.US_ASCII))
+        }
+    }
+
 })

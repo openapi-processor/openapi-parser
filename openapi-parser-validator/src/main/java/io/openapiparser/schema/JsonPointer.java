@@ -138,7 +138,7 @@ public class JsonPointer {
     }
 
     @Override
-    public String toString () {
+    public @Nullable String toString () {
         return pointer;
     }
 
