@@ -14,12 +14,13 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static io.openapiparser.converter.Types.asMap;
+import static java.util.Collections.unmodifiableMap;
 
 /**
  * wraps the properties {@link Map} of a json/yaml object and its location in the source document.
  */
 public class Bucket {
-    private final URI source; // document
+    private final @Nullable URI source; // document
     private final JsonPointer location;
     private final Map<String, Object> properties;
 
@@ -46,6 +47,7 @@ public class Bucket {
      * @param source the document URI
      * @param properties the document properties
      */
+    @SuppressWarnings ("NullableProblems")
     public Bucket (URI source, Map<String, Object> properties) {
         this.source = source;
         this.location = JsonPointer.EMPTY;
@@ -56,17 +58,46 @@ public class Bucket {
      * create an object bucket with the object location in the source document and its properties.
      *
      * @param source the document URI
-     * @param location the location inside {@code source}
+     * @param location the location (json pointer) inside {@code source}
      * @param properties the document properties
      */
+    @SuppressWarnings ("NullableProblems")
+    public Bucket (URI source, JsonPointer location, Map<String, Object> properties) {
+        this.source = source;
+        this.location = location;
+        this.properties = properties;
+    }
+
+    /**
+     * create an object bucket with the object location in the source document and its properties.
+     *
+     * @param source the document URI
+     * @param location the location (json pointer) inside {@code source}
+     * @param properties the document properties
+     */
+    @SuppressWarnings ("NullableProblems")
     public Bucket (URI source, String location, Map<String, Object> properties) {
         this.source = source;
         this.location = JsonPointer.fromJsonPointer (location);
         this.properties = properties;
     }
 
-    public URI getSource () {
+    /**
+     * the document uri of this bucket.
+     *
+     * @return the document {@link URI}
+     */
+    public @Nullable URI getSource () {
         return source;
+    }
+
+    /**
+     * the location of this bucket in the {@code source} document.
+     *
+     * @return the location
+     */
+    public JsonPointer getLocation () {
+        return location;
     }
 
     /**
@@ -81,10 +112,24 @@ public class Bucket {
         return converter.convert (property, getRawValue (property), getLocation (property));
     }
 
+    /**
+     * convert "this" bucket to the expected type.
+     *
+     * @param converter properties converter
+     * @param <T> target type
+     * @return a {@code T} object or null
+     */
     public <T> @Nullable T convert (PropertiesConverter<T> converter) {
         return converter.convert (properties, location.toString ());
     }
 
+    /**
+     * get property value as a {@code Bucket}. Throws if the property value is not an object
+     * properties {@link Map}.
+     *
+     * @param property property name
+     * @return child bucket
+     */
     public @Nullable Bucket getBucket (String property) {
         Object value = getRawValue (property);
         if (value == null)
@@ -96,24 +141,6 @@ public class Bucket {
         return new Bucket (source, getLocation (property), asMap (value));
     }
 
-    public int getSize () {
-        return properties.size ();
-    }
-
-    private String getLocation (String property) {
-        return location.getJsonPointer (property);
-    }
-
-//    @Deprecated
-//    public @Nullable Content getContentValue (JsonPointer pointer, String property) {
-//        JsonPointer propertyPointer = pointer.append (property);
-//        Map<String, Object> raw = getRawMapValue (propertyPointer, property);
-//        if (raw == null)
-//            return null;
-//
-//        return new Content (raw);
-//    }
-
     /**
      * get the raw value of the given property.
      *
@@ -124,9 +151,13 @@ public class Bucket {
         return properties.get (property);
     }
 
-    @Deprecated
+    /**
+     * get the raw value, i.e. the property map, of the bucket.
+     *
+     * @return the property map
+     */
     public Map<String, Object> getRawValues () {
-        return properties;
+        return unmodifiableMap (properties);
     }
 
     /**
@@ -139,7 +170,7 @@ public class Bucket {
         return properties.containsKey (property);
     }
 
-    // todo use converter??
+    // todo use converter?? implement here
     public @Nullable Object getProperty (JsonPointer location) {
         return location.getValue (properties);
 
@@ -167,8 +198,8 @@ public class Bucket {
     }
 
     /**
-     * walks the object tree of the given property and runs the handler on each child
-     * {@link Bucket}. It walks into any child map or collection of the property.
+     * walks the object tree of the given property and runs the handler on each child {@code Bucket}.
+     * It walks into any child map or collection of the property.
      *
      * @param property property name
      * @param handler node handler
@@ -188,7 +219,7 @@ public class Bucket {
 
                 handler.visit (new Bucket (
                     source,
-                    getIndexLocation (propertyLocation, index),
+                    propertyLocation.append (index).toString (),
                     asMap (o)));
 
                 index++;
@@ -196,8 +227,15 @@ public class Bucket {
         }
     }
 
-    private String getIndexLocation (JsonPointer pointer, int index) {
-        return pointer.append (String.valueOf (index)).toString ();
+    /**
+     * create location string of property relative to the bucket.
+     *
+     * @param property property name
+     * @return the location
+     */
+    // todo should throw if property is not in the bucket?
+    private String getLocation (String property) {
+        return location.getJsonPointer (property);
     }
 
     public void forEach (BiConsumer<String, Object> action) {
@@ -207,17 +245,6 @@ public class Bucket {
     public void forEachProperty (Consumer<String> action) {
         properties.keySet().forEach (action);
     }
-
-    /*
-        public void resolve(BiFunction<URI, String, Object> resolver) {
-        references.forEach ((key, ref) -> {
-            replace (key, ref, resolver.apply (ref.getDocUri (), ref.getRef ()));
-        });
-    }
-     */
-//    private @Nullable Map<String, Object> getRawMapValue (JsonPointer pointer, String property) {
-//        return Types.convertMapOrNull (pointer.toString (), properties.get (property));
-//    }
 }
 
 /*
