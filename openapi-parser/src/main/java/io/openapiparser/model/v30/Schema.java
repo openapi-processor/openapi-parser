@@ -46,7 +46,7 @@ public class Schema extends Properties implements Reference, Extensions {
     /**
      * JSON Schema Validation: validation keyword
      *
-     * @return multiple of or null
+     * @return multiple of or null if missing
      */
     public @Nullable Number getMultipleOf () {
         return getNumberOrNull (MULTIPLE_OF);
@@ -54,6 +54,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * JSON Schema Validation: validation keyword
+     *
+     * @return maximum or null if missing
      */
     public @Nullable Number getMaximum () {
         return getNumberOrNull (MAXIMUM);
@@ -61,6 +63,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * JSON Schema Validation: validation keyword
+     *
+     * @return exclusive maximum or false
      */
     public Boolean getExclusiveMaximum () {
         return getBooleanOrDefault (EXCLUSIVE_MAXIMUM, false);
@@ -68,6 +72,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * JSON Schema Validation: validation keyword
+     *
+     * @return minimum or null if missing
      */
     public @Nullable Number getMinimum () {
         return getNumberOrNull (MINIMUM);
@@ -75,6 +81,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * JSON Schema Validation: validation keyword
+     *
+     * @return exclusive minimum or false if missing
      */
     public Boolean getExclusiveMinimum () {
         return getBooleanOrDefault (EXCLUSIVE_MINIMUM, false);
@@ -82,6 +90,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * JSON Schema Validation: validation keyword
+     *
+     * @return max length or null if missing
      */
     public @Nullable Number getMaxLength () {
         return getNumberOrNull (MAX_LENGTH);
@@ -89,6 +99,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * JSON Schema Validation: validation keyword
+     *
+     * @return min length or null if missing
      */
     public @Nullable Number getMinLength () {
         return getNumberOrNull (MIN_LENGTH);
@@ -96,6 +108,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * JSON Schema Validation: validation keyword
+     *
+     * @return items or null if missing
      */
     public @Nullable Schema getItems () {
         return getObjectOrNull (ITEMS, Schema.class);
@@ -103,6 +117,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * JSON Schema Validation: validation keyword
+     *
+     * @return pattern or null if missing
      */
     public @Nullable String getPattern () {
         return getStringOrNull (PATTERN);
@@ -110,6 +126,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * JSON Schema Validation: validation keyword
+     *
+     * @return max items or null if missing
      */
     public @Nullable Integer getMaxItems () {
         return getIntegerOrNull (MAX_ITEMS);
@@ -117,6 +135,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * JSON Schema Validation: validation keyword
+     *
+     * @return min items or 0 if missing
      */
     public Integer getMinItems () {
         return getIntegerOrDefault (MIN_ITEMS, 0);
@@ -124,6 +144,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * JSON Schema Validation: validation keyword
+     *
+     * @return unique items or false if missing
      */
     public Boolean getUniqueItems () {
         return getBooleanOrDefault (UNIQUE_ITEMS, false);
@@ -131,6 +153,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * JSON Schema Validation: validation keyword
+     *
+     * @return max properties or null if missing
      */
     public @Nullable Integer getMaxProperties () {
         return getIntegerOrNull (MAX_PROPERTIES);
@@ -138,6 +162,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * JSON Schema Validation: validation keyword
+     *
+     * @return min properties or 0 if missing
      */
     public Integer getMinProperties () {
         return getIntegerOrDefault (MIN_PROPERTIES, 0);
@@ -145,6 +171,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * JSON Schema Validation: validation keyword
+     *
+     * @return required properties or empty if missing
      */
     public Collection<String> getRequired () {
         return getStringsOrEmpty (REQUIRED);
@@ -152,6 +180,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * JSON Schema Validation: validation keyword
+     *
+     * @return properties map or empty if missing
      */
     public Map<String, Schema> getProperties () {
         return getMapObjectsOrEmpty (PROPERTIES, Schema.class);
@@ -175,14 +205,19 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * JSON Schema Validation: validation keyword
+     *
+     * @return enum values or empty if missing
+     *
+     * todo any type
      */
-    // todo any type
     public @Nullable Collection<?> getEnum () {
         return getStringsOrNull (ENUM);
     }
 
     /**
      * JSON Schema Validation: validation keyword
+     *
+     * @return type, throws if missing
      */
     @Required
     public String getType () {
@@ -191,6 +226,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * JSON Schema Validation: validation keyword
+     *
+     * @return all of or empty if missing
      */
     public Collection<Schema> getAllOf () {
         return getObjectsOrEmpty (ALL_OF, Schema.class);
@@ -198,6 +235,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * JSON Schema Validation: validation keyword
+     *
+     * @return any of or empty if missing
      */
     public Collection<Schema> getAnyOf () {
         return getObjectsOrEmpty (ANY_OF, Schema.class);
@@ -205,6 +244,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * JSON Schema Validation: validation keyword
+     *
+     * @return one of or empty if missing
      */
     public Collection<Schema> getOneOf () {
         return getObjectsOrEmpty (ONE_OF, Schema.class);
@@ -212,6 +253,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * JSON Schema Validation: validation keyword
+     *
+     * @return not or null if missing
      */
     public @Nullable Schema getNot () {
         return getObjectOrNull (NOT, Schema.class);
@@ -219,6 +262,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * JSON Schema Validation: metadata keyword
+     *
+     * @return title or null if missing
      */
     public @Nullable String getTitle () {
         return getStringOrNull (TITLE);
@@ -226,6 +271,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * JSON Schema Validation: metadata keyword. May contain Markdown formatting (common mark).
+     *
+     * @return description or null if missing
      */
     public @Nullable String getDescription () {
         return getStringOrNull (DESCRIPTION);
@@ -233,6 +280,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * JSON Schema Validation: metadata keyword
+     *
+     * @return default or null
      */
     public @Nullable Object getDefault () {
         return getRawValue (DEFAULT);
@@ -240,6 +289,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * JSON Schema Validation: semantic validation keyword
+     *
+     * @return format or null if missing
      */
     public @Nullable String getFormat() {
         return getStringOrNull (FORMAT);
@@ -247,6 +298,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * OpenAPI Schema
+     *
+     * @return nullable or false if missing
      */
     public Boolean getNullable () {
         return getBooleanOrDefault (NULLABLE, false);
@@ -254,6 +307,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * OpenAPI Schema
+     *
+     * @return discriminator or null if missing
      */
     public @Nullable Discriminator getDiscriminator () {
         return getObjectOrNull (DISCRIMINATOR, Discriminator.class);
@@ -261,6 +316,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * OpenAPI Schema
+     *
+     * @return true or false
      */
     public Boolean getReadOnly () {
         return getBooleanOrDefault (READ_ONLY, false);
@@ -268,6 +325,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * OpenAPI Schema
+     *
+     * @return true or false
      */
     public Boolean getWriteOnly () {
         return getBooleanOrDefault (WRITE_ONLY, false);
@@ -275,6 +334,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * OpenAPI Schema
+     *
+     * @return xml or null if missing
      */
     public @Nullable Xml getXml () {
         return getObjectOrNull (XML, Xml.class);
@@ -282,6 +343,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * OpenAPI Schema
+     *
+     * @return external documentation or null if missing
      */
     public @Nullable ExternalDocumentation getExternalDocs () {
         return getObjectOrNull (EXTERNAL_DOCS, ExternalDocumentation.class);
@@ -289,6 +352,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * OpenAPI Schema
+     *
+     * @return example or null if missing
      */
     public @Nullable Object getExample () {
         return getRawValue (EXAMPLE);
@@ -296,6 +361,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * OpenAPI Schema
+     *
+     * @return deprecated or false if missing
      */
     public Boolean getDeprecated () {
         return getBooleanOrDefault (DEPRECATED, false);
