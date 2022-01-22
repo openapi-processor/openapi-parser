@@ -77,6 +77,11 @@ public class Types {
         return (Map<String, Object>) o;
     }
 
+    @SuppressWarnings ("unchecked")
+    public static Collection<Object> asCol (Object o) {
+        return (Collection<Object>) o;
+    }
+
     static Collection<Object> convertCollection (String path, @Nullable Object value) {
         return convert (path, value, Collection.class);
     }

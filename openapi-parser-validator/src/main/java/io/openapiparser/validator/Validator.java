@@ -5,8 +5,7 @@
 
 package io.openapiparser.validator;
 
-import io.openapiparser.schema.JsonPointer;
-import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.schema.*;
 import io.openapiparser.validator.messages.*;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -16,6 +15,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static io.openapiparser.converter.Types.asMap;
 
 /**
  * the validator.
@@ -110,7 +111,12 @@ public class Validator {
     }
 
     private @Nullable Object getValue (Object source, @Nullable String path) {
-        return JsonPointer.fromJsonPointer (path).getValue (source);
+        if (source instanceof Map) {
+            Bucket bucket = new Bucket (asMap (source));
+            return bucket.getRawValue (JsonPointer.fromJsonPointer (path));
+        }
+
+        return source;
     }
 
     private URI append (URI uri, String value) {

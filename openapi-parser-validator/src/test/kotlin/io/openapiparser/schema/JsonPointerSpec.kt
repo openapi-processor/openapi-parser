@@ -9,8 +9,9 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
-import io.openapiparser.converter.NoValueException
+import io.openapiparser.converter.Types.asMap
 import io.openapiparser.jackson.JacksonConverter
+import io.openapiparser.schema.JsonPointer.fromFragment
 import io.openapiparser.schema.JsonPointer.fromJsonPointer
 
 class JsonPointerSpec : StringSpec({
@@ -34,7 +35,7 @@ class JsonPointerSpec : StringSpec({
         """.trimIndent()
 
         val converter = JacksonConverter()
-        val document = converter.convert(source)
+        val document = asMap(converter.convert(source))
 
         listOf(
             Pointer("", document),
@@ -50,7 +51,7 @@ class JsonPointerSpec : StringSpec({
             Pointer("/ ", 7),
             Pointer("/m~0n", 8),
         ).forEach {
-            fromJsonPointer(it.pointer).getValue(document) shouldBe it.expected
+            Bucket(document).getRawValue(fromJsonPointer(it.pointer)) shouldBe it.expected
         }
     }
 
@@ -73,7 +74,7 @@ class JsonPointerSpec : StringSpec({
         """.trimIndent()
 
         val converter = JacksonConverter()
-        val document = converter.convert(source)
+        val document = asMap(converter.convert(source))
 
         listOf(
             Pointer("#", document),
@@ -90,7 +91,7 @@ class JsonPointerSpec : StringSpec({
             Pointer("#/m~0n", 8),
             Pointer(null, document)
         ).forEach {
-            JsonPointer.fromFragment(it.pointer).getValue(document) shouldBe it.expected
+            Bucket(document).getRawValue(fromFragment(it.pointer)) shouldBe it.expected
         }
     }
 
@@ -134,5 +135,11 @@ class JsonPointerSpec : StringSpec({
 
     "get tail index from pointer" {
         fromJsonPointer("/root/0").tailIndex() shouldBe 0
+    }
+
+    "get tail index from pointer throws if index is no int" {
+        shouldThrow<JsonPointerInvalidException> {
+            fromJsonPointer("/root/boom").tailIndex()
+        }
     }
 })

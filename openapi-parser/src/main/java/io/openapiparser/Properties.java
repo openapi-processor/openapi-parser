@@ -28,14 +28,17 @@ public class Properties {
 
     @Experimental
     public @Nullable Object getRawValueOf (String pointer) {
-        final JsonPointer target = JsonPointer.fromJsonPointer (pointer);
-        return target.getValue (bucket.getRawValues ());
+        return bucket.getRawValue (JsonPointer.fromJsonPointer (pointer));
     }
 
     @Experimental
-    public <T> @Nullable T getValueOf (String pointer, Class<T> target) {
+    public <T> T getValueOf (String pointer, Class<T> target) {
+        final Object rawValue = getRawValueOf (pointer);
+        if (rawValue == null)
+            throw new NoValueException (pointer);
+
         return new ObjectNotNullConverter<> (bucket.getSource (), new Factory<> (context, target))
-            .convert ("unused", getRawValueOf (pointer), pointer);
+            .convert ("unused", rawValue, pointer);
     }
 
     /* raw */
@@ -50,7 +53,7 @@ public class Properties {
      * @param property property name
      * @return true if the property exists, else false
      */
-    protected boolean hasProperty (String property) {
+    public /*protected*/ boolean hasProperty (String property) {
         return bucket.hasProperty (property);
     }
 
@@ -76,7 +79,7 @@ public class Properties {
         return bucket.convert (property, new IntegerConverter ());
     }
 
-    protected @Nullable Integer getIntegerOrDefault (String property, int defaultValue) {
+    protected Integer getIntegerOrDefault (String property, int defaultValue) {
         Integer value = bucket.convert (property, new IntegerConverter ());
         if (value == null)
             return defaultValue;
@@ -90,7 +93,7 @@ public class Properties {
         return bucket.convert (property, new BooleanConverter ());
     }
 
-    protected @Nullable Boolean getBooleanOrFalse (String property) {
+    protected Boolean getBooleanOrFalse (String property) {
         return getBooleanOrDefault (property, false);
     }
 
@@ -162,12 +165,18 @@ public class Properties {
 
     /* ref */
 
-    protected <T> T getRefObject (Class<T> clazz) {
-        return new Factory<T> (context, clazz).create (context.getRefObjectOrNull (bucket));
+    // todo getRefObjectOrNull ??
+    protected <T> @Nullable T getRefObject (Class<T> clazz) {
+        final Bucket ref = context.getRefObjectOrNull (bucket);
+        if (ref == null)
+            return null;
+
+        return new Factory<T> (context, clazz).create (ref);
     }
 
     protected <T> T getRefObjectOrThrow (Class<T> clazz) {
-        return new Factory<T> (context, clazz).create (context.getRefObjectOrThrow (bucket));
+        final Bucket refObjectOrThrow = context.getRefObjectOrThrow (bucket);
+        return new Factory<T> (context, clazz).create (refObjectOrThrow);
     }
 
     /* helper */

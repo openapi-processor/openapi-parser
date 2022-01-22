@@ -95,7 +95,12 @@ public class ReferenceResolver {
             Bucket document = documents.get (documentUri);
             if (ref.contains ("#")) {
                 String fragment = ref.substring(ref.indexOf (HASH));
-                return document.getProperty (JsonPointer.fromFragment (fragment));
+                final Object property = document.getRawValue (JsonPointer.fromFragment (fragment));
+                if (property == null) {
+                    throw new ResolverException (
+                        String.format ("failed to resolve ref %s/%s.", documentUri, ref));
+                }
+                return property;
             } else {
                 return document.getRawValues ();
             }
@@ -134,7 +139,7 @@ public class ReferenceResolver {
                         if (!documents.contains (documentUri)) {
                             Bucket document = new Bucket (
                                 documentUri,
-                                null,
+//                                null,
                                 loadDocument (documentUri));
 
                             documents.add (documentUri, document);

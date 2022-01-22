@@ -5,7 +5,6 @@
 
 package io.openapiparser.schema;
 
-import io.openapiparser.converter.NoValueException;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URLDecoder;
@@ -148,30 +147,6 @@ public class JsonPointer {
     }
 
     /**
-     * extracts the value the json pointer point to from the given document object. Throws if there
-     * is no value or the pointer does not match the document structure.
-     *
-     * @param document "json" document
-     * @return the value at the pointer location
-     */
-    // todo move to bucket...
-    @Deprecated
-    public Object getValue(Object document) {
-        if (pointer == null)
-            return document;
-
-        Object value = document;
-        for (String token : tokens) {
-            if (value instanceof Map) {
-                value = getObjectValue (value, token);
-            } else if (value instanceof Collection) {
-                value = getArrayValue (value, token);
-            }
-        }
-        return value;
-    }
-
-    /**
      * gets the unescaped tokens of this pointer.
      *
      * @return tokens.
@@ -183,40 +158,6 @@ public class JsonPointer {
     @Override
     public @Nullable String toString () {
         return pointer;
-    }
-
-    private Object getArrayValue (Object value, String token) {
-        value = asArray (value).toArray ()[indexFrom (token)];
-        if (value == null) {
-            throw new NoValueException(pointer);
-        }
-        return value;
-    }
-
-    private Object getObjectValue (Object value, String token) {
-        value = asObject (value).get (token);
-        if (value == null) {
-            throw new NoValueException (pointer);
-        }
-        return value;
-    }
-
-    private Collection<Object> asArray (Object value) {
-        //noinspection unchecked
-        return (Collection<Object>) value;
-    }
-
-    private Map<String, Object> asObject (Object value) {
-        //noinspection unchecked
-        return (Map<String, Object>) value;
-    }
-
-    private int indexFrom (String token) {
-        try {
-            return Integer.parseInt (token);
-        } catch (NumberFormatException ex) {
-            throw new JsonPointerInvalidException (pointer, token, ex);
-        }
     }
 
     private static String decodeFragment (String fragment) {

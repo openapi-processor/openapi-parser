@@ -86,17 +86,12 @@ public class Reference {
         return (T) rawValue;
     }
 
-    private String createRefRelative (String ref) {
+    private static String createRefRelative (String ref) {
         final int hash = ref.indexOf ("#");
         if (hash != -1) {
             return ref.substring (hash + 1);
         }
 
-        // full file ref
-        if (this.ref.equals (ref)) {
-            return "";
-        }
-
-        return ref;
+        return "";
     }
 }
