@@ -5,7 +5,6 @@
 
 package io.openapiparser;
 
-import io.openapiparser.converter.StringNotNullConverter;
 import io.openapiparser.converter.StringNullableConverter;
 import io.openapiparser.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -52,18 +51,20 @@ public class Context {
         return getRefObject (ref);
     }
 
-    public @Nullable Bucket getRefObjectOrThrow (Bucket bucket) {
-        String ref = bucket.convert (REF, new StringNotNullConverter ());
-        return getRefObject (ref);
+    public Bucket getRefObjectOrThrow (Bucket bucket) {
+        final Bucket refObject = getRefObjectOrNull (bucket);
+        if (refObject == null)
+            throw new RuntimeException ();
+
+        return refObject;
     }
 
-    public @Nullable Bucket getRefObject(String ref) {
+    private @Nullable Bucket getRefObject(String ref) {
         final Reference reference = getReference (ref);
         final Map<String, Object> value = reference.getValue ();
         if (value == null) {
+            // todo if it is null it was not resolved, throw?
             return null;
-            // todo throw?
-//            throw new ContextException (String.format ("$ref'erenced value %s is null", path));
         }
         return new Bucket (reference.getDocumentUri (), reference.getRefRelative (), value);
     }
