@@ -6,6 +6,7 @@
 package io.openapiparser.converter;
 
 import io.openapiparser.Factory;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
 import java.util.Collections;
@@ -17,13 +18,9 @@ import static io.openapiparser.converter.Types.convertMapOrNull;
  * get a map of {@link T}s from {@code name} property {@code value}.
  */
 public class MapObjectsOrEmptyConverter<T> implements PropertyConverter<Map<String, T>> {
-    private final URI uri;
-    private final Factory<T> factory;
     private final MapObjectsOrEmptySelfConverter<T> converter;
 
     public MapObjectsOrEmptyConverter (URI uri, Factory<T> factory) {
-        this.uri = uri;
-        this.factory = factory;
         this.converter = new MapObjectsOrEmptySelfConverter<> (uri, factory);
     }
 
