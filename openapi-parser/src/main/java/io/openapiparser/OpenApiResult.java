@@ -33,8 +33,9 @@ public interface OpenApiResult {
      * </ul>
      * otherwise, it will throw an {@link IllegalArgumentException}
      *
-     * @param api the class of the OpenAPI model
-     * @return the OpenAPI model
+     * @param api class of the OpenAPI model
+     * @param <T> OpenAPI model type
+     * @return OpenAPI model
      */
     <T> T getModel (Class<T> api);
 

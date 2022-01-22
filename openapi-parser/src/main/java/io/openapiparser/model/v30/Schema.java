@@ -45,6 +45,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * JSON Schema Validation: validation keyword
+     *
+     * @return multiple of or null
      */
     public @Nullable Number getMultipleOf () {
         return getNumberOrNull (MULTIPLE_OF);

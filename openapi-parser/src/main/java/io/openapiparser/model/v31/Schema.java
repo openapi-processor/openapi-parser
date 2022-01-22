@@ -328,6 +328,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * JSON Schema Validation: metadata
+     *
+     * @return true or false
      */
     public Boolean getDeprecated () {
         return getBooleanOrDefault (DEPRECATED, false);
@@ -335,6 +337,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * JSON Schema Validation: metadata
+     *
+     * @return true or false
      */
     public Boolean getReadOnly () {
         return getBooleanOrDefault (READ_ONLY, false);
@@ -342,6 +346,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * JSON Schema Validation: metadata
+     *
+     * @return true or false
      */
     public Boolean getWriteOnly () {
         return getBooleanOrDefault (WRITE_ONLY, false);
@@ -353,6 +359,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * OpenAPI base vocabulary
+     *
+     * @return discriminator or null
      */
     public @Nullable Discriminator getDiscriminator () {
         return getObjectOrNull (DISCRIMINATOR, Discriminator.class);
@@ -360,6 +368,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * OpenAPI base vocabulary
+     *
+     * @return xml object or null
      */
     public @Nullable Xml getXml () {
         return getObjectOrNull (XML, Xml.class);
@@ -367,6 +377,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * OpenAPI base vocabulary
+     *
+     * @return external documentation or null
      */
     public @Nullable ExternalDocumentation getExternalDocs () {
         return getObjectOrNull (EXTERNAL_DOCS, ExternalDocumentation.class);
@@ -374,6 +386,8 @@ public class Schema extends Properties implements Reference, Extensions {
 
     /**
      * OpenAPI base vocabulary
+     *
+     * @return example object or null
      */
     @Deprecated
     public @Nullable Object getExample () {
