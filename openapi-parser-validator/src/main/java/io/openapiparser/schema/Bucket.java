@@ -29,7 +29,7 @@ public class Bucket {
         return new Bucket (Collections.emptyMap ());
     }
 
-    private Bucket (Map<String, Object> properties) {
+    public Bucket (Map<String, Object> properties) {
         this.source = null;
         this.location = JsonPointer.EMPTY;
         this.properties = properties;
@@ -178,8 +178,8 @@ public class Bucket {
      * @return property value or null if the property does not exist
      */
     public @Nullable Object getRawValue (JsonPointer pointer) {
-        if (pointer == null)
-            return getRawValues ();
+//        if (pointer == null)
+//            return getRawValues ();
 
         JsonPointer current = JsonPointer.EMPTY;
         Object value = properties;
@@ -212,35 +212,6 @@ public class Bucket {
             throw new NoValueException(pointer.toString ());
         }
         return value;
-    }
-
-    // todo use converter?? implement here
-    @Deprecated
-    public @Nullable Object getProperty (JsonPointer propertyLocation) {
-        return location.getValue (properties);
-
-
-        //        if (!isPath (path)) {
-//            return getRawValue (path);
-//        } else {
-//            String[] parts = getParts (path);
-//            int last = parts.length - 1;
-//
-//            Node node = root;
-//            for (int i = 0; i < parts.length; i++) {
-//                String part = parts[i];
-//
-//                if (node == null || !node.hasProperty (part))
-//                    return null;
-//
-//                if (i == last)
-//                    return node.getRawValue (part);
-//
-//                node = node.getNode (part);
-//            }
-//
-//            return null;
-//        }
     }
 
     /**
@@ -292,37 +263,3 @@ public class Bucket {
         properties.keySet().forEach (action);
     }
 }
-
-/*
-    @Nullable Object find(String path) {
-        if (!isPath (path)) {
-            return root.getRawValue (path);
-        } else {
-            String[] parts = getParts (path);
-            int last = parts.length - 1;
-
-            Node node = root;
-            for (int i = 0; i < parts.length; i++) {
-                String part = parts[i];
-
-                if (node == null || !node.hasProperty (part))
-                    return null;
-
-                if (i == last)
-                    return node.getRawValue (part);
-
-                node = node.getNode (part);
-            }
-
-            return null;
-        }
-    }
-
-    private boolean isPath (String path) {
-        return path.startsWith (SLASH);
-    }
-
-    private String[] getParts (String path) {
-        return path.substring (1).split (SLASH);
-    }
- */
