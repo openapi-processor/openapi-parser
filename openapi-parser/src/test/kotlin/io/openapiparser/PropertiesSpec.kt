@@ -7,15 +7,18 @@ package io.openapiparser
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 import io.mockk.mockk
 import io.openapiparser.converter.NoValueException
-import io.openapiparser.model.v30.OpenApi
+import io.openapiparser.converter.TypeMismatchException
 import io.openapiparser.schema.Bucket
+import java.net.URI
 
 class PropertiesSpec: StringSpec({
+    class DummyObject(context: Context?, bucket: Bucket?)
 
     // raw value
 
@@ -32,21 +35,60 @@ class PropertiesSpec: StringSpec({
 
     "gets object is null if missing" {
         val props = Properties(mockk(), Bucket.empty())
-        props.getObjectOrNull("missing", OpenApi::class.java).shouldBeNull()
+        props.getObjectOrNull("missing", DummyObject::class.java).shouldBeNull()
     }
 
     "gets object" {
         val bucket = Bucket(linkedMapOf<String, Any>("foo" to mapOf<String, Any>()))
-        val props = Properties(mockk(), bucket)
+        val props = Properties(Context(URI.create("https://foo"), mockk()), bucket)
 
-        props.getObjectOrNull("missing", OpenApi::class.java).shouldBeInstanceOf<OpenApi>()
+        props.getObjectOrNull("foo", DummyObject::class.java).shouldBeInstanceOf<DummyObject>()
+    }
+
+    "gets object throws if value is not an object" {
+        val bucket = Bucket(linkedMapOf<String, Any>("foo" to "no object"))
+        val props = Properties(Context(URI.create("https://foo"), mockk()), bucket)
+
+        shouldThrow<TypeMismatchException> {
+            props.getObjectOrNull("foo", DummyObject::class.java)
+        }
     }
 
     "get object throws if it is missing" {
         val props = Properties(mockk(), Bucket.empty())
 
         shouldThrow<NoValueException> {
-                props.getObjectOrThrow("missing", OpenApi::class.java)
+                props.getObjectOrThrow("missing", DummyObject::class.java)
+        }
+    }
+
+    // array
+
+    "get object values is empty if value is missing" {
+        val props = Properties(mockk(), Bucket.empty())
+
+        props.getObjectsOrEmpty("property", DummyObject::class.java).shouldBeEmpty()
+    }
+
+    "get objects array" {
+        val bucket = Bucket( linkedMapOf<String, Any>("property" to listOf(
+            mapOf<String, Any>("foo" to "bar"),
+            mapOf<String, Any>("foos" to "bars")
+        )))
+        val props = Properties(Context(URI.create("https://foo"), mockk()), bucket)
+
+        props.getObjectsOrEmpty("property", DummyObject::class.java).size shouldBe 2
+    }
+
+    "get objects array throws if any value is not an object" {
+        val bucket = Bucket(linkedMapOf<String, Any>("property" to listOf(
+            mapOf<String, Any>("foo" to "bar"),
+            "not an object"
+        )))
+        val props = Properties(Context(URI.create("https://foo"), mockk()), bucket)
+
+        shouldThrow<TypeMismatchException> {
+            props.getObjectsOrEmpty("property", DummyObject::class.java)
         }
     }
 })
