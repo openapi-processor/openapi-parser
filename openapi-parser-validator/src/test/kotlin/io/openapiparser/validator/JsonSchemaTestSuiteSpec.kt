@@ -8,5 +8,5 @@ package io.openapiparser.validator
 import io.kotest.core.spec.style.FreeSpec
 
 class JsonSchemaTestSuiteSpec: FreeSpec ({
-    include(draftSpec("/suites/JSON-Schema-Test-Suite/tests/draft4"))
+//    include(draftSpec("/suites/JSON-Schema-Test-Suite/tests/draft4"))
 })
