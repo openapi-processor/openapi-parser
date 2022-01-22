@@ -3,9 +3,10 @@ package io.openapiparser.validator
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.kotest.core.spec.style.StringSpec
 import io.openapiparser.jackson.JacksonConverter
+import io.openapiparser.schema.JsonSchema
+import io.openapiparser.schema.JsonSchemaObject
 import io.openapiparser.support.Strings
-import io.openapiparser.validator.JsonSchemaObject
-import io.openapiparser.validator.Validator
+
 //import net.jimblackler.jsonschemafriend.Schema
 //import net.jimblackler.jsonschemafriend.SchemaStore
 //import net.jimblackler.jsonschemafriend.ValidationError
@@ -22,25 +23,13 @@ class ValidateSpec: StringSpec({
     // val mapper = ObjectMapper(YAMLFactory())
     // val yaml = mapper.readValue(OPENAPI_SCHEMA_30, Object::class.java)
 
-    "test" {
-        val mapper = ObjectMapper()
-
-        val readValue1 = mapper.readValue("true", Object::class.java)
-        val readValue2 = mapper.readValue("{}", Object::class.java)
-        println ("$readValue1 $readValue2")
-    }
-
-    "null is valid" {
-        val converter = JacksonConverter()
-        val draftSource = ValidateSpec::class.java.getResourceAsStream("/json/draft-04/schema.json")
-        val draft4Object = converter.convert(Strings.of(draftSource))!! as Map<String, Any>
-
-        val draft4Schema =
-            JsonSchemaObject(draft4Object)
-
-        val validator = Validator()
-        validator.validate(draft4Schema, draft4Object)
-    }
+//    "test" {
+//        val mapper = ObjectMapper()
+//
+//        val readValue1 = mapper.readValue("true", Object::class.java)
+//        val readValue2 = mapper.readValue("{}", Object::class.java)
+//        println ("$readValue1 $readValue2")
+//    }
 
     /*
     "foo2" {
