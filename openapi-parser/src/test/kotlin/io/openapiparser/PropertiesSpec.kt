@@ -9,6 +9,7 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.nulls.shouldBeNull
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 import io.mockk.mockk
@@ -90,5 +91,29 @@ class PropertiesSpec: StringSpec({
         shouldThrow<TypeMismatchException> {
             props.getObjectsOrEmpty("property", DummyObject::class.java)
         }
+    }
+
+    "get extension values" {
+        val bucket = Bucket(linkedMapOf<String, Any>(
+            "property" to "foo",
+            "x-foo" to "foo extension",
+            "x-bar" to linkedMapOf<String, Any>()
+        ))
+        val props = Properties(mockk(), bucket)
+
+        val extensions = props.extensions
+        extensions.shouldNotBeNull()
+        extensions.size shouldBe 2
+    }
+
+    "gets empty extension values if there are no extensions" {
+        val bucket = Bucket(linkedMapOf<String, Any>(
+            "property" to "foo",
+        ))
+        val props = Properties(mockk(), bucket)
+
+        val extensions = props.extensions
+        extensions.shouldNotBeNull()
+        extensions.size shouldBe 0
     }
 })
