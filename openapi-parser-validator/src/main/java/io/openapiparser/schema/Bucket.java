@@ -36,13 +36,6 @@ public class Bucket {
         this.properties = properties;
     }
 
-    @Deprecated
-    public Bucket (JsonPointer location, Map<String, Object> properties) {
-        this.source = URI.create ("");
-        this.location = location;
-        this.properties = properties;
-    }
-
     /**
      * create a document "root" bucket with an empty location.
      *

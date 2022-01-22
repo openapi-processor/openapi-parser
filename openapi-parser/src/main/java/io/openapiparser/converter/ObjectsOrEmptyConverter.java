@@ -7,6 +7,7 @@ package io.openapiparser.converter;
 
 import io.openapiparser.Factory;
 import io.openapiparser.schema.JsonPointer;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.net.URI;
 import java.util.*;
@@ -25,7 +26,7 @@ public class ObjectsOrEmptyConverter<T> implements PropertyConverter<Collection<
 
     @Override
     public Collection<T> convert (String name, Object value, String location) {
-        Collection<?> objects = convertOrNull (location, value, Collection.class);
+        Collection<@NonNull ?> objects = convertOrNull (location, value, Collection.class);
         if (objects == null)
             return Collections.emptyList ();
 

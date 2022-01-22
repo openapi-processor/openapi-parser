@@ -16,12 +16,12 @@ public class JsonSchemaObject implements JsonSchema {
     private final Bucket properties;
 
     public JsonSchemaObject (Map<String, Object> document) {
-        object = new Bucket (JsonPointer.EMPTY, document);
+        object = new Bucket (document);
         properties = getProperties ();
     }
 
     public JsonSchemaObject (JsonPointer location, Map<String, Object> document) {
-        this.object = new Bucket (location, document);
+        this.object = new Bucket (URI.create (""), location, document);
         properties = getProperties ();
     }
 
