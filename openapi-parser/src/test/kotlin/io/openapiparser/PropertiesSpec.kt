@@ -19,6 +19,7 @@ import io.openapiparser.schema.Bucket
 import java.net.URI
 
 class PropertiesSpec: StringSpec({
+    @Suppress("UNUSED_PARAMETER")
     class DummyObject(context: Context?, bucket: Bucket?)
 
     // raw value
