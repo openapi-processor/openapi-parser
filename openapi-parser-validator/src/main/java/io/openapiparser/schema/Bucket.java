@@ -22,7 +22,7 @@ import static java.util.Collections.unmodifiableMap;
  * wraps the properties {@link Map} of a json/yaml object and its location in the source document.
  */
 public class Bucket {
-    private final @Nullable URI source; // document
+    private final URI source; // document
     private final JsonPointer location;
     private final Map<String, Object> properties;
 
@@ -31,14 +31,14 @@ public class Bucket {
     }
 
     public Bucket (Map<String, Object> properties) {
-        this.source = null;
+        this.source = URI.create ("");
         this.location = JsonPointer.EMPTY;
         this.properties = properties;
     }
 
     @Deprecated
     public Bucket (JsonPointer location, Map<String, Object> properties) {
-        this.source = null;
+        this.source = URI.create ("");
         this.location = location;
         this.properties = properties;
     }
@@ -89,7 +89,7 @@ public class Bucket {
      *
      * @return the document {@link URI}
      */
-    public @Nullable URI getSource () {
+    public URI getSource () {
         return source;
     }
 

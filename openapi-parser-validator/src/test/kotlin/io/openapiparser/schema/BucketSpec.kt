@@ -20,7 +20,7 @@ import java.net.URI
 class BucketSpec: StringSpec({
 
     "get document uri" {
-        Bucket.empty().source.shouldBeNull()
+        Bucket.empty().source.shouldBe(URI(""))
         Bucket(URI("https://foo"), mapOf()).source.shouldBe(URI("https://foo"))
     }
 
