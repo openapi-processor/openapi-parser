@@ -17,13 +17,9 @@ import static io.openapiparser.converter.Types.convertOrNull;
  * get a collection of {@link T}s.
  */
 public class ObjectsOrEmptyConverter<T> implements PropertyConverter<Collection<T>> {
-    private final URI uri;
-    private final Factory<T> factory;
-    private ObjectNotNullConverter<T> converter;
+    private final ObjectNotNullConverter<T> converter;
 
     public ObjectsOrEmptyConverter (URI uri, Factory<T> factory) {
-        this.uri = uri;
-        this.factory = factory;
         this.converter = new ObjectNotNullConverter<T> (uri, factory);
     }
 
