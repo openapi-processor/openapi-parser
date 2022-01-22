@@ -85,6 +85,8 @@ todo: create builder
 
 just an incomplete & random list of topics:
 
+* replace `Collection` with `Iterable` (where possible)
+
 * empty Schema?
 * there are a couple of places were a property has only a fixed number of possible values that currently return a primitive type, it could return an enum which would be more user-friendly? (but: the specification doesn't really describe the type as enum).
 
