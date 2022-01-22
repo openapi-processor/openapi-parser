@@ -5,10 +5,14 @@
 
 package io.openapiparser
 
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 import io.mockk.mockk
+import io.openapiparser.converter.NoValueException
+import io.openapiparser.model.v30.OpenApi
 import io.openapiparser.schema.Bucket
 
 class PropertiesSpec: StringSpec({
@@ -24,4 +28,25 @@ class PropertiesSpec: StringSpec({
         Properties(mockk(), bucket).getRawValue("foo").shouldBe("bar")
     }
 
+    // object
+
+    "gets object is null if missing" {
+        val props = Properties(mockk(), Bucket.empty())
+        props.getObjectOrNull("missing", OpenApi::class.java).shouldBeNull()
+    }
+
+    "gets object" {
+        val bucket = Bucket(linkedMapOf<String, Any>("foo" to mapOf<String, Any>()))
+        val props = Properties(mockk(), bucket)
+
+        props.getObjectOrNull("missing", OpenApi::class.java).shouldBeInstanceOf<OpenApi>()
+    }
+
+    "get object throws if it is missing" {
+        val props = Properties(mockk(), Bucket.empty())
+
+        shouldThrow<NoValueException> {
+                props.getObjectOrThrow("missing", OpenApi::class.java)
+        }
+    }
 })
