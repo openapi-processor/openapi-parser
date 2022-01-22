@@ -36,8 +36,8 @@ class PropertiesNumberSpec: StringSpec({
     }
 
     "gets integer is default value if missing" {
-        Properties(mockk(), Bucket.empty())
-            .getIntegerOrDefault("missing", 9).shouldBe(9)
+        val props = Properties(mockk(), Bucket.empty())
+        props.getIntegerOrDefault("missing", 9).shouldBe(9)
     }
 
 })
