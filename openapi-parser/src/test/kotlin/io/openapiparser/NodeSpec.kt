@@ -7,23 +7,11 @@ package io.openapiparser
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.openapiparser.converter.TypeMismatchException
 
 class NodeSpec : StringSpec({
-
-    // raw value
-
-    "gets nullable raw value" {
-        Node.empty().getRawValue("missing").shouldBeNull()
-    }
-
-    "gets raw value" {
-        val node = Node("$", linkedMapOf<String, Any>("property" to 1))
-        node.getRawValue("property").shouldNotBeNull()
-    }
 
     // node value
 
