@@ -107,7 +107,7 @@ public class Validator {
     }
 
     private @Nullable Object getValue (Object source, URI uri) {
-        return getValue (source, uri.getRawFragment ());
+        return getValue (source, uri.getFragment ());
     }
 
     private @Nullable Object getValue (Object source, @Nullable String path) {
