@@ -20,6 +20,12 @@ import static io.openapiparser.converter.Types.asMap;
 
 /**
  * the validator.
+ *
+ * draft 4:
+ * https://datatracker.ietf.org/doc/html/draft-zyp-json-schema-04
+ * https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00
+ * https://tools.ietf.org/html/draft-luff-json-hyper-schema-00
+ * https://tools.ietf.org/html/draft-pbryan-zyp-json-ref-03
  */
 public class Validator {
 
@@ -27,7 +33,7 @@ public class Validator {
         return validate (schema, document, URI.create (""));
     }
 
-    public  Collection<ValidationMessage> validate(JsonSchema schema, Object source, URI uri) {
+    public Collection<ValidationMessage> validate(JsonSchema schema, Object source, URI uri) {
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
         // get document "node"
@@ -47,36 +53,8 @@ public class Validator {
         // map
 
         if (current instanceof Collection) {
-            Collection<Object> array = asArray (current);
+            messages.addAll (validateArray (uri, schema, asArray (current)));
 
-            // draft4 - 5.9
-            JsonSchema.Items has = schema.hasItems ();
-            if (has == JsonSchema.Items.MULTIPLE) {
-                JsonSchema additional = schema.getAdditionalItems ();
-                if (additional != null && additional.isFalse()) {
-
-                    final Collection<JsonSchema> items = schema.getItemsCollection ();
-                    if (array.size () > items.size ()) {
-                        messages.add (new ItemsSizeError (uri.toString (), items.size()));
-                    }
-                }
-            }
-
-            // draft4 - 5.11
-            int minItems = schema.getMinItems ();
-            if (array.size () < minItems) {
-                messages.add (new MinItemsError (uri.toString (), minItems));
-            }
-
-            // draft4 - 5.12
-            if (schema.isUniqueItems ()) {
-                Set<Object> items = new HashSet<> ();
-                for (Object item : array) {
-                    if (!items.add (item)) {
-                        messages.add (new UniqueItemsError (uri.toString ()));
-                    }
-                }
-            }
         } else if (current instanceof Map) {
             Map<String, Object> object = asObject (current);
 
@@ -102,6 +80,18 @@ public class Validator {
                 messages.addAll (validate (propSchema, source, append (uri, propName)));
             });
         }
+
+        return messages;
+    }
+
+    private Collection<ValidationMessage> validateArray (
+        URI uri, JsonSchema schema, Collection<Object> array) {
+
+        Collection<ValidationMessage> messages = new ArrayList<> ();
+
+        messages.addAll (new HasItems (uri).validate (schema, array));
+        messages.addAll (new MinItems (uri).validate (schema, array));
+        messages.addAll (new UniqueItems (uri).validate (schema, array));
 
         return messages;
     }
