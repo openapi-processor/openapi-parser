@@ -7,6 +7,7 @@ package io.openapiparser.validator;
 
 import io.openapiparser.schema.*;
 import io.openapiparser.validator.messages.*;
+import io.openapiparser.validator.number.MultipleOf;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.io.UnsupportedEncodingException;
@@ -79,6 +80,8 @@ public class Validator {
                 }
                 messages.addAll (validate (propSchema, source, append (uri, propName)));
             });
+        } else if (current instanceof Number) {
+            messages.addAll (validateNumber (uri, schema, (Number)current));
         }
 
         return messages;
@@ -88,11 +91,17 @@ public class Validator {
         URI uri, JsonSchema schema, Collection<Object> array) {
 
         Collection<ValidationMessage> messages = new ArrayList<> ();
-
         messages.addAll (new HasItems (uri).validate (schema, array));
         messages.addAll (new MinItems (uri).validate (schema, array));
         messages.addAll (new UniqueItems (uri).validate (schema, array));
+        return messages;
+    }
 
+    private Collection<ValidationMessage> validateNumber (
+        URI uri, JsonSchema schema, Number number) {
+
+        Collection<ValidationMessage> messages = new ArrayList<> ();
+        messages.addAll (new MultipleOf (uri).validate (schema, number));
         return messages;
     }
 
