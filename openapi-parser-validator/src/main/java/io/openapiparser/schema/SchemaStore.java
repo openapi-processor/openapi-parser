@@ -65,7 +65,9 @@ public class SchemaStore {
         if (metaSchemaUri != null) {
             JsonSchema metaSchema = schemas.get (metaSchemaUri);
             if (metaSchema == null) {
-                 metaSchema = addSchema (metaSchemaUri);
+                Object metaSchemaDocument = loadDocument (metaSchemaUri);
+                metaSchema = createSchema (metaSchemaDocument);
+                schemas.put (metaSchemaUri, metaSchema);
             }
 
             Validator validator = new Validator ();
