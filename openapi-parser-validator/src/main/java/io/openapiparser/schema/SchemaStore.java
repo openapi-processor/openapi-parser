@@ -12,8 +12,7 @@ import io.openapiparser.validator.Validator;
 import io.openapiparser.validator.messages.ValidationMessage;
 
 import java.net.URI;
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class SchemaStore {
@@ -22,7 +21,7 @@ public class SchemaStore {
     private final Reader reader;
     private final Converter converter;
 
-    private Map<URI, JsonSchema> schemas;
+    private final Map<URI, JsonSchema> schemas = new HashMap<> ();
 
     public SchemaStore (Reader reader, Converter converter) {
         this.reader = reader;
@@ -42,6 +41,14 @@ public class SchemaStore {
     public JsonSchema addSchema (String resourcePath) {
         return registerSchema (loadDocument (resourcePath));
     }
+
+    public JsonSchema addSchema (URI id, String resourcePath) {
+        final Object document = loadDocument (resourcePath);
+        JsonSchema schema = createSchema (document);
+        schemas.put (id, schema);
+        return schema;
+    }
+
 
     public JsonSchema addSchema (URI documentUri) {
         return registerSchema (loadDocument (documentUri));
