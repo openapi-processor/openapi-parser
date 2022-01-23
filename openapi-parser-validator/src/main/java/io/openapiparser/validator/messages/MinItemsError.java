@@ -5,8 +5,6 @@
 
 package io.openapiparser.validator.messages;
 
-import io.openapiparser.validator.messages.ValidationMessage;
-
 /**
  * draft4 - 5.9
  */
