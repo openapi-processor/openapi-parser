@@ -6,8 +6,9 @@
 package io.openapiparser.validator;
 
 import io.openapiparser.schema.*;
-import io.openapiparser.validator.messages.*;
+import io.openapiparser.validator.array.*;
 import io.openapiparser.validator.number.MultipleOf;
+import io.openapiparser.validator.object.AdditionalPropertiesError;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.io.UnsupportedEncodingException;

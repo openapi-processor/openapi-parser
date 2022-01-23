@@ -3,12 +3,12 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.validator.messages;
+package io.openapiparser.validator.array;
 
-import io.openapiparser.validator.messages.ValidationMessage;
+import io.openapiparser.validator.ValidationMessage;
 
 /**
- * draft4 - 5.9
+ * Created by {@link HasItems}.
  */
 public class ItemsSizeError extends ValidationMessage {
     public ItemsSizeError (String path, int size) {

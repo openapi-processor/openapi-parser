@@ -8,5 +8,5 @@ package io.openapiparser.validator
 import io.kotest.core.spec.style.FreeSpec
 
 class JsonSchemaPendingSpec: FreeSpec({
-    //include(draftSpec("/suites/pending"))
+    include(draftSpec("/suites/pending"))
 })

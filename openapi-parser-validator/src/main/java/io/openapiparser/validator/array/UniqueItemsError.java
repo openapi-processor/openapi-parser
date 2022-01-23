@@ -3,12 +3,12 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.validator.messages;
+package io.openapiparser.validator.array;
 
-import io.openapiparser.validator.messages.ValidationMessage;
+import io.openapiparser.validator.ValidationMessage;
 
 /**
- * draft4 - 5.12
+ * Created by {@link UniqueItems}.
  */
 public class UniqueItemsError extends ValidationMessage {
     public UniqueItemsError (String path) {

@@ -3,11 +3,10 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.validator;
+package io.openapiparser.validator.array;
 
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.messages.ItemsSizeError;
-import io.openapiparser.validator.messages.ValidationMessage;
+import io.openapiparser.validator.ValidationMessage;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -16,14 +15,16 @@ import java.util.Collection;
 /**
  * draft4 - 5.9 - no hasItems in draft 4 ?????
  */
-class HasItems {
+public class HasItems {
     private final URI uri;
 
-    HasItems (URI uri) {
+    public HasItems (URI uri) {
         this.uri = uri;
     }
 
-    Collection<ValidationMessage> validate (JsonSchema schema, Collection<Object> source) {
+    public Collection<ValidationMessage> validate (
+        JsonSchema schema, Collection<Object> source) {
+
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
         JsonSchema.Items has = schema.hasItems ();

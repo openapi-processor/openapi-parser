@@ -5,7 +5,7 @@
 
 package io.openapiparser.validator.number;
 
-import io.openapiparser.validator.messages.ValidationMessage;
+import io.openapiparser.validator.ValidationMessage;
 
 /**
  * Created by {@link MultipleOf}.

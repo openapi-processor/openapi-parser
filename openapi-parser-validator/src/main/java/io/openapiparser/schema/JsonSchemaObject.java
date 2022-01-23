@@ -41,6 +41,11 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     @Override
+    public Number getMultipleOf () {
+        return object.convert ("multipleOf", new NumberConverter ());
+    }
+
+    @Override
     public Items hasItems () {
         Object raw = object.getRawValue ("items");
         if (raw == null)

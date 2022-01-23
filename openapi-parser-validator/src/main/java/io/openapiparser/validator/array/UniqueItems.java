@@ -3,10 +3,10 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.validator;
+package io.openapiparser.validator.array;
 
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.messages.*;
+import io.openapiparser.validator.ValidationMessage;
 
 import java.net.URI;
 import java.util.*;
@@ -23,14 +23,16 @@ import java.util.*;
  *
  * draft4 - 5.12 ????
  */
-class UniqueItems {
+public class UniqueItems {
     private final URI uri;
 
-    UniqueItems (URI uri) {
+    public UniqueItems (URI uri) {
         this.uri = uri;
     }
 
-    Collection<ValidationMessage> validate (JsonSchema schema, Collection<Object> source) {
+    public Collection<ValidationMessage> validate (
+        JsonSchema schema, Collection<Object> source) {
+
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
         if (schema.isUniqueItems ()) {

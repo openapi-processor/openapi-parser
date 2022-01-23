@@ -3,10 +3,12 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.validator.messages;
+package io.openapiparser.validator.object;
+
+import io.openapiparser.validator.ValidationMessage;
 
 /**
- * draft4 - 5.18
+ * Created by {@link todo}.
  */
 public class AdditionalPropertiesError extends ValidationMessage {
     public AdditionalPropertiesError (String path) {

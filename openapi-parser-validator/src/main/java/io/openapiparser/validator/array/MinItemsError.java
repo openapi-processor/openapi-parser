@@ -3,10 +3,12 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.validator.messages;
+package io.openapiparser.validator.array;
+
+import io.openapiparser.validator.ValidationMessage;
 
 /**
- * draft4 - 5.9
+ * Created by {@link MinItems}.
  */
 public class MinItemsError extends ValidationMessage {
     public MinItemsError (String path, int size) {

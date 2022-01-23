@@ -26,6 +26,10 @@ public interface JsonSchema {
         return null;
     }
 
+    default Number getMultipleOf () {
+        return null;
+    }
+
     default Items hasItems () {
         return Items.NONE;
     }

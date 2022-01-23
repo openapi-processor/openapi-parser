@@ -8,7 +8,7 @@ package io.openapiparser;
 import io.openapiparser.model.v30.OpenApi;
 import io.openapiparser.schema.*;
 import io.openapiparser.validator.Validator;
-import io.openapiparser.validator.messages.ValidationMessage;
+import io.openapiparser.validator.ValidationMessage;
 
 import java.util.Collection;
 import java.util.Collections;

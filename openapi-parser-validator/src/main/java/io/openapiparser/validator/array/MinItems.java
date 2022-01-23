@@ -3,11 +3,10 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.validator;
+package io.openapiparser.validator.array;
 
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.messages.MinItemsError;
-import io.openapiparser.validator.messages.ValidationMessage;
+import io.openapiparser.validator.ValidationMessage;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -25,14 +24,14 @@ import java.util.Collection;
  *
  * draft4 - 5.11 ???
  */
-class MinItems {
+public class MinItems {
     private final URI uri;
 
-    MinItems (URI uri) {
+    public MinItems (URI uri) {
         this.uri = uri;
     }
 
-    Collection<ValidationMessage> validate (
+    public Collection<ValidationMessage> validate (
         JsonSchema schema, Collection<Object> source) {
 
         Collection<ValidationMessage> messages = new ArrayList<> ();

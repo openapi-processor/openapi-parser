@@ -5,7 +5,7 @@
 
 package io.openapiparser.support
 
-import io.openapiparser.validator.messages.ValidationMessage
+import io.openapiparser.validator.ValidationMessage
 
 @Deprecated("obsolete")
 fun ValidationMessage.matches(path: String, text: String): Boolean {

@@ -6,7 +6,7 @@
 package io.openapiparser.validator.number;
 
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.messages.*;
+import io.openapiparser.validator.ValidationMessage;
 
 import java.math.BigDecimal;
 import java.net.URI;
