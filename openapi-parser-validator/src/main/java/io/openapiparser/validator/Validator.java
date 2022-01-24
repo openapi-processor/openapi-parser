@@ -7,8 +7,7 @@ package io.openapiparser.validator;
 
 import io.openapiparser.schema.*;
 import io.openapiparser.validator.array.*;
-import io.openapiparser.validator.number.Maximum;
-import io.openapiparser.validator.number.MultipleOf;
+import io.openapiparser.validator.number.*;
 import io.openapiparser.validator.object.AdditionalPropertiesError;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -105,6 +104,7 @@ public class Validator {
         Collection<ValidationMessage> messages = new ArrayList<> ();
         messages.addAll (new MultipleOf (uri).validate (schema, number));
         messages.addAll (new Maximum (uri, schema).validate (number));
+        messages.addAll (new Minimum (uri, schema).validate (number));
         return messages;
     }
 

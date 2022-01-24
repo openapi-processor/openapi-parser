@@ -60,6 +60,20 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     @Override
+    public @Nullable Number getMinimum () {
+        return object.convert ("minimum", new NumberConverter ());
+    }
+
+    @Override
+    public Boolean getExclusiveMinimum () {
+        Boolean exclusive = object.convert ("exclusiveMinimum", new BooleanConverter ());
+        if (exclusive == null)
+            return false;
+
+        return exclusive;
+    }
+
+    @Override
     public Items hasItems () {
         Object raw = object.getRawValue ("items");
         if (raw == null)

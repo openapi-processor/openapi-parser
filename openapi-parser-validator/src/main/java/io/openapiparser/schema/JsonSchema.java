@@ -38,6 +38,14 @@ public interface JsonSchema {
         return null;
     }
 
+    default @Nullable Number getMinimum () {
+        return null;
+    }
+
+    default Boolean getExclusiveMinimum () {
+        return null;
+    }
+
     default Items hasItems () {
         return Items.NONE;
     }
