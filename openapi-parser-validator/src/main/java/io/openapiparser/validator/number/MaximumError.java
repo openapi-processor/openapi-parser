@@ -13,6 +13,6 @@ import io.openapiparser.validator.ValidationMessage;
 public class MaximumError extends ValidationMessage {
     public MaximumError (String path, Number maximum, Boolean exclusive) {
         super (path, String.format ("the value should be %s than %s",
-            exclusive ? "less" : "les or equal", maximum.toString ()));
+            exclusive ? "less" : "less or equal", maximum.toString ()));
     }
 }
