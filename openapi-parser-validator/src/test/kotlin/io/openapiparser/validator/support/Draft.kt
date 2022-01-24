@@ -3,7 +3,7 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.validator
+package io.openapiparser.validator.support
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
@@ -12,7 +12,7 @@ import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.openapiparser.schema.JsonSchema
 import io.openapiparser.schema.JsonSchemaObject
-import io.openapiparser.validator.support.Suite
+import io.openapiparser.validator.Validator
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.name

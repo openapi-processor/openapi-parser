@@ -6,6 +6,7 @@
 package io.openapiparser.validator
 
 import io.kotest.core.spec.style.FreeSpec
+import io.openapiparser.validator.support.draftSpec
 
 class JsonSchemaPendingSpec: FreeSpec({
     include(draftSpec("/suites/pending"))
