@@ -12,6 +12,6 @@ import io.openapiparser.validator.ValidationMessage;
  */
 public class MultipleOfError extends ValidationMessage {
     public MultipleOfError (String path, Number multipleOf) {
-        super (path, String.format ("the value is not a multiple of %s", multipleOf.toString ()));
+        super (path, String.format ("the value should be a multiple of %s", multipleOf.toString ()));
     }
 }
