@@ -23,12 +23,14 @@ import java.util.Collection;
  */
 public class MaximumExclusiveMaximum {
     private final URI uri;
+    private final JsonSchema schema;
 
-    public MaximumExclusiveMaximum (URI uri) {
+    public MaximumExclusiveMaximum (URI uri, JsonSchema schema) {
         this.uri = uri;
+        this.schema = schema;
     }
 
-    public Collection<ValidationMessage> validate (JsonSchema schema, Number source) {
+    public Collection<ValidationMessage> validate (Number source) {
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
         Number maximum = schema.getMaximum ();
@@ -39,11 +41,9 @@ public class MaximumExclusiveMaximum {
 
         boolean valid;
         if (exclusive) {
-            valid = new BigDecimal (source.toString ())
-                .compareTo (new BigDecimal(maximum.toString ())) < 0;
+            valid = compareTo (source, maximum) < 0;
         } else {
-            valid = new BigDecimal (source.toString ())
-                .compareTo (new BigDecimal(maximum.toString ())) <= 0;
+            valid = compareTo (source, maximum) <= 0;
         }
 
         if (!valid) {
@@ -53,4 +53,8 @@ public class MaximumExclusiveMaximum {
         return messages;
     }
 
+    private int compareTo (Number source, Number maximum) {
+        return new BigDecimal (source.toString ())
+            .compareTo (new BigDecimal (maximum.toString ()));
+    }
 }

@@ -104,7 +104,7 @@ public class Validator {
 
         Collection<ValidationMessage> messages = new ArrayList<> ();
         messages.addAll (new MultipleOf (uri).validate (schema, number));
-        messages.addAll (new MaximumExclusiveMaximum (uri).validate (schema, number));
+        messages.addAll (new MaximumExclusiveMaximum (uri, schema).validate (number));
         return messages;
     }
 
