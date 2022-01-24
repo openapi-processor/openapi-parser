@@ -16,13 +16,9 @@ import java.util.Collection;
  * validates minItems.
  *
  * <p>See specification:
- * <ul>
- *     <li>
- *      <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.3.3">Draft 4: minItems</a>
- *     </li>
- * </ul>
- *
- * draft4 - 5.11 ???
+ * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.3.3">
+ *     Draft 4: minItems
+ * </a>
  */
 public class MinItems {
     private final URI uri;

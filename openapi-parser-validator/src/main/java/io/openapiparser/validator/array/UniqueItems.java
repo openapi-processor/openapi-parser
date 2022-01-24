@@ -15,13 +15,9 @@ import java.util.*;
  * validate uniqueItems.
  *
  * <p>See specification:
- * <ul>
- *     <li>
- *      <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.3.4">Draft 4: uniqueItems</a>
- *     </li>
- * </ul>
- *
- * draft4 - 5.12 ????
+ * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.3.4">
+ *     Draft 4: uniqueItems
+ * </a>
  */
 public class UniqueItems {
     private final URI uri;

@@ -17,11 +17,9 @@ import java.util.Collection;
  * validates multipleOf.
  *
  * <p>See specification:
- * <ul>
- *     <li>
- *      <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.1.1">Draft 4: multipleOf</a>
- *     </li>
- * </ul>
+ * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.1.1">
+ *     Draft 4: multipleOf
+ * </a>
  */
 public class MultipleOf {
     private final URI uri;
