@@ -8,7 +8,7 @@ package io.openapiparser.validator.number;
 import io.openapiparser.validator.ValidationMessage;
 
 /**
- * Created by {@link MaximumExclusiveMaximum}.
+ * Created by {@link Maximum}.
  */
 public class MaximumError extends ValidationMessage {
     public MaximumError (String path, Number maximum, Boolean exclusive) {

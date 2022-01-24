@@ -14,18 +14,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * validates multipleOf.
+ * maximum and exclusiveMaximum.
  *
  * <p>See specification:
  * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.1.2">
  *     Draft 4: maximum and exclusiveMaximum
  * </a>
  */
-public class MaximumExclusiveMaximum {
+public class Maximum {
     private final URI uri;
     private final JsonSchema schema;
 
-    public MaximumExclusiveMaximum (URI uri, JsonSchema schema) {
+    public Maximum (URI uri, JsonSchema schema) {
         this.uri = uri;
         this.schema = schema;
     }
