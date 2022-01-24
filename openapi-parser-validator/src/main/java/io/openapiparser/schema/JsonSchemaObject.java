@@ -41,8 +41,22 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     @Override
-    public Number getMultipleOf () {
+    public @Nullable Number getMultipleOf () {
         return object.convert ("multipleOf", new NumberConverter ());
+    }
+
+    @Override
+    public @Nullable Number getMaximum () {
+        return object.convert ("maximum", new NumberConverter ());
+    }
+
+    @Override
+    public Boolean getExclusiveMaximum () {
+        Boolean exclusive = object.convert ("exclusiveMaximum", new BooleanConverter ());
+        if (exclusive == null)
+            return false;
+
+        return exclusive;
     }
 
     @Override

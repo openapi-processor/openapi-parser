@@ -26,7 +26,15 @@ public interface JsonSchema {
         return null;
     }
 
-    default Number getMultipleOf () {
+    default @Nullable Number getMultipleOf () {
+        return null;
+    }
+
+    default @Nullable Number getMaximum () {
+        return null;
+    }
+
+    default Boolean getExclusiveMaximum () {
         return null;
     }
 
