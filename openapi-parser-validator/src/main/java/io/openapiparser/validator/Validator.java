@@ -9,6 +9,7 @@ import io.openapiparser.schema.*;
 import io.openapiparser.validator.array.*;
 import io.openapiparser.validator.number.*;
 import io.openapiparser.validator.object.AdditionalPropertiesError;
+import io.openapiparser.validator.string.MaxLength;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.io.UnsupportedEncodingException;
@@ -83,6 +84,8 @@ public class Validator {
             });
         } else if (current instanceof Number) {
             messages.addAll (validateNumber (uri, schema, (Number)current));
+        } else if (current instanceof String) {
+            messages.addAll (validateString (uri, schema, (String)current));
         }
 
         return messages;
@@ -95,6 +98,14 @@ public class Validator {
         messages.addAll (new HasItems (uri).validate (schema, array));
         messages.addAll (new MinItems (uri).validate (schema, array));
         messages.addAll (new UniqueItems (uri).validate (schema, array));
+        return messages;
+    }
+
+    private Collection<ValidationMessage> validateString (
+        URI uri, JsonSchema schema, String value) {
+
+        Collection<ValidationMessage> messages = new ArrayList<> ();
+        messages.addAll (new MaxLength (uri, schema).validate (value));
         return messages;
     }
 

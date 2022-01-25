@@ -46,6 +46,10 @@ public interface JsonSchema {
         return null;
     }
 
+    default @Nullable Integer getMaxLength () {
+        return null;
+    }
+
     default Items hasItems () {
         return Items.NONE;
     }

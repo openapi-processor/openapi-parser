@@ -74,6 +74,11 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     @Override
+    public @Nullable Integer getMaxLength () {
+        return object.convert ("maxLength", new IntegerConverter ());
+    }
+
+    @Override
     public Items hasItems () {
         Object raw = object.getRawValue ("items");
         if (raw == null)
