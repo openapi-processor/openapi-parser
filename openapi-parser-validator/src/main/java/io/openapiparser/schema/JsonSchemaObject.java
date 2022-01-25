@@ -79,6 +79,15 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     @Override
+    public Integer getMinLength () {
+        final Integer minLength = object.convert ("minLength", new IntegerConverter ());
+        if (minLength == null)
+            return 0;
+
+        return minLength;
+    }
+
+    @Override
     public Items hasItems () {
         Object raw = object.getRawValue ("items");
         if (raw == null)

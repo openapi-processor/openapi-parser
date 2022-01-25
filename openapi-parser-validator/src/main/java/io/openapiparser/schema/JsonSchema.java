@@ -50,6 +50,10 @@ public interface JsonSchema {
         return null;
     }
 
+    default Integer getMinLength () {
+        return 0;
+    }
+
     default Items hasItems () {
         return Items.NONE;
     }

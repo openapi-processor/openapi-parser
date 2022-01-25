@@ -10,6 +10,7 @@ import io.openapiparser.validator.array.*;
 import io.openapiparser.validator.number.*;
 import io.openapiparser.validator.object.AdditionalPropertiesError;
 import io.openapiparser.validator.string.MaxLength;
+import io.openapiparser.validator.string.MinLength;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.io.UnsupportedEncodingException;
@@ -106,6 +107,7 @@ public class Validator {
 
         Collection<ValidationMessage> messages = new ArrayList<> ();
         messages.addAll (new MaxLength (uri, schema).validate (value));
+        messages.addAll (new MinLength (uri, schema).validate (value));
         return messages;
     }
 
