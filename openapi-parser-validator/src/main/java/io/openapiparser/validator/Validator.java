@@ -24,12 +24,6 @@ import static io.openapiparser.converter.Types.asMap;
 
 /**
  * the validator.
- *
- * draft 4:
- * https://datatracker.ietf.org/doc/html/draft-zyp-json-schema-04
- * https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00
- * https://tools.ietf.org/html/draft-luff-json-hyper-schema-00
- * https://tools.ietf.org/html/draft-pbryan-zyp-json-ref-03
  */
 public class Validator {
 
