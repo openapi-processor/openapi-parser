@@ -1,0 +1,8 @@
+= Drafts
+
+== Draft 4
+
+* https://tools.ietf.org/html/draft-zyp-json-schema-04
+* https://tools.ietf.org/html/draft-fge-json-schema-validation-00
+* https://tools.ietf.org/html/draft-luff-json-hyper-schema-00
+* https://tools.ietf.org/html/draft-pbryan-zyp-json-ref-03
