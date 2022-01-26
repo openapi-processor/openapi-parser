@@ -54,6 +54,10 @@ public interface JsonSchema {
         return 0;
     }
 
+    default @Nullable String getPattern () {
+        return null;
+    }
+
     default Items hasItems () {
         return Items.NONE;
     }

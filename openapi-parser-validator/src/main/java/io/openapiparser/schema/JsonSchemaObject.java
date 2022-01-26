@@ -88,6 +88,11 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     @Override
+    public @Nullable String getPattern () {
+        return object.convert ("pattern", new StringNullableConverter ());
+    }
+
+    @Override
     public Items hasItems () {
         Object raw = object.getRawValue ("items");
         if (raw == null)

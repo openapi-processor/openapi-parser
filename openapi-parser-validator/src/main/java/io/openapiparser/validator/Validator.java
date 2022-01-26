@@ -102,6 +102,7 @@ public class Validator {
         Collection<ValidationMessage> messages = new ArrayList<> ();
         messages.addAll (new MaxLength (uri, schema).validate (value));
         messages.addAll (new MinLength (uri, schema).validate (value));
+        messages.addAll (new io.openapiparser.validator.string.Pattern (uri, schema).validate (value));
         return messages;
     }
 

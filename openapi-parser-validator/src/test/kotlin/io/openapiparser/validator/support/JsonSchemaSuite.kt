@@ -17,6 +17,6 @@ data class Suite(
 
 data class Test(
     val description: String,
-    val data: Any,
+    val data: Any?,
     val valid: Boolean
 )
