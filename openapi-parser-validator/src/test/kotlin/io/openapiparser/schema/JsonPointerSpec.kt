@@ -13,6 +13,7 @@ import io.openapiparser.converter.Types.asMap
 import io.openapiparser.jackson.JacksonConverter
 import io.openapiparser.schema.JsonPointer.fromFragment
 import io.openapiparser.schema.JsonPointer.fromJsonPointer
+import java.net.URI
 
 class JsonPointerSpec : StringSpec({
 
@@ -141,5 +142,14 @@ class JsonPointerSpec : StringSpec({
         shouldThrow<JsonPointerInvalidException> {
             fromJsonPointer("/root/boom").tailIndex()
         }
+    }
+
+    "converts to uri" {
+        fromJsonPointer("").toUri() shouldBe URI.create("")
+        fromJsonPointer("/").toUri() shouldBe URI.create("#/")
+        fromJsonPointer("/0").toUri() shouldBe URI.create("#/0")
+        fromJsonPointer("/to/ke/ns").toUri() shouldBe URI.create("#/to/ke/ns")
+        // todo ~ encoding
+        // todo uri encoding
     }
 })

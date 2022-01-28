@@ -7,7 +7,8 @@ package io.openapiparser.schema;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.net.URLDecoder;
+import java.io.UnsupportedEncodingException;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -121,6 +122,19 @@ public class JsonPointer {
         }
     }
 
+    public URI toUri() {
+        if (tokens.isEmpty ())
+            return URI.create ("");
+
+        String escaped = tokens.stream ()
+            .map (t -> t
+                .replace ("~", "~0")
+                .replace ("/", "~1")
+            ).collect (Collectors.joining ("/"));
+
+        return URI.create ("#/" + escaped);
+    }
+
     /**
      * get the last token of the pointer.
      *
@@ -158,6 +172,14 @@ public class JsonPointer {
     @Override
     public @Nullable String toString () {
         return pointer;
+    }
+
+    private static String encodeFragment (String fragment) {
+        try {
+            return URLEncoder.encode (fragment, StandardCharsets.UTF_8.name());
+        } catch (UnsupportedEncodingException ex) {
+            throw new JsonPointerInvalidException (fragment, ex);
+        }
     }
 
     private static String decodeFragment (String fragment) {
