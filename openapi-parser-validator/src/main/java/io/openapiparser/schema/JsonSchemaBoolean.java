@@ -7,20 +7,30 @@ package io.openapiparser.schema;
 
 public class JsonSchemaBoolean implements JsonSchema {
     private final JsonPointer pointer;
-    private final boolean content;
+    private final boolean value;
 
-    public JsonSchemaBoolean (Boolean content) {
+    public JsonSchemaBoolean (Boolean value) {
         this.pointer = JsonPointer.EMPTY;
-        this.content = content;
+        this.value = value;
     }
 
-    public JsonSchemaBoolean (JsonPointer pointer, Boolean content) {
+    public JsonSchemaBoolean (JsonPointer pointer, Boolean value) {
         this.pointer = pointer;
-        this.content = content;
+        this.value = value;
+    }
+
+    @Override
+    public boolean getBoolean () {
+        return value;
+    }
+
+    @Override
+    public boolean isTrue () {
+        return value;
     }
 
     @Override
     public boolean isFalse () {
-        return !content;
+        return !value;
     }
 }

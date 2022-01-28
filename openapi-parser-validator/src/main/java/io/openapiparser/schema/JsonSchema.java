@@ -5,23 +5,38 @@
 
 package io.openapiparser.schema;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.*;
 
 import java.net.URI;
 import java.util.*;
 
 public interface JsonSchema {
 
-    enum Items {NONE, SINGLE, MULTIPLE}
+    /**
+     * value if the schema is a {@link JsonSchemaBoolean}.
+     *
+     * @return true or false
+     */
+    // @JsonSchemaBooleanOnly
+    default boolean getBoolean () {
+        throw new RuntimeException (); // todo
+    }
 
+    // @JsonSchemaBooleanOnly
+    default boolean isTrue () {
+        throw new RuntimeException (); // todo
+    }
+
+    // @JsonSchemaBooleanOnly
     default boolean isFalse () {
-        return false;
+        throw new RuntimeException (); // todo
     }
 
     default @Nullable URI getMetaSchema () {
         return null;
     }
 
+    // todo nullable??
     default URI getId () {
         return null;
     }
@@ -58,20 +73,12 @@ public interface JsonSchema {
         return null;
     }
 
-    default Items hasItems () {
-        return Items.NONE;
+    default JsonSchemas getItems () {
+        return new JsonSchemas ();
     }
 
-    default @Nullable JsonSchema getItems () {
-        return null;
-    }
-
-    default Collection<JsonSchema> getItemsCollection () {
-        return null;
-    }
-
-    default @Nullable JsonSchema getAdditionalItems () {
-        return null;
+    default JsonSchemas getAdditionalItems () {
+        return new JsonSchemas ();
     }
 
     default int getMinItems () {
@@ -86,11 +93,16 @@ public interface JsonSchema {
         return Collections.emptyMap ();
     }
 
+    // todo can be missing
     default JsonSchema getAdditionalProperties () {
         return new JsonSchemaObject (Collections.emptyMap ());
     }
 
     default @Nullable JsonSchema getJsonSchema (String propName) {
         return null;
+    }
+
+    default Collection<String> getType () {
+        return Collections.emptyList ();
     }
 }

@@ -8,10 +8,10 @@ package io.openapiparser.validator.array;
 import io.openapiparser.validator.ValidationMessage;
 
 /**
- * Created by {@link HasItems}.
+ * Created by {@link Items}.
  */
 public class ItemsSizeError extends ValidationMessage {
     public ItemsSizeError (String path, int size) {
-        super (path, String.format ("the size is not less or equal to %d", size));
+        super (path, String.format ("the size should be less or equal to %d", size));
     }
 }

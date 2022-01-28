@@ -6,6 +6,7 @@
 package io.openapiparser.validator;
 
 import io.openapiparser.schema.*;
+import io.openapiparser.validator.any.Type;
 import io.openapiparser.validator.array.*;
 import io.openapiparser.validator.number.*;
 import io.openapiparser.validator.object.AdditionalPropertiesError;
@@ -20,6 +21,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static io.openapiparser.converter.Types.asCol;
 import static io.openapiparser.converter.Types.asMap;
 
 /**
@@ -49,6 +51,8 @@ public class Validator {
         // primitive type
         // collection
         // map
+
+        messages.addAll (new Type (uri, schema).validate (current));
 
         if (current instanceof Collection) {
             messages.addAll (validateArray (uri, schema, asArray (current)));
@@ -90,9 +94,9 @@ public class Validator {
         URI uri, JsonSchema schema, Collection<Object> array) {
 
         Collection<ValidationMessage> messages = new ArrayList<> ();
-        messages.addAll (new HasItems (uri).validate (schema, array));
         messages.addAll (new MinItems (uri).validate (schema, array));
         messages.addAll (new UniqueItems (uri).validate (schema, array));
+        messages.addAll (new Items (uri, schema, this).validate (array));
         return messages;
     }
 
@@ -120,13 +124,21 @@ public class Validator {
         return getValue (source, uri.getFragment ());
     }
 
-    private @Nullable Object getValue (Object source, @Nullable String path) {
-        if (source instanceof Map) {
-            Bucket bucket = new Bucket (asMap (source));
+    private @Nullable Object getValue (Object instance, @Nullable String path) {
+        if (path == null || path.isEmpty ())
+            return instance;
+
+        if (instance instanceof Map) {
+            Bucket bucket = new Bucket (asMap (instance));
             return bucket.getRawValue (JsonPointer.fromJsonPointer (path));
+
+        } else if (instance instanceof Collection) {
+            Object[] items = asCol (instance).toArray ();
+            int idx = JsonPointer.fromJsonPointer (path).tailIndex ();
+            return items[idx];
         }
 
-        return source;
+        return instance;
     }
 
     private URI append (URI uri, String value) {

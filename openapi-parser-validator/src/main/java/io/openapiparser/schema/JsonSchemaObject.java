@@ -11,6 +11,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.net.URI;
 import java.util.*;
 
+import static io.openapiparser.converter.Types.*;
+
 public class JsonSchemaObject implements JsonSchema {
     private final Bucket object;
     private final Bucket properties;
@@ -93,34 +95,38 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     @Override
-    public Items hasItems () {
+    public JsonSchemas getItems () {
+        boolean exists = object.hasProperty ("items");
+        if (!exists)
+            return new JsonSchemas();
+
         Object raw = object.getRawValue ("items");
-        if (raw == null)
-            return Items.NONE;
+//        if (raw == null)
+//            return new JsonSchemas ((JsonSchema) null);
 
-        if (raw instanceof Map)
-            return Items.SINGLE;
+        if (raw instanceof Map) {
+            return new JsonSchemas (getJsonSchemaOf ("items"));
 
-        if (raw instanceof Collection)
-            return Items.MULTIPLE;
+        } else if (raw instanceof Collection) {
+            return new JsonSchemas (getJsonSchemasOf ("items"));
+        }
 
         // todo
         throw new RuntimeException ();
     }
 
     @Override
-    public @Nullable JsonSchema getItems () {
-        return getJsonSchema ("items");
-    }
+    public JsonSchemas getAdditionalItems () {
+        boolean exists = object.hasProperty ("additionalItems");
+        if (!exists)
+            return new JsonSchemas();
 
-    @Override
-    public Collection<JsonSchema> getItemsCollection () {
-        return getJsonSchemasOf ("items");
-    }
+        Object raw = object.getRawValue ("additionalItems");
+        if (raw == null)
+            return new JsonSchemas ((JsonSchema) null);
 
-    @Override
-    public @Nullable JsonSchema getAdditionalItems () {
-        return getJsonSchemaOf ("additionalItems");
+        else
+            return new JsonSchemas (getJsonSchemaOf ("additionalItems"));
     }
 
     @Override
@@ -159,6 +165,29 @@ public class JsonSchemaObject implements JsonSchema {
     @Override
     public @Nullable JsonSchema getJsonSchema (String property) {
         return properties.convert (property, new JsonSchemaConverter ());
+    }
+
+    @Override
+    public Collection<String> getType () {
+        boolean exists = object.hasProperty ("type");
+        if (!exists)
+            return Collections.emptyList ();
+
+        Object raw = object.getRawValue ("type");
+        if (raw == null)
+            return  Collections.singletonList (null);
+
+        else if (raw instanceof String) {
+            String type = convert (null, raw, String.class);
+            return Collections.singletonList (type);
+        }
+
+        else if (raw instanceof Collection) {
+            return Collections.unmodifiableCollection(asCol(raw));
+        }
+
+        // todo
+        throw new RuntimeException ();
     }
 
     private @Nullable JsonSchema getJsonSchemaOf (String property) {
