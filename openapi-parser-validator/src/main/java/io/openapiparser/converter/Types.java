@@ -15,19 +15,8 @@ import java.util.Map;
  */
 public class Types {
 
-//    @FunctionalInterface
-//    public interface Factory<R> {
-//        /**
-//         * create an {@code R} of the {@link Object}.
-//         *
-//         * @param obj the source {@link Object}
-//         * @return the result
-//         */
-//        R create (int idx, Object obj);
-//    }
-
     @SuppressWarnings ("unchecked")
-    static <T> T convert (String path, @Nullable Object value, Class<T> type) {
+    public static <T> T convert (String path, @Nullable Object value, Class<T> type) {
         if (!type.isInstance (value))
             throw new TypeMismatchException (path, type);
 
@@ -78,61 +67,12 @@ public class Types {
     }
 
     @SuppressWarnings ("unchecked")
-    public static Collection<Object> asCol (Object o) {
-        return (Collection<Object>) o;
+    public static <T> Collection<T> asCol (Object o) {
+        return (Collection<T>) o;
     }
 
+    @SuppressWarnings ("unchecked")
     static Collection<Object> convertCollection (String path, @Nullable Object value) {
         return convert (path, value, Collection.class);
     }
-
-//    @SuppressWarnings ("unchecked")
-//    static <T> Map<String, T> convertMap (String path, @Nullable Object value, Class<T> itemType) {
-//        final Map<String, ?> map = convertMap (path, value);
-//
-//        for (Map.Entry<String, ?> entry : map.entrySet ()) {
-//            convertOrThrow (String.format ("%s[%s]", path, entry.getKey ()), entry.getValue (), itemType);
-//        }
-//
-//        return (Map<String, T>) unmodifiableMap (map);
-//    }
-//
-//    @SuppressWarnings ("unchecked")
-//    static <T> Collection<T> convertCollection (String path, @Nullable Object value, Class<T> itemType) {
-//        final Collection<?> collection = convert (path, value, Collection.class);
-//
-//        int idx = 0;
-//        for (Object item : collection) {
-//            convertOrThrow (String.format ("%s[%d]", path, idx++), item, itemType);
-//        }
-//
-//        return (Collection<T>) unmodifiableCollection (collection);
-//    }
-//
-//    static <T> @Nullable Collection<T> convertCollectionOrNull (String path, @Nullable Object value, Class<T> itemType) {
-//        if (value == null)
-//            return null;
-//
-//        return convertCollection (path, value, itemType);
-//    }
-//
-//    static <T> Collection<T> convertCollectionOrEmpty (String path, @Nullable Object value, Class<T> itemType) {
-//        if (value == null)
-//            return Collections.emptyList ();
-//
-//        return convertCollection (path, value, itemType);
-//    }
-//
-//    static <T> Collection<T> convertCollection (String path, @Nullable Object value, Factory<T> factory) {
-//        final Collection<?> collection = convert (path, value, Collection.class);
-//
-//        Collection<T> result = new ArrayList<> ();
-//        int idx = 0;
-//        for (Object item : collection) {
-//            result.add (factory.create (idx++, item));
-//        }
-//
-//        return unmodifiableCollection (result);
-//    }
-
 }
