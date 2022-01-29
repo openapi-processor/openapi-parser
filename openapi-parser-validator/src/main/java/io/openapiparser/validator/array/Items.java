@@ -19,6 +19,9 @@ import java.util.stream.IntStream;
  * <p>See specification:
  * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.3.1">
  *     additionalItems and items
+ * </a>,
+ * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-8.2">
+ *     array elements
  * </a>
  */
 public class Items {
@@ -57,7 +60,27 @@ public class Items {
                 });
         } else {
             JsonSchemas additional = schema.getAdditionalItems ();
-            if (additional.size () == 1) {
+
+            if (additional.isEmpty ()) {
+                Iterator<JsonSchema> itemSchemas = items.getSchemas ().iterator ();
+
+                int maxIdx = instance.size ();
+                if ( instance.size () > items.size ()) {
+                    maxIdx = items.size ();
+                }
+
+                IntStream.range (0, maxIdx)
+                    .forEach (idx -> {
+                        URI itemUri = JsonPointer.fromJsonPointer (uri.toString ())
+                            .append (idx)
+                            .toUri ();
+
+                        if (idx < items.size ()) {
+                            messages.addAll (validator.validate (itemSchemas.next (), instance, itemUri));
+                        }
+                    });
+            }
+            else if (additional.size () == 1) {
                 Iterator<JsonSchema> itemSchemas = items.getSchemas ().iterator ();
                 JsonSchema additionalSchema = additional.getSchema ();
 
