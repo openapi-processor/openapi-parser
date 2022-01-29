@@ -38,8 +38,8 @@ public class Type {
 
         boolean matches = false;
         for (String type : types) {
-            if (type == null) {
-                int i = 0;
+            if ("null".equals (type) && instance == null) {
+                matches = true;
 
             } else if ("array".equals (type) && isArray (instance))
                 matches = true;
@@ -58,9 +58,6 @@ public class Type {
 
             else if ("string".equals (type) && isString (instance))
                 matches = true;
-
-            else
-                throw new RuntimeException (); // todo
         }
 
         if (!matches) {
