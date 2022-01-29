@@ -50,7 +50,7 @@ public interface JsonSchema {
     }
 
     default Boolean getExclusiveMaximum () {
-        return null;
+        return false; // default false (draft4)
     }
 
     default @Nullable Number getMinimum () {
@@ -58,7 +58,7 @@ public interface JsonSchema {
     }
 
     default Boolean getExclusiveMinimum () {
-        return null;
+        return false;  // default false (draft4)
     }
 
     default @Nullable Integer getMaxLength () {
@@ -74,11 +74,11 @@ public interface JsonSchema {
     }
 
     default JsonSchemas getItems () {
-        return new JsonSchemas ();
+        return new JsonSchemas ();  // default empty schema (draft 4)
     }
 
     default JsonSchemas getAdditionalItems () {
-        return new JsonSchemas ();
+        return new JsonSchemas (); // default empty schema (draft 4)
     }
 
     default int getMinItems () {
