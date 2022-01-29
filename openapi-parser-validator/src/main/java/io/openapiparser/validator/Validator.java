@@ -54,38 +54,57 @@ public class Validator {
 
         messages.addAll (new Type (uri, schema).validate (current));
 
-        if (current instanceof Collection) {
+        if (isArray (current)) {
             messages.addAll (validateArray (uri, schema, asArray (current)));
 
-        } else if (current instanceof Map) {
-            Map<String, Object> object = asObject (current);
+        } else if (isObject (current)) {
+            messages.addAll (validateObject (uri, schema, asObject (current)));
 
-            object.forEach ((propName, propValue) -> {
-                final JsonSchema propSchema = schema.getJsonSchema (propName);
-                if (propSchema == null) {
-                    // draft4 - 5.18
-                    if (schema.getAdditionalProperties().isFalse()) {
-
-                        // draft4 - 5.17
-                        Map<String, JsonSchema> patterns = schema.getPatternProperties ();
-                        for (String pattern : patterns.keySet ()) {
-                            Pattern p = Pattern.compile(pattern);
-                            Matcher m = p.matcher(propName);
-                            if (m.find())
-                                return;
-                        }
-
-                        messages.add (new AdditionalPropertiesError (append (uri, propName).toString ()));
-                    }
-                    return;
-                }
-                messages.addAll (validate (propSchema, source, append (uri, propName)));
-            });
         } else if (current instanceof Number) {
             messages.addAll (validateNumber (uri, schema, (Number)current));
+
         } else if (current instanceof String) {
             messages.addAll (validateString (uri, schema, (String)current));
         }
+
+        return messages;
+    }
+
+    /** https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.4
+     */
+    private Collection<? extends ValidationMessage> validateObject (
+        URI uri, JsonSchema schema, Map<String, Object> object) {
+
+        Collection<ValidationMessage> messages = new ArrayList<> ();
+
+        object.forEach ((propName, propValue) -> {
+            final JsonSchema propSchema = schema.getJsonSchema (propName);
+            if (propSchema == null)
+                return;
+
+            /*
+            if (propSchema == null) {
+
+                // draft4 - 5.18
+                if (schema.getAdditionalProperties().isFalse()) {
+
+                    // draft4 - 5.17
+                    Map<String, JsonSchema> patterns = schema.getPatternProperties ();
+                    for (String pattern : patterns.keySet ()) {
+                        Pattern p = Pattern.compile(pattern);
+                        Matcher m = p.matcher(propName);
+                        if (m.find())
+                            return;
+                    }
+
+                    messages.add (new AdditionalPropertiesError (append (uri, propName).toString ()));
+                }
+                return;
+            }
+             */
+
+            messages.addAll (validate (propSchema, object, append (uri, propName)));
+        });
 
         return messages;
     }
@@ -132,7 +151,7 @@ public class Validator {
             Bucket bucket = new Bucket (asMap (instance));
             return bucket.getRawValue (JsonPointer.fromJsonPointer (path));
 
-        } else if (instance instanceof Collection) {
+        } else if (isArray (instance)) {
             Object[] items = asCol (instance).toArray ();
             int idx = JsonPointer.fromJsonPointer (path).tailIndex ();
             return items[idx];
@@ -166,9 +185,17 @@ public class Validator {
         }
     }
 
+    private boolean isObject (Object current) {
+        return current instanceof Map;
+    }
+
     private Map<String, Object> asObject (Object value) {
         //noinspection unchecked
         return (Map<String, Object>) value;
+    }
+
+    private boolean isArray (Object current) {
+        return current instanceof Collection;
     }
 
     private Collection<Object> asArray (Object value) {
