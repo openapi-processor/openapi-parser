@@ -62,6 +62,11 @@ public class Types {
     }
 
     @SuppressWarnings ("unchecked")
+    public static <T> T as (Object o) {
+        return (T) o;
+    }
+
+    @SuppressWarnings ("unchecked")
     public static Map<String, Object> asMap (Object o) {
         return (Map<String, Object>) o;
     }
