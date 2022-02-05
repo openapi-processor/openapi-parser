@@ -5,6 +5,7 @@
 
 package io.openapiparser.validator.number;
 
+import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
@@ -28,14 +29,15 @@ public class MultipleOf {
         this.uri = uri;
     }
 
-    public Collection<ValidationMessage> validate (JsonSchema schema, Number source) {
+    public Collection<ValidationMessage> validate (JsonSchema schema, JsonInstance instance) {
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
         Number multipleOf = schema.getMultipleOf ();
         if (multipleOf == null)
             return messages;
 
-        boolean invalid = new BigDecimal (source.toString ())
+        Number instanceValue = instance.asNumber();
+        boolean invalid = new BigDecimal (instanceValue.toString ())
             .remainder (new BigDecimal (multipleOf.toString ()))
             .compareTo (BigDecimal.ZERO) != 0;
 

@@ -5,6 +5,7 @@
 
 package io.openapiparser.validator.string;
 
+import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
@@ -29,14 +30,15 @@ public class MaxLength {
         this.schema = schema;
     }
 
-    public Collection<ValidationMessage> validate (String source) {
+    public Collection<ValidationMessage> validate (JsonInstance instance) {
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
         Integer maxLength = schema.getMaxLength ();
         if (maxLength == null)
             return messages;
 
-        boolean valid = source.codePointCount (0, source.length ()) <= maxLength;
+        String instanceValue = instance.asString ();
+        boolean valid = instanceValue.codePointCount (0, instanceValue.length ()) <= maxLength;
         if (!valid) {
             messages.add (new MaxLengthError(uri.toString (), maxLength));
         }

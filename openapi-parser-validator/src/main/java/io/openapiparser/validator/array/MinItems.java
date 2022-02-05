@@ -5,6 +5,7 @@
 
 package io.openapiparser.validator.array;
 
+import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
@@ -28,12 +29,13 @@ public class MinItems {
     }
 
     public Collection<ValidationMessage> validate (
-        JsonSchema schema, Collection<Object> source) {
+        JsonSchema schema, JsonInstance instance) {
 
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
+        Collection<Object> instanceValue = instance.asCollection ();
         int minItems = schema.getMinItems ();
-        if (source.size () < minItems) {
+        if (instanceValue.size () < minItems) {
             messages.add (new MinItemsError (uri.toString (), minItems));
         }
 

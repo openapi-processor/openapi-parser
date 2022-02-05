@@ -5,6 +5,7 @@
 
 package io.openapiparser.validator.any;
 
+import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
@@ -29,7 +30,7 @@ public class Type {
         this.schema = schema;
     }
 
-    public Collection<ValidationMessage> validate (Object instance) {
+    public Collection<ValidationMessage> validate (JsonInstance instance) {
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
         final Collection<String> types = schema.getType ();
@@ -38,7 +39,7 @@ public class Type {
 
         boolean matches = false;
         for (String type : types) {
-            if ("null".equals (type) && instance == null) {
+            if ("null".equals (type) && instance.isNull ()) {
                 matches = true;
 
             } else if ("array".equals (type) && isArray (instance))
@@ -67,35 +68,36 @@ public class Type {
         return messages;
     }
 
-    private boolean isBoolean (Object instance) {
-        return instance instanceof Boolean;
+    private boolean isBoolean (JsonInstance instance) {
+        return instance.getRawValue () instanceof Boolean;
     }
 
-    private boolean isInteger (Object instance) {
-        return instance instanceof Integer
-            || instance instanceof Long
-            || instance instanceof Short
-            || instance instanceof BigInteger;
+    private boolean isInteger (JsonInstance instance) {
+        Object value = instance.getRawValue ();
+        return value instanceof Integer
+            || value instanceof Long
+            || value instanceof Short
+            || value instanceof BigInteger;
     }
 
-    private boolean isNumber (Object instance) {
-        return instance instanceof Number;
+    private boolean isNumber (JsonInstance instance) {
+        return instance.getRawValue () instanceof Number;
 //            isInteger (instance)
 //            || instance instanceof Float
 //            || instance instanceof Double
 //            || instance instanceof BigDecimal;
     }
 
-    private boolean isString (Object instance) {
-        return instance instanceof String;
+    private boolean isString (JsonInstance instance) {
+        return instance.getRawValue () instanceof String;
 //            || instance instanceof Character;
     }
 
-    private boolean isObject (Object instance) {
-        return instance instanceof Map;
+    private boolean isObject (JsonInstance instance) {
+        return instance.getRawValue () instanceof Map;
     }
 
-    private boolean isArray (Object instance) {
-        return instance instanceof Collection;
+    private boolean isArray (JsonInstance instance) {
+        return instance.getRawValue () instanceof Collection;
     }
 }

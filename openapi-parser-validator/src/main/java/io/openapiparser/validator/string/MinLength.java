@@ -5,6 +5,7 @@
 
 package io.openapiparser.validator.string;
 
+import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
@@ -29,12 +30,13 @@ public class MinLength {
         this.schema = schema;
     }
 
-    public Collection<ValidationMessage> validate (String source) {
+    public Collection<ValidationMessage> validate (JsonInstance instance) {
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
         Integer minLength = schema.getMinLength ();
 
-        boolean valid = source.codePointCount (0, source.length ()) >= minLength;
+        String instanceValue = instance.asString ();
+        boolean valid = instanceValue.codePointCount (0, instanceValue.length ()) >= minLength;
         if (!valid) {
             messages.add (new MinLengthError(uri.toString (), minLength));
         }

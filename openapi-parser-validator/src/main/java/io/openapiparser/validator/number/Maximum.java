@@ -5,6 +5,7 @@
 
 package io.openapiparser.validator.number;
 
+import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
@@ -30,7 +31,7 @@ public class Maximum {
         this.schema = schema;
     }
 
-    public Collection<ValidationMessage> validate (Number source) {
+    public Collection<ValidationMessage> validate (JsonInstance instance) {
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
         Number maximum = schema.getMaximum ();
@@ -41,9 +42,9 @@ public class Maximum {
 
         boolean valid;
         if (exclusive) {
-            valid = compareTo (source, maximum) < 0;
+            valid = compareTo (instance, maximum) < 0;
         } else {
-            valid = compareTo (source, maximum) <= 0;
+            valid = compareTo (instance, maximum) <= 0;
         }
 
         if (!valid) {
@@ -53,8 +54,8 @@ public class Maximum {
         return messages;
     }
 
-    private int compareTo (Number source, Number maximum) {
-        return new BigDecimal (source.toString ())
+    private int compareTo (JsonInstance instance, Number maximum) {
+        return new BigDecimal (instance.asNumber ().toString ())
             .compareTo (new BigDecimal (maximum.toString ()));
     }
 }

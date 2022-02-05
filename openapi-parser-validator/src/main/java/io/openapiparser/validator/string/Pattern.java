@@ -5,6 +5,7 @@
 
 package io.openapiparser.validator.string;
 
+import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
@@ -30,7 +31,7 @@ public class Pattern {
         this.schema = schema;
     }
 
-    public Collection<ValidationMessage> validate (String source) {
+    public Collection<ValidationMessage> validate (JsonInstance instance) {
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
         String pattern = schema.getPattern ();
@@ -38,7 +39,8 @@ public class Pattern {
             return messages;
 
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(pattern);
-        Matcher m = p.matcher(source);
+        String instanceValue = instance.asString ();
+        Matcher m = p.matcher(instanceValue);
         boolean valid = m.find ();
         if (!valid) {
             messages.add (new PatternError(uri.toString (), pattern));

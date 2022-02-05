@@ -35,8 +35,9 @@ public class Items {
         this.validator = validator;
     }
 
-    public Collection<ValidationMessage> validate (Collection<Object> instance) {
+    public Collection<ValidationMessage> validate (JsonInstance instance) {
         Collection<ValidationMessage> messages = new ArrayList<> ();
+        Collection<Object> instanceValue = instance.asCollection ();
 
         JsonSchemas items = schema.getItems ();
         if (items.isEmpty ()) {
@@ -48,15 +49,15 @@ public class Items {
 
         } else if (items.isSingle ()) {
             JsonSchema itemsSchema = items.getSchema ();
-            Object[] instanceArray = instance.toArray ();
 
-            IntStream.range (0, instanceArray.length)
+            IntStream.range (0, instanceValue.size ())
                 .forEach (idx -> {
                     URI itemUri = JsonPointer.fromJsonPointer (uri.toString ())
                         .append (idx)
                         .toUri ();
 
-                    messages.addAll (validator.validate (itemsSchema, instanceArray[idx], itemUri));
+                    messages.addAll (
+                        validator.validate (itemsSchema, instance.getValue (idx), itemUri));
                 });
         } else {
             JsonSchemas additional = schema.getAdditionalItems ();
@@ -64,8 +65,8 @@ public class Items {
             if (additional.isEmpty ()) {
                 Iterator<JsonSchema> itemSchemas = items.getSchemas ().iterator ();
 
-                int maxIdx = instance.size ();
-                if ( instance.size () > items.size ()) {
+                int maxIdx = instanceValue.size ();
+                if ( instanceValue.size () > items.size ()) {
                     maxIdx = items.size ();
                 }
 
@@ -84,11 +85,11 @@ public class Items {
                 Iterator<JsonSchema> itemSchemas = items.getSchemas ().iterator ();
                 JsonSchema additionalSchema = additional.getSchema ();
 
-                if (isBooleanFalse (additionalSchema) && instance.size () > items.size ()) {
+                if (isBooleanFalse (additionalSchema) && instanceValue.size () > items.size ()) {
                     messages.add (new ItemsSizeError (uri.toString (), items.size ()));
                 }
 
-                IntStream.range (0, instance.size ())
+                IntStream.range (0, instanceValue.size ())
                     .forEach (idx -> {
                         URI itemUri = JsonPointer.fromJsonPointer (uri.toString ())
                             .append (idx)
