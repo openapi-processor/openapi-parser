@@ -32,6 +32,18 @@ public interface JsonSchema {
         throw new RuntimeException (); // todo
     }
 
+    default boolean isRef () {
+        return false;
+    }
+
+    default URI getRef () {
+        throw new RuntimeException (); // todo
+    }
+
+    default JsonSchema getRefSchema () {
+        throw new RuntimeException (); // todo
+    }
+
     default @Nullable URI getMetaSchema () {
         return null;
     }

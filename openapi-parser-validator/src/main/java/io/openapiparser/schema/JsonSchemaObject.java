@@ -14,10 +14,18 @@ import java.util.*;
 import static io.openapiparser.converter.Types.*;
 
 public class JsonSchemaObject implements JsonSchema {
+    private JsonSchemaContext context;  // todo final
+
     private final Bucket object;
     private final Bucket properties;
 
     public JsonSchemaObject (Map<String, Object> document) {
+        object = new Bucket (document);
+        properties = getProperties ();
+    }
+
+    public JsonSchemaObject (Map<String, Object> document, JsonSchemaContext context) {
+        this.context = context;
         object = new Bucket (document);
         properties = getProperties ();
     }
@@ -30,6 +38,22 @@ public class JsonSchemaObject implements JsonSchema {
     private JsonSchemaObject (Bucket object) {
         this.object = object;
         properties = getProperties ();
+    }
+
+    @Override
+    public boolean isRef () {
+        return object.hasProperty ("$ref");
+    }
+
+    @Override
+    public URI getRef () {
+        return object.convert ("$ref", new UriConverter ());
+    }
+
+    @Override
+    public JsonSchema getRefSchema () {
+//        context.
+        return null;
     }
 
     @Override
