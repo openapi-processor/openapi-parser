@@ -22,7 +22,8 @@ public class JsonSchemaBoolean implements JsonSchema {
         this.value = value;
     }
 
-    public JsonSchemaBoolean (JsonPointer pointer, Boolean value) {
+    public JsonSchemaBoolean (JsonPointer pointer, Boolean value, JsonSchemaContext context) {
+        this.context = context;
         this.pointer = pointer;
         this.value = value;
     }

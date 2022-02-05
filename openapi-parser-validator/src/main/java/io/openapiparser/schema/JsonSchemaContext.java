@@ -10,4 +10,9 @@ public class JsonSchemaContext {
         this.baseUri = baseUri;
         this.references = references;
     }
+
+    public Reference getReference (URI ref) {
+        URI resolve = baseUri.resolve (ref);
+        return references.getRef (resolve);
+    }
 }

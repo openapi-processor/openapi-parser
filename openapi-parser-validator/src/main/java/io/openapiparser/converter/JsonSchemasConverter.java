@@ -5,8 +5,7 @@
 
 package io.openapiparser.converter;
 
-import io.openapiparser.schema.JsonPointer;
-import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.schema.*;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.*;
@@ -17,6 +16,11 @@ import static io.openapiparser.converter.Types.convertOrNull;
  * get a collection of {@link JsonSchema}s.
  */
 public class JsonSchemasConverter implements PropertyConverter<Collection<JsonSchema>> {
+    private final JsonSchemaContext parentContext;
+
+    public JsonSchemasConverter (JsonSchemaContext parentContext) {
+        this.parentContext = parentContext;
+    }
 
     @Override
     public @Nullable Collection<JsonSchema> convert (String name, Object value, String location) {
@@ -35,7 +39,7 @@ public class JsonSchemasConverter implements PropertyConverter<Collection<JsonSc
     }
 
     private JsonSchema create (String name, Object value, String location) {
-        return new JsonSchemaConverter ().convert (name, value, location);
+        return new JsonSchemaConverter (parentContext).convert (name, value, location);
     }
 
     private String getLocation (JsonPointer parent, int index) {

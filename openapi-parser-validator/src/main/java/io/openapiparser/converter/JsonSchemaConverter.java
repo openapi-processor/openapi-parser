@@ -17,6 +17,11 @@ import static io.openapiparser.schema.JsonPointer.fromJsonPointer;
  * converts the property {@code value} to a {@link JsonSchema}.
  */
 public class JsonSchemaConverter implements PropertyConverter<JsonSchema> {
+    private final JsonSchemaContext parentContext;
+
+    public JsonSchemaConverter (JsonSchemaContext parentContext) {
+        this.parentContext = parentContext;
+    }
 
     @Override
     public @Nullable JsonSchema convert (String name, Object value, String location) {
@@ -24,10 +29,10 @@ public class JsonSchemaConverter implements PropertyConverter<JsonSchema> {
             return null;
 
         if (value instanceof Boolean) {
-            return new JsonSchemaBoolean (fromJsonPointer (location), (Boolean) value);
+            return new JsonSchemaBoolean (fromJsonPointer (location), (Boolean) value, parentContext);
 
         } else if (value instanceof Map) {
-            return new JsonSchemaObject (fromJsonPointer (location), asMap (value));
+            return new JsonSchemaObject (fromJsonPointer (location), asMap (value), parentContext);
         } else {
             throw new TypeMismatchException (location, JsonSchema.class);
         }

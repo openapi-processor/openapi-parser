@@ -30,7 +30,8 @@ public class JsonSchemaObject implements JsonSchema {
         properties = getProperties ();
     }
 
-    public JsonSchemaObject (JsonPointer location, Map<String, Object> document) {
+    public JsonSchemaObject (JsonPointer location, Map<String, Object> document, JsonSchemaContext context) {
+        this.context = context;
         this.object = new Bucket (URI.create (""), location, document);
         properties = getProperties ();
     }
@@ -52,8 +53,9 @@ public class JsonSchemaObject implements JsonSchema {
 
     @Override
     public JsonSchema getRefSchema () {
-//        context.
-        return null;
+        Reference reference = context.getReference (getRef ());
+        Object rawValue = reference.getRawValue ();
+        return new JsonSchemaObject(asMap(rawValue), context);
     }
 
     @Override
@@ -174,7 +176,7 @@ public class JsonSchemaObject implements JsonSchema {
     @Override
     public Map<String, JsonSchema> getPatternProperties () {
         // todo escape regex \
-        return object.convert ("patternProperties", new MapJsonSchemasConverter ());
+        return object.convert ("patternProperties", new MapJsonSchemasConverter (context));
     }
 
     @Override
@@ -188,7 +190,7 @@ public class JsonSchemaObject implements JsonSchema {
 
     @Override
     public @Nullable JsonSchema getJsonSchema (String property) {
-        return properties.convert (property, new JsonSchemaConverter ());
+        return properties.convert (property, new JsonSchemaConverter (context));
     }
 
     @Override
@@ -215,11 +217,11 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     private @Nullable JsonSchema getJsonSchemaOf (String property) {
-        return object.convert (property, new JsonSchemaConverter ());
+        return object.convert (property, new JsonSchemaConverter (context));
     }
 
     private @Nullable Collection<JsonSchema> getJsonSchemasOf (String property) {
-        return object.convert (property, new JsonSchemasConverter ());
+        return object.convert (property, new JsonSchemasConverter (context));
     }
 
     private Bucket getProperties () {

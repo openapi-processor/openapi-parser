@@ -5,8 +5,7 @@
 
 package io.openapiparser.converter;
 
-import io.openapiparser.schema.JsonPointer;
-import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.schema.*;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.*;
@@ -17,6 +16,11 @@ import static io.openapiparser.converter.Types.convertMap;
  * get a map of {@link String} to {@link JsonSchema}.
  */
 public class MapJsonSchemasConverter implements PropertyConverter<Map<String, JsonSchema>> {
+    private final JsonSchemaContext parentContext;
+
+    public MapJsonSchemasConverter (JsonSchemaContext parentContext) {
+        this.parentContext = parentContext;
+    }
 
     @Override
     public @Nullable Map<String, JsonSchema> convert (String name, Object value, String location) {
@@ -35,7 +39,7 @@ public class MapJsonSchemasConverter implements PropertyConverter<Map<String, Js
     }
 
     private JsonSchema create (String name, Object value, String location) {
-        return new JsonSchemaConverter ().convert (name, value, location);
+        return new JsonSchemaConverter (parentContext).convert (name, value, location);
     }
 
     private String getLocation (JsonPointer parent, String property) {
