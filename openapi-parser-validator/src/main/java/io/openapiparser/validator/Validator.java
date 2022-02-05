@@ -85,10 +85,10 @@ public class Validator {
         // https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.4.4
 
         JsonSchema additionalProperties = schema.getAdditionalProperties ();
+        Map<String, JsonSchema> schemaProperties = schema.getProperties ();
 
         if (additionalProperties instanceof JsonSchemaBoolean && additionalProperties.isFalse ()) {
-            Set<String> instanceProperties = instance.asObject ().keySet ();
-            Map<String, JsonSchema> schemaProperties = schema.getProperties ();
+            Set<String> instanceProperties = new HashSet<>(instance.asObject ().keySet ());
 
             instanceProperties.removeAll (schemaProperties.keySet ());
 
@@ -101,7 +101,7 @@ public class Validator {
 
 
         instance.asObject ().forEach ((propName, propValue) -> {
-            final JsonSchema propSchema = schema.getJsonSchema (propName);
+            final JsonSchema propSchema = schemaProperties.get (propName);
             if (propSchema == null)
                 return;
 
