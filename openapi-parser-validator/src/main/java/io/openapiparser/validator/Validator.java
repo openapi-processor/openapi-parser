@@ -9,7 +9,6 @@ import io.openapiparser.schema.*;
 import io.openapiparser.validator.any.Type;
 import io.openapiparser.validator.array.*;
 import io.openapiparser.validator.number.*;
-import io.openapiparser.validator.object.AdditionalPropertiesError;
 import io.openapiparser.validator.string.MaxLength;
 import io.openapiparser.validator.string.MinLength;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -18,8 +17,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static io.openapiparser.converter.Types.asCol;
 import static io.openapiparser.converter.Types.asMap;
@@ -29,15 +26,19 @@ import static io.openapiparser.converter.Types.asMap;
  */
 public class Validator {
 
-    public  Collection<ValidationMessage> validate(JsonSchema schema, Object document) {
-        return validate (schema, document, URI.create (""));
+    public  Collection<ValidationMessage> validate(JsonSchema schema, /*Object*/ JsonInstance instance) {
+        return validate (schema, instance, URI.create (""));
     }
 
-    public Collection<ValidationMessage> validate(JsonSchema schema, Object source, URI uri) {
+    public Collection<ValidationMessage> validate(JsonSchema schema, /*Object*/ JsonInstance instance, URI uri) {
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
+        if (schema.isRef()) {
+            schema = schema.getRefSchema ();
+        }
+
         // get document "node"
-        Object current = getValue(source, uri);
+        /*Object*/ JsonInstance current = getValue (instance, uri);
 
         // if
         // then
@@ -54,17 +55,20 @@ public class Validator {
 
         messages.addAll (new Type (uri, schema).validate (current));
 
-        if (isArray (current)) {
-            messages.addAll (validateArray (uri, schema, asArray (current)));
+        if (isRef(current)) {
+            int i = 0;
 
-        } else if (isObject (current)) {
-            messages.addAll (validateObject (uri, schema, asObject (current)));
+        } else if (current.isArray ()) {
+            messages.addAll (validateArray (uri, schema, current));
 
-        } else if (current instanceof Number) {
-            messages.addAll (validateNumber (uri, schema, (Number)current));
+        } else if (current.isObject ()) {
+            messages.addAll (validateObject (uri, schema, current));
 
-        } else if (current instanceof String) {
-            messages.addAll (validateString (uri, schema, (String)current));
+        } else if (current.getRawValue () instanceof Number) {
+            messages.addAll (validateNumber (uri, schema, current));
+
+        } else if (current.getRawValue () instanceof String) {
+            messages.addAll (validateString (uri, schema, current));
         }
 
         return messages;
@@ -73,11 +77,11 @@ public class Validator {
     /** https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.4
      */
     private Collection<? extends ValidationMessage> validateObject (
-        URI uri, JsonSchema schema, Map<String, Object> object) {
+        URI uri, JsonSchema schema, /*Map<String, Object>*/ JsonInstance object) {
 
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
-        object.forEach ((propName, propValue) -> {
+        object.asObject ().forEach ((propName, propValue) -> {
             final JsonSchema propSchema = schema.getJsonSchema (propName);
             if (propSchema == null)
                 return;
@@ -110,7 +114,7 @@ public class Validator {
     }
 
     private Collection<ValidationMessage> validateArray (
-        URI uri, JsonSchema schema, Collection<Object> array) {
+        URI uri, JsonSchema schema, JsonInstance array) {
 
         Collection<ValidationMessage> messages = new ArrayList<> ();
         messages.addAll (new MinItems (uri).validate (schema, array));
@@ -120,17 +124,17 @@ public class Validator {
     }
 
     private Collection<ValidationMessage> validateString (
-        URI uri, JsonSchema schema, String value) {
+        URI uri, JsonSchema schema, JsonInstance string) {
 
         Collection<ValidationMessage> messages = new ArrayList<> ();
-        messages.addAll (new MaxLength (uri, schema).validate (value));
-        messages.addAll (new MinLength (uri, schema).validate (value));
-        messages.addAll (new io.openapiparser.validator.string.Pattern (uri, schema).validate (value));
+        messages.addAll (new MaxLength (uri, schema).validate (string));
+        messages.addAll (new MinLength (uri, schema).validate (string));
+        messages.addAll (new io.openapiparser.validator.string.Pattern (uri, schema).validate (string));
         return messages;
     }
 
     private Collection<ValidationMessage> validateNumber (
-        URI uri, JsonSchema schema, Number number) {
+        URI uri, JsonSchema schema, JsonInstance number) {
 
         Collection<ValidationMessage> messages = new ArrayList<> ();
         messages.addAll (new MultipleOf (uri).validate (schema, number));
@@ -139,10 +143,16 @@ public class Validator {
         return messages;
     }
 
+    private JsonInstance getValue (JsonInstance instance, URI uri) {
+        return instance.getValue (uri.getFragment ());
+    }
+
+    @Deprecated
     private @Nullable Object getValue (Object source, URI uri) {
         return getValue (source, uri.getFragment ());
     }
 
+    @Deprecated
     private @Nullable Object getValue (Object instance, @Nullable String path) {
         if (path == null || path.isEmpty ())
             return instance;
@@ -183,6 +193,13 @@ public class Validator {
             // todo
             throw new RuntimeException ();
         }
+    }
+
+    private boolean isRef (Object instance) {
+        if (!isObject (instance))
+            return false;
+
+        return asObject (instance).containsKey ("$ref");
     }
 
     private boolean isObject (Object current) {
