@@ -21,24 +21,24 @@ public class JsonSchemaObject implements JsonSchema {
 
     public JsonSchemaObject (Map<String, Object> document) {
         object = new Bucket (document);
-        properties = getProperties ();
+        properties = getPropertiesX ();
     }
 
     public JsonSchemaObject (Map<String, Object> document, JsonSchemaContext context) {
         this.context = context;
         object = new Bucket (document);
-        properties = getProperties ();
+        properties = getPropertiesX ();
     }
 
     public JsonSchemaObject (JsonPointer location, Map<String, Object> document, JsonSchemaContext context) {
         this.context = context;
         this.object = new Bucket (URI.create (""), location, document);
-        properties = getProperties ();
+        properties = getPropertiesX ();
     }
 
     private JsonSchemaObject (Bucket object) {
         this.object = object;
-        properties = getProperties ();
+        properties = getPropertiesX ();
     }
 
     @Override
@@ -173,6 +173,10 @@ public class JsonSchemaObject implements JsonSchema {
         return unique;
     }
 
+    public Map<String, JsonSchema> getProperties () {
+        return object.convert ("properties", new MapJsonSchemasConverter (context));
+    }
+
     @Override
     public Map<String, JsonSchema> getPatternProperties () {
         // todo escape regex \
@@ -224,7 +228,7 @@ public class JsonSchemaObject implements JsonSchema {
         return object.convert (property, new JsonSchemasConverter (context));
     }
 
-    private Bucket getProperties () {
+    private Bucket getPropertiesX () {
         Bucket bucket = object.convert ("properties", new BucketConverter (object));
         if (bucket == null)
             return Bucket.empty ();

@@ -101,6 +101,10 @@ public interface JsonSchema {
         return false;
     }
 
+    default Map<String, JsonSchema> getProperties () {
+        return Collections.emptyMap ();
+    }
+
     default Map<String, JsonSchema> getPatternProperties () {
         return Collections.emptyMap ();
     }

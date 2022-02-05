@@ -9,6 +9,7 @@ import io.openapiparser.schema.*;
 import io.openapiparser.validator.any.Type;
 import io.openapiparser.validator.array.*;
 import io.openapiparser.validator.number.*;
+import io.openapiparser.validator.object.AdditionalPropertiesError;
 import io.openapiparser.validator.string.MaxLength;
 import io.openapiparser.validator.string.MinLength;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -77,14 +78,35 @@ public class Validator {
     /** https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.4
      */
     private Collection<? extends ValidationMessage> validateObject (
-        URI uri, JsonSchema schema, /*Map<String, Object>*/ JsonInstance object) {
+        URI uri, JsonSchema schema, JsonInstance instance) {
 
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
-        object.asObject ().forEach ((propName, propValue) -> {
+        // https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.4.4
+
+        JsonSchema additionalProperties = schema.getAdditionalProperties ();
+
+        if (additionalProperties instanceof JsonSchemaBoolean && additionalProperties.isFalse ()) {
+            Set<String> instanceProperties = instance.asObject ().keySet ();
+            Map<String, JsonSchema> schemaProperties = schema.getProperties ();
+
+            instanceProperties.removeAll (schemaProperties.keySet ());
+
+            if (!instanceProperties.isEmpty ()) {
+                instanceProperties.forEach (k -> {
+                    messages.add (new AdditionalPropertiesError (append (uri, k).toString ()));
+                });
+            }
+        }
+
+
+        instance.asObject ().forEach ((propName, propValue) -> {
             final JsonSchema propSchema = schema.getJsonSchema (propName);
             if (propSchema == null)
                 return;
+
+
+
 
             /*
             if (propSchema == null) {
@@ -107,7 +129,7 @@ public class Validator {
             }
              */
 
-            messages.addAll (validate (propSchema, object, append (uri, propName)));
+            messages.addAll (validate (propSchema, instance, append (uri, propName)));
         });
 
         return messages;
