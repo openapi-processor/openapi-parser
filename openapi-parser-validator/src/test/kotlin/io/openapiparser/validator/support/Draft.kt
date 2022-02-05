@@ -10,9 +10,12 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.kotest.core.spec.style.freeSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldNotBeEmpty
-import io.openapiparser.schema.JsonSchema
-import io.openapiparser.schema.JsonSchemaObject
+import io.openapiparser.converter.Types.asMap
+import io.openapiparser.jackson.JacksonConverter
+import io.openapiparser.reader.UriReader
+import io.openapiparser.schema.*
 import io.openapiparser.validator.Validator
+import java.net.URI
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.name
@@ -35,9 +38,16 @@ fun draftSpec(draftPath: String) = freeSpec {
             json.typeFactory.constructCollectionType(List::class.java, Suite::class.java))
     }
 
-    @Suppress("UNCHECKED_CAST")
     fun createSchema(schema: Any): JsonSchema {
-        return JsonSchemaObject(schema as Map<String, Any>)
+        val resolver = Resolver(UriReader(), JacksonConverter(), DocumentStore())
+        val result = resolver.resolve(URI.create(""), schema)
+        return JsonSchemaObject(asMap(schema), JsonSchemaContext(result.uri, result.registry))
+    }
+
+    fun createInstance(instance: Any?): JsonInstance {
+        val resolver = Resolver(UriReader(), JacksonConverter(), DocumentStore())
+        val result = resolver.resolve(URI.create(""), instance)
+        return JsonInstance(instance, JsonInstanceContext(result.uri, result.registry))
     }
 
     Files.walk(root)
@@ -52,8 +62,10 @@ fun draftSpec(draftPath: String) = freeSpec {
 
                         for (test in suite.tests) {
                             test.description {
+                                val instance = createInstance(test.data)
+
                                 val validator = Validator()
-                                val messages = validator.validate(schema, test.data)
+                                val messages = validator.validate(schema, instance)
 
                                 if (test.valid) {
                                     messages.shouldBeEmpty()
