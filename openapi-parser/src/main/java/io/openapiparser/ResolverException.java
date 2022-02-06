@@ -8,6 +8,7 @@ package io.openapiparser;
 /**
  * thrown if the parser is unable to resolve a $reference.
  */
+@Deprecated
 public class ResolverException extends RuntimeException {
 
     public ResolverException (String message) {

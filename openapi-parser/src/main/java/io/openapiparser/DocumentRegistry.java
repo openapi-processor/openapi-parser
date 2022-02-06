@@ -11,6 +11,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated
 public class DocumentRegistry {
     private final Map<URI, Bucket> documents = new HashMap<> ();
 

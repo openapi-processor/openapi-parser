@@ -18,6 +18,7 @@ import java.net.URI;
  *   </li>
  * </ul>
  */
+@Deprecated
 public class Reference {
     private final URI parentUri;
     private final URI documentUri;

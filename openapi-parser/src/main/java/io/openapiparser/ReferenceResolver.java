@@ -17,6 +17,7 @@ import static io.openapiparser.converter.Types.convertOrNull;
 /**
  * resolves all $ref's of the base document loading all referenced documents.
  */
+@Deprecated
 public class ReferenceResolver {
     private static final String HASH = "#";
 

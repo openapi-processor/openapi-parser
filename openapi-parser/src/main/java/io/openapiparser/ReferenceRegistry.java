@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
 
+@Deprecated
 public class ReferenceRegistry {
     private final Map<String, Reference> references = new HashMap<> ();
 
