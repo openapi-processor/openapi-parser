@@ -5,9 +5,6 @@
 
 package io.openapiparser.schema;
 
-import io.openapiparser.Converter;
-import io.openapiparser.Reader;
-import io.openapiparser.support.Strings;
 import io.openapiparser.validator.Validator;
 import io.openapiparser.validator.ValidationMessage;
 
@@ -15,69 +12,89 @@ import java.net.URI;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static io.openapiparser.converter.Types.asMap;
+
 public class SchemaStore {
     private static final AtomicInteger schemaUriId = new AtomicInteger ();
 
-    private final Reader reader;
-    private final Converter converter;
-
     private final Map<URI, JsonSchema> schemas = new HashMap<> ();
+    Resolver resolver;
 
-    public SchemaStore (Reader reader, Converter converter) {
-        this.reader = reader;
-        this.converter = converter;
-    }
-
-    public JsonSchema addSchemaDocument (Object document) {
-        return registerSchema (document);
+    public SchemaStore (Resolver resolver) {
+        this.resolver = resolver;
     }
 
     /**
-     * load json schema from classpath {@code resources}.
+     * loads a json schema from the given {@code uri} and validates it.
+     *
+     * @param schemaUri uri of the json schema
+     * @return a json schema
+     */
+    public JsonSchema addSchema (URI schemaUri) {
+        return registerSchema (resolver.resolve (schemaUri));
+    }
+
+    /**
+     * loads a json schema from the classpath {@code resources} and validates it.
      *
      * @param resourcePath path of the json schema in the resources
      * @return a json schema
      */
     public JsonSchema addSchema (String resourcePath) {
-        return registerSchema (loadDocument (resourcePath));
+        return registerSchema (resolver.resolve (resourcePath));
     }
 
+    /**
+     * loads a json schema from the classpath {@code resources} and registers it with the given
+     * {@code id}. It does *not* validate the schema.
+     *
+     * @param id id of the schema
+     * @param resourcePath path of the json schema in the resources
+     * @return a json schema
+     */
     public JsonSchema addSchema (URI id, String resourcePath) {
-        final Object document = loadDocument (resourcePath);
-        JsonSchema schema = createSchema (document);
+        ResolverResult result = resolver.resolve (resourcePath);
+        JsonSchema schema = createSchema (result);
         schemas.put (id, schema);
         return schema;
     }
 
-
-    public JsonSchema addSchema (URI documentUri) {
-        return registerSchema (loadDocument (documentUri));
+    /**
+     * registers and validates the given schema.
+     *
+     * @param schema the raw schema
+     * @return a json schema
+     */
+    public JsonSchema addSchemaDocument (Object schema) {
+        ResolverResult result = resolver.resolve (URI.create (""), schema);
+        return registerSchema (result);
     }
 
+    /**
+     * check if a json schema with the given id is registered.
+     *
+     * @param id id of the json schema
+     * @return true if registered, else false
+     */
     public boolean hasSchema (URI id) {
         return schemas.containsKey (id);
     }
 
-    private JsonSchema registerSchema (Object document) {
-        JsonSchema schema = createSchema (document);
+    private JsonSchema registerSchema (ResolverResult schemaResult) {
+        JsonSchema schema = createSchema (schemaResult);
 
         final URI metaSchemaUri = schema.getMetaSchema ();
         if (metaSchemaUri != null) {
             JsonSchema metaSchema = schemas.get (metaSchemaUri);
             if (metaSchema == null) {
-                Object metaSchemaDocument = loadDocument (metaSchemaUri);
-                metaSchema = createSchema (metaSchemaDocument);
+                ResolverResult metaResult = resolver.resolve (metaSchemaUri);
+                metaSchema = createSchema (metaResult);
                 schemas.put (metaSchemaUri, metaSchema);
             }
 
-            Validator validator = new Validator ();
-            final Collection<ValidationMessage> messages = validator.validate (metaSchema, document);
-
-            if (!messages.isEmpty ()) {
-                // todo
-                throw new RuntimeException ();
-            }
+            validate (schemaResult, metaSchema);
         }
+        // todo no meta schema ??
 
         URI key = schema.getId ();
         if (key == null) {
@@ -87,34 +104,40 @@ public class SchemaStore {
         return schema;
     }
 
-    private Object loadDocument (URI documentUri) throws SchemaStoreException {
-        try {
-            return converter.convert (Strings.of (reader.read (documentUri)));
-        } catch (Exception e) {
+    private void validate (ResolverResult schemaResult, JsonSchema metaSchema) {
+        Validator validator = new Validator ();
+
+        JsonInstance instance = new JsonInstance (
+            schemaResult.getDocument (),
+            createContext (schemaResult));
+
+        Collection<ValidationMessage> messages = validator.validate (metaSchema, instance);
+        if (!messages.isEmpty ()) {
             // todo
-            throw new SchemaStoreException (String.format ("failed to load %s.", documentUri), e);
+            throw new RuntimeException ();
         }
     }
 
-    private Object loadDocument (String resourcePath) throws SchemaStoreException {
-        try {
-            return converter.convert (Strings.of (getClass ().getResourceAsStream (resourcePath)));
-        } catch (Exception e) {
-            // todo
-            throw new SchemaStoreException (String.format ("failed to load %s.", resourcePath), e);
-        }
+    private JsonInstanceContext createContext (ResolverResult schemaResult) {
+        return new JsonInstanceContext (schemaResult.getUri (), schemaResult.getRegistry ());
     }
 
     private URI generateUri () {
         return URI.create (String.format ("schema-%d", schemaUriId.getAndIncrement ()));
     }
 
-    @SuppressWarnings ("unchecked")
-    private JsonSchema createSchema (Object document) {
+    private JsonSchema createSchema (ResolverResult result) {
+        Object document = result.getDocument ();
+
         if (document instanceof Boolean) {
-            return new JsonSchemaBoolean ((Boolean) document);
+            return new JsonSchemaBoolean (
+                (Boolean) document, new JsonSchemaContext (result.getUri (), null));
+
         } else if (document instanceof Map) {
-            return new JsonSchemaObject ((Map<String, Object>) document);
+
+            return new JsonSchemaObject (
+                asMap (document), new JsonSchemaContext (result.getUri (), result.getRegistry ()));
+
         } else {
             // todo
             throw new RuntimeException ();
