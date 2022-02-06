@@ -6,13 +6,15 @@
 package io.openapiparser;
 
 import io.openapiparser.converter.StringNullableConverter;
-import io.openapiparser.schema.Bucket;
+import io.openapiparser.schema.*;
+import io.openapiparser.schema.ReferenceRegistry;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
 import java.util.Map;
 
-import static io.openapiparser.Keywords.REF;
+import static io.openapiparser.schema.Keywords.HASH;
+import static io.openapiparser.schema.Keywords.REF;
 
 /**
  * the context is used to resolve $ref's.
@@ -23,24 +25,33 @@ import static io.openapiparser.Keywords.REF;
  */
 public class Context {
     private final URI baseUri;
-    private final ReferenceResolver resolver;
+    private final ReferenceRegistry references;
 
-    public Context (URI baseUri, ReferenceResolver resolver) {
+    public Context (URI baseUri, ReferenceRegistry references) {
         this.baseUri = baseUri;
-        this.resolver = resolver;
+        this.references = references;
     }
 
-    public Bucket read () throws ContextException {
-        try {
-            resolver.resolve ();
-            return resolver.getObject ();
-        } catch (Exception e) {
-            throw new ContextException (String.format ("failed to read %s.", baseUri), e);
+    public io.openapiparser.schema.Reference getReference (String ref) {
+        if (ref.startsWith (HASH)) {
+            // same document
+            return references.getRef(baseUri.resolve (ref));
+        } else {
+            // other document
+            if (ref.contains (HASH)) {
+                // with path fragment
+                final int idxHash = ref.indexOf (HASH);
+                String document = ref.substring (0, idxHash);
+                String fragment = ref.substring (idxHash);
+                URI documentUri = baseUri.resolve (document);
+                URI refUri = documentUri.resolve (fragment);
+                return references.getRef(refUri);
+            } else {
+                // full document
+                URI refUri = baseUri.resolve (ref);
+                return references.getRef(refUri);
+            }
         }
-    }
-
-    public Reference getReference (String ref) {
-        return resolver.resolve (baseUri, ref);
     }
 
     public @Nullable Bucket getRefObjectOrNull (Bucket bucket) {
@@ -59,9 +70,13 @@ public class Context {
         return refObject;
     }
 
+    public JsonInstanceContext getInstanceContext () {
+        return new JsonInstanceContext (baseUri, references);
+    }
+
     private @Nullable Bucket getRefObject(String ref) {
-        final Reference reference = getReference (ref);
-        final Map<String, Object> value = reference.getValue ();
+        io.openapiparser.schema.Reference reference = getReference (ref);
+        Map<String, Object> value = reference.getValue ();
         if (value == null) {
             // todo if it is null it was not resolved, throw?
             return null;
@@ -82,6 +97,6 @@ public class Context {
         if (baseUri.equals (source)) {
             return this;
         }
-        return new Context (source, resolver);
+        return new Context (source, references);
     }
 }

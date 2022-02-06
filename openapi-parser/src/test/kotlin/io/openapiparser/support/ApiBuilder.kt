@@ -5,11 +5,13 @@
 
 package io.openapiparser.support
 
-import io.kotest.matchers.nulls.shouldNotBeNull
 import io.openapiparser.*
+import io.openapiparser.converter.Types
 import io.openapiparser.reader.StringReader
 import io.openapiparser.reader.UriReader
 import io.openapiparser.schema.Bucket
+import io.openapiparser.schema.DocumentStore
+import io.openapiparser.schema.Resolver
 import io.openapiparser.snakeyaml.SnakeYamlConverter
 import java.net.URI
 import io.openapiparser.model.v30.OpenApi as OpenApi30
@@ -19,18 +21,19 @@ class ApiBuilder {
     private var api: String? = null
     private lateinit var apiUri: URI
     private var converter: Converter = SnakeYamlConverter()
+    private var documents: DocumentStore = DocumentStore()
 
     fun withApi(api: String): ApiBuilder {
         return withYaml("file:///any", api.trimIndent())
     }
 
     fun withApi(api: URI): ApiBuilder {
-        this.apiUri = api
+        apiUri = api
         return this
     }
 
     fun withResource(api: String): ApiBuilder {
-        this.apiUri = this::class.java.getResource(api)!!.toURI()
+        apiUri = this::class.java.getResource(api)!!.toURI()
         return this
     }
 
@@ -40,19 +43,27 @@ class ApiBuilder {
     }
 
     fun buildParser(): OpenApiParser {
-        return OpenApiParser(createContext())
+        return OpenApiParser(createResolver())
     }
 
     fun buildOpenApi30(): OpenApi30 {
-        val context = createContext()
-        val bucket = context.read()
-        return OpenApi30(context, bucket)
+        val resolver = createResolver()
+        val result = resolver.resolve(apiUri)
+
+        return OpenApi30(
+            Context(result.uri, result.registry),
+            Bucket(result.uri, Types.asMap(result.document))
+        )
     }
 
     fun buildOpenApi31(): OpenApi31 {
-        val context = createContext()
-        val bucket = context.read()
-        return OpenApi31(context, bucket)
+        val resolver = createResolver()
+        val result = resolver.resolve(apiUri)
+
+        return OpenApi31(
+            Context(result.uri, result.registry),
+            Bucket(result.uri, Types.asMap(result.document))
+        )
     }
 
     fun <T> build(clazz: Class<T>): T {
@@ -63,21 +74,17 @@ class ApiBuilder {
     }
 
     private fun <T> build(factory: (context: Context, bucket: Bucket) -> T): T {
-        val context = createContext()
-        val bucket = context.read()
-        return factory(context, bucket)
+        val resolver = createResolver()
+        val result = resolver.resolve(apiUri)
+
+        return factory(
+            Context(result.uri, result.registry),
+            Bucket(result.uri, Types.asMap(result.document))
+        )
     }
 
-    private fun createContext(): Context {
-        apiUri.shouldNotBeNull()
-
-        val resolver = ReferenceResolver(
-            apiUri,
-            getReader(),
-            converter,
-            ReferenceRegistry()
-        )
-        return Context(apiUri, resolver)
+    private fun createResolver(): Resolver {
+        return Resolver(getReader(), converter, documents)
     }
 
     private fun withYaml(baseUri: String, api: String): ApiBuilder {

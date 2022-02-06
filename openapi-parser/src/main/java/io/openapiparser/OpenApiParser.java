@@ -6,34 +6,38 @@
 package io.openapiparser;
 
 import io.openapiparser.converter.StringNotNullConverter;
-import io.openapiparser.schema.Bucket;
+import io.openapiparser.schema.*;
+
+import java.net.URI;
 
 import static io.openapiparser.Keywords.OPENAPI;
+import static io.openapiparser.converter.Types.asMap;
 
 public class OpenApiParser {
-    private final Context context;
+    private final Resolver resolver;
 
-    public OpenApiParser (Context context) {
-        this.context = context;
+    public OpenApiParser (Resolver resolver) {
+        this.resolver = resolver;
     }
 
-    public OpenApiResult parse() throws Exception {
+    public OpenApiResult parse(URI baseUri) throws Exception {
         try {
-//            context.read ();
-            return createResult (context.read ());
+            return createResult (resolver.resolve (baseUri));
         } catch (Exception e) {
             // todo
             throw e;
         }
     }
 
-    private OpenApiResult createResult (Bucket api) {
+    private OpenApiResult createResult (ResolverResult result) {
+        Object document = result.getDocument ();
+        Bucket api = new Bucket (result.getUri (), asMap (document));
         String version = api.convert (OPENAPI, new StringNotNullConverter ());
 
         if (isVersion30 (version)) {
-            return new OpenApiResult30 (context, api);
+            return new OpenApiResult30 (new Context (result.getUri (), result.getRegistry ()), api);
         } else if (isVersion31 (version)) {
-            return new OpenApiResult31 (context, api);
+            return new OpenApiResult31 (new Context (result.getUri (), result.getRegistry ()), api);
         } else {
             // todo unknown version
             throw new RuntimeException ();

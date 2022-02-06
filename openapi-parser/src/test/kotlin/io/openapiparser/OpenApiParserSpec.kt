@@ -8,6 +8,7 @@ package io.openapiparser
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.openapiparser.support.ApiBuilder
+import java.net.URI
 
 class OpenApiParserSpec: StringSpec({
 
@@ -18,7 +19,7 @@ class OpenApiParserSpec: StringSpec({
             """.trimIndent())
             .buildParser()
 
-        val result = parser.parse()
+        val result = parser.parse(URI(""))
 
         result.version shouldBe OpenApiResult.Version.V30
     }
@@ -30,7 +31,7 @@ class OpenApiParserSpec: StringSpec({
             """.trimIndent())
             .buildParser()
 
-        val result = parser.parse()
+        val result = parser.parse(URI(""))
 
         result.version shouldBe OpenApiResult.Version.V31
     }

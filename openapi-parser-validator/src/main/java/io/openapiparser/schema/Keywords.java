@@ -6,5 +6,6 @@
 package io.openapiparser.schema;
 
 public interface Keywords {
+    String HASH = "#";
     String REF = "$ref";
 }

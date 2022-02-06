@@ -17,31 +17,31 @@ import java.net.URI
 
 class ContextSpec : StringSpec({
 
-    "reads OpenAPI document" {
-        val uri = URI("file:///any")
-        val ctx = Context(
-            uri,
-            ReferenceResolver(
-                uri,
-                StringReader("""
-                    openapi: 3.0.3
-                    """.trimIndent()),
-                JacksonConverter(),
-                ReferenceRegistry()
-            )
-        )
-
-        val bucket = ctx.read()
-        bucket.rawValues.size shouldBe 1
-        bucket.getRawValue("openapi") shouldBe "3.0.3"
-    }
-
-    "throws if reading fails" {
-        val resolver = mockk<ReferenceResolver>()
-        every { resolver.resolve() } throws ResolverException("failed", Exception())
-
-        shouldThrow<ContextException> {
-            Context(URI("file:///any"), resolver).read()
-        }
-    }
+//    "reads OpenAPI document" {
+//        val uri = URI("file:///any")
+//        val ctx = Context(
+//            uri,
+//            ReferenceResolver(
+//                uri,
+//                StringReader("""
+//                    openapi: 3.0.3
+//                    """.trimIndent()),
+//                JacksonConverter(),
+//                ReferenceRegistry()
+//            )
+//        )
+//
+//        val bucket = ctx.read()
+//        bucket.rawValues.size shouldBe 1
+//        bucket.getRawValue("openapi") shouldBe "3.0.3"
+//    }
+//
+//    "throws if reading fails" {
+//        val resolver = mockk<ReferenceResolver>()
+//        every { resolver.resolve() } throws ResolverException("failed", Exception())
+//
+//        shouldThrow<ContextException> {
+//            Context(URI("file:///any"), resolver).read()
+//        }
+//    }
 })

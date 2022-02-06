@@ -89,7 +89,7 @@ class OpenApiResultSpec: StringSpec({
         result.validate(validator, store)
 
         // then
-        verify { validator.validate(schema, document) }
+        verify { validator.validate(schema, any()) }
     }
 
     "should validate api 31" {
@@ -110,6 +110,6 @@ class OpenApiResultSpec: StringSpec({
         result.validate(validator, store)
 
         // then
-        verify { validator.validate(schema, document) }
+        verify { validator.validate(schema, any()) }
     }
 })

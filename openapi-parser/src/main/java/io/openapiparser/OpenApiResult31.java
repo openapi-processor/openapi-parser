@@ -44,8 +44,9 @@ public class OpenApiResult31 implements OpenApiResult {
 
     @Override
     public boolean validate (Validator validator, SchemaStore schemaStore) {
-        final JsonSchema schema = schemaStore.addSchema (OPENAPI_SCHEMA);
-        validationMessages = validator.validate (schema, root.getRawValues ());
+        JsonSchema schema = schemaStore.addSchema (OPENAPI_SCHEMA);
+        JsonInstance instance = new JsonInstance (root.getRawValues (), context.getInstanceContext ());
+        validationMessages = validator.validate (schema, instance);
         return validationMessages.isEmpty ();
     }
 
