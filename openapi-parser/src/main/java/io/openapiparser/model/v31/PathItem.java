@@ -50,12 +50,48 @@ public class PathItem extends Properties implements Extensions, Reference {
         return getStringOrNull (DESCRIPTION);
     }
 
+    public @Nullable Operation getGet () {
+        return getOperation (GET);
+    }
+
+    public @Nullable Operation getPut () {
+        return getOperation (PUT);
+    }
+
+    public @Nullable Operation getPost () {
+        return getOperation (POST);
+    }
+
+    public @Nullable Operation getDelete () {
+        return getOperation (DELETE);
+    }
+
+    public @Nullable Operation getOptions () {
+        return getOperation (OPTIONS);
+    }
+
+    public @Nullable Operation getHead () {
+        return getOperation (HEAD);
+    }
+
+    public @Nullable Operation getPatch () {
+        return getOperation (PATCH);
+    }
+
+    public @Nullable Operation getTrace () {
+        return getOperation (TRACE);
+    }
+
     public Collection<Server> getServers () {
         return getObjectsOrEmpty (SERVERS, Server.class);
     }
 
     public Collection<Parameter> getParameters () {
         return getObjectsOrEmpty (PARAMETERS, Parameter.class);
+    }
+
+    private @Nullable Operation getOperation(String property) {
+        return getObjectOrNull (property, Operation.class);
     }
 
     @Override

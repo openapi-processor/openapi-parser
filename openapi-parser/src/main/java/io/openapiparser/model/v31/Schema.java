@@ -40,6 +40,10 @@ public class Schema extends Properties implements Reference, Extensions {
         return getStringOrThrow (REF);
     }
 
+    public Schema getRefObject () {
+        return getRefObjectOrThrow (Schema.class);
+    }
+
     @Override
     public @Nullable String getSummary () {
         return getStringOrNull (SUMMARY);
