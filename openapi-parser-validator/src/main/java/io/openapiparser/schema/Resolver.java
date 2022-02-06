@@ -196,9 +196,7 @@ public class Resolver {
                         URI documentUri = uri.resolve (documentName);
 
                         if (!documents.contains (documentUri)) {
-                            Object document = loadDocument (documentUri);
-                            documents.add (documentUri, document);
-                            collectReferences (baseUri, documentUri, document, references);
+                            resolve (baseUri, uri, documentUri, references);
                         }
 
                         references.add (baseUri, documentUri, ref);
@@ -207,9 +205,7 @@ public class Resolver {
                         URI documentUri = uri.resolve (ref);
 
                         if (!documents.contains (documentUri)) {
-                            Object document = loadDocument (documentUri);
-                            documents.add (documentUri, document);
-                            collectReferences (baseUri, documentUri, document, references);
+                            resolve (baseUri, uri, documentUri, references);
                         }
 
                         references.add (baseUri, documentUri, ref);
@@ -223,10 +219,20 @@ public class Resolver {
         });
     }
 
+    private void resolve (URI baseUri, URI uri, URI documentUri, ReferenceRegistry references) {
+        try {
+            Object document = loadDocument (documentUri);
+            documents.add (documentUri, document);
+            collectReferences (baseUri, documentUri, document, references);
+        } catch (ResolverException ex) {
+            throw new ResolverException (String.format ("failed to resolve %s/$ref", uri), ex);
+        }
+    }
+
     private String getRef (URI uri, String name, Object value) {
         String ref = convertOrNull (name, value, String.class);
         if (ref == null) {
-            throw new ResolverException (String.format ("unable to resolve empty $ref in %s.", uri));
+            throw new ResolverException (String.format ("failed to resolve empty $ref in %s.", uri));
         }
         return ref;
     }
