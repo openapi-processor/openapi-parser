@@ -7,6 +7,7 @@ dependencies {
     implementation(project(":openapi-parser-interfaces"))
     implementation(project(":openapi-parser-support"))
 
+    testImplementation(project(":memory-protocol"))
     testImplementation(project(":openapi-parser-jackson"))
     testImplementation(platform(libs.jackson.bom))
     testImplementation(libs.jackson.databind)
