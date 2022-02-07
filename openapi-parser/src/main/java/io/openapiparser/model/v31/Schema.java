@@ -12,6 +12,7 @@ import io.openapiparser.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static io.openapiparser.Keywords.*;
 
@@ -178,10 +179,15 @@ public class Schema extends Properties implements Reference, Extensions {
      */
     public Collection<String> getType () {
         final Object value = getRawValue (TYPE);
-        if (value instanceof String) {
+        if (value == null) {
+            return Collections.emptyList ();
+        } else if (value instanceof String) {
             return Collections.singletonList (getStringOrThrow (TYPE));
         } else if (value instanceof Collection) {
-            return getStringsOrEmpty (TYPE);
+            Collection<String> types = getStringsOrEmpty (TYPE);
+            return types.stream ()
+                .map (t -> t == null ? "null" : t)
+                .collect(Collectors.toList ());
         } else {
             throw new NoValueException ("todo"/*getSource ().getPath (TYPE)*/);
         }
