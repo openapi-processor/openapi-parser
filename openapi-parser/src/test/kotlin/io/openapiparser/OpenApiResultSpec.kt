@@ -13,6 +13,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import io.openapiparser.schema.Bucket
+import io.openapiparser.schema.JsonInstanceContext
 import io.openapiparser.schema.JsonSchemaBoolean
 import io.openapiparser.schema.SchemaStore
 import io.openapiparser.validator.Validator
@@ -76,7 +77,9 @@ class OpenApiResultSpec: StringSpec({
         val bucket = Bucket(URI.create(""), "/unused", document)
         val schema = JsonSchemaBoolean(true)
 
+        val jic = mockk<JsonInstanceContext>()
         val ctx = mockk<Context>()
+        every { ctx.instanceContext } returns jic
 
         val store = mockk<SchemaStore>()
         every { store.addSchema(OPENAPI_SCHEMA_30) } returns schema
@@ -97,7 +100,10 @@ class OpenApiResultSpec: StringSpec({
         val bucket = Bucket(URI.create(""), "/unused", document)
         val schema = JsonSchemaBoolean(true)
 
+
+        val jic = mockk<JsonInstanceContext>()
         val ctx = mockk<Context>()
+        every { ctx.instanceContext } returns jic
 
         val store = mockk<SchemaStore>()
         every { store.addSchema(OPENAPI_SCHEMA_31) } returns schema
