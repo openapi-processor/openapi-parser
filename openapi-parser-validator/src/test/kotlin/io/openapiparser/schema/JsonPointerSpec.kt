@@ -11,8 +11,6 @@ import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 import io.openapiparser.converter.Types.asMap
 import io.openapiparser.jackson.JacksonConverter
-import io.openapiparser.schema.JsonPointer.fromFragment
-import io.openapiparser.schema.JsonPointer.fromJsonPointer
 import java.net.URI
 
 class JsonPointerSpec : StringSpec({
@@ -52,7 +50,7 @@ class JsonPointerSpec : StringSpec({
             Pointer("/ ", 7),
             Pointer("/m~0n", 8),
         ).forEach {
-            Bucket(document).getRawValue(fromJsonPointer(it.pointer)) shouldBe it.expected
+            Bucket(document).getRawValue(JsonPointer.from(it.pointer)) shouldBe it.expected
         }
     }
 
@@ -92,63 +90,58 @@ class JsonPointerSpec : StringSpec({
             Pointer("#/m~0n", 8),
             Pointer(null, document)
         ).forEach {
-            Bucket(document).getRawValue(fromFragment(it.pointer)) shouldBe it.expected
+            Bucket(document).getRawValue(JsonPointer.from(it.pointer)) shouldBe it.expected
         }
     }
 
     "appends encoded token to json pointer" {
-        fromJsonPointer(null).append("/foo").toString() shouldBe "/~1foo"
-        fromJsonPointer(null).append("foo").toString() shouldBe "/foo"
-        fromJsonPointer("/root").append("/foo").toString() shouldBe "/root/~1foo"
-        fromJsonPointer("/root").append("foo").toString() shouldBe "/root/foo"
+        JsonPointer.from(null).append("/foo").toString() shouldBe "/~1foo"
+        JsonPointer.from(null).append("foo").toString() shouldBe "/foo"
+        JsonPointer.from("/root").append("/foo").toString() shouldBe "/root/~1foo"
+        JsonPointer.from("/root").append("foo").toString() shouldBe "/root/foo"
     }
 
     "handles null source" {
-        JsonPointer.fromFragment(null).toString().shouldBeNull()
-        fromJsonPointer(null).toString().shouldBeNull()
+        JsonPointer.from(null).toString().shouldBeNull()
     }
 
     "throws on invalid json pointer" {
         shouldThrow<JsonPointerInvalidException> {
-            fromJsonPointer("should/start/with/slash")
+            JsonPointer.from("should/start/with/slash")
         }
     }
 
     "throws if fragment is invalid" {
         shouldThrow<JsonPointerInvalidException> {
-            JsonPointer.fromFragment("#/%XX/invalid")
-        }
-
-        shouldThrow<JsonPointerInvalidException> {
-            JsonPointer.fromFragment("/missing/hash")
+            JsonPointer.from("#/%XX/invalid")
         }
     }
 
     "append index to pointer" {
-        fromJsonPointer("/root").append(1).toString() shouldBe "/root/1"
+        JsonPointer.from("/root").append(1).toString() shouldBe "/root/1"
     }
 
     "get tail from pointer" {
         JsonPointer.EMPTY.tail() shouldBe ""
-        fromJsonPointer("/root").tail() shouldBe "root"
-        fromJsonPointer("/root/tail").tail() shouldBe "tail"
+        JsonPointer.from("/root").tail() shouldBe "root"
+        JsonPointer.from("/root/tail").tail() shouldBe "tail"
     }
 
     "get tail index from pointer" {
-        fromJsonPointer("/root/0").tailIndex() shouldBe 0
+        JsonPointer.from("/root/0").tailIndex() shouldBe 0
     }
 
     "get tail index from pointer throws if index is no int" {
         shouldThrow<JsonPointerInvalidException> {
-            fromJsonPointer("/root/boom").tailIndex()
+            JsonPointer.from("/root/boom").tailIndex()
         }
     }
 
     "converts to uri" {
-        fromJsonPointer("").toUri() shouldBe URI.create("")
-        fromJsonPointer("/").toUri() shouldBe URI.create("#/")
-        fromJsonPointer("/0").toUri() shouldBe URI.create("#/0")
-        fromJsonPointer("/to/ke/ns").toUri() shouldBe URI.create("#/to/ke/ns")
+        JsonPointer.from("").toUri() shouldBe URI.create("")
+        JsonPointer.from("/").toUri() shouldBe URI.create("#/")
+        JsonPointer.from("/0").toUri() shouldBe URI.create("#/0")
+        JsonPointer.from("/to/ke/ns").toUri() shouldBe URI.create("#/to/ke/ns")
         // todo ~ encoding
         // todo uri encoding
     }

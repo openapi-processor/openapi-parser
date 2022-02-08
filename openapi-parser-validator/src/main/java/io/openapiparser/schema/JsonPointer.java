@@ -31,13 +31,10 @@ public class JsonPointer {
      *
      * @param jsonPointer json pointer
      * @return a json pointer object
-     */
+     */ // of() , from ()??
+    @Deprecated
     static public JsonPointer fromJsonPointer (@Nullable String jsonPointer) {
-        if (jsonPointer == null) {
-            return EMPTY;
-        }
-
-        return new JsonPointer(jsonPointer);
+        return from (jsonPointer);
     }
 
     /**
@@ -47,16 +44,22 @@ public class JsonPointer {
      * @param fragment json pointer fragment
      * @return a json pointer object
      */
+    @Deprecated
     static public JsonPointer fromFragment (String fragment) {
-        if (fragment == null) {
+        return from (fragment);
+    }
+
+    static public JsonPointer from (@Nullable String jsonPointer) {
+        if (jsonPointer == null) {
             return EMPTY;
         }
 
-        if (!fragment.startsWith ("#")) {
-            throw new JsonPointerInvalidException (fragment);
+        String pointer = jsonPointer;
+        if (jsonPointer.startsWith ("#")) {
+            pointer = decode (jsonPointer.substring (1));
         }
 
-        return fromJsonPointer (decodeFragment (fragment.substring (1)));
+        return new JsonPointer(pointer);
     }
 
     private JsonPointer () {
@@ -77,10 +80,7 @@ public class JsonPointer {
         }
 
         tokens = Arrays.stream (jsonPointer.substring (1).split ("/"))
-            .map (escaped -> escaped
-                .replace ("~1", "/")
-                .replace ("~0", "~")
-            )
+            .map (JsonPointerSupport::decode)
             .collect (Collectors.toList ());
     }
 
@@ -111,9 +111,7 @@ public class JsonPointer {
      * @return new json pointer string
      */
     public String getJsonPointer (String token) {
-        String encoded = token
-            .replace ("~", "~0")
-            .replace ("/", "~1");
+        String encoded = JsonPointerSupport.encode (token);
 
         if (pointer == null) {
             return "/" + encoded;
@@ -127,10 +125,8 @@ public class JsonPointer {
             return URI.create ("");
 
         String escaped = tokens.stream ()
-            .map (t -> t
-                .replace ("~", "~0")
-                .replace ("/", "~1")
-            ).collect (Collectors.joining ("/"));
+            .map (JsonPointerSupport::encode)
+            .collect (Collectors.joining ("/"));
 
         return URI.create ("#/" + escaped);
     }
@@ -174,19 +170,20 @@ public class JsonPointer {
         return pointer;
     }
 
-    private static String encodeFragment (String fragment) {
+    private static String encode (String pointer) {
         try {
-            return URLEncoder.encode (fragment, StandardCharsets.UTF_8.name());
+            return URLEncoder.encode (pointer, StandardCharsets.UTF_8.name());
         } catch (UnsupportedEncodingException ex) {
-            throw new JsonPointerInvalidException (fragment, ex);
+            throw new JsonPointerInvalidException (pointer, ex);
         }
     }
 
-    private static String decodeFragment (String fragment) {
+    private static String decode (String pointer) {
         try {
-            return URLDecoder.decode (fragment, StandardCharsets.UTF_8.name());
+            String encoded = JsonPointerSupport.encodePath (pointer);
+            return URLDecoder.decode (encoded, StandardCharsets.UTF_8.name());
         } catch (Exception ex) {
-            throw new JsonPointerInvalidException (fragment, ex);
+            throw new JsonPointerInvalidException (pointer, ex);
         }
     }
 }
