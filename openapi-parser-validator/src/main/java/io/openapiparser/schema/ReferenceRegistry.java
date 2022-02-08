@@ -95,11 +95,6 @@ public class ReferenceRegistry {
             return documentUri.toString ();
         }
 
-        String hashPart = ref.substring(hash);
-        String encoded = hashPart;
-//            .replace ("{", "%7B")
-//            .replace ("}", "%7D");
-
-        return documentUri.resolve (URI.create (encoded)).toString ();
+        return new Ref(ref).getAbsoluteRef (documentUri);
     }
 }

@@ -90,7 +90,6 @@ public class Resolver {
 //        collectReferences (uri, bucket);
 //    }
 
-    // todo throw if missing
     /*
     public Reference resolve(URI baseUri, String ref) {
         String encodedRef = ref
@@ -118,33 +117,60 @@ public class Resolver {
         }
     }*/
 
-    /**
-     * get the root {@link Bucket} of the document. The bucket is empty if the document was
-     * not {@link #resolve()}d.
-     *
-     * @return root property bucket.
-     */
-//    public Bucket getObject () {
-//        return object;
-//    }
-
-//    private Object initDocument (URI uri) throws ResolverException {
-//        Object document = loadDocument (uri);
-//        documents.add (uri, document);
-//        return document;
-//    }
-
     private void collectReferences (
-        URI base,
-        URI uri,
-        Object document,
-        ReferenceRegistry registry) throws ResolverException {
+        URI base, URI uri, Object document, ReferenceRegistry registry) throws ResolverException {
 
         Bucket bucket = toBucket (uri, document);
         if (bucket == null)
             return;
 
         collectReferences (base, uri, bucket, registry);
+    }
+
+    private void collectReferences (
+        URI baseUri, URI uri, Bucket bucket, ReferenceRegistry references)
+        throws ResolverException {
+
+        bucket.forEach((name, value) -> {
+            if (name.equals (Keywords.REF)) {
+                Ref ref = getRef (uri, name, value);
+
+                URI documentUri = ref.getDocumentUri (uri);
+
+                if (!hasDocument (documentUri)) {
+                    Object document = addDocument (uri, documentUri);
+                    collectReferences (baseUri, documentUri, document, references);
+                }
+
+                addReference (baseUri, documentUri, ref, references);
+
+            } else {
+                bucket.walkPropertyTree (name, props -> {
+                    collectReferences (baseUri, bucket.getSource (), props, references);
+                });
+            }
+        });
+    }
+
+    private void resolveReferences (ReferenceRegistry references) {
+        references.resolve((documentUri, documentRef) -> {
+            Object document = getDocument (documentUri);
+            Bucket bucket = toBucket (documentUri, document);
+            if (bucket == null)
+                return document;
+
+            Ref ref = new Ref (documentRef);
+            if (ref.hasPointer ()) {
+                Object property = bucket.getRawValue (ref.getPointer ());
+                if (property == null) {
+                    throw new ResolverException (
+                        String.format ("failed to resolve ref %s/%s.", documentUri, ref));
+                }
+                return property;
+            } else {
+                return bucket.getRawValues ();
+            }
+        });
     }
 
     private @Nullable Bucket toBucket(URI uri, Object source) {
@@ -154,87 +180,36 @@ public class Resolver {
         return new Bucket (uri, asMap (source));
     }
 
-    private void resolveReferences (ReferenceRegistry references) {
-        references.resolve((documentUri, ref) -> {
-            Object o = documents.get (documentUri);
-            Bucket document = toBucket (documentUri, o);
-            if (document == null)
-                return o;
+    private void addReference (
+        URI baseUri, URI documentUri, Ref ref, ReferenceRegistry references) {
 
-            if (ref.contains ("#")) {
-                String fragment = ref.substring(ref.indexOf (HASH));
-                final Object property = document.getRawValue (JsonPointer.fromFragment (fragment));
-                if (property == null) {
-                    throw new ResolverException (
-                        String.format ("failed to resolve ref %s/%s.", documentUri, ref));
-                }
-                return property;
-            } else {
-                return document.getRawValues ();
-            }
-        });
+        references.add (baseUri, documentUri, ref.toString ());
     }
 
-    private void collectReferences (
-        URI baseUri,
-        URI uri,
-        Bucket bucket,
-        ReferenceRegistry references) throws ResolverException {
-
-        bucket.forEach((name, value) -> {
-            if (name.equals (Keywords.REF)) {
-                String ref = getRef (uri, name, value);
-
-                if (ref.startsWith (HASH)) {
-                    // into same document
-                    references.add (uri, uri, ref);
-                } else {
-                    // into other document
-                    if (ref.contains (HASH)) {
-                        // with pointer
-                        String documentName = ref.substring (0, ref.indexOf (HASH));
-                        URI documentUri = uri.resolve (documentName);
-
-                        if (!documents.contains (documentUri)) {
-                            resolve (baseUri, uri, documentUri, references);
-                        }
-
-                        references.add (baseUri, documentUri, ref);
-                    } else {
-                        // full document
-                        URI documentUri = uri.resolve (ref);
-
-                        if (!documents.contains (documentUri)) {
-                            resolve (baseUri, uri, documentUri, references);
-                        }
-
-                        references.add (baseUri, documentUri, ref);
-                    }
-                }
-            } else {
-                bucket.walkPropertyTree (name, props -> {
-                    collectReferences (baseUri, bucket.getSource (), props, references);
-                });
-            }
-        });
+    private Object getDocument (URI documentUri) {
+        return documents.get (documentUri);
     }
 
-    private void resolve (URI baseUri, URI uri, URI documentUri, ReferenceRegistry references) {
+    private Object addDocument (URI uri, URI documentUri) {
         try {
             Object document = loadDocument (documentUri);
             documents.add (documentUri, document);
-            collectReferences (baseUri, documentUri, document, references);
+            return document;
         } catch (ResolverException ex) {
             throw new ResolverException (String.format ("failed to resolve %s/$ref", uri), ex);
         }
     }
 
-    private String getRef (URI uri, String name, Object value) {
+    private boolean hasDocument (URI documentUri) {
+        return documents.contains (documentUri);
+    }
+
+    private Ref getRef (URI uri, String name, Object value) {
         String ref = convertOrNull (name, value, String.class);
         if (ref == null) {
             throw new ResolverException (String.format ("failed to resolve empty $ref in %s.", uri));
         }
-        return ref;
+        return new Ref(ref);
     }
 
     private Object loadDocument (URI documentUri) throws ResolverException {
