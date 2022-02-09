@@ -77,46 +77,6 @@ public class Resolver {
         return new ResolverResult (uri, document, registry);
     }
 
-//    public Object resolve (URI uri) throws ResolverException {
-//        Object document = initDocument (uri);
-//        collectReferences (uri, uri, document);
-        // resolve
-
-//        if (!(document instanceof Map)) {
-//            return document;
-//        }
-//
-//        Bucket bucket = new Bucket (uri, asMap (document));
-//        collectReferences (uri, bucket);
-//    }
-
-    /*
-    public Reference resolve(URI baseUri, String ref) {
-        String encodedRef = ref
-            .replace ("{", "%7B")
-            .replace ("}", "%7D");
-
-        if (encodedRef.startsWith (HASH)) {
-            // same document
-            return references.getRef(baseUri.resolve (encodedRef));
-        } else {
-            // other document
-            if (encodedRef.contains (HASH)) {
-                // with path fragment
-                final int idxHash = encodedRef.indexOf (HASH);
-                String document = encodedRef.substring (0, idxHash);
-                String fragment = encodedRef.substring (idxHash);
-                URI documentUri = baseUri.resolve (document);
-                URI refUri = documentUri.resolve (fragment);
-                return references.getRef(refUri);
-            } else {
-                // full document
-                URI refUri = baseUri.resolve (encodedRef);
-                return references.getRef(refUri);
-            }
-        }
-    }*/
-
     private void collectReferences (
         URI base, URI uri, Object document, ReferenceRegistry registry) throws ResolverException {
 
@@ -153,24 +113,26 @@ public class Resolver {
     }
 
     private void resolveReferences (ReferenceRegistry references) {
-        references.resolve((documentUri, documentRef) -> {
-            Object document = getDocument (documentUri);
-            Bucket bucket = toBucket (documentUri, document);
-            if (bucket == null)
-                return document;
+        references.resolve(this::resolve);
+    }
 
-            Ref ref = new Ref (documentRef);
-            if (ref.hasPointer ()) {
-                Object property = bucket.getRawValue (ref.getPointer ());
-                if (property == null) {
-                    throw new ResolverException (
-                        String.format ("failed to resolve ref %s/%s.", documentUri, ref));
-                }
-                return property;
-            } else {
-                return bucket.getRawValues ();
-            }
-        });
+    private Object resolve (URI documentUri, String documentRef) {
+        Object document = getDocument (documentUri);
+        Bucket bucket = toBucket (documentUri, document);
+        if (bucket == null)
+            return document;
+
+        Ref ref = new Ref (documentRef);
+
+        if (!ref.hasPointer ()) {
+            return bucket.getRawValues ();
+        }
+
+        Object property = bucket.getRawValue (JsonPointer.from (ref.getPointer ()));
+        if (property == null) {
+            throw new ResolverException (String.format ("failed to resolve ref %s/%s.", documentUri, ref));
+        }
+        return property;
     }
 
     private @Nullable Bucket toBucket(URI uri, Object source) {

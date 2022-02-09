@@ -20,24 +20,17 @@ public class Ref {
         return ref.contains (HASH);
     }
 
-    public JsonPointer getPointer () {
-        return JsonPointer.from (ref.substring(ref.indexOf (HASH)));
+    private String getDocument () {
+        return ref.substring (0, ref.indexOf (HASH));
     }
 
-    public String getAbsoluteRef (URI source) {
-        int hash = ref.indexOf("#");
-        if (hash == -1) {
-            return source.toString ();
-        }
-
-        String pointer = ref.substring(hash);
-        pointer = JsonPointerSupport.encodePath (pointer);
-        return source.resolve (pointer).toString ();
+    public String getPointer () {
+        return ref.substring(ref.indexOf (HASH));
     }
 
     public URI getDocumentUri (URI source) {
         if (ref.startsWith (HASH)) {
-            // pointer in same document
+            // pointer in document
             return source;
 
         } else if (ref.indexOf (HASH) > 0) {
@@ -53,9 +46,5 @@ public class Ref {
     @Override
     public String toString () {
         return ref;
-    }
-
-    private String getDocument () {
-        return ref.substring (0, ref.indexOf (HASH));
     }
 }

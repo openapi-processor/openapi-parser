@@ -13,7 +13,6 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.net.URI;
 import java.util.Map;
 
-import static io.openapiparser.schema.Keywords.HASH;
 import static io.openapiparser.schema.Keywords.REF;
 
 /**
@@ -33,25 +32,8 @@ public class Context {
     }
 
     public io.openapiparser.schema.Reference getReference (String ref) {
-        if (ref.startsWith (HASH)) {
-            // same document
-            return references.getRef(baseUri.resolve (ref));
-        } else {
-            // other document
-            if (ref.contains (HASH)) {
-                // with path fragment
-                final int idxHash = ref.indexOf (HASH);
-                String document = ref.substring (0, idxHash);
-                String fragment = ref.substring (idxHash);
-                URI documentUri = baseUri.resolve (document);
-                URI refUri = documentUri.resolve (fragment);
-                return references.getRef(refUri);
-            } else {
-                // full document
-                URI refUri = baseUri.resolve (ref);
-                return references.getRef(refUri);
-            }
-        }
+        URI absoluteRef = baseUri.resolve (JsonPointerSupport.encodePath (ref));
+        return references.getRef(absoluteRef);
     }
 
     public @Nullable Bucket getRefObjectOrNull (Bucket bucket) {

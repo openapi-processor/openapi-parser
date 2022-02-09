@@ -9,6 +9,8 @@ import java.net.URI;
 import java.util.*;
 import java.util.function.BiFunction;
 
+import static io.openapiparser.schema.JsonPointerSupport.encodePath;
+
 /**
  * holds a document and all its references.
  */
@@ -84,17 +86,23 @@ public class ReferenceRegistry {
     }
 
     private void add (Pending ref, Object value) {
-        references.put (
-            createAbsoluteRefUri (ref.documentUri, ref.ref),
-            new Reference (ref.parentUri, ref.documentUri, ref.ref, value));
+        references.put (createAbsoluteRefUri (ref), createReference (ref, value));
     }
 
-    private String createAbsoluteRefUri(URI documentUri, String ref) {
+    private Reference createReference (Pending pending, Object value) {
+        return new Reference (pending.parentUri, pending.documentUri, pending.ref, value);
+    }
+
+    private String createAbsoluteRefUri(Pending pending) {
+        String ref = pending.ref;
+        URI documentUri = pending.documentUri;
+
         int hash = ref.indexOf("#");
         if (hash == -1) {
             return documentUri.toString ();
         }
 
-        return new Ref(ref).getAbsoluteRef (documentUri);
+        String hashPart = encodePath (ref.substring(hash));
+        return documentUri.resolve (hashPart).toString ();
     }
 }
