@@ -156,7 +156,12 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     @Override
-    public int getMinItems () {
+    public @Nullable Integer getMaxItems () {
+        return object.convert ("maxItems", new IntegerConverter ());
+    }
+
+    @Override
+    public Integer getMinItems () {
         Integer minItems = object.convert ("minItems", new IntegerConverter ());
         if (minItems == null)
             return 0;

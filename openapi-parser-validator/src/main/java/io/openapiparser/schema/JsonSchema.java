@@ -93,7 +93,11 @@ public interface JsonSchema {
         return new JsonSchemas (); // default empty schema (draft 4)
     }
 
-    default int getMinItems () {
+    default @Nullable Integer getMaxItems () {
+        throw new RuntimeException ();
+    }
+
+    default Integer getMinItems () {
         return 0;
     }
 
@@ -109,7 +113,6 @@ public interface JsonSchema {
         return Collections.emptyMap ();
     }
 
-    // todo can be missing
     default JsonSchema getAdditionalProperties () {
         return new JsonSchemaObject (Collections.emptyMap ());
     }
