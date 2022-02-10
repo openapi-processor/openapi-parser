@@ -105,6 +105,10 @@ public interface JsonSchema {
         return false;
     }
 
+    default @Nullable Integer getMaxProperties () {
+        throw new RuntimeException ();
+    }
+
     default Map<String, JsonSchema> getProperties () {
         return Collections.emptyMap ();
     }

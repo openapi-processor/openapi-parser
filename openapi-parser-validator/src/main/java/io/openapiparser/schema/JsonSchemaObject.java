@@ -178,6 +178,11 @@ public class JsonSchemaObject implements JsonSchema {
         return unique;
     }
 
+    @Override
+    public @Nullable Integer getMaxProperties () {
+        return object.convert ("maxProperties", new IntegerConverter ());
+    }
+
     public Map<String, JsonSchema> getProperties () {
         Map<String, JsonSchema> properties = object.convert ("properties", new MapJsonSchemasConverter (context));
         if (properties == null)
