@@ -139,6 +139,7 @@ public class Validator {
         URI uri, JsonSchema schema, JsonInstance array) {
 
         Collection<ValidationMessage> messages = new ArrayList<> ();
+        messages.addAll (new MaxItems (uri).validate (schema, array));
         messages.addAll (new MinItems (uri).validate (schema, array));
         messages.addAll (new UniqueItems (uri).validate (schema, array));
         messages.addAll (new Items (uri, schema, this).validate (array));
