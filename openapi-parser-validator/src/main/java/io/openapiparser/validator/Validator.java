@@ -115,6 +115,10 @@ public class Validator {
 
         instance.asObject ().forEach ((propName, propValue) -> {
             JsonSchema propSchema = schemaProperties.get (propName);
+            if (propSchema == null) {
+                propSchema = additionalProperties;
+            }
+
             if (propSchema == null)
                 return;
 
