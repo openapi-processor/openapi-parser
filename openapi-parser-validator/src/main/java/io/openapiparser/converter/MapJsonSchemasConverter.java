@@ -10,7 +10,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.*;
 
-import static io.openapiparser.converter.Types.convertMap;
+import static io.openapiparser.converter.Types.convertMapOrNull;
 
 /**
  * get a map of {@link String} to {@link JsonSchema}.
@@ -24,11 +24,11 @@ public class MapJsonSchemasConverter implements PropertyConverter<Map<String, Js
 
     @Override
     public @Nullable Map<String, JsonSchema> convert (String name, Object value, String location) {
-        Map<String, Object> objects = convertMap (location, value);
+        Map<String, Object> objects = convertMapOrNull (location, value);
         if (objects == null)
             return null;
 
-        JsonPointer parentLocation = JsonPointer.fromJsonPointer (location);
+        JsonPointer parentLocation = JsonPointer.from (location);
 
         Map<String, JsonSchema> result = new LinkedHashMap<> ();
         objects.forEach ((propKey, propValue) -> {

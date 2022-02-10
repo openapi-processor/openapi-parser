@@ -18,6 +18,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static io.openapiparser.converter.Types.asCol;
 import static io.openapiparser.converter.Types.asMap;
@@ -92,6 +94,18 @@ public class Validator {
 
             instanceProperties.removeAll (schemaProperties.keySet ());
 
+            Map<String, JsonSchema> patterns = schema.getPatternProperties ();
+            Iterator<String> it = instanceProperties.iterator();
+            while (it.hasNext()) {
+                for (String pattern : patterns.keySet ()) {
+                    Pattern p = Pattern.compile(pattern);
+                    Matcher m = p.matcher(it.next ());
+                    if (m.find()) {
+                        it.remove ();
+                    }
+                }
+            }
+
             if (!instanceProperties.isEmpty ()) {
                 instanceProperties.forEach (k -> {
                     messages.add (new AdditionalPropertiesError (append (uri, k).toString ()));
@@ -99,35 +113,10 @@ public class Validator {
             }
         }
 
-
         instance.asObject ().forEach ((propName, propValue) -> {
-            final JsonSchema propSchema = schemaProperties.get (propName);
+            JsonSchema propSchema = schemaProperties.get (propName);
             if (propSchema == null)
                 return;
-
-
-
-
-            /*
-            if (propSchema == null) {
-
-                // draft4 - 5.18
-                if (schema.getAdditionalProperties().isFalse()) {
-
-                    // draft4 - 5.17
-                    Map<String, JsonSchema> patterns = schema.getPatternProperties ();
-                    for (String pattern : patterns.keySet ()) {
-                        Pattern p = Pattern.compile(pattern);
-                        Matcher m = p.matcher(propName);
-                        if (m.find())
-                            return;
-                    }
-
-                    messages.add (new AdditionalPropertiesError (append (uri, propName).toString ()));
-                }
-                return;
-            }
-             */
 
             messages.addAll (validate (propSchema, instance, append (uri, propName)));
         });

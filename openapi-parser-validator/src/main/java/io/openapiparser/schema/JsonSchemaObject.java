@@ -179,7 +179,11 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     public Map<String, JsonSchema> getProperties () {
-        return object.convert ("properties", new MapJsonSchemasConverter (context));
+        Map<String, JsonSchema> properties = object.convert ("properties", new MapJsonSchemasConverter (context));
+        if (properties == null)
+            return Collections.emptyMap ();
+
+        return properties;
     }
 
     @Override
