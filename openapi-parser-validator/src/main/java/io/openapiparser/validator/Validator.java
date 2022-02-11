@@ -9,8 +9,7 @@ import io.openapiparser.schema.*;
 import io.openapiparser.validator.any.Type;
 import io.openapiparser.validator.array.*;
 import io.openapiparser.validator.number.*;
-import io.openapiparser.validator.object.AdditionalPropertiesError;
-import io.openapiparser.validator.object.MaxProperties;
+import io.openapiparser.validator.object.*;
 import io.openapiparser.validator.string.MaxLength;
 import io.openapiparser.validator.string.MinLength;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -86,6 +85,7 @@ public class Validator {
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
         messages.addAll (new MaxProperties (uri).validate (schema, instance));
+        messages.addAll (new MinProperties (uri).validate (schema, instance));
 
         // https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.4.4
 

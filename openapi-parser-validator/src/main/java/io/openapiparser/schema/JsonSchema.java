@@ -109,6 +109,10 @@ public interface JsonSchema {
         throw new RuntimeException ();
     }
 
+    default Integer getMinProperties () {
+        return 0;
+    }
+
     default Map<String, JsonSchema> getProperties () {
         return Collections.emptyMap ();
     }

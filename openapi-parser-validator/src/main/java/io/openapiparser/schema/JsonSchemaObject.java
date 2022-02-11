@@ -183,6 +183,11 @@ public class JsonSchemaObject implements JsonSchema {
         return object.convert ("maxProperties", new IntegerConverter ());
     }
 
+    @Override
+    public Integer getMinProperties () {
+        return object.convert ("minProperties", new IntegerConverter ());
+    }
+
     public Map<String, JsonSchema> getProperties () {
         Map<String, JsonSchema> properties = object.convert ("properties", new MapJsonSchemasConverter (context));
         if (properties == null)
