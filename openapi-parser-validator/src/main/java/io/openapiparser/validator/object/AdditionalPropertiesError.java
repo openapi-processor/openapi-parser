@@ -8,7 +8,7 @@ package io.openapiparser.validator.object;
 import io.openapiparser.validator.ValidationMessage;
 
 /**
- * Created by {@link todo}.
+ * Created by {@link io.openapiparser.validator.Validator}.
  */
 public class AdditionalPropertiesError extends ValidationMessage {
     public AdditionalPropertiesError (String path) {
