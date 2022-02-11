@@ -188,6 +188,15 @@ public class JsonSchemaObject implements JsonSchema {
         return object.convert ("minProperties", new IntegerConverter ());
     }
 
+    @Override
+    public @Nullable Collection<String> getRequired () {
+        Object raw = object.getRawValue ("required");
+        if (raw == null)
+            return null;
+
+        return Collections.unmodifiableCollection(asCol(raw));
+    }
+
     public Map<String, JsonSchema> getProperties () {
         Map<String, JsonSchema> properties = object.convert ("properties", new MapJsonSchemasConverter (context));
         if (properties == null)

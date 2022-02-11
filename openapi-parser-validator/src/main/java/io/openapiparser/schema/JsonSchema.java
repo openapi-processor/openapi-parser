@@ -113,6 +113,10 @@ public interface JsonSchema {
         return 0;
     }
 
+    default @Nullable Collection<String> getRequired () {
+        throw new RuntimeException ();
+    }
+
     default Map<String, JsonSchema> getProperties () {
         return Collections.emptyMap ();
     }

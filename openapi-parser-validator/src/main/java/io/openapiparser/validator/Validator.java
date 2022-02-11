@@ -86,6 +86,7 @@ public class Validator {
 
         messages.addAll (new MaxProperties (uri).validate (schema, instance));
         messages.addAll (new MinProperties (uri).validate (schema, instance));
+        messages.addAll (new Required (uri).validate (schema, instance));
 
         // https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.4.4
 
