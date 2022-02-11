@@ -9,7 +9,7 @@ import io.openapiparser.validator.ValidationMessage;
 import io.openapiparser.validator.array.MaxItems;
 
 /**
- * Created by {@link MaxItems}.
+ * Created by {@link MaxProperties}.
  */
 public class MaxPropertiesError extends ValidationMessage {
     public MaxPropertiesError (String path, int size) {

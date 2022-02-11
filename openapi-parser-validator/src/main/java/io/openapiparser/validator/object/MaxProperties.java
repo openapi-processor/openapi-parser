@@ -14,7 +14,7 @@ import java.net.URI;
 import java.util.*;
 
 /**
- * validates maxItems.
+ * validates maxProperties.
  *
  * <p>See specification:
  * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.1">
@@ -39,7 +39,7 @@ public class MaxProperties {
         if (maxProperties == null || instanceProperties.size () <= maxProperties)
             return messages;
 
-        messages.add (new MaxItemsError (uri.toString (), maxProperties));
+        messages.add (new MaxPropertiesError (uri.toString (), maxProperties));
         return messages;
     }
 }
