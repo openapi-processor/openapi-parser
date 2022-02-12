@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import static io.openapiparser.converter.Types.*;
-import static io.openapiparser.schema.JsonPointer.fromJsonPointer;
+import static io.openapiparser.schema.JsonPointer.from;
 
 public class JsonInstance {
     private final JsonInstanceContext context;
@@ -32,12 +32,12 @@ public class JsonInstance {
 
         if (isObject ()) {
             Bucket bucket = new Bucket (asMap (value));
-            Object target = bucket.getRawValue (fromJsonPointer (path));
+            Object target = bucket.getRawValue (from (path));
             return new JsonInstance (target, context);
 
         } else if (isArray ()) {
             Object[] items = asCol (value).toArray ();
-            int idx = fromJsonPointer (path).tailIndex ();
+            int idx = from (path).tailIndex ();
             return new JsonInstance (items[idx], context);
         }
 

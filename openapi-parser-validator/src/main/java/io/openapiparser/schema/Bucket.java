@@ -73,7 +73,7 @@ public class Bucket {
     @SuppressWarnings ("NullableProblems")
     public Bucket (URI source, String location, Map<String, Object> properties) {
         this.source = source;
-        this.location = JsonPointer.fromJsonPointer (location);
+        this.location = JsonPointer.from (location);
         this.properties = properties;
     }
 
