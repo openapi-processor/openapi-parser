@@ -9,6 +9,8 @@ import io.openapiparser.Converter;
 import io.openapiparser.Reader;
 import io.openapiparser.support.Strings;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.util.Map;
@@ -21,7 +23,7 @@ import static io.openapiparser.converter.Types.convertOrNull;
  * $ref it automatically downloads the referenced document.
  */
 public class Resolver {
-    private static final String HASH = "#";
+    private static final Logger log = LoggerFactory.getLogger (Resolver.class);
 
     private final Reader reader;
     private final Converter converter;
@@ -92,13 +94,16 @@ public class Resolver {
         throws ResolverException {
 
         bucket.forEach((name, value) -> {
-            if (name.equals (Keywords.REF)) {
+            if (name.equals (Keywords.REF) && value instanceof String) {
                 Ref ref = getRef (uri, name, value);
 
                 URI documentUri = ref.getDocumentUri (uri);
 
                 if (!hasDocument (documentUri)) {
                     Object document = addDocument (uri, documentUri);
+                    if (document == null)
+                        return;
+
                     collectReferences (baseUri, documentUri, document, references);
                 }
 
@@ -158,7 +163,9 @@ public class Resolver {
             documents.add (documentUri, document);
             return document;
         } catch (ResolverException ex) {
-            throw new ResolverException (String.format ("failed to resolve %s/$ref", uri), ex);
+            log.info (String.format ("failed to resolve %s/$ref", uri), ex);
+//            throw new ResolverException (String.format ("failed to resolve %s/$ref", uri), ex);
+            return null;
         }
     }
 

@@ -55,7 +55,7 @@ public class JsonSchemaObject implements JsonSchema {
     public JsonSchema getRefSchema () {
         Reference reference = context.getReference (getRef ());
         Object rawValue = reference.getRawValue ();
-        return new JsonSchemaObject(asMap(rawValue), context);
+        return new JsonSchemaObject(asMap(rawValue), context.withSource (reference.getDocumentUri ()));
     }
 
     @Override
@@ -208,7 +208,14 @@ public class JsonSchemaObject implements JsonSchema {
     @Override
     public Map<String, JsonSchema> getPatternProperties () {
         // todo escape regex \
-        return object.convert ("patternProperties", new MapJsonSchemasConverter (context));
+        Map<String, JsonSchema> patternProperties = object.convert (
+            "patternProperties", new MapJsonSchemasConverter (context));
+
+        if (patternProperties == null) {
+            return Collections.emptyMap ();
+        }
+
+        return patternProperties;
     }
 
     @Override
