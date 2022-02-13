@@ -9,7 +9,6 @@ import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
-import java.net.URI;
 import java.util.*;
 
 /**
@@ -21,11 +20,6 @@ import java.util.*;
  * </a>
  */
 public class MinProperties {
-    private final URI uri;
-
-    public MinProperties (URI uri) {
-        this.uri = uri;
-    }
 
     public Collection<ValidationMessage> validate (
         JsonSchema schema, JsonInstance instance) {
@@ -38,7 +32,7 @@ public class MinProperties {
         if (minProperties == null || instanceProperties.size () >= minProperties)
             return messages;
 
-        messages.add (new MinPropertiesError (uri.toString (), minProperties));
+        messages.add (new MinPropertiesError (instance.getPath (), minProperties));
         return messages;
     }
 }

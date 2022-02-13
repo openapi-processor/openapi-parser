@@ -9,7 +9,6 @@ import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
-import java.net.URI;
 import java.util.*;
 
 /**
@@ -21,11 +20,6 @@ import java.util.*;
  * </a>
  */
 public class Required {
-    private final URI uri;
-
-    public Required (URI uri) {
-        this.uri = uri;
-    }
 
     public Collection<ValidationMessage> validate (
         JsonSchema schema, JsonInstance instance) {
@@ -44,7 +38,7 @@ public class Required {
                 return;
             }
 
-            messages.add (new RequiredError (uri.toString (), p));
+            messages.add (new RequiredError (instance.getPath (), p));
         });
 
         return messages;

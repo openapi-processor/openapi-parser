@@ -10,7 +10,6 @@ import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
 import java.math.BigInteger;
-import java.net.URI;
 import java.util.*;
 
 /**
@@ -22,15 +21,8 @@ import java.util.*;
  * </a>
  */
 public class Type {
-    private final URI uri;
-    private final JsonSchema schema;
 
-    public Type (URI uri, JsonSchema schema) {
-        this.uri = uri;
-        this.schema = schema;
-    }
-
-    public Collection<ValidationMessage> validate (JsonInstance instance) {
+    public Collection<ValidationMessage> validate (JsonSchema schema, JsonInstance instance) {
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
         final Collection<String> types = schema.getType ();
@@ -62,7 +54,7 @@ public class Type {
         }
 
         if (!matches) {
-            messages.add (new TypeError (uri.toString (), types));
+            messages.add (new TypeError (instance.getPath (), types));
         }
 
         return messages;

@@ -9,7 +9,6 @@ import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
-import java.net.URI;
 import java.util.*;
 
 /**
@@ -21,11 +20,6 @@ import java.util.*;
  * </a>
  */
 public class UniqueItems {
-    private final URI uri;
-
-    public UniqueItems (URI uri) {
-        this.uri = uri;
-    }
 
     public Collection<ValidationMessage> validate (
         JsonSchema schema, JsonInstance instance) {
@@ -37,7 +31,7 @@ public class UniqueItems {
             Set<Object> items = new HashSet<> ();
             for (Object item : instanceValue) {
                 if (!items.add (item)) {
-                    messages.add (new UniqueItemsError (uri.toString ()));
+                    messages.add (new UniqueItemsError (instance.getPath ()));
                 }
             }
         }

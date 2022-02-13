@@ -9,7 +9,6 @@ import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.regex.Matcher;
@@ -23,15 +22,10 @@ import java.util.regex.Matcher;
  * </a>
  */
 public class Pattern {
-    private final URI uri;
-    private final JsonSchema schema;
 
-    public Pattern (URI uri, JsonSchema schema) {
-        this.uri = uri;
-        this.schema = schema;
-    }
+    public Collection<ValidationMessage> validate (
+        JsonSchema schema, JsonInstance instance) {
 
-    public Collection<ValidationMessage> validate (JsonInstance instance) {
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
         String pattern = schema.getPattern ();
@@ -43,7 +37,7 @@ public class Pattern {
         Matcher m = p.matcher(instanceValue);
         boolean valid = m.find ();
         if (!valid) {
-            messages.add (new PatternError(uri.toString (), pattern));
+            messages.add (new PatternError(instance.getPath (), pattern));
         }
 
         return messages;

@@ -9,7 +9,6 @@ import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -22,11 +21,6 @@ import java.util.Collection;
  * </a>
  */
 public class MaxItems {
-    private final URI uri;
-
-    public MaxItems (URI uri) {
-        this.uri = uri;
-    }
 
     public Collection<ValidationMessage> validate (
         JsonSchema schema, JsonInstance instance) {
@@ -38,7 +32,7 @@ public class MaxItems {
         if (maxItems == null || instanceValue.size () <= maxItems)
             return messages;
 
-        messages.add (new MaxItemsError (uri.toString (), maxItems));
+        messages.add (new MaxItemsError (instance.getPath (), maxItems));
         return messages;
     }
 }

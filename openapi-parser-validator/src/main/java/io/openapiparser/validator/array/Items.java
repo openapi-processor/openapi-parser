@@ -9,7 +9,6 @@ import io.openapiparser.schema.*;
 import io.openapiparser.validator.ValidationMessage;
 import io.openapiparser.validator.Validator;
 
-import java.net.URI;
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -25,39 +24,32 @@ import java.util.stream.IntStream;
  * </a>
  */
 public class Items {
-    private final URI uri;
-    private final JsonSchema schema;
     private final Validator validator;
 
-    public Items (URI uri, JsonSchema schema, Validator validator) {
-        this.uri = uri;
-        this.schema = schema;
+    public Items (Validator validator) {
         this.validator = validator;
     }
 
-    public Collection<ValidationMessage> validate (JsonInstance instance) {
+    public Collection<ValidationMessage> validate (
+        JsonSchema schema, JsonInstance instance) {
+
         Collection<ValidationMessage> messages = new ArrayList<> ();
-        Collection<Object> instanceValue = instance.asCollection ();
+        int instanceSize = instance.getArraySize ();
 
         JsonSchemas items = schema.getItems ();
         if (items.isEmpty ()) {
             return messages;
 
         } else if (items.isNull ()) {
-            // todo
-            int i = 0;
+            int i = 0; // todo
 
         } else if (items.isSingle ()) {
             JsonSchema itemsSchema = items.getSchema ();
 
-            IntStream.range (0, instanceValue.size ())
+            IntStream.range (0, instanceSize)
                 .forEach (idx -> {
-                    URI itemUri = JsonPointer.from (uri.toString ())
-                        .append (idx)
-                        .toUri ();
-
-                    messages.addAll (
-                        validator.validate (itemsSchema, instance.getValue (idx), itemUri));
+                    JsonInstance value = instance.getValue (idx);
+                    messages.addAll (validator.validate (itemsSchema, value));
                 });
         } else {
             JsonSchemas additional = schema.getAdditionalItems ();
@@ -65,19 +57,16 @@ public class Items {
             if (additional.isEmpty ()) {
                 Iterator<JsonSchema> itemSchemas = items.getSchemas ().iterator ();
 
-                int maxIdx = instanceValue.size ();
-                if ( instanceValue.size () > items.size ()) {
+                int maxIdx = instanceSize;
+                if (maxIdx > items.size ()) {
                     maxIdx = items.size ();
                 }
 
                 IntStream.range (0, maxIdx)
                     .forEach (idx -> {
-                        URI itemUri = JsonPointer.fromJsonPointer (uri.toString ())
-                            .append (idx)
-                            .toUri ();
-
+                        JsonInstance value = instance.getValue (idx);
                         if (idx < items.size ()) {
-                            messages.addAll (validator.validate (itemSchemas.next (), instance, itemUri));
+                            messages.addAll (validator.validate (itemSchemas.next (), value));
                         }
                     });
             }
@@ -85,21 +74,19 @@ public class Items {
                 Iterator<JsonSchema> itemSchemas = items.getSchemas ().iterator ();
                 JsonSchema additionalSchema = additional.getSchema ();
 
-                if (isBooleanFalse (additionalSchema) && instanceValue.size () > items.size ()) {
-                    messages.add (new ItemsSizeError (uri.toString (), items.size ()));
+                if (isBooleanFalse (additionalSchema) && instanceSize > items.size ()) {
+                    messages.add (new ItemsSizeError (instance.getPath (), items.size ()));
                 }
 
-                IntStream.range (0, instanceValue.size ())
+                IntStream.range (0, instanceSize)
                     .forEach (idx -> {
-                        URI itemUri = JsonPointer.fromJsonPointer (uri.toString ())
-                            .append (idx)
-                            .toUri ();
+                        JsonInstance value = instance.getValue (idx);
 
                         if (idx < items.size ()) {
-                            messages.addAll (validator.validate (itemSchemas.next (), instance, itemUri));
+                            messages.addAll (validator.validate (itemSchemas.next (), value));
 
                         } else {
-                            messages.addAll (validator.validate (additionalSchema, instance, itemUri));
+                            messages.addAll (validator.validate (additionalSchema, value));
                         }
                     });
             }

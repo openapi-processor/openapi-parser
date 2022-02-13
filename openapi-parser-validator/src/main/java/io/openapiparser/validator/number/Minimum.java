@@ -10,7 +10,6 @@ import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
 import java.math.BigDecimal;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -23,15 +22,10 @@ import java.util.Collection;
  * </a>
  */
 public class Minimum {
-    private final URI uri;
-    private final JsonSchema schema;
 
-    public Minimum (URI uri, JsonSchema schema) {
-        this.uri = uri;
-        this.schema = schema;
-    }
+    public Collection<ValidationMessage> validate (
+        JsonSchema schema, JsonInstance instance) {
 
-    public Collection<ValidationMessage> validate (JsonInstance instance) {
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
         Number minimum = schema.getMinimum ();
@@ -48,7 +42,7 @@ public class Minimum {
         }
 
         if (!valid) {
-            messages.add (new MinimumError (uri.toString (), minimum, exclusive));
+            messages.add (new MinimumError (instance.getPath (), minimum, exclusive));
         }
 
         return messages;

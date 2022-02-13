@@ -10,7 +10,6 @@ import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
 import java.math.BigDecimal;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -23,15 +22,10 @@ import java.util.Collection;
  * </a>
  */
 public class Maximum {
-    private final URI uri;
-    private final JsonSchema schema;
 
-    public Maximum (URI uri, JsonSchema schema) {
-        this.uri = uri;
-        this.schema = schema;
-    }
+    public Collection<ValidationMessage> validate (
+        JsonSchema schema, JsonInstance instance) {
 
-    public Collection<ValidationMessage> validate (JsonInstance instance) {
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
         Number maximum = schema.getMaximum ();
@@ -48,7 +42,7 @@ public class Maximum {
         }
 
         if (!valid) {
-            messages.add (new MaximumError (uri.toString (), maximum, exclusive));
+            messages.add (new MaximumError (instance.getPath (), maximum, exclusive));
         }
 
         return messages;

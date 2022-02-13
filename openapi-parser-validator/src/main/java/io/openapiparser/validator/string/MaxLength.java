@@ -9,7 +9,6 @@ import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -22,15 +21,10 @@ import java.util.Collection;
  * </a>
  */
 public class MaxLength {
-    private final URI uri;
-    private final JsonSchema schema;
 
-    public MaxLength (URI uri, JsonSchema schema) {
-        this.uri = uri;
-        this.schema = schema;
-    }
+    public Collection<ValidationMessage> validate (
+        JsonSchema schema, JsonInstance instance) {
 
-    public Collection<ValidationMessage> validate (JsonInstance instance) {
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
         Integer maxLength = schema.getMaxLength ();
@@ -40,7 +34,7 @@ public class MaxLength {
         String instanceValue = instance.asString ();
         boolean valid = instanceValue.codePointCount (0, instanceValue.length ()) <= maxLength;
         if (!valid) {
-            messages.add (new MaxLengthError(uri.toString (), maxLength));
+            messages.add (new MaxLengthError(instance.getPath (), maxLength));
         }
 
         return messages;

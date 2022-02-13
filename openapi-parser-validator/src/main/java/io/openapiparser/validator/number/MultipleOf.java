@@ -10,7 +10,6 @@ import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
 import java.math.BigDecimal;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -23,11 +22,6 @@ import java.util.Collection;
  * </a>
  */
 public class MultipleOf {
-    private final URI uri;
-
-    public MultipleOf (URI uri) {
-        this.uri = uri;
-    }
 
     public Collection<ValidationMessage> validate (JsonSchema schema, JsonInstance instance) {
         Collection<ValidationMessage> messages = new ArrayList<> ();
@@ -42,7 +36,7 @@ public class MultipleOf {
             .compareTo (BigDecimal.ZERO) != 0;
 
         if (invalid) {
-            messages.add (new MultipleOfError (uri.toString (), multipleOf));
+            messages.add (new MultipleOfError (instance.getPath (), multipleOf));
         }
 
         return messages;

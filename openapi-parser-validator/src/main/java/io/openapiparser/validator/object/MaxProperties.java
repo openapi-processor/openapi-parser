@@ -8,9 +8,7 @@ package io.openapiparser.validator.object;
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
-import io.openapiparser.validator.array.MaxItemsError;
 
-import java.net.URI;
 import java.util.*;
 
 /**
@@ -22,11 +20,6 @@ import java.util.*;
  * </a>
  */
 public class MaxProperties {
-    private final URI uri;
-
-    public MaxProperties (URI uri) {
-        this.uri = uri;
-    }
 
     public Collection<ValidationMessage> validate (
         JsonSchema schema, JsonInstance instance) {
@@ -39,7 +32,7 @@ public class MaxProperties {
         if (maxProperties == null || instanceProperties.size () <= maxProperties)
             return messages;
 
-        messages.add (new MaxPropertiesError (uri.toString (), maxProperties));
+        messages.add (new MaxPropertiesError (instance.getPath (), maxProperties));
         return messages;
     }
 }

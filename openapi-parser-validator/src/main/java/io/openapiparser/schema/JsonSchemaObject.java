@@ -31,7 +31,7 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     public JsonSchemaObject (JsonPointer location, Map<String, Object> document, JsonSchemaContext context) {
-        this.context = context;
+        this.context = context; // todo check id, switch context
         this.object = new Bucket (URI.create (""), location, document);
         properties = getPropertiesX ();
     }

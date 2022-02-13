@@ -18,6 +18,14 @@ import java.util.Map;
 public class DocumentStore {
     private final Map<URI, Object> documents = new HashMap<> ();
 
+    private static class LazyDocument { }
+
+    private static LazyDocument PENDING = new LazyDocument ();
+
+    public void add (URI uri) {
+        documents.put (uri, PENDING);
+    }
+
     public void add (URI uri, Object document) {
         documents.put (uri, document);
     }
@@ -32,6 +40,10 @@ public class DocumentStore {
     }
 
     public boolean contains (URI uri) {
-        return documents.containsKey (uri);
+        Object d = documents.get (uri);
+        if (d == null)
+            return false;
+
+        return d != PENDING;
     }
 }

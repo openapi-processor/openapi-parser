@@ -15,8 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.net.URI;
 import java.util.Map;
 
-import static io.openapiparser.converter.Types.asMap;
-import static io.openapiparser.converter.Types.convertOrNull;
+import static io.openapiparser.converter.Types.*;
 
 /**
  * loads the base document and resolves all internal and external $ref's. In case of an external
@@ -39,7 +38,7 @@ public class Resolver {
         ReferenceRegistry registry = new ReferenceRegistry ();
 
         Object document = loadDocument (uri);
-        documents.add (uri, document);
+        documents.add (uri, document);  // todo add with id
 
         collectReferences (uri, uri, document, registry);
         resolveReferences (registry);
@@ -52,7 +51,7 @@ public class Resolver {
 
         URI uri = URI.create (resourcePath);
         Object document = loadDocument (resourcePath);
-        documents.add (uri, document);
+        documents.add (uri, document); // todo add with id
 
         collectReferences (uri, uri, document, registry);
         resolveReferences (registry);
@@ -62,7 +61,7 @@ public class Resolver {
 
     /**
      * resolves a given {@code document}. It will load any referenced document. The result contains
-     * a {@link ReferenceRegistry} that provides the instance of any ref.
+     * a {@link ReferenceRegistry} that provides the instance of each ref.
      *
      * @param uri document uri
      * @param document document content
@@ -71,50 +70,88 @@ public class Resolver {
     public ResolverResult resolve (URI uri, Object document) {
         ReferenceRegistry registry = new ReferenceRegistry ();
 
-        documents.add (uri, document);
+        URI scope = getScope (uri, document);
+        documents.add (scope, document);
 
-        collectReferences (uri, uri, document, registry);
+        collectReferences (scope, uri, document, registry);
         resolveReferences (registry);
 
-        return new ResolverResult (uri, document, registry);
+        return new ResolverResult (scope, document, registry);
+    }
+
+    private URI getScope (URI uri, Object document) {
+        URI scope = uri;
+
+        if (!(document instanceof Map)) {
+            return scope;
+        }
+
+        Map<String, Object> o = asMap (document);
+        if (o.containsKey ("id")) {
+            String id = as (o.get ("id"));
+            if (id != null) {
+                scope = URI.create (id);
+            }
+        }
+        return scope;
     }
 
     private void collectReferences (
-        URI base, URI uri, Object document, ReferenceRegistry registry) throws ResolverException {
+        URI baseUri, URI uri, Object document, ReferenceRegistry registry) throws ResolverException {
 
         Bucket bucket = toBucket (uri, document);
         if (bucket == null)
             return;
 
-        collectReferences (base, uri, bucket, registry);
+        collectReferences (baseUri, uri, bucket, registry);
     }
 
     private void collectReferences (
         URI baseUri, URI uri, Bucket bucket, ReferenceRegistry references)
         throws ResolverException {
 
+        URI scope = collectScope (baseUri, bucket);
+
         bucket.forEach((name, value) -> {
             if (name.equals (Keywords.REF) && value instanceof String) {
                 Ref ref = getRef (uri, name, value);
 
-                URI documentUri = ref.getDocumentUri (uri);
+                URI documentUri = scope.resolve (ref.getDocumentUri (uri));
 
                 if (!hasDocument (documentUri)) {
                     Object document = addDocument (uri, documentUri);
-                    if (document == null)
-                        return;
-
-                    collectReferences (baseUri, documentUri, document, references);
+                    if (document != null) {
+                        collectReferences (scope, documentUri, document, references);
+                    }
                 }
 
-                addReference (baseUri, documentUri, ref, references);
+                addReference (scope, documentUri, ref, references);
 
             } else {
                 bucket.walkPropertyTree (name, props -> {
-                    collectReferences (baseUri, bucket.getSource (), props, references);
+                    collectReferences (scope, bucket.getSource (), props, references);
                 });
             }
         });
+    }
+
+    private URI collectScope (URI baseUri, Bucket bucket) {
+        URI scope = baseUri;
+
+        if (!bucket.hasProperty ("id")) {
+            return scope;
+        }
+
+        String id = as (bucket.getRawValue ("id"));
+        if (id == null) {
+            throw new RuntimeException (); // todo
+        }
+
+        scope = baseUri.resolve (id);
+        if (!documents.contains (scope)) {
+            documents.add (scope, bucket.getRawValues ());
+        }
+        return scope;
     }
 
     private void resolveReferences (ReferenceRegistry references) {
@@ -163,6 +200,7 @@ public class Resolver {
             documents.add (documentUri, document);
             return document;
         } catch (ResolverException ex) {
+            documents.add (documentUri);
             log.info (String.format ("failed to resolve %s/$ref", uri), ex);
 //            throw new ResolverException (String.format ("failed to resolve %s/$ref", uri), ex);
             return null;

@@ -5,52 +5,105 @@
 
 package io.openapiparser.schema;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
-
 import java.util.Collection;
 import java.util.Map;
 
 import static io.openapiparser.converter.Types.*;
-import static io.openapiparser.schema.JsonPointer.from;
 
 public class JsonInstance {
     private final JsonInstanceContext context;
+
+    private final Object root;
     private final Object value;
+    private final JsonPointer valuePointer;
 
     public JsonInstance (Object value, JsonInstanceContext context) {
         this.context = context;
+        this.root = value;
         this.value = value;
+        this.valuePointer = JsonPointer.EMPTY;
+    }
+
+    public JsonInstance (Object root, JsonPointer valuePointer, Object value, JsonInstanceContext context) {
+        this.context = context;
+        this.root = root;
+        this.value = value;
+        this.valuePointer = valuePointer;
+    }
+
+    public JsonPointer getPointer () {
+        return valuePointer;
+    }
+
+    public String getPath () {
+        return valuePointer.toString ();
     }
 
     public Object getRawValue () {
         return value;
     }
 
-    public JsonInstance getValue (@Nullable String path) {
-        if (path == null || path.isEmpty ())
+    /*
+    // Nullable ???
+    public JsonInstance getValue (URI uri) {
+        String pointer = uri.getFragment ();
+        if (pointer == null || pointer.isEmpty ())
             return this;
+
+        return new JsonInstance (root, uri, getValue (pointer), context);
+    }
+
+JsonInstance
+    private  Object getValue (@Nullable String path) {
+//        if (path == null || path.isEmpty ())
+//            return this;
 
         if (isObject ()) {
             Bucket bucket = new Bucket (asMap (value));
             Object target = bucket.getRawValue (from (path));
-            return new JsonInstance (target, context);
+            return target;
+//            Object target = bucket.getRawValue (from (path));
+//            return new JsonInstance (target, context);
 
         } else if (isArray ()) {
             Object[] items = asCol (value).toArray ();
             int idx = from (path).tailIndex ();
-            return new JsonInstance (items[idx], context);
+            return items[idx];
+//            return new JsonInstance (items[idx], context);
         }
 
+        // todo throw
         return this;
+    }
+    */
+
+    public JsonInstance getValue (String property) {
+        if (!isObject ())
+            throw new RuntimeException(); // todo
+
+        JsonPointer propertyPointer = valuePointer.append (property);
+        Object propertyValue = asObject ().get (property);
+
+        return new JsonInstance (root, propertyPointer, propertyValue, context);
     }
 
     public JsonInstance getValue (int idx) {
         if (!isArray ())
             throw new RuntimeException(); // todo
 
+        JsonPointer idxPointer = valuePointer.append (idx);
         Object[] items = asCol (value).toArray ();
-        return new JsonInstance (items[idx], context);
+
+        return new JsonInstance (root, idxPointer, items[idx], context);
     }
+
+    public int getArraySize () {
+        if (!isArray ())
+            throw new RuntimeException(); // todo
+
+        return asCollection ().size ();
+    }
+
 
     public JsonInstance getRefInstance () {
         Map<String, Object> object = asObject ();
