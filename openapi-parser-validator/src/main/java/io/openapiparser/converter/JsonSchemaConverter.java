@@ -11,7 +11,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.Map;
 
 import static io.openapiparser.converter.Types.asMap;
-import static io.openapiparser.schema.JsonPointer.fromJsonPointer;
+import static io.openapiparser.schema.JsonPointer.from;
 
 /**
  * converts the property {@code value} to a {@link JsonSchema}.
@@ -29,10 +29,10 @@ public class JsonSchemaConverter implements PropertyConverter<JsonSchema> {
             return null;
 
         if (value instanceof Boolean) {
-            return new JsonSchemaBoolean (fromJsonPointer (location), (Boolean) value, parentContext);
+            return new JsonSchemaBoolean (from (location), (Boolean) value, parentContext);
 
         } else if (value instanceof Map) {
-            return new JsonSchemaObject (fromJsonPointer (location), asMap (value), parentContext);
+            return new JsonSchemaObject (from (location), asMap (value), parentContext);
         } else {
             throw new TypeMismatchException (location, JsonSchema.class);
         }

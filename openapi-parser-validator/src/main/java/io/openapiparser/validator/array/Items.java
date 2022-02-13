@@ -52,7 +52,7 @@ public class Items {
 
             IntStream.range (0, instanceValue.size ())
                 .forEach (idx -> {
-                    URI itemUri = JsonPointer.fromJsonPointer (uri.toString ())
+                    URI itemUri = JsonPointer.from (uri.toString ())
                         .append (idx)
                         .toUri ();
 
