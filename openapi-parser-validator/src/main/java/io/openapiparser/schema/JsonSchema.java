@@ -94,7 +94,7 @@ public interface JsonSchema {
     }
 
     default @Nullable Integer getMaxItems () {
-        throw new RuntimeException ();
+        return null;
     }
 
     default Integer getMinItems () {
@@ -106,7 +106,7 @@ public interface JsonSchema {
     }
 
     default @Nullable Integer getMaxProperties () {
-        throw new RuntimeException ();
+        return null;
     }
 
     default Integer getMinProperties () {
@@ -114,7 +114,7 @@ public interface JsonSchema {
     }
 
     default @Nullable Collection<String> getRequired () {
-        throw new RuntimeException ();
+        return null;
     }
 
     default Map<String, JsonSchema> getProperties () {
