@@ -81,18 +81,18 @@ public class Validator {
 
         JsonSchema additionalProperties = schema.getAdditionalProperties ();
         Map<String, JsonSchema> schemaProperties = schema.getProperties ();
+        Map<String, JsonSchema> patternProperties = schema.getPatternProperties ();
 
         if (additionalProperties instanceof JsonSchemaBoolean && additionalProperties.isFalse ()) {
             Set<String> instanceProperties = new HashSet<>(instance.asObject ().keySet ());
 
             instanceProperties.removeAll (schemaProperties.keySet ());
 
-            Map<String, JsonSchema> patterns = schema.getPatternProperties ();
             Iterator<String> it = instanceProperties.iterator();
             while (it.hasNext()) {
                 String property = it.next ();
 
-                for (String pattern : patterns.keySet ()) {
+                for (String pattern : patternProperties.keySet ()) {
                     Pattern p = Pattern.compile(pattern);
                     Matcher m = p.matcher(property);
                     if (m.find()) {
@@ -113,8 +113,23 @@ public class Validator {
         // todo instance.forEach() on property names
         instance.asObject ().forEach ((propName, propValue) -> {
             JsonSchema propSchema = schemaProperties.get (propName);
+
+            int countMatches = 0;
             if (propSchema == null) {
-                propSchema = additionalProperties;
+                for (String pattern : patternProperties.keySet ()) {
+                    Pattern p = Pattern.compile(pattern);
+                    Matcher m = p.matcher(propName);
+                    if (m.find()) {
+                        JsonSchema patternSchema = patternProperties.get (pattern);
+                        JsonInstance value = instance.getValue (propName);
+                        messages.addAll (validate (patternSchema, value));
+                        countMatches++;
+                    }
+                }
+
+                if (countMatches == 0) {
+                    propSchema = additionalProperties;
+                }
             }
 
             if (propSchema == null)
