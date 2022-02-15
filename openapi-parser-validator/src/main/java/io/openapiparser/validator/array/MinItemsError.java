@@ -12,6 +12,6 @@ import io.openapiparser.validator.ValidationMessage;
  */
 public class MinItemsError extends ValidationMessage {
     public MinItemsError (String path, int size) {
-        super (path, String.format ("the size is not greater or equal to %d", size));
+        super (path, String.format ("the size should be greater or equal to %d", size));
     }
 }
