@@ -11,12 +11,14 @@ package io.openapiparser.validator.support
 
 data class Suite(
     val description: String,
+    val comment: String?,
     val schema: Any,
     val tests: List<Test>
 )
 
 data class Test(
     val description: String,
+    val comment: String?,
     val data: Any?,
     val valid: Boolean
 )
