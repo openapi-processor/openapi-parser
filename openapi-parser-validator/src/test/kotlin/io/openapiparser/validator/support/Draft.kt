@@ -25,7 +25,7 @@ import kotlin.io.path.name
  *
  * include(draftSpec("/suites/JSON-Schema-Test-Suite/tests/draft4"))
  */
-fun draftSpec(draftPath: String) = freeSpec {
+fun draftSpec(draftPath: String, exclude: Array<String> = emptyArray()) = freeSpec {
     val json = ObjectMapper()
     json.registerModule(KotlinModule())
 
@@ -52,6 +52,7 @@ fun draftSpec(draftPath: String) = freeSpec {
 
     Files.walk(root)
         .filter { path -> !Files.isDirectory(path) }
+        .filter { path -> !exclude.contains(path.name) }
         .forEach { path ->
             path.name - {
                 val suites = loadSuites(path)
