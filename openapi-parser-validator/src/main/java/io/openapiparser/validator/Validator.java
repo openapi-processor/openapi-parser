@@ -79,9 +79,9 @@ public class Validator {
 
         // https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.4.4
 
-        JsonSchema additionalProperties = schema.getAdditionalProperties ();
         Map<String, JsonSchema> schemaProperties = schema.getProperties ();
         Map<String, JsonSchema> patternProperties = schema.getPatternProperties ();
+        JsonSchema additionalProperties = schema.getAdditionalProperties ();
 
         if (additionalProperties instanceof JsonSchemaBoolean && additionalProperties.isFalse ()) {
             Set<String> instanceProperties = new HashSet<>(instance.asObject ().keySet ());
@@ -111,32 +111,32 @@ public class Validator {
         }
 
         // todo instance.forEach() on property names
-        instance.asObject ().forEach ((propName, propValue) -> {
+        instance.asObject ().forEach ((propName, unused) -> {
+            boolean checkAdditionalProperty = true;
+
             JsonSchema propSchema = schemaProperties.get (propName);
+            JsonInstance propInstance = instance.getValue (propName);
 
-            int countMatches = 0;
-            if (propSchema == null) {
-                for (String pattern : patternProperties.keySet ()) {
-                    Pattern p = Pattern.compile(pattern);
-                    Matcher m = p.matcher(propName);
-                    if (m.find()) {
-                        JsonSchema patternSchema = patternProperties.get (pattern);
-                        JsonInstance value = instance.getValue (propName);
-                        messages.addAll (validate (patternSchema, value));
-                        countMatches++;
-                    }
-                }
+            if (propSchema != null) {
+                messages.addAll (validate (propSchema, propInstance));
+                checkAdditionalProperty = false;
+            }
 
-                if (countMatches == 0) {
-                    propSchema = additionalProperties;
+            for (String pattern : patternProperties.keySet ()) {
+                Pattern p = Pattern.compile(pattern);
+                Matcher m = p.matcher(propName);
+                if (m.find()) {
+                    JsonSchema patternSchema = patternProperties.get (pattern);
+                    JsonInstance value = instance.getValue (propName);
+                    messages.addAll (validate (patternSchema, value));
+                    checkAdditionalProperty = false;
                 }
             }
 
-            if (propSchema == null)
-                return;
-
-            JsonInstance value = instance.getValue (propName);
-            messages.addAll (validate (propSchema, value));
+            if (checkAdditionalProperty) {
+                JsonInstance value = instance.getValue (propName);
+                messages.addAll (validate (additionalProperties, value));
+            }
         });
 
         return messages;
