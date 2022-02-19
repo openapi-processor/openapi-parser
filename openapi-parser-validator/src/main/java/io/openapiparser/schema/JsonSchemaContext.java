@@ -17,8 +17,8 @@ public class JsonSchemaContext {
     }
 
     public Reference getReference (URI ref) {
-        URI resolve = baseUri.resolve (ref);
-        return references.getRef (resolve);
+        URI resolved = baseUri.resolve (ref);
+        return references.getRef (resolved);
     }
 
     public JsonSchemaContext withSource (URI source) {
