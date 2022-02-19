@@ -273,6 +273,15 @@ public class JsonSchemaObject implements JsonSchema {
         return anyOf;
     }
 
+    @Override
+    public Collection<JsonSchema> getOneOf () {
+        Collection<JsonSchema> oneOf = getJsonSchemasOf ("oneOf");
+        if (oneOf == null)
+            return Collections.emptyList ();
+
+        return oneOf;
+    }
+
     private @Nullable JsonSchema getJsonSchemaOf (String property) {
         return object.convert (property, new JsonSchemaConverter (context));
     }

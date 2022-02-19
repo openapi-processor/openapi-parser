@@ -10,8 +10,8 @@ import io.openapiparser.validator.ValidationMessage;
 /**
  * Created by {@link io.openapiparser.validator.Validator}.
  */
-public class AnyOfError extends ValidationMessage {
-    public AnyOfError (String path) {
-        super (path, String.format ("should validate against any schema of %s", path));
+public class OneOfError extends ValidationMessage {
+    public OneOfError (String path) {
+        super (path, String.format ("should validate against exactly one schema of %s", path));
     }
 }
