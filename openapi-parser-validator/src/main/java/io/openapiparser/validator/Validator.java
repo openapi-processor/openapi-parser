@@ -36,7 +36,11 @@ public class Validator {
         // then
         // else
         // ref
-        // allOf
+
+        schema.getAllOf ().forEach (sao -> {
+            messages.addAll (validate (sao, instance));
+        });
+
         // anyOf
         // oneOf
         // not

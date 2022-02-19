@@ -255,6 +255,15 @@ public class JsonSchemaObject implements JsonSchema {
         throw new RuntimeException ();
     }
 
+    @Override
+    public Collection<JsonSchema> getAllOf () {
+        Collection<JsonSchema> allOf = getJsonSchemasOf ("allOf");
+        if (allOf == null)
+            return Collections.emptyList ();
+
+        return allOf;
+    }
+
     private @Nullable JsonSchema getJsonSchemaOf (String property) {
         return object.convert (property, new JsonSchemaConverter (context));
     }

@@ -136,4 +136,8 @@ public interface JsonSchema {
     default Collection<String> getType () {
         return Collections.emptyList ();
     }
+
+    default Collection<JsonSchema> getAllOf () {
+        return Collections.emptyList ();
+    }
 }
