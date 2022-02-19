@@ -28,7 +28,7 @@ public class Validator {
     public Collection<ValidationMessage> validate(JsonSchema schema, JsonInstance instance) {
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
-        if (schema.isRef()) {
+        while (schema.isRef()) {
             schema = schema.getRefSchema ();
         }
 
