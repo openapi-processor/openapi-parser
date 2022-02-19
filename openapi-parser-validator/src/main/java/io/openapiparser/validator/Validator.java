@@ -70,11 +70,14 @@ public class Validator {
             messages.add (new OneOfError (instance.getPath ()));
         }
 
-        // not
-
-        // primitive type
-        // collection
-        // map
+        // https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.6
+        JsonSchema not = schema.getNot ();
+        if (not != null) {
+            boolean valid = validate (not, instance).isEmpty ();
+            if (valid) {
+                messages.add (new NotError (instance.getPath ()));
+            }
+        }
 
         messages.addAll (new Type ().validate (schema, instance));
 

@@ -282,6 +282,11 @@ public class JsonSchemaObject implements JsonSchema {
         return oneOf;
     }
 
+    @Override
+    public @Nullable JsonSchema getNot () {
+        return getJsonSchemaOf ("not");
+    }
+
     private @Nullable JsonSchema getJsonSchemaOf (String property) {
         return object.convert (property, new JsonSchemaConverter (context));
     }

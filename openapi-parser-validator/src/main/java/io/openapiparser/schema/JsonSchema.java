@@ -148,4 +148,8 @@ public interface JsonSchema {
     default Collection<JsonSchema> getOneOf () {
         return Collections.emptyList ();
     }
+
+    default @Nullable JsonSchema getNot () {
+        return null;
+    }
 }
