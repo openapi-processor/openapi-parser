@@ -40,7 +40,7 @@ public class Resolver {
         Object document = loadDocument (uri);
         documents.add (uri, document);  // todo add with id
 
-        collectReferences (uri, uri, document, registry);
+        collectReferences (/*uri,*/ uri, document, registry);
         resolveReferences (registry);
 
         return new ResolverResult (uri, document, registry);
@@ -53,7 +53,7 @@ public class Resolver {
         Object document = loadDocument (resourcePath);
         documents.add (uri, document); // todo add with id
 
-        collectReferences (uri, uri, document, registry);
+        collectReferences (/*uri,*/ uri, document, registry);
         resolveReferences (registry);
 
         return new ResolverResult (uri, document, registry);
@@ -63,108 +63,110 @@ public class Resolver {
      * resolves a given {@code document}. It will load any referenced document. The result contains
      * a {@link ReferenceRegistry} that provides the instance of each ref.
      *
-     * @param uri document uri
+     * @param scope document uri
      * @param document document content
      * @return resolver result
      */
-    public ResolverResult resolve (URI uri, Object document) {
+    public ResolverResult resolve (URI scope, Object document) {
         ReferenceRegistry registry = new ReferenceRegistry ();
 
-        URI scope = getScope (uri, document);
-        documents.add (scope, document);
+        URI scopeX = getScope (scope, document);
+        documents.add (scopeX, document);
 
-        collectReferences (scope, uri, document, registry);
+        collectReferences (/*scope,*/ scopeX, document, registry);
         resolveReferences (registry);
 
         return new ResolverResult (scope, document, registry);
     }
 
-    private URI getScope (URI uri, Object document) {
-        URI scope = uri;
-
+    /**
+     * calculates the scope of the {@code document}. If {@code document} contains a scope it is the
+     * new scope otherwise it keeps the current {@code scope}.
+     *
+     * @param scope source scope
+     * @param document source document
+     * @return the scope of the document, may be same as {@code scope}
+     */
+    private URI getScope (URI scope, Object document) {
         if (!(document instanceof Map)) {
             return scope;
         }
 
-        Map<String, Object> o = asMap (document);
-        if (o.containsKey ("id")) {
-            String id = as (o.get ("id"));
-            if (id != null) {
-                scope = URI.create (id);
-            }
+        String id = getScopeId (document);
+        if (id != null) {
+            return URI.create (id);
         }
+
         return scope;
     }
 
-    private void collectReferences (
-        URI baseUri, URI uri, Object document, ReferenceRegistry registry) throws ResolverException {
+    // todo: getScope??? used
+    private URI findScope (URI scope, Bucket bucket) {
+        String id = getScopeId (bucket);
+        if (id == null)
+            return scope;
 
-        Bucket bucket = toBucket (uri, document);
+        Ref ref = new Ref (scope, id);
+        if (ref.hasDocument ()) {
+            URI scopeDocument = ref.getDocumentUri ();
+
+            if (!hasDocument (scopeDocument)) {
+                documents.add (scopeDocument, bucket.getRawValues ());
+            }
+        }
+
+        return ref.getFullRefUri ();
+    }
+
+    private void collectReferences (
+        /*URI baseUri,*/ URI scope, Object document, ReferenceRegistry registry) throws ResolverException {
+
+        Bucket bucket = toBucket (scope, document);
         if (bucket == null)
             return;
 
-        collectReferences (baseUri, uri, bucket, registry);
+        collectReferences (/*baseUri,*/ scope, bucket, registry);
     }
 
-    private void collectReferences (
-        URI baseUri, URI uri, Bucket bucket, ReferenceRegistry references)
+    private void collectReferences (URI scope, Bucket bucket, ReferenceRegistry references)
         throws ResolverException {
 
-        URI scope = collectScope (baseUri, bucket);
+        URI scopeX = findScope (scope, bucket);
 
         bucket.forEach((name, value) -> {
             if (name.equals (Keywords.REF) && value instanceof String) {
-                Ref ref = getRef (uri, name, value);
-
-                URI documentUri = scope.resolve (ref.getDocumentUri (uri));
+                Ref ref = createRef (scopeX, name, value);
+                URI documentUri = ref.getDocumentUri ();
 
                 if (!hasDocument (documentUri)) {
-                    Object document = addDocument (uri, documentUri);
+                    Object document = addDocument (scopeX /*just error reporting*/, documentUri);
                     if (document != null) {
-                        collectReferences (scope, documentUri, document, references);
+                        collectReferences (scopeX,/*, documentUri,*/ document, references);
                     }
                 }
 
-                addReference (scope, documentUri, ref, references);
+                addReference (scopeX, documentUri, ref, references);
 
             } else {
                 bucket.walkPropertyTree (name, props -> {
-                    collectReferences (scope, bucket.getSource (), props, references);
+                    collectReferences (scopeX, /*, bucket.getSource (),*/ props, references);
                 });
             }
         });
-    }
-
-    private URI collectScope (URI baseUri, Bucket bucket) {
-        URI scope = baseUri;
-
-        if (!bucket.hasProperty ("id")) {
-            return scope;
-        }
-
-        String id = as (bucket.getRawValue ("id"));
-        if (id == null) {
-            throw new RuntimeException (); // todo
-        }
-
-        scope = baseUri.resolve (id);
-        if (!documents.contains (scope)) {
-            documents.add (scope, bucket.getRawValues ());
-        }
-        return scope;
     }
 
     private void resolveReferences (ReferenceRegistry references) {
         references.resolve(this::resolve);
     }
 
-    private Object resolve (URI documentUri, String documentRef) {
+    private Object resolve (/*URI documentUri, String documentRef*/ Ref ref) {
+        URI documentUri = ref.getDocumentUri ();
         Object document = getDocument (documentUri);
         Bucket bucket = toBucket (documentUri, document);
         if (bucket == null)
             return document;
 
-        Ref ref = new Ref (documentRef);
+//        Ref ref = new Ref (documentRef);
 
         if (!ref.hasPointer ()) {
             return bucket.getRawValues ();
@@ -187,14 +189,11 @@ public class Resolver {
     private void addReference (
         URI baseUri, URI documentUri, Ref ref, ReferenceRegistry references) {
 
-        references.add (baseUri, documentUri, ref.toString ());
+        references.add (ref);
+//        references.add (baseUri, /*documentUri*/ref.getDocumentUri (), ref.getRef ());
     }
 
-    private Object getDocument (URI documentUri) {
-        return documents.get (documentUri);
-    }
-
-    private Object addDocument (URI uri, URI documentUri) {
+    private Object addDocument (URI uri /*????*/, URI documentUri) {
         try {
             Object document = loadDocument (documentUri);
             documents.add (documentUri, document);
@@ -207,16 +206,61 @@ public class Resolver {
         }
     }
 
+    /**
+     * extract the scope from {@code value} if available.
+     *
+     * @param value a value
+     * @return scope id or null
+     */
+    private @Nullable String getScopeId (Object value) {
+        if (!isMap (value))
+            return null;
+
+        Map<String, Object> object = asMap (value);
+        Object id = object.get ("id");
+
+        if (!isString (id))
+            return null;
+
+        return as (id);
+    }
+
+    /**
+     * extract the scope from {@code bucket} if available.
+     *
+     * @param bucket a bucket
+     * @return scope id or null
+     */
+    private @Nullable String getScopeId (Bucket bucket) {
+        Object id = bucket.getRawValue ("id");
+        if (!isString (id))
+            return null;
+
+        return as (id);
+    }
+
     private boolean hasDocument (URI documentUri) {
         return documents.contains (documentUri);
     }
 
-    private Ref getRef (URI uri, String name, Object value) {
+    private Object getDocument (URI documentUri) {
+        return documents.get (documentUri);
+    }
+
+    private boolean isMap (Object value) {
+        return value instanceof Map;
+    }
+
+    private boolean isString (Object value) {
+        return value instanceof String;
+    }
+
+    private Ref createRef (URI scope, String name, Object value) {
         String ref = convertOrNull (name, value, String.class);
         if (ref == null) {
-            throw new ResolverException (String.format ("failed to resolve empty $ref in %s.", uri));
+            throw new ResolverException (String.format ("failed to resolve empty $ref in %s.", scope));
         }
-        return new Ref(ref);
+        return new Ref(scope, ref);
     }
 
     private Object loadDocument (URI documentUri) throws ResolverException {

@@ -19,36 +19,13 @@ import java.net.URI;
  * </ul>
  */
 public class Reference {
-    /* the referencing document */
-    private final URI parentUri;  // todo needed ???
-
-    /* the document of the ref */
-    private final URI documentUri;
-
-    /* the ref in the document */
-    private final String ref;
-    private final String refRelative;
+    private final Ref ref;
     private final Object rawValue;
 
-//    public Reference (URI parentUri, URI documentUri, String ref) {
-//        this.parentUri = parentUri;
-//        this.documentUri = documentUri;
-//        this.ref = ref;
-//        this.refRelative = createRefRelative (ref);
-//        this.rawValue = "unresolved reference";
-//    }
-
-    public Reference (URI parentUri, URI documentUri, String ref, Object rawValue) {
-        this.parentUri = parentUri;
-        this.documentUri = documentUri;
+    public Reference (Ref ref, Object rawValue) {
         this.ref = ref;
-        this.refRelative = createRefRelative (ref);
         this.rawValue = rawValue;
     }
-
-//    public Reference withRawValue (Object rawValue) {
-//        return new Reference (parentUri, documentUri, ref, rawValue);
-//    }
 
     /**
      * the uri of the referenced document.
@@ -56,25 +33,7 @@ public class Reference {
      * @return the referenced document.
      */
     public URI getDocumentUri () {
-        return documentUri;
-    }
-
-    /**
-     * the original $ref value. This may contain a file name, e.g. "foo.yaml#/Foo".
-     *
-     * @return the original ref.
-     */
-    public String getRef () {
-        return ref;
-    }
-
-    /**
-     * the original $ref value but without file name, e.g. "/Foo".
-     *
-     * @return the relative ref.
-     */
-    public String getRefRelative () {
-        return refRelative;
+        return ref.getDocumentUri ();
     }
 
     /**
@@ -89,6 +48,11 @@ public class Reference {
     @SuppressWarnings ({"unchecked", "TypeParameterUnusedInFormals"})
     public <T> T getValue () {
         return (T) rawValue;
+    }
+
+    @Override
+    public String toString () {
+        return ref.toString ();
     }
 
     private static String createRefRelative (String ref) {

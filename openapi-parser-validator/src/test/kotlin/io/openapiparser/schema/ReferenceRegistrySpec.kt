@@ -12,22 +12,19 @@ import java.net.URI
 class ReferenceRegistrySpec : StringSpec({
 
     "resolve reference" {
-        val registry = ReferenceRegistry()
         val document = mapOf(
             "${'$'}ref" to "#/definitions/foo",
             "definitions" to mapOf<String, Any>("foo" to emptyMap<String, Any>())
         )
 
-        val documentUri = URI.create("https://document")
-        registry.add(documentUri, documentUri, "#/definitions/foo")
+        val registry = ReferenceRegistry()
+        registry.add(Ref(URI("https://document"), "#/definitions/foo"))
 
-        registry.resolve { uri, ref ->
-            uri shouldBe documentUri
-            ref shouldBe "#/definitions/foo"
-            return@resolve (document["definitions"] as Map<String, Any>)["foo"]
+        registry.resolve { _ ->
+            return@resolve (document["definitions"] as Map<*, *>)["foo"]
         }
 
-        val ref = registry.getRef(URI.create("https://document#/definitions/foo"))
+        val ref = registry.getRef(URI("https://document#/definitions/foo"))
         ref.rawValue shouldBe emptyMap<String, Any>()
     }
 
