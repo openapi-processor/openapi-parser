@@ -6,6 +6,7 @@
 package io.openapiparser.validator;
 
 import io.openapiparser.schema.*;
+import io.openapiparser.validator.any.AnyOfError;
 import io.openapiparser.validator.any.Type;
 import io.openapiparser.validator.array.*;
 import io.openapiparser.validator.number.*;
@@ -35,13 +36,30 @@ public class Validator {
         // if
         // then
         // else
-        // ref
 
+        // https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.3
         schema.getAllOf ().forEach (sao -> {
             messages.addAll (validate (sao, instance));
         });
 
-        // anyOf
+        // https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.4
+        Collection<JsonSchema> anyOf = schema.getAnyOf ();
+        int anyOfValidCount = 0;
+        for (JsonSchema anyOfSchema : anyOf) {
+            boolean valid = validate (anyOfSchema, instance).isEmpty ();
+            if (valid) {
+                anyOfValidCount++;
+                break;
+            }
+        }
+
+        if (anyOf.size () > 0 && anyOfValidCount == 0) {
+            messages.add (new AnyOfError (instance.getPath ()));
+        }
+
+        // https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.5
+
+
         // oneOf
         // not
 

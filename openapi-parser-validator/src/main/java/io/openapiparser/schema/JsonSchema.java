@@ -140,4 +140,8 @@ public interface JsonSchema {
     default Collection<JsonSchema> getAllOf () {
         return Collections.emptyList ();
     }
+
+    default Collection<JsonSchema> getAnyOf () {
+        return Collections.emptyList ();
+    }
 }
