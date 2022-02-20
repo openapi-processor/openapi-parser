@@ -26,13 +26,13 @@ public class JsonSchemaObject implements JsonSchema {
 
     public JsonSchemaObject (Map<String, Object> document, JsonSchemaContext context) {
         this.context = context;
-        object = new Bucket (document);
+        object = new Bucket (context.getScope (), document);
         properties = getPropertiesX ();
     }
 
     public JsonSchemaObject (JsonPointer location, Map<String, Object> document, JsonSchemaContext context) {
         this.context = context; // todo check id, switch context
-        this.object = new Bucket (URI.create (""), location, document);
+        this.object = new Bucket (context.getScope (), location, document);
         properties = getPropertiesX ();
     }
 

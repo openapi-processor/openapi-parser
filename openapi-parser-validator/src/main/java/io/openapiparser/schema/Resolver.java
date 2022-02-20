@@ -73,10 +73,10 @@ public class Resolver {
         URI scopeX = getScope (scope, document);
         documents.add (scopeX, document);
 
-        collectReferences (/*scope,*/ scopeX, document, registry);
+        collectReferences (scopeX, document, registry);
         resolveReferences (registry);
 
-        return new ResolverResult (scope, document, registry);
+        return new ResolverResult (scopeX, document, registry);
     }
 
     /**
@@ -232,8 +232,9 @@ public class Resolver {
      * @return scope id or null
      */
     private @Nullable String getScopeId (Bucket bucket) {
+        Object ref = bucket.getRawValue ("$ref");
         Object id = bucket.getRawValue ("id");
-        if (!isString (id))
+        if (ref != null || !isString (id))
             return null;
 
         return as (id);

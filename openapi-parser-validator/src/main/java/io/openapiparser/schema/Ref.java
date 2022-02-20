@@ -74,7 +74,7 @@ public class Ref {
      * @return true if ref has a json pointer
      */
     public boolean hasDocument () {
-        return ref.indexOf (HASH) > 0;
+        return ref.indexOf (HASH) != 0;
     }
 
     /**

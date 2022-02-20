@@ -8,21 +8,25 @@ package io.openapiparser.schema;
 import java.net.URI;
 
 public class JsonSchemaContext {
-    private final URI baseUri;
+    private final URI scope;
     private final ReferenceRegistry references;
 
-    public JsonSchemaContext (URI baseUri, ReferenceRegistry references) {
-        this.baseUri = baseUri;
+    public JsonSchemaContext (URI scope, ReferenceRegistry references) {
+        this.scope = scope;
         this.references = references;
     }
 
+    public URI getScope () {
+        return scope;
+    }
+
     public Reference getReference (URI ref) {
-        URI resolved = baseUri.resolve (ref);
+        URI resolved = scope.resolve (ref);
         return references.getRef (resolved);
     }
 
     public JsonSchemaContext withSource (URI source) {
-        if (baseUri.equals (source)) {
+        if (scope.equals (source)) {
             return this;
         }
         return new JsonSchemaContext (source, references);
