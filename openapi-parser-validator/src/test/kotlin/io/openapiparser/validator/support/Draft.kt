@@ -45,9 +45,7 @@ fun draftSpec(draftPath: String, exclude: Array<String> = emptyArray()) = freeSp
     }
 
     fun createInstance(instance: Any?): JsonInstance {
-        val resolver = Resolver(UriReader(), JacksonConverter(), DocumentStore())
-        val result = resolver.resolve(URI.create(""), instance)
-        return JsonInstance(instance, JsonInstanceContext(result.uri, result.registry))
+        return JsonInstance(instance, JsonInstanceContext(URI.create(""), ReferenceRegistry()))
     }
 
     Files.walk(root)
