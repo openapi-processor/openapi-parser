@@ -30,7 +30,7 @@ public class DateTime {
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
         String format = schema.getFormat ();
-        if (format == null)
+        if (format == null || !format.equals ("date-time"))
             return messages;
 
         String instanceValue = instance.asString ();
