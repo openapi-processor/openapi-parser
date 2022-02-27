@@ -10,8 +10,7 @@ import io.openapiparser.validator.any.*;
 import io.openapiparser.validator.array.*;
 import io.openapiparser.validator.number.*;
 import io.openapiparser.validator.object.*;
-import io.openapiparser.validator.string.MaxLength;
-import io.openapiparser.validator.string.MinLength;
+import io.openapiparser.validator.string.*;
 
 import java.io.UnsupportedEncodingException;
 import java.net.*;
@@ -190,6 +189,7 @@ public class Validator {
         messages.addAll (new MaxLength ().validate (schema, instance));
         messages.addAll (new MinLength ().validate (schema, instance));
         messages.addAll (new io.openapiparser.validator.string.Pattern ().validate (schema, instance));
+        messages.addAll (new DateTime ().validate (schema, instance));
         return messages;
     }
 
