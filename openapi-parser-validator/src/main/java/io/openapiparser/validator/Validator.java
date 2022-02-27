@@ -191,8 +191,9 @@ public class Validator {
         messages.addAll (new io.openapiparser.validator.string.Pattern ().validate (schema, instance));
         messages.addAll (new DateTime ().validate (schema, instance));
         messages.addAll (new Email ().validate (schema, instance));
-        messages.addAll (new Uri ().validate (schema, instance));
+        messages.addAll (new Hostname ().validate (schema, instance));
         messages.addAll (new IpV4 ().validate (schema, instance));
+        messages.addAll (new Uri ().validate (schema, instance));
         return messages;
     }
 
