@@ -61,7 +61,10 @@ fun draftSpec(draftPath: String, exclude: Array<String> = emptyArray()) = freeSp
                     suite.description - {
                         val schema = createSchema(suite.schema)
 
-                        for (test in suite.tests) {
+                        val tests = suite.tests
+                            .filter { t -> !exclude.contains(t.description) }
+
+                        for (test in tests) {
                             test.description {
                                 val instance = createInstance(test.data)
 
