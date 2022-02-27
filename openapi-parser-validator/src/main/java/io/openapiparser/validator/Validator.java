@@ -190,6 +190,7 @@ public class Validator {
         messages.addAll (new MinLength ().validate (schema, instance));
         messages.addAll (new io.openapiparser.validator.string.Pattern ().validate (schema, instance));
         messages.addAll (new DateTime ().validate (schema, instance));
+        messages.addAll (new Email ().validate (schema, instance));
         return messages;
     }
 

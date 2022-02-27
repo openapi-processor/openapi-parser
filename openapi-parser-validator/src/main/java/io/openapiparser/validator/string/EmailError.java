@@ -1,0 +1,17 @@
+/*
+ * Copyright 2022 https://github.com/openapi-processor/openapi-parser
+ * PDX-License-Identifier: Apache-2.0
+ */
+
+package io.openapiparser.validator.string;
+
+import io.openapiparser.validator.ValidationMessage;
+
+/**
+ * Created by {@link Email}.
+ */
+public class EmailError extends ValidationMessage {
+    public EmailError (String path) {
+        super (path, "should conform to rfc5322");
+    }
+}
