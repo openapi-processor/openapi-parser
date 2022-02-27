@@ -25,9 +25,8 @@ public class Uri {
     // https://mathiasbynens.be/demo/url-regex - stephenhay
     private static final String URI_REGEX = "^(https?|ftp)://[^\\s/$.?#].[^\\s]*$";
 
-    // accepted protocols without further validation
-    private static final List<String> ACCEPTED_PROTOCOLS = Arrays.asList (
-        "ldap:", "mailto:", "news:", "tel:", "urn:"
+    private static final List<String> SUPPORTED_PROTOCOLS = Arrays.asList (
+        "http", "https", "ftp"
     );
 
     public Collection<ValidationMessage> validate (
@@ -40,10 +39,11 @@ public class Uri {
             return messages;
 
         String instanceValue = instance.asString ();
-        for (String protocol : ACCEPTED_PROTOCOLS) {
-            if (instanceValue.startsWith(protocol)) {
-                return messages;
-            }
+        String[] split = instanceValue.split (":", 1);
+
+        // accept any unknown protocol
+        if (split.length == 0 || !SUPPORTED_PROTOCOLS.contains (split[0])) {
+            return messages;
         }
 
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(URI_REGEX, Pattern.CASE_INSENSITIVE);
