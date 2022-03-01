@@ -152,4 +152,8 @@ public interface JsonSchema {
     default @Nullable JsonSchema getNot () {
         return null;
     }
+
+    default @Nullable String getFormat () {
+        return null;
+    }
 }
