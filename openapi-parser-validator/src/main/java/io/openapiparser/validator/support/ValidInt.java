@@ -41,4 +41,12 @@ public class ValidInt {
             return new ValidInt ();
         }
     }
+
+    public static ValidInt parseHex (String source) {
+        try {
+            return new ValidInt (Integer.parseInt (source, 16));
+        } catch (Exception ex) {
+            return new ValidInt ();
+        }
+    }
 }

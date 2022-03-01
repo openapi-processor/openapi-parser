@@ -41,24 +41,13 @@ public class IpV4 {
         return messages;
     }
 
-    boolean isValid(String ip) {
+    public static boolean isValid(String ip) {
         String[] addressSignificant = ip.split ("/", 1);
-        if (addressSignificant.length == 0) {
+        if (addressSignificant.length > 1) {
             return false;
         }
 
-        if (addressSignificant.length == 2) {
-            ValidInt significantBits = ValidInt.parse (addressSignificant[1]);
-            if (!significantBits.isValid ()) {
-                return false;
-            }
-
-            if (!significantBits.isInRange (1, 32)) {
-                return false;
-            }
-        }
-
-        String[] bytes = addressSignificant[0].split ("\\.");
+        String[] bytes = ip.split ("\\.");
         if (bytes.length != 4) {
             return false;
         }
