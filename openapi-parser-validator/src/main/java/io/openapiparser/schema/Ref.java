@@ -13,6 +13,8 @@ import static io.openapiparser.schema.Keywords.HASH;
  * $ref support.
  */
 public class Ref {
+    public static final String START_OF_POINTER = "#/";
+
     private final URI scope;
     private final String ref;
 
@@ -54,27 +56,29 @@ public class Ref {
      * @return true if ref has a json pointer
      */
     public boolean hasPointer () {
-        return ref.contains (HASH);
+        return ref.contains (START_OF_POINTER);
     }
 
     /**
      * get the json pointer.
      *
      * @return json pointer
-     *
-     * todo: may throw
      */
     public String getPointer () {
-        return ref.substring(ref.indexOf (HASH));
+        if (hasPointer ()) {
+            return ref.substring(ref.indexOf (HASH));
+        } else {
+            return "";
+        }
     }
 
     /**
      * checks if the ref has a document.
      *
-     * @return true if ref has a json pointer
+     * @return true if ref has a document, else false
      */
     public boolean hasDocument () {
-        return ref.indexOf (HASH) != 0;
+        return ref.indexOf (START_OF_POINTER) != 0;
     }
 
     /**
@@ -83,7 +87,18 @@ public class Ref {
      * @return the document uri of this ref
      */
     public URI getDocumentUri () {
-        return clearFragment (scope.resolve (ref));
+        String absoluteRef = getFullRef ();
+
+        if (absoluteRef.equals (HASH)) {
+            return URI.create ("");
+        }
+
+        // starts with # but not #/
+        if (absoluteRef.indexOf (HASH) == 0 && !hasPointer ()) {
+            return getFullRefUri ();
+        }
+
+        return withoutFragment ();
     }
 
     /**
@@ -118,15 +133,13 @@ public class Ref {
         return scope.resolve (ref).toString ();
     }
 
-    private URI clearFragment(URI absoluteRef) {
-        // is there a simpler way to strip the fragment?
-
-        String ref = absoluteRef.toString ();
-        int index = ref.indexOf (HASH);
+    private URI withoutFragment () {
+        String absoluteRef = getFullRef ();
+        int index = absoluteRef.indexOf (HASH);
         if (index < 0) {
-            return absoluteRef;
+            return getFullRefUri ();
         }
 
-        return URI.create (ref.substring (0, index));
+        return URI.create (absoluteRef.substring (0, index));
     }
 }

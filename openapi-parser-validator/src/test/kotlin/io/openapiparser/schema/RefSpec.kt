@@ -6,26 +6,58 @@
 package io.openapiparser.schema
 
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.data.forAll
-import io.kotest.data.row
 import io.kotest.matchers.shouldBe
 import java.net.URI
 
 class RefSpec: StringSpec({
+    data class Data(val ref: Ref, val document: URI, val absoluteRef: URI)
 
-    "should provide the document uri of a ref with scope" {
-        forAll(
-            row(Ref("#/foo"), URI("")),
-            row(Ref("path#/foo"), URI("path")),
-            row(Ref("", "http://json-schema.org/draft-04/schema#"),
-                URI("http://json-schema.org/draft-04/schema")),
-            row(Ref("http://json-schema.org/draft-04/schema#",
-                "http://json-schema.org/draft-04/schema#"),
-                URI("http://json-schema.org/draft-04/schema")),
-            row(Ref("http://json-schema.org/draft-04/schema#", "#"),
-                URI("http://json-schema.org/draft-04/schema"))
-        ) { ref: Ref, expected: URI ->
-            ref.documentUri.shouldBe(expected)
+    val refs = listOf(
+        Data(Ref("#"),
+            URI(""),
+            URI("#")
+        ),
+        Data(Ref("#/foo"),
+            URI(""),
+            URI("#/foo")
+        ),
+        Data(Ref("path#/foo"),
+            URI("path"),
+            URI("path#/foo")
+        ),
+        Data(Ref("#foo"), // not a json pointer !
+            URI("#foo"),
+            URI("#foo")
+        ),
+        Data(Ref("http://json-schema.org/draft-04/schema#"),
+            URI("http://json-schema.org/draft-04/schema"),
+            URI("http://json-schema.org/draft-04/schema#"),
+        ),
+        Data(Ref(
+            "http://json-schema.org/draft-04/schema#",
+            "http://json-schema.org/draft-04/schema#"),
+            URI("http://json-schema.org/draft-04/schema"),
+            URI("http://json-schema.org/draft-04/schema#"),
+        ),
+        Data(Ref("http://json-schema.org/draft-04/schema#", "#"),
+            URI("http://json-schema.org/draft-04/schema"),
+            URI("http://json-schema.org/draft-04/schema#")
+        ),
+        Data(Ref("http://json-schema.org/draft-04/schema#", "#/definitions/stringArray"),
+            URI("http://json-schema.org/draft-04/schema"),
+            URI("http://json-schema.org/draft-04/schema#/definitions/stringArray"),
+        )
+    )
+
+    refs.forEachIndexed { idx, it ->
+        "document uri of '${it.ref.ref}' should be '${it.document}' ($idx)" {
+            it.ref.documentUri shouldBe it.document
+        }
+    }
+
+    refs.forEachIndexed { idx, it ->
+        "absolute ref uri of '${it.ref.ref}' should be '${it.absoluteRef}' ($idx)" {
+            it.ref.fullRefUri shouldBe it.absoluteRef
         }
     }
 
