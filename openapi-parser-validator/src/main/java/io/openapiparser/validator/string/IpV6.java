@@ -59,7 +59,6 @@ public class IpV6 {
             }
 
             ValidInt value = ValidInt.parseHex (octet);
-
             if (value.isValid () && value.isInRange (0, 0xffff)) {
                 count++;
             } else {
