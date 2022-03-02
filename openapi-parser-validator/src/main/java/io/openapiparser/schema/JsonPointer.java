@@ -59,6 +59,10 @@ public class JsonPointer {
             pointer = decode (jsonPointer.substring (1));
         }
 
+//        if (!pointer.startsWith ("/")) {
+//            return EMPTY;
+//        }
+
         return new JsonPointer(pointer);
     }
 
@@ -76,6 +80,8 @@ public class JsonPointer {
         }
 
         if (!jsonPointer.startsWith ("/")) {
+//            tokens = Collections.emptyList ();
+//            return;
             throw new JsonPointerInvalidException (jsonPointer);
         }
 

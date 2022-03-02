@@ -60,6 +60,8 @@ public class Resolver {
     }
 
     /**
+     * entry point
+     *
      * resolves a given {@code document}. It will load any referenced document. The result contains
      * a {@link ReferenceRegistry} that provides the instance of each ref.
      *
@@ -70,13 +72,14 @@ public class Resolver {
     public ResolverResult resolve (URI scope, Object document) {
         ReferenceRegistry registry = new ReferenceRegistry ();
 
-        URI scopeX = getScope (scope, document);
-        documents.add (scopeX, document);
+        URI currentScope = getScope (scope, document);
+        documents.add (currentScope, document);
 
-        collectReferences (scopeX, document, registry);
+        collectIds (currentScope, document);
+        collectReferences (currentScope, document, registry);
         resolveReferences (registry);
 
-        return new ResolverResult (scopeX, document, registry);
+        return new ResolverResult (currentScope, document, registry);
     }
 
     /**
@@ -107,25 +110,40 @@ public class Resolver {
             return scope;
 
         Ref ref = new Ref (scope, id);
-        if (ref.hasDocument ()) {
-            URI scopeDocument = ref.getDocumentUri ();
-
-            if (!hasDocument (scopeDocument)) {
-                documents.add (scopeDocument, bucket.getRawValues ());
-            }
+        URI scopeDocument = ref.getFullRefUri ();
+        if (!hasDocument (scopeDocument)) {
+            documents.add (scopeDocument, bucket.getRawValues ());
         }
 
         return ref.getFullRefUri ();
     }
 
-    private void collectReferences (
-        /*URI baseUri,*/ URI scope, Object document, ReferenceRegistry registry) throws ResolverException {
+    private void collectIds (URI scope, Object document) {
+        Bucket bucket = toBucket (scope, document);
+        if (bucket == null)
+            return;
+
+        collectIds (scope, bucket);
+    }
+
+    private void collectIds (URI scope, Bucket bucket) {
+        URI currentScope = findScope (scope, bucket);
+
+        bucket.forEach ((name, value) -> {
+            bucket.walkPropertyTree (name, props -> {
+                collectIds (currentScope, props);
+            });
+        });
+    }
+
+    private void collectReferences (URI scope, Object document, ReferenceRegistry registry)
+        throws ResolverException {
 
         Bucket bucket = toBucket (scope, document);
         if (bucket == null)
             return;
 
-        collectReferences (/*baseUri,*/ scope, bucket, registry);
+        collectReferences (scope, bucket, registry);
     }
 
     private void collectReferences (URI scope, Bucket bucket, ReferenceRegistry references)
@@ -139,7 +157,7 @@ public class Resolver {
                 URI documentUri = ref.getDocumentUri ();
 
                 if (!hasDocument (documentUri)) {
-                    Object document = addDocument (scopeX /*just error reporting*/, documentUri);
+                    Object document = addDocument (scopeX /*just error reporting*/, documentUri, ref);
                     if (document != null) {
                         collectReferences (scopeX,/*, documentUri,*/ document, references);
                     }
@@ -160,6 +178,13 @@ public class Resolver {
     }
 
     private Object resolve (/*URI documentUri, String documentRef*/ Ref ref) {
+        // $ref points to id?
+        URI id = ref.getFullRefUri ();
+        Object idDocument = getDocument (id);
+        if (idDocument != null)
+            return idDocument;
+
+        // no, try to resolve by document and pointer
         URI documentUri = ref.getDocumentUri ();
         Object document = getDocument (documentUri);
         Bucket bucket = toBucket (documentUri, document);
@@ -193,16 +218,20 @@ public class Resolver {
 //        references.add (baseUri, /*documentUri*/ref.getDocumentUri (), ref.getRef ());
     }
 
-    private Object addDocument (URI uri /*????*/, URI documentUri) {
+    private Object addDocument (URI uri /*????*/, URI documentUri, Ref ref) {
         try {
+            if (!ref.hasDocument ())
+                return null;
+
             Object document = loadDocument (documentUri);
             documents.add (documentUri, document);
             return document;
         } catch (ResolverException ex) {
-            documents.add (documentUri);
-            log.info (String.format ("failed to resolve %s/$ref", uri), ex);
-//            throw new ResolverException (String.format ("failed to resolve %s/$ref", uri), ex);
-            return null;
+//            documents.add (documentUri);
+//            return null;
+//            log.info (String.format ("failed to resolve %s/$ref", uri), ex);
+            throw new ResolverException (String.format ("failed to resolve %s/$ref", uri), ex);
+//            return null;
         }
     }
 

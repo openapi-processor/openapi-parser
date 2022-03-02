@@ -31,12 +31,7 @@ public class DocumentStore {
     }
 
     public Object get (URI uri) {
-        final Object document = documents.get (uri);
-        if (document == null)
-            // todo
-            throw new RuntimeException ();
-
-        return document;
+        return documents.get (uri);
     }
 
     public boolean contains (URI uri) {
