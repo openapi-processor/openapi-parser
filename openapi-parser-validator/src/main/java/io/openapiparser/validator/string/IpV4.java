@@ -8,7 +8,7 @@ package io.openapiparser.validator.string;
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
-import io.openapiparser.validator.support.ValidInt;
+import io.openapiparser.validator.support.IpV4Validator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,48 +33,11 @@ public class IpV4 {
             return messages;
 
         String instanceValue = instance.asString ();
-        boolean valid = isValid (instanceValue);
+        boolean valid = new IpV4Validator (instanceValue).validate ();
         if (!valid) {
             messages.add (new IpV4Error (instance.getPath ()));
         }
 
         return messages;
-    }
-
-    public static boolean isValid(String ip) {
-        String[] addressSignificant = ip.split ("/", 1);
-        if (addressSignificant.length > 1) {
-            return false;
-        }
-
-        String[] bytes = ip.split ("\\.");
-        if (bytes.length != 4) {
-            return false;
-        }
-
-        for (int i = 0; i < bytes.length; i++) {
-            String value = bytes[i];
-
-            // only ascii characters
-            if (!value.codePoints().allMatch(c -> c < 128)) {
-                return false;
-            }
-
-            // no leading zeros
-            if (value.length () > 1 && value.startsWith ("0")) {
-                return false;
-            }
-
-            ValidInt bInt = ValidInt.parse (value);
-            if (i == 0 && !bInt.isInRange (1, 255)) {
-                return false;
-            }
-
-            if (i > 0 && !bInt.isInRange (0, 255)) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }

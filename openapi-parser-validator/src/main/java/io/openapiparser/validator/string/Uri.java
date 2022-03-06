@@ -8,10 +8,9 @@ package io.openapiparser.validator.string;
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
+import io.openapiparser.validator.support.UriValidator;
 
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * validates format: uri.
@@ -22,12 +21,6 @@ import java.util.regex.Pattern;
  * </a>
  */
 public class Uri {
-    // https://mathiasbynens.be/demo/url-regex - stephenhay
-    private static final String URI_REGEX = "^(https?|ftp)://[^\\s/$.?#].[^\\s]*$";
-
-    private static final List<String> SUPPORTED_PROTOCOLS = Arrays.asList (
-        "http", "https", "ftp"
-    );
 
     public Collection<ValidationMessage> validate (
         JsonSchema schema, JsonInstance instance) {
@@ -39,16 +32,8 @@ public class Uri {
             return messages;
 
         String instanceValue = instance.asString ();
-        String[] split = instanceValue.split (":", 1);
 
-        // accept any unknown protocol
-        if (split.length == 0 || !SUPPORTED_PROTOCOLS.contains (split[0])) {
-            return messages;
-        }
-
-        java.util.regex.Pattern p = java.util.regex.Pattern.compile(URI_REGEX, Pattern.CASE_INSENSITIVE);
-        Matcher m = p.matcher(instanceValue);
-        boolean valid = m.find ();
+        boolean valid = new UriValidator (instanceValue).validate ();
         if (!valid) {
             messages.add (new UriError (instance.getPath ()));
         }
