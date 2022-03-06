@@ -233,6 +233,31 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     @Override
+    public Collection<JsonInstance> getEnum () {
+        Object raw = object.getRawValue ("enum");
+        if (raw == null)
+            return  Collections.emptyList ();
+
+        else if (raw instanceof Collection) {
+            JsonPointer location = object.getLocation ();
+            List<JsonInstance> instances = new ArrayList<> ();
+
+            for (Object o : asCol (raw)) {
+                JsonInstance instance = new JsonInstance (o, new JsonInstanceContext (
+                    location.toUri (), new ReferenceRegistry ())
+                );
+
+                instances.add (instance);
+            }
+
+            return Collections.unmodifiableCollection(instances);
+        }
+
+        // todo
+        throw new RuntimeException ();
+    }
+
+    @Override
     public Collection<String> getType () {
         boolean exists = object.hasProperty ("type");
         if (!exists)

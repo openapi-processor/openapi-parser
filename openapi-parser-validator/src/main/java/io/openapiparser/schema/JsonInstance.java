@@ -5,8 +5,9 @@
 
 package io.openapiparser.schema;
 
-import java.util.Collection;
-import java.util.Map;
+import io.openapiparser.validator.support.Equals;
+
+import java.util.*;
 
 import static io.openapiparser.converter.Types.*;
 
@@ -134,11 +135,17 @@ JsonInstance
         return value == null;
     }
 
+    public boolean isNumber () { return value instanceof Number; }
+
     public boolean isObject () {
         return value instanceof Map;
     }
 
     public boolean isArray () {
         return value instanceof Collection;
+    }
+
+    public boolean isEqual (JsonInstance other) {
+        return Equals.equals (value, other.value);
     }
 }

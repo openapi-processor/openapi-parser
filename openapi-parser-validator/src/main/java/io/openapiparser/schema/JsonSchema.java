@@ -132,6 +132,10 @@ public interface JsonSchema {
         return null;
     }
 
+    default Collection<JsonInstance> getEnum () {
+        return Collections.emptyList ();
+    }
+
     default Collection<String> getType () {
         return Collections.emptyList ();
     }

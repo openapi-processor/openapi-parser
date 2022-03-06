@@ -78,6 +78,23 @@ public class Validator {
             }
         }
 
+        // https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.1
+        Collection<JsonInstance> enums = schema.getEnum ();
+        if (!enums.isEmpty ()) {
+            boolean valid = false;
+
+            for (JsonInstance value : enums) {
+                if (instance.isEqual (value)) {
+                    valid = true;
+                    break;
+                }
+            }
+
+            if (!valid) {
+                messages.add (new EnumError (instance.getPath ()));
+            }
+        }
+
         messages.addAll (new Type ().validate (schema, instance));
 
         if (isRef(instance)) {
