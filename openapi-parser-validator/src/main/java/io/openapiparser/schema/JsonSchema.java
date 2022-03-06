@@ -48,8 +48,7 @@ public interface JsonSchema {
         return null;
     }
 
-    // todo nullable??
-    default URI getId () {
+    default @Nullable URI getId () {
         return null;
     }
 
