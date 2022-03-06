@@ -131,6 +131,10 @@ public class Resolver {
 
         bucket.forEach ((name, value) -> {
             bucket.walkPropertyTree (name, props -> {
+                // enum contains values
+                if (name.equals ("enum"))
+                    return;
+
                 collectIds (currentScope, props);
             });
         });
