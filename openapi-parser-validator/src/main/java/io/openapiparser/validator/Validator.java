@@ -189,6 +189,25 @@ public class Validator {
             }
         });
 
+        // https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.5
+        Map<String, JsonDependency> dependencies = schema.getDependencies ();
+        instance.asObject ().forEach ((propName, unused) -> {
+            JsonDependency propDependency = dependencies.get (propName);
+            if (propDependency != null) {
+                if (propDependency.isSchema ()) {
+                    messages.addAll (validate (propDependency.getSchema (), instance));
+                } else {
+                    Set<String> instanceProperties = new HashSet<>(instance.asObject ().keySet ());
+
+                    propDependency.getProperties ().forEach ( p -> {
+                        if (!instanceProperties.contains (p)) {
+                            messages.add(new DependencyError (instance.getPath (), p));
+                        }
+                    });
+                }
+            }
+        });
+
         return messages;
     }
 

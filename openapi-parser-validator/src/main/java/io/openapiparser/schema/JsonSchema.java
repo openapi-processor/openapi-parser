@@ -128,6 +128,10 @@ public interface JsonSchema {
         return new JsonSchemaObject (Collections.emptyMap ());
     }
 
+    default Map<String, JsonDependency> getDependencies () {
+        return Collections.emptyMap ();
+    }
+
     default @Nullable JsonSchema getJsonSchema (String propName) {
         return null;
     }
