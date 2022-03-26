@@ -23,6 +23,15 @@ import java.util.regex.Pattern;
  * the validator.
  */
 public class Validator {
+    private final ValidatorSettings settings;
+
+    public Validator() {
+        settings = new ValidatorSettings ();
+    }
+
+    public Validator(ValidatorSettings settings) {
+        this.settings = settings;
+    }
 
     public Collection<ValidationMessage> validate(JsonSchema schema, JsonInstance instance) {
         Collection<ValidationMessage> messages = new ArrayList<> ();
