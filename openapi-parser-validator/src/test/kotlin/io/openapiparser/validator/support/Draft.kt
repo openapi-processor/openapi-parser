@@ -12,7 +12,6 @@ import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.openapiparser.converter.Types.asMap
 import io.openapiparser.jackson.JacksonConverter
-import io.openapiparser.reader.UriReader
 import io.openapiparser.schema.*
 import io.openapiparser.validator.Validator
 import java.net.URI
@@ -25,12 +24,24 @@ import kotlin.io.path.name
  *
  * include(draftSpec("/suites/JSON-Schema-Test-Suite/tests/draft4"))
  */
-fun draftSpec(draftPath: String, exclude: Array<String> = emptyArray()) = freeSpec {
+fun draftSpec(draftPath: String, extras: List<Any> = emptyList()) = freeSpec {
     val json = ObjectMapper()
     json.registerModule(KotlinModule())
 
     val draft = Validator::class.java.getResource(draftPath)
     val root = Path.of(draft!!.toURI())
+
+    val excludes = extras
+        .filterIsInstance(Exclude::class.java)
+        .map { e -> e.test }
+
+    val remotes = extras
+        .filterIsInstance(Remote::class.java)
+
+    fun toPath(path: String): Path {
+        val resource = Validator::class.java.getResource(path)
+        return Path.of(resource!!.toURI())
+    }
 
     fun loadSuites(path: Path): Collection<Suite> {
         return json.readValue(
@@ -38,8 +49,15 @@ fun draftSpec(draftPath: String, exclude: Array<String> = emptyArray()) = freeSp
             json.typeFactory.constructCollectionType(List::class.java, Suite::class.java))
     }
 
-    fun createSchema(schema: Any): JsonSchema {
-        val resolver = Resolver(UriReader(), JacksonConverter(), DocumentStore())
+    fun loadDocument(path: String): Any {
+        return json.readValue(
+            Files.readAllBytes(toPath(path)),
+            json.typeFactory.constructMapType(HashMap::class.java, String::class.java, Object::class.java)
+        )
+    }
+
+    fun createSchema(schema: Any, documents: List<Document>): JsonSchema {
+        val resolver = Resolver(TestUriReader(documents), JacksonConverter(), DocumentStore())
         val result = resolver.resolve(URI.create(""), schema)
         return JsonSchemaObject(asMap(schema), JsonSchemaContext(result.uri, result.registry))
     }
@@ -50,17 +68,21 @@ fun draftSpec(draftPath: String, exclude: Array<String> = emptyArray()) = freeSp
 
     Files.walk(root)
         .filter { path -> !Files.isDirectory(path) }
-        .filter { path -> !exclude.contains(path.name) }
+        .filter { path -> !excludes.contains(path.name) }
         .forEach { path ->
             path.name - {
                 val suites = loadSuites(path)
 
                 for (suite in suites) {
+                    val documents = remotes
+                        .filter { e -> e.test == suite.description }
+                        .map { e -> e.document }
+
                     suite.description - {
-                        val schema = createSchema(suite.schema)
+                        val schema = createSchema(suite.schema, documents)
 
                         val tests = suite.tests
-                            .filter { t -> !exclude.contains(t.description) }
+                            .filter { t -> !excludes.contains(t.description) }
 
                         for (test in tests) {
                             test.description {
@@ -81,3 +103,7 @@ fun draftSpec(draftPath: String, exclude: Array<String> = emptyArray()) = freeSp
             }
         }
 }
+
+class Exclude(val test: String)
+class Remote(val test: String, val document: Document)
+class Document(val id: String, val path: String)
