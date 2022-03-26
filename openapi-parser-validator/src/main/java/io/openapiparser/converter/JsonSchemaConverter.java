@@ -27,12 +27,12 @@ public class JsonSchemaConverter implements PropertyConverter<JsonSchema> {
     public @Nullable JsonSchema convert (String name, Object value, String location) {
         if (value == null)
             return null;
-
         if (value instanceof Boolean) {
             return new JsonSchemaBoolean (from (location), (Boolean) value, parentContext);
 
         } else if (value instanceof Map) {
-            return new JsonSchemaObject (from (location), asMap (value), parentContext);
+            Map<String, Object> props = asMap (value);
+            return new JsonSchemaObject (from (location), props, parentContext.withId (props));
         } else {
             throw new TypeMismatchException (location, JsonSchema.class);
         }

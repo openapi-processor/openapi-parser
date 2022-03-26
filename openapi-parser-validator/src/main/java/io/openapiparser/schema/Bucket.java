@@ -14,17 +14,17 @@ import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import static io.openapiparser.converter.Types.asCol;
-import static io.openapiparser.converter.Types.asMap;
+import static io.openapiparser.converter.Types.*;
 import static java.util.Collections.unmodifiableMap;
 
 /**
  * wraps the properties {@link Map} of a json/yaml object and its location in the source document.
  */
 public class Bucket {
-    private final URI source; // document
+    private final URI source; // scope
     private final JsonPointer location;
     private final Map<String, Object> properties;
+    private final IdProvider idProvider = new IdProvider ();
 
     public static Bucket empty() {
         return new Bucket (Collections.emptyMap ());
@@ -166,15 +166,13 @@ public class Bucket {
     }
 
     /**
-     * get the raw value of the given property pointer.
+     * get the raw value at the given property pointer position.
      *
      * @param pointer property location
      * @return property value or null if the property does not exist
      */
+    // todo getRawObject()
     public @Nullable Object getRawValue (JsonPointer pointer) {
-//        if (pointer == null)
-//            return getRawValues ();
-
         JsonPointer current = JsonPointer.EMPTY;
         Object value = properties;
 
@@ -190,6 +188,39 @@ public class Bucket {
         }
 
         return value;
+    }
+
+    /**
+     * get the raw value with scope at the given property pointer position.
+     *
+     * @param pointer property location
+     * @return property value or null if the property does not exist
+     */
+    // todo getRawValue()  extract to own class to avoid the need for the id provider here ?
+    public @Nullable RawValue getRawValueX (JsonPointer pointer) {
+        JsonPointer current = JsonPointer.EMPTY;
+        Object value = properties;
+        URI scope = source;
+
+        for (String token: pointer.getTokens ()) {
+            current = current.append (token);
+
+            if (value instanceof Map) {
+                Map<String, Object> props = asMap (value);
+
+                String id = idProvider.getId (props);
+                if (id != null) {
+                    scope = scope.resolve (id);
+                }
+
+                value = getObjectValue (props, current);
+
+            } else if (value instanceof Collection) {
+                value = getArrayValue (asCol (value), current);
+            }
+        }
+
+        return new RawValue (scope, value);
     }
 
     private Object getObjectValue (Map<String, Object> object, JsonPointer pointer) {

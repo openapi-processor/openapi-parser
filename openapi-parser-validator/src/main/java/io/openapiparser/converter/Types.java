@@ -80,4 +80,8 @@ public class Types {
     static Collection<Object> convertCollection (String path, @Nullable Object value) {
         return convert (path, value, Collection.class);
     }
+
+    public static boolean isString (Object o) {
+        return o instanceof String;
+    }
 }

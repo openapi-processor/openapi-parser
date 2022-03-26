@@ -27,11 +27,13 @@ public class Resolver {
     private final Reader reader;
     private final Converter converter;
     private final DocumentStore documents;
+    private final IdProvider idProvider;
 
     public Resolver (Reader reader, Converter converter, DocumentStore documents) {
         this.reader = reader;
         this.converter = converter;
         this.documents = documents;
+        this.idProvider = new IdProvider (); // todo inject
     }
 
     public ResolverResult resolve (URI uri) {
@@ -91,9 +93,9 @@ public class Resolver {
      * @return the scope of the document, may be same as {@code scope}
      */
     private URI getScope (URI scope, Object document) {
-        if (!(document instanceof Map)) {
-            return scope;
-        }
+//        if (!(document instanceof Map)) {
+//            return scope;
+//        }
 
         String id = getScopeId (document);
         if (id != null) {
@@ -115,7 +117,8 @@ public class Resolver {
             documents.add (scopeDocument, bucket.getRawValues ());
         }
 
-        return ref.getFullRefUri ();
+        return scopeDocument;
+//        return ref.getFullRefUri ();
     }
 
     private void collectIds (URI scope, Object document) {
@@ -163,7 +166,7 @@ public class Resolver {
                 if (!hasDocument (documentUri)) {
                     Object document = addDocument (scopeX /*just error reporting*/, documentUri, ref);
                     if (document != null) {
-                        collectReferences (scopeX,/*, documentUri,*/ document, references);
+                        collectReferences (documentUri/*scopeX*/,/*, documentUri,*/ document, references);
                     }
                 }
 
@@ -178,11 +181,11 @@ public class Resolver {
     }
 
     private void resolveReferences (ReferenceRegistry references) {
-        references.resolve(this::resolve);
+        references.resolveX(this::resolveX);
     }
 
     private Object resolve (/*URI documentUri, String documentRef*/ Ref ref) {
-        // $ref points to id?
+        // $ref points directly to id?
         URI id = ref.getFullRefUri ();
         Object idDocument = getDocument (id);
         if (idDocument != null)
@@ -195,15 +198,38 @@ public class Resolver {
         if (bucket == null)
             return document;
 
-//        Ref ref = new Ref (documentRef);
-
         if (!ref.hasPointer ()) {
             return bucket.getRawValues ();
         }
 
         Object property = bucket.getRawValue (JsonPointer.from (ref.getPointer ()));
         if (property == null) {
-            throw new ResolverException (String.format ("failed to resolve ref %s/%s.", documentUri, ref));
+            throw new ResolverException (String.format ("failed to resolve ref <%s/%s>.", documentUri, ref));
+        }
+        return property;
+    }
+
+    private RawValue resolveX (/*URI documentUri, String documentRef*/ Ref ref) {
+        // $ref points directly to id?
+        URI id = ref.getFullRefUri ();
+        Object idDocument = getDocument (id);
+        if (idDocument != null)
+            return new RawValue (id, idDocument);
+
+        // no, try to resolve by document and pointer
+        URI documentUri = ref.getDocumentUri ();
+        Object document = getDocument (documentUri);
+        Bucket bucket = toBucket (documentUri, document);
+        if (bucket == null)
+            return new RawValue (documentUri, document);
+
+        if (!ref.hasPointer ()) {
+            return new RawValue(documentUri, bucket.getRawValues ());
+        }
+
+        RawValue property = bucket.getRawValueX (JsonPointer.from (ref.getPointer ()));
+        if (property == null) {
+            throw new ResolverException (String.format ("failed to resolve ref <%s/%s>.", documentUri, ref));
         }
         return property;
     }
@@ -249,13 +275,14 @@ public class Resolver {
         if (!isMap (value))
             return null;
 
-        Map<String, Object> object = asMap (value);
-        Object id = object.get ("id");
+        return idProvider.getId (asMap (value));
 
-        if (!isString (id))
-            return null;
-
-        return as (id);
+//        Object id = object.get ("id");
+//
+//        if (!isString (id))
+//            return null;
+//
+//        return as (id);
     }
 
     /**
@@ -265,12 +292,14 @@ public class Resolver {
      * @return scope id or null
      */
     private @Nullable String getScopeId (Bucket bucket) {
-        Object ref = bucket.getRawValue ("$ref");
-        Object id = bucket.getRawValue ("id");
-        if (ref != null || !isString (id))
-            return null;
+//        Object ref = bucket.getRawValue ("$ref");
+//        Object id = bucket.getRawValue ("id");
+//        if (ref != null || !isString (id))
+//            return null;
+//
+//        return as (id);
 
-        return as (id);
+        return getScopeId (bucket.getRawValues ());
     }
 
     private boolean hasDocument (URI documentUri) {
