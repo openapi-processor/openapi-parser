@@ -20,11 +20,11 @@ import java.net.URI;
  */
 public class Reference {
     private final Ref ref;
-    private final Object rawValue;
+    private final RefValue value;
 
-    public Reference (Ref ref, Object rawValue) {
+    public Reference (Ref ref, RefValue value) {
         this.ref = ref;
-        this.rawValue = rawValue;
+        this.value = value;
     }
 
     /**
@@ -37,17 +37,31 @@ public class Reference {
     }
 
     /**
+     * the scope at the reference.
+     */
+    public URI getRefScope () {
+        return ref.getScope ();
+    }
+
+    /**
+     * the scope at the reference value.
+     */
+    public URI getValueScope () {
+        return value.getScope ();
+    }
+
+    /**
      * the raw value of the reference. Maybe a simple value, array or map.
      *
      * @return the raw value.
      */
     public Object getRawValue () {
-        return rawValue;
+        return value.getValue ();
     }
 
     @SuppressWarnings ({"unchecked", "TypeParameterUnusedInFormals"})
     public <T> T getValue () {
-        return (T) rawValue;
+        return (T) value.getValue ();
     }
 
     @Override

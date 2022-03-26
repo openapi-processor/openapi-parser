@@ -102,6 +102,13 @@ public class Ref {
     }
 
     /**
+     * get the scope of the ref.
+     */
+    public URI getScope () {
+        return scope;
+    }
+
+    /**
      * get the original ref value.
      *
      * @return the ref

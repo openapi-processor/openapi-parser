@@ -61,6 +61,16 @@ public class ReferenceRegistry {
         }
     }
 
+    public void resolveX (Function<Ref, RawValue> resolver) {
+        Iterator<Pending> iterator = pending.iterator ();
+        while (iterator.hasNext ()) {
+            Pending next = iterator.next ();
+            RawValue value = resolver.apply (next.ref);
+            addX (next, new RefValue (value.getScope (), value.getValue ()));
+            iterator.remove ();
+        }
+    }
+
     /**
      * get a reference from the registry.
      *
@@ -84,7 +94,16 @@ public class ReferenceRegistry {
         references.put (aRef.getFullRef (), createReference (ref, value));
     }
 
+    private void addX (Pending ref, RefValue value) {
+        Ref aRef = ref.ref;
+        references.put (aRef.getFullRef (), createReferenceX (aRef, value));
+    }
+
     private Reference createReference (Pending pending, Object value) {
-        return new Reference (pending.ref, value);
+        return new Reference (pending.ref, new RefValue (URI.create (""), value));
+    }
+
+    private Reference createReferenceX (Ref ref, RefValue value) {
+        return new Reference (ref, value);
     }
 }
