@@ -31,7 +31,7 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     public JsonSchemaObject (JsonPointer location, Map<String, Object> document, JsonSchemaContext context) {
-        this.context = context; // todo check id, switch context
+        this.context = context;
         this.object = new Bucket (context.getScope (), location, document);
         properties = getPropertiesX ();
     }
@@ -54,8 +54,10 @@ public class JsonSchemaObject implements JsonSchema {
     @Override
     public JsonSchema getRefSchema () {
         Reference reference = context.getReference (getRef ());
+        JsonSchemaContext refContext = context.withScope (reference.getValueScope ());
         Object rawValue = reference.getRawValue ();
-        return new JsonSchemaObject(asMap(rawValue), context.withSource (reference.getDocumentUri ()));
+        Map<String, Object> props = asMap(rawValue);
+        return new JsonSchemaObject(props, refContext.withId (props));
     }
 
     @Override
