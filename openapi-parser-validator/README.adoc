@@ -2,12 +2,28 @@
 
 == openapi-parser-validator
 
-*this is work in progress*
+A dependency-less java 8 based JSON Schema validator with pluggable json parser.
 
-dependency-less java 8 json schema validator with pluggable json parser used by openapi-parser.
+Used by openapi-parser but also usable as standalone JSON Schema validator.
 
-- minimal draft-4 support
+== supported JSON Schema versions
 
-== development
+It is tested against the official link:{json-schema-testsuite}[JSON Schema Test Suite].
 
-uses the official link:{json-schema-testsuite}[JSON Schema Test Suite].
+=== Draft4 => OpenAPI 3.0.x
+
+It passes all draft 4 tests & all *optional* draft 4 tests except
+
+* `draft4/optional/ecmascript-regex.json`
++
+the validator passes *51* of *74* tests.
++
+It doesn't pass all tests because `java.util.regex` doesn't support the full ECMA 262 regular expression dialect.
+
+* `draft4/optional/format/date-time.json`
++
+the validator passes *23* of *25* tests.
++
+The two failing tests use leap seconds which are not supported by `java.time.format.DateTimeFormatter`.
+
+
