@@ -84,24 +84,24 @@ class BucketSpec: StringSpec({
     }
 
     "get property child bucket" {
-        val bucket = Bucket(URI("https//document"), "/me", mapOf(
+        val bucket = Bucket(URI("https://document"), "/me", mapOf(
             "foo" to mapOf("key" to "value")
         ))
 
         val foo = bucket.getBucket("foo")
         foo?.rawValues?.shouldContainExactly(mapOf("key" to "value"))
-        foo?.source shouldBe URI("https//document")
+        foo?.source shouldBe URI("https://document")
         foo?.location.toString() shouldBe "/me/foo"
     }
 
     "get property child bucket is null if property is missing" {
-        val bucket = Bucket(URI("https//document"), "/me", mapOf())
+        val bucket = Bucket(URI("https://document"), "/me", mapOf())
 
         bucket.getBucket("bar").shouldBeNull()
     }
 
     "get property child bucket throws if property is not an object" {
-        val bucket = Bucket(URI("https//document"), "/me", mapOf(
+        val bucket = Bucket(URI("https://document"), "/me", mapOf(
             "foo" to "bar"
         ))
 
@@ -111,7 +111,7 @@ class BucketSpec: StringSpec({
     }
 
     "get object value by pointer" {
-        val bucket = Bucket(URI("https//document"), "/me", mapOf(
+        val bucket = Bucket(URI("https://document"), "/me", mapOf(
             "foo" to "bar"
         ))
         val pointer = JsonPointer.fromJsonPointer("/foo")
@@ -120,14 +120,14 @@ class BucketSpec: StringSpec({
     }
 
     "get object value by null pointer" {
-        val bucket = Bucket(URI("https//document"), "/me", mapOf("foo" to "bar"))
+        val bucket = Bucket(URI("https://document"), "/me", mapOf("foo" to "bar"))
         val pointer = JsonPointer.fromJsonPointer(null)
 
         bucket.getRawValue(pointer) shouldBe bucket.rawValues
     }
 
     "throws if get object value is null" {
-        val bucket = Bucket(URI("https//document"), "/me", mapOf())
+        val bucket = Bucket(URI("https://document"), "/me", mapOf())
         val pointer = JsonPointer.fromJsonPointer("/object")
 
         shouldThrow<NoValueException> {
@@ -136,7 +136,7 @@ class BucketSpec: StringSpec({
     }
 
     "get array value by pointer" {
-        val bucket = Bucket(URI("https//document"), "/me", mapOf(
+        val bucket = Bucket(URI("https://document"), "/me", mapOf(
             "foo" to listOf("bar"))
         )
         val pointer = JsonPointer.fromJsonPointer("/foo/0")
@@ -145,7 +145,7 @@ class BucketSpec: StringSpec({
     }
 
     "throws if get array value by pointer index is null" {
-        val bucket = Bucket(URI("https//document"), "/me", mapOf(
+        val bucket = Bucket(URI("https://document"), "/me", mapOf(
             "array" to listOf(null)
         ))
 
@@ -157,7 +157,7 @@ class BucketSpec: StringSpec({
     }
 
     "throws if get array value by pointer index does not exist" {
-        val bucket = Bucket(URI("https//document"), "/me", mapOf(
+        val bucket = Bucket(URI("https://document"), "/me", mapOf(
             "array" to listOf<Any>()
         ))
 
@@ -166,5 +166,25 @@ class BucketSpec: StringSpec({
         shouldThrow<ArrayIndexOutOfBoundsException> {
             bucket.getRawValue(pointer)
         }
+    }
+
+    "get raw value with scope" {
+        val bucket = Bucket(URI("https://host/document"), "/me", mapOf(
+            "definitions" to mapOf<String, Any>(
+                "foo" to mapOf<String, Any>(
+                    "id" to "fooId",
+                    "definitions" to mapOf<String, Any>(
+                        "bar" to mapOf<String, Any>(
+                            "type" to "string"
+                        )
+                    )
+                )
+            )
+        ))
+
+        val pointer = JsonPointer.from("/definitions/foo/definitions/bar")
+        val rawValue = bucket.getRawValueX(pointer)
+
+        rawValue?.scope.toString() shouldBe "https://host/fooId"
     }
 })
