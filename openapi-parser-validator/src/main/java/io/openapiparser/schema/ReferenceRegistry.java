@@ -10,7 +10,7 @@ import java.util.*;
 import java.util.function.Function;
 
 /**
- * holds a document and all its references.
+ * holds all references of a document.
  */
 public class ReferenceRegistry {
 
@@ -69,6 +69,14 @@ public class ReferenceRegistry {
             addX (next, new RefValue (value.getScope (), value.getValue ()));
             iterator.remove ();
         }
+    }
+
+    public boolean isEmpty() {
+        return references.isEmpty ();
+    }
+
+    public boolean hasRef (URI absoluteRef) {
+        return references.containsKey (absoluteRef.toString ());
     }
 
     /**

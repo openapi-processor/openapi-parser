@@ -22,6 +22,8 @@ public class Reference {
     private final Ref ref;
     private final RefValue value;
 
+    public int visitCnt = 0;
+
     public Reference (Ref ref, RefValue value) {
         this.ref = ref;
         this.value = value;
@@ -37,10 +39,19 @@ public class Reference {
     }
 
     /**
-     * the scope at the reference.
+     * get full ref uri with scope and json pointer.
+     *
+     * @return the full ref uri
      */
-    public URI getRefScope () {
-        return ref.getScope ();
+    public URI getFullRefUri () {
+        return ref.getFullRefUri ();
+    }
+
+    /**
+     * the value of the reference.
+     */
+    public String getRefValue () {
+        return ref.getRef ();
     }
 
     /**
@@ -62,6 +73,10 @@ public class Reference {
     @SuppressWarnings ({"unchecked", "TypeParameterUnusedInFormals"})
     public <T> T getValue () {
         return (T) value.getValue ();
+    }
+
+    public JsonPointer getPointer() {
+        return JsonPointer.from (ref.getPointer ());
     }
 
     @Override

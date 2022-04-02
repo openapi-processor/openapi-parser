@@ -40,6 +40,10 @@ public class Validator {
             schema = schema.getRefSchema ();
         }
 
+        while (instance.isRef()) {
+            instance = instance.getRefInstance ();
+        }
+
         // if
         // then
         // else
@@ -106,10 +110,7 @@ public class Validator {
 
         messages.addAll (new Type ().validate (schema, instance));
 
-        if (isRef(instance)) {
-            int i = 0; // todo
-
-        } else if (instance.isArray ()) {
+        if (instance.isArray ()) {
             messages.addAll (validateArray (schema, instance));
 
         } else if (instance.isObject ()) {

@@ -128,7 +128,7 @@ public class SchemaStore {
     }
 
     private JsonInstanceContext createContext (ResolverResult schemaResult) {
-        return new JsonInstanceContext (schemaResult.getUri (), schemaResult.getRegistry ());
+        return new JsonInstanceContext (schemaResult.getUri (), schemaResult.getRegistry (), false);
     }
 
     private URI generateUri () {

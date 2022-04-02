@@ -63,7 +63,7 @@ public class Context {
             // todo if it is null it was not resolved, throw?
             return null;
         }
-        return new Bucket (reference.getDocumentUri (), reference.getRefRelative (), value);
+        return new Bucket (reference.getDocumentUri (), reference.getRefValue (), value);
     }
 
     /**

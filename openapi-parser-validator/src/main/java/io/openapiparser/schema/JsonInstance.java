@@ -6,7 +6,9 @@
 package io.openapiparser.schema;
 
 import io.openapiparser.validator.support.Equals;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.net.URI;
 import java.util.*;
 
 import static io.openapiparser.converter.Types.*;
@@ -32,6 +34,11 @@ public class JsonInstance {
         this.valuePointer = valuePointer;
     }
 
+    public URI getScope () {
+        return context.getScope ();
+    }
+
+    // todo rename to getLocation()
     public JsonPointer getPointer () {
         return valuePointer;
     }
@@ -43,40 +50,6 @@ public class JsonInstance {
     public Object getRawValue () {
         return value;
     }
-
-    /*
-    // Nullable ???
-    public JsonInstance getValue (URI uri) {
-        String pointer = uri.getFragment ();
-        if (pointer == null || pointer.isEmpty ())
-            return this;
-
-        return new JsonInstance (root, uri, getValue (pointer), context);
-    }
-
-JsonInstance
-    private  Object getValue (@Nullable String path) {
-//        if (path == null || path.isEmpty ())
-//            return this;
-
-        if (isObject ()) {
-            Bucket bucket = new Bucket (asMap (value));
-            Object target = bucket.getRawValue (from (path));
-            return target;
-//            Object target = bucket.getRawValue (from (path));
-//            return new JsonInstance (target, context);
-
-        } else if (isArray ()) {
-            Object[] items = asCol (value).toArray ();
-            int idx = from (path).tailIndex ();
-            return items[idx];
-//            return new JsonInstance (items[idx], context);
-        }
-
-        // todo throw
-        return this;
-    }
-    */
 
     public JsonInstance getValue (String property) {
         if (!isObject ())
@@ -105,14 +78,29 @@ JsonInstance
         return asCollection ().size ();
     }
 
+    public boolean isRef () {
+        if (!isObject ())
+            return false;
+
+        URI ref = getRef ();
+        if (ref == null)
+            return false;
+
+        return context.isRef (ref);
+    }
 
     public JsonInstance getRefInstance () {
-        Map<String, Object> object = asObject ();
-        String ref = as(object.get ("$ref"));
+        if (!isRef ())
+            throw new RuntimeException (); // todo
 
-        //context.getRef();
-        //        return context.getRef();
-        return null;
+        URI ref = getRef ();
+        context.visitRef (ref);
+
+        Reference reference = context.getReference (ref);
+        JsonInstanceContext refContext = context.withScope (reference.getValueScope ());
+        Object rawValue = reference.getRawValue ();
+        Map<String, Object> props = asMap(rawValue);
+        return new JsonInstance (props, refContext.withId (props));
     }
 
     public Map<String, Object> asObject () {
@@ -147,5 +135,14 @@ JsonInstance
 
     public boolean isEqual (JsonInstance other) {
         return Equals.equals (value, other.value);
+    }
+
+    private @Nullable URI getRef () {
+        Map<String, Object> object = asObject ();
+        Object ref = object.get (Keywords.REF);
+        if (!isString (ref))
+            return null;
+
+        return URI.create ((String)ref);
     }
 }
