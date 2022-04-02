@@ -13,6 +13,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static io.openapiparser.converter.Types.asMap;
+import static io.openapiparser.schema.SchemaVersions.DRAFT4;
 
 public class SchemaStore {
     private static final AtomicInteger schemaUriId = new AtomicInteger ();
@@ -78,6 +79,14 @@ public class SchemaStore {
      */
     public boolean hasSchema (URI id) {
         return schemas.containsKey (id);
+    }
+
+    public JsonSchema getSchema (URI id) {
+        return schemas.get (id);
+    }
+
+    public void loadDraft4 () {
+        addSchema(DRAFT4, "/json-schema/draft-04/schema.json");
     }
 
     private JsonSchema registerSchema (ResolverResult schemaResult) {
