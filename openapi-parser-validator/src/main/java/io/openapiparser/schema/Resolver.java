@@ -263,13 +263,6 @@ public class Resolver {
             return null;
 
         return idProvider.getId (asMap (value));
-
-//        Object id = object.get ("id");
-//
-//        if (!isString (id))
-//            return null;
-//
-//        return as (id);
     }
 
     /**
@@ -279,13 +272,6 @@ public class Resolver {
      * @return scope id or null
      */
     private @Nullable String getScopeId (Bucket bucket) {
-//        Object ref = bucket.getRawValue ("$ref");
-//        Object id = bucket.getRawValue ("id");
-//        if (ref != null || !isString (id))
-//            return null;
-//
-//        return as (id);
-
         return getScopeId (bucket.getRawValues ());
     }
 
