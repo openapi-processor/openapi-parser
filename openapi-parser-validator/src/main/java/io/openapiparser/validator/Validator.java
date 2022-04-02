@@ -192,7 +192,7 @@ public class Validator {
                 }
             }
 
-            if (checkAdditionalProperty) {
+            if (checkAdditionalProperty && additionalProperties != null) {
                 JsonInstance value = instance.getValue (propName);
                 messages.addAll (validate (additionalProperties, value));
             }

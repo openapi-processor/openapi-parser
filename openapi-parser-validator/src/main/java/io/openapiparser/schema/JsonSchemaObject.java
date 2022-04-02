@@ -221,12 +221,8 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     @Override
-    public JsonSchema getAdditionalProperties () {
-        final JsonSchema schema = getJsonSchemaOf ("additionalProperties");
-        if (schema == null)
-            return JsonSchema.super.getAdditionalProperties ();
-
-        return schema;
+    public @Nullable JsonSchema getAdditionalProperties () {
+        return getJsonSchemaOf ("additionalProperties");
     }
 
     @Override
