@@ -49,9 +49,9 @@ public class Validator {
         // else
 
         // https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.3
-        schema.getAllOf ().forEach (sao -> {
+        for (JsonSchema sao : schema.getAllOf ()) {
             messages.addAll (validate (sao, instance));
-        });
+        }
 
         // https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.4
         Collection<JsonSchema> anyOf = schema.getAnyOf ();
