@@ -246,11 +246,9 @@ public class Resolver {
             documents.add (documentUri, document);
             return document;
         } catch (ResolverException ex) {
-//            documents.add (documentUri);
-//            return null;
-//            log.info (String.format ("failed to resolve %s/$ref", uri), ex);
-            throw new ResolverException (String.format ("failed to resolve %s/$ref", uri), ex);
-//            return null;
+            throw new ResolverException (
+                String.format ("failed to resolve '%s' $referenced from '%s'", ref.getRef (), uri),
+                ex);
         }
     }
 
@@ -310,7 +308,7 @@ public class Resolver {
     private Ref createRef (URI scope, String name, Object value) {
         String ref = convertOrNull (name, value, String.class);
         if (ref == null) {
-            throw new ResolverException (String.format ("failed to resolve empty $ref in %s.", scope));
+            throw new ResolverException (String.format ("failed to resolve empty $ref in '%s'.", scope));
         }
         return new Ref(scope, ref);
     }
@@ -319,7 +317,7 @@ public class Resolver {
         try {
             return converter.convert (Strings.of (reader.read (documentUri)));
         } catch (Exception e) {
-            throw new ResolverException (String.format ("failed to resolve %s.", documentUri), e);
+            throw new ResolverException (String.format ("failed to resolve '%s'.", documentUri), e);
         }
     }
 
@@ -327,7 +325,7 @@ public class Resolver {
         try {
             return converter.convert (Strings.of (getClass ().getResourceAsStream (resourcePath)));
         } catch (Exception e) {
-            throw new ResolverException (String.format ("failed to resolve %s.", resourcePath), e);
+            throw new ResolverException (String.format ("failed to resolve '%s'.", resourcePath), e);
         }
     }
 }
