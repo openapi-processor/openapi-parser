@@ -37,28 +37,11 @@ public class Resolver {
     }
 
     public ResolverResult resolve (URI uri) {
-        ReferenceRegistry registry = new ReferenceRegistry ();
-
-        Object document = loadDocument (uri);
-        documents.add (uri, document);  // todo add with id
-
-        collectReferences (/*uri,*/ uri, document, registry);
-        resolveReferences (registry);
-
-        return new ResolverResult (uri, document, registry);
+        return resolve (uri, loadDocument (uri));
     }
 
     public ResolverResult resolve (String resourcePath) {
-        ReferenceRegistry registry = new ReferenceRegistry ();
-
-        URI uri = URI.create (resourcePath);
-        Object document = loadDocument (resourcePath);
-        documents.add (uri, document); // todo add with id
-
-        collectReferences (/*uri,*/ uri, document, registry);
-        resolveReferences (registry);
-
-        return new ResolverResult (uri, document, registry);
+        return resolve (URI.create (resourcePath), loadDocument (resourcePath));
     }
 
     /**
