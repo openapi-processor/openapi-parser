@@ -236,7 +236,13 @@ public class Resolver {
             if (!ref.hasDocument ())
                 return null;
 
-            Object document = loadDocument (documentUri);
+            Object document;
+            if (documentUri.getScheme () == null) {
+                document = loadDocument (documentUri.toString ());
+            } else {
+                document = loadDocument (documentUri);
+            }
+
             documents.add (documentUri, document);
             return document;
         } catch (ResolverException ex) {
