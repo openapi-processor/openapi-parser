@@ -13,7 +13,11 @@ import io.openapiparser.validator.ValidationMessage;
 import java.util.Collection;
 import java.util.Collections;
 
+import static io.openapiparser.OpenApiSchemas.OPENAPI_SCHEMA_30;
+import static io.openapiparser.OpenApiSchemas.OPENAPI_SCHEMA_30_ID;
+
 public class OpenApiResult30 implements OpenApiResult {
+    @Deprecated
     public static final String OPENAPI_SCHEMA = "/openapi/schemas/v3.0/schema.yaml";
 
     private final Context context;
@@ -48,11 +52,10 @@ public class OpenApiResult30 implements OpenApiResult {
     }
 
     public boolean validate (Validator validator, SchemaStore schemaStore) {
-        JsonSchema schema = schemaStore.addSchema (OPENAPI_SCHEMA);
+        JsonSchema schema = schemaStore.addSchema (OPENAPI_SCHEMA_30_ID, OPENAPI_SCHEMA_30);
         JsonInstance instance = new JsonInstance (root.getRawValues (), context.getInstanceContext ());
         validationMessages = validator.validate (schema, instance);
         return validationMessages.isEmpty ();
     }
 
 }
-

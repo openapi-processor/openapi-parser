@@ -14,7 +14,8 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class OpenApiResult31 implements OpenApiResult {
-    public static final String OPENAPI_SCHEMA = "/openapi/schemas/v3.0/schema.yaml";
+    @Deprecated
+    public static final String OPENAPI_SCHEMA = "/openapi/schemas/v3.1/schema.yaml";
 
     private final Context context;
     private final Bucket root;
