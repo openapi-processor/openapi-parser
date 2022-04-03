@@ -7,11 +7,9 @@ package io.openapiparser.validator.string;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.ValidationMessage;
+import io.openapiparser.validator.steps.NullStep;
+import io.openapiparser.validator.steps.ValidationStep;
 import io.openapiparser.validator.support.IpV4Validator;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * validates ipv4.
@@ -23,21 +21,17 @@ import java.util.Collection;
  */
 public class IpV4 {
 
-    public Collection<ValidationMessage> validate (
-        JsonSchema schema, JsonInstance instance) {
-
-        Collection<ValidationMessage> messages = new ArrayList<> ();
-
+    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         String format = schema.getFormat ();
         if (format == null || !format.equals ("ipv4"))
-            return messages;
+            return new NullStep ();
 
         String instanceValue = instance.asString ();
         boolean valid = new IpV4Validator (instanceValue).validate ();
         if (!valid) {
-            messages.add (new IpV4Error (instance.getPath ()));
+            return new IpV4Step (new IpV4Error (instance.getPath ()));
         }
 
-        return messages;
+        return new IpV4Step ();
     }
 }
