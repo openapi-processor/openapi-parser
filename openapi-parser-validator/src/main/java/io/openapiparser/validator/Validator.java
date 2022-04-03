@@ -10,6 +10,7 @@ import io.openapiparser.validator.any.*;
 import io.openapiparser.validator.array.*;
 import io.openapiparser.validator.number.*;
 import io.openapiparser.validator.object.*;
+import io.openapiparser.validator.steps.CompositeStep;
 import io.openapiparser.validator.steps.ValidationStep;
 import io.openapiparser.validator.string.*;
 
@@ -35,6 +36,7 @@ public class Validator {
     }
 
     public Collection<ValidationMessage> validate(JsonSchema schema, JsonInstance instance) {
+        CompositeStep step = new CompositeStep ();
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
         while (schema.isRef()) {
@@ -109,7 +111,7 @@ public class Validator {
             }
         }
 
-        messages.addAll (validateType (schema, instance).getMessages ());
+        step.add (validateType (schema, instance));
 
         if (instance.isArray ()) {
             messages.addAll (validateArray (schema, instance));
@@ -124,6 +126,7 @@ public class Validator {
             messages.addAll (validateString (schema, instance));
         }
 
+        messages.addAll (step.getMessages ());
         return messages;
     }
 
