@@ -5,6 +5,7 @@
 
 package io.openapiparser.schema;
 
+import io.openapiparser.converter.Types;
 import io.openapiparser.validator.support.Equals;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -123,7 +124,13 @@ public class JsonInstance {
         return value == null;
     }
 
-    public boolean isNumber () { return value instanceof Number; }
+    public boolean isString () {
+        return value instanceof String;
+    }
+
+    public boolean isNumber () {
+        return value instanceof Number;
+    }
 
     public boolean isObject () {
         return value instanceof Map;
@@ -140,7 +147,7 @@ public class JsonInstance {
     private @Nullable URI getRef () {
         Map<String, Object> object = asObject ();
         Object ref = object.get (Keywords.REF);
-        if (!isString (ref))
+        if (!Types.isString (ref))
             return null;
 
         return URI.create ((String)ref);

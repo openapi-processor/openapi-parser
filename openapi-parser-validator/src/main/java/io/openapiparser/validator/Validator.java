@@ -125,10 +125,10 @@ public class Validator {
         } else if (instance.isObject ()) {
             step.add (validateObject (schema, instance));
 
-        } else if (instance.getRawValue () instanceof Number) {
+        } else if (instance.isNumber ()) {
             step.add (validateNumber (schema, instance));
 
-        } else if (instance.getRawValue () instanceof String) {
+        } else if (instance.isString ()) {
             step.add (validateString (schema, instance));
         }
 
