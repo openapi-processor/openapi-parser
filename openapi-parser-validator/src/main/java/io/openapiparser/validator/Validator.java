@@ -25,11 +25,11 @@ import java.util.regex.Pattern;
 public class Validator {
     private final ValidatorSettings settings;
 
-    public Validator() {
+    public Validator () {
         settings = new ValidatorSettings ();
     }
 
-    public Validator(ValidatorSettings settings) {
+    public Validator (ValidatorSettings settings) {
         this.settings = settings;
     }
 
