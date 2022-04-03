@@ -124,7 +124,7 @@ public class Validator {
             step.add (validateNumber (schema, instance));
 
         } else if (instance.getRawValue () instanceof String) {
-            messages.addAll (validateString (schema, instance));
+            step.add (validateString (schema, instance));
         }
 
         step.add (new MessageStep (messages));
@@ -162,18 +162,18 @@ public class Validator {
         return step;
     }
 
-    private Collection<ValidationMessage> validateString (JsonSchema schema, JsonInstance instance) {
-        Collection<ValidationMessage> messages = new ArrayList<> ();
-        messages.addAll (new MaxLength ().validate (schema, instance).getMessages ());
-        messages.addAll (new MinLength ().validate (schema, instance).getMessages ());
-        messages.addAll (new io.openapiparser.validator.string.Pattern ().validate (schema, instance).getMessages ());
-        messages.addAll (new DateTime ().validate (schema, instance).getMessages ());
-        messages.addAll (new Email ().validate (schema, instance).getMessages ());
-        messages.addAll (new Hostname ().validate (schema, instance).getMessages ());
-        messages.addAll (new IpV4 ().validate (schema, instance).getMessages ());
-        messages.addAll (new IpV6 ().validate (schema, instance).getMessages ());
-        messages.addAll (new Uri ().validate (schema, instance).getMessages ());
-        return messages;
+    private ValidationStep validateString (JsonSchema schema, JsonInstance instance) {
+        CompositeStep step = new FlatStep ();
+        step.add (new MaxLength ().validate (schema, instance));
+        step.add (new MinLength ().validate (schema, instance));
+        step.add (new io.openapiparser.validator.string.Pattern ().validate (schema, instance));
+        step.add (new DateTime ().validate (schema, instance));
+        step.add (new Email ().validate (schema, instance));
+        step.add (new Hostname ().validate (schema, instance));
+        step.add (new IpV4 ().validate (schema, instance));
+        step.add (new IpV6 ().validate (schema, instance));
+        step.add (new Uri ().validate (schema, instance));
+        return step;
     }
 
 //    private JsonInstance getValue (JsonInstance instance, URI uri) {
