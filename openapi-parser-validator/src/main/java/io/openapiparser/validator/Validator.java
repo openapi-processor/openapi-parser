@@ -154,6 +154,14 @@ public class Validator {
         return step;
     }
 
+    private ValidationStep validateNumber (JsonSchema schema, JsonInstance instance) {
+        CompositeStep step = new FlatStep ();
+        step.add (new MultipleOf ().validate (schema, instance));
+        step.add (new Maximum ().validate (schema, instance));
+        step.add (new Minimum ().validate (schema, instance));
+        return step;
+    }
+
     private Collection<ValidationMessage> validateString (JsonSchema schema, JsonInstance instance) {
         Collection<ValidationMessage> messages = new ArrayList<> ();
         messages.addAll (new MaxLength ().validate (schema, instance));
@@ -166,14 +174,6 @@ public class Validator {
         messages.addAll (new IpV6 ().validate (schema, instance));
         messages.addAll (new Uri ().validate (schema, instance));
         return messages;
-    }
-
-    private ValidationStep validateNumber (JsonSchema schema, JsonInstance instance) {
-        CompositeStep step = new FlatStep ();
-        step.add (new MultipleOf ().validate (schema, instance));
-        step.add (new Maximum ().validate (schema, instance));
-        step.add (new Minimum ().validate (schema, instance));
-        return step;
     }
 
 //    private JsonInstance getValue (JsonInstance instance, URI uri) {
