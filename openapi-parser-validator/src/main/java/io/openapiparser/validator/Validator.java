@@ -52,21 +52,7 @@ public class Validator {
 
         step.add (validateAllOf (schema, instance));
         step.add (validateAnyOf (schema, instance));
-
-        // https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.5
-        Collection<JsonSchema> oneOf = schema.getOneOf ();
-        int oneOfValidCount = 0;
-        for (JsonSchema oneOfSchema : oneOf) {
-//            boolean valid = validate (oneOfSchema, instance).isEmpty ();
-            ValidationStep oneOfStep = validate (oneOfSchema, instance);
-            if (oneOfStep.isValid ()) {
-                oneOfValidCount++;
-            }
-        }
-
-        if (oneOf.size () > 0 && oneOfValidCount != 1) {
-            messages.add (new OneOfError (instance.getPath ()));
-        }
+        step.add (validateOneOf (schema, instance));
 
         // https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.6
         JsonSchema not = schema.getNot ();
@@ -138,6 +124,31 @@ public class Validator {
 
         if (anyOf.size () > 0 && anyOfValidCount == 0) {
             step.set (new AnyOfError (instance.getPath ()));
+        }
+
+        return step;
+    }
+
+    // draft4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.5
+    private ValidationStep validateOneOf (JsonSchema schema, JsonInstance instance) {
+        OneOfStep step = new OneOfStep ();
+
+        Collection<JsonSchema> oneOf = schema.getOneOf ();
+        if (oneOf.isEmpty ())
+            return new NullStep ();
+
+        int oneOfValidCount = 0;
+        for (JsonSchema oneOfSchema : oneOf) {
+            ValidationStep oos = validate (oneOfSchema, instance);
+            step.add (oos);
+
+            if (oos.isValid ()) {
+                oneOfValidCount++;
+            }
+        }
+
+        if (oneOf.size () > 0 && oneOfValidCount != 1) {
+            step.set (new OneOfError (instance.getPath ()));
         }
 
         return step;
