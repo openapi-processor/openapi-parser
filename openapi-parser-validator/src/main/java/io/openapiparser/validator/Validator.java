@@ -34,8 +34,6 @@ public class Validator {
         CompositeStep step = new CompositeStep ();
         step.add (new ValidateStep (schema, instance));
 
-        Collection<ValidationMessage> messages = new ArrayList<> ();
-
         while (schema.isRef()) {
             schema = schema.getRefSchema ();
             step.add (new SchemaRefStep (schema));
@@ -58,7 +56,6 @@ public class Validator {
         step.add (validateEnum (schema, instance));
         step.add (validateType (schema, instance));
 
-        step.add (new MessageStep (messages));
         return step;
     }
 
