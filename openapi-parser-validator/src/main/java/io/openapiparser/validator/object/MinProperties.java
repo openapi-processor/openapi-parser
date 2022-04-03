@@ -7,7 +7,8 @@ package io.openapiparser.validator.object;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.ValidationMessage;
+import io.openapiparser.validator.steps.NullStep;
+import io.openapiparser.validator.steps.ValidationStep;
 
 import java.util.*;
 
@@ -21,18 +22,16 @@ import java.util.*;
  */
 public class MinProperties {
 
-    public Collection<ValidationMessage> validate (
-        JsonSchema schema, JsonInstance instance) {
-
-        Collection<ValidationMessage> messages = new ArrayList<> ();
-
+    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         Set<String> instanceProperties = new HashSet<>(instance.asObject ().keySet ());
         Integer minProperties = schema.getMinProperties ();
 
-        if (minProperties == null || instanceProperties.size () >= minProperties)
-            return messages;
+        if (minProperties == null)
+            return new NullStep ();
 
-        messages.add (new MinPropertiesError (instance.getPath (), minProperties));
-        return messages;
+        if (instanceProperties.size () >= minProperties)
+            return new MinPropertiesStep ();
+
+        return new MinPropertiesStep (new MinPropertiesError (instance.getPath (), minProperties));
     }
 }
