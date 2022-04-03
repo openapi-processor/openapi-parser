@@ -54,15 +54,7 @@ public class Validator {
         step.add (validateAnyOf (schema, instance));
         step.add (validateOneOf (schema, instance));
 
-        // https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.6
-        JsonSchema not = schema.getNot ();
-        if (not != null) {
-//            boolean valid = validate (not, instance).isEmpty ();
-            ValidationStep notStep = validate (not, instance);
-            if (notStep.isValid ()) {
-                messages.add (new NotError (instance.getPath ()));
-            }
-        }
+        step.add (validateNot (schema, instance));
 
         // https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.1
         Collection<JsonInstance> enums = schema.getEnum ();
@@ -152,6 +144,22 @@ public class Validator {
         }
 
         return step;
+    }
+
+    // draft4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.6
+    private ValidationStep validateNot (JsonSchema schema, JsonInstance instance) {
+        JsonSchema not = schema.getNot ();
+        if (not == null)
+            return new NullStep ();
+
+        ValidationStep step = validate (not, instance);
+        return new NotStep (step);
+
+        // todo
+//        if (valid) {
+//                messages.add (new NotError (instance.getPath ()));
+//            }
+//        }
     }
 
     private ValidationStep validateType (JsonSchema schema, JsonInstance instance) {
