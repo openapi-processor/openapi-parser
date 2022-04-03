@@ -7,10 +7,9 @@ package io.openapiparser.validator.string;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.ValidationMessage;
+import io.openapiparser.validator.steps.NullStep;
+import io.openapiparser.validator.steps.ValidationStep;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.regex.Matcher;
 
 /**
@@ -23,23 +22,19 @@ import java.util.regex.Matcher;
  */
 public class Pattern {
 
-    public Collection<ValidationMessage> validate (
-        JsonSchema schema, JsonInstance instance) {
-
-        Collection<ValidationMessage> messages = new ArrayList<> ();
-
+    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         String pattern = schema.getPattern ();
         if (pattern == null)
-            return messages;
+            return new NullStep ();
 
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(pattern);
         String instanceValue = instance.asString ();
         Matcher m = p.matcher(instanceValue);
         boolean valid = m.find ();
-        if (!valid) {
-            messages.add (new PatternError(instance.getPath (), pattern));
+        if(!valid) {
+            return new PatternStep (new PatternError(instance.getPath (), pattern));
         }
 
-        return messages;
+        return new PatternStep ();
     }
 }

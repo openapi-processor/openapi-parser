@@ -166,7 +166,7 @@ public class Validator {
         Collection<ValidationMessage> messages = new ArrayList<> ();
         messages.addAll (new MaxLength ().validate (schema, instance).getMessages ());
         messages.addAll (new MinLength ().validate (schema, instance).getMessages ());
-        messages.addAll (new io.openapiparser.validator.string.Pattern ().validate (schema, instance));
+        messages.addAll (new io.openapiparser.validator.string.Pattern ().validate (schema, instance).getMessages ());
         messages.addAll (new DateTime ().validate (schema, instance));
         messages.addAll (new Email ().validate (schema, instance));
         messages.addAll (new Hostname ().validate (schema, instance));
