@@ -47,22 +47,7 @@ public class Validator {
         // else
 
         step.add (validateAllOf (schema, instance));
-
-        // https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.4
-        Collection<JsonSchema> anyOf = schema.getAnyOf ();
-        int anyOfValidCount = 0;
-        for (JsonSchema anyOfSchema : anyOf) {
-//            boolean valid = validate (anyOfSchema, instance).isEmpty ();
-            ValidationStep anyOfStep = validate (anyOfSchema, instance);
-            if (anyOfStep.isValid ()) {
-                anyOfValidCount++;
-                break;
-            }
-        }
-
-        if (anyOf.size () > 0 && anyOfValidCount == 0) {
-            messages.add (new AnyOfError (instance.getPath ()));
-        }
+        step.add (validateAnyOf (schema, instance));
 
         // https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.5
         Collection<JsonSchema> oneOf = schema.getOneOf ();
@@ -114,10 +99,40 @@ public class Validator {
 
     // draft4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.3
     private ValidationStep validateAllOf (JsonSchema schema, JsonInstance instance) {
+        Collection<JsonSchema> allOf = schema.getAllOf ();
+        if (allOf.isEmpty ())
+            return new NullStep ();
+
         CompositeStep step = new AllOfStep ();
 
-        for (JsonSchema sao : schema.getAllOf ()) {
+        for (JsonSchema sao : allOf) {
             step.add (validate (sao, instance));
+        }
+
+        return step;
+    }
+
+    // draft4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.4
+    private ValidationStep validateAnyOf (JsonSchema schema, JsonInstance instance) {
+        Collection<JsonSchema> anyOf = schema.getAnyOf ();
+        if (anyOf.isEmpty ())
+            return new NullStep ();
+
+        AnyOfStep step = new AnyOfStep ();
+
+        int anyOfValidCount = 0;
+        for (JsonSchema anyOfSchema : anyOf) {
+            ValidationStep aos = validate (anyOfSchema, instance);
+            step.add (aos);
+
+            if (aos.isValid ()) {
+                anyOfValidCount++;
+                break;
+            }
+        }
+
+        if (anyOf.size () > 0 && anyOfValidCount == 0) {
+            step.set (new AnyOfError (instance.getPath ()));
         }
 
         return step;

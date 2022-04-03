@@ -9,7 +9,16 @@ public class AllOfStep extends CompositeStep {
 
     @Override
     public boolean isValid () {
-        return getSteps ().stream ()
-            .allMatch (ValidationStep::isValid);
+//        return getSteps ().stream ()
+//            .allMatch (ValidationStep::isValid);
+
+        for (ValidationStep step : steps) {
+            boolean valid = step.isValid ();
+            if (!valid) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
