@@ -141,7 +141,7 @@ public class Validator {
 
         messages.addAll (new MaxItems ().validate (schema, instance).getMessages ());
         messages.addAll (new MinItems ().validate (schema, instance).getMessages ());
-        messages.addAll (new UniqueItems ().validate (schema, instance));
+        messages.addAll (new UniqueItems ().validate (schema, instance).getMessages ());
         messages.addAll (new Items (this).validate (schema, instance).getMessages ());
 
         messages.addAll (step.getMessages ());

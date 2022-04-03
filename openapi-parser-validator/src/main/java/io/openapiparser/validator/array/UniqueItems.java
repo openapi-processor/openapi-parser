@@ -7,7 +7,7 @@ package io.openapiparser.validator.array;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.ValidationMessage;
+import io.openapiparser.validator.steps.*;
 
 import java.util.*;
 
@@ -21,21 +21,17 @@ import java.util.*;
  */
 public class UniqueItems {
 
-    public Collection<ValidationMessage> validate (
-        JsonSchema schema, JsonInstance instance) {
-
-        Collection<ValidationMessage> messages = new ArrayList<> ();
-
+    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         Collection<Object> instanceValue = instance.asCollection ();
         if (schema.isUniqueItems ()) {
             Set<Object> items = new HashSet<> ();
             for (Object item : instanceValue) {
                 if (!items.add (item)) {
-                    messages.add (new UniqueItemsError (instance.getPath ()));
+                    return new UniqueItemsStep (new UniqueItemsError (instance.getPath ()));
                 }
             }
         }
 
-        return messages;
+        return new UniqueItemsStep ();
     }
 }
