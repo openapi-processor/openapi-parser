@@ -7,10 +7,8 @@ package io.openapiparser.validator.string;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.ValidationMessage;
-
-import java.util.ArrayList;
-import java.util.Collection;
+import io.openapiparser.validator.steps.NullStep;
+import io.openapiparser.validator.steps.ValidationStep;
 
 /**
  * validates maxLength.
@@ -22,21 +20,17 @@ import java.util.Collection;
  */
 public class MaxLength {
 
-    public Collection<ValidationMessage> validate (
-        JsonSchema schema, JsonInstance instance) {
-
-        Collection<ValidationMessage> messages = new ArrayList<> ();
-
+    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         Integer maxLength = schema.getMaxLength ();
         if (maxLength == null)
-            return messages;
+            return new NullStep ();
 
         String instanceValue = instance.asString ();
         boolean valid = instanceValue.codePointCount (0, instanceValue.length ()) <= maxLength;
         if (!valid) {
-            messages.add (new MaxLengthError(instance.getPath (), maxLength));
+            return new MaxLengthStep (new MaxLengthError(instance.getPath (), maxLength));
         }
 
-        return messages;
+        return new MaxLengthStep ();
     }
 }

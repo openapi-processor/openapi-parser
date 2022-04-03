@@ -164,7 +164,7 @@ public class Validator {
 
     private Collection<ValidationMessage> validateString (JsonSchema schema, JsonInstance instance) {
         Collection<ValidationMessage> messages = new ArrayList<> ();
-        messages.addAll (new MaxLength ().validate (schema, instance));
+        messages.addAll (new MaxLength ().validate (schema, instance).getMessages ());
         messages.addAll (new MinLength ().validate (schema, instance));
         messages.addAll (new io.openapiparser.validator.string.Pattern ().validate (schema, instance));
         messages.addAll (new DateTime ().validate (schema, instance));
