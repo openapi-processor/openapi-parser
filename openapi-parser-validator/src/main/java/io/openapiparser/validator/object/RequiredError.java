@@ -12,6 +12,6 @@ import io.openapiparser.validator.ValidationMessage;
  */
 public class RequiredError extends ValidationMessage {
     public RequiredError (String path, String property) {
-        super (path, String.format ("the object should have the property %s", property));
+        super (path, String.format ("should have a property '%s'", property));
     }
 }
