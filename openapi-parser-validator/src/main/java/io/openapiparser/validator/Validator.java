@@ -46,10 +46,7 @@ public class Validator {
         // then
         // else
 
-        // https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.3
-        for (JsonSchema sao : schema.getAllOf ()) {
-            step.add (validate (sao, instance));
-        }
+        step.add (validateAllOf (schema, instance));
 
         // https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.4
         Collection<JsonSchema> anyOf = schema.getAnyOf ();
@@ -112,6 +109,17 @@ public class Validator {
         step.add (validateType (schema, instance));
 
         step.add (new MessageStep (messages));
+        return step;
+    }
+
+    // draft4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.3
+    private ValidationStep validateAllOf (JsonSchema schema, JsonInstance instance) {
+        CompositeStep step = new AllOfStep ();
+
+        for (JsonSchema sao : schema.getAllOf ()) {
+            step.add (validate (sao, instance));
+        }
+
         return step;
     }
 
