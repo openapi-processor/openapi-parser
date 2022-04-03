@@ -7,9 +7,9 @@ package io.openapiparser.validator.array;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.ValidationMessage;
+import io.openapiparser.validator.steps.NullStep;
+import io.openapiparser.validator.steps.ValidationStep;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -22,17 +22,15 @@ import java.util.Collection;
  */
 public class MaxItems {
 
-    public Collection<ValidationMessage> validate (
-        JsonSchema schema, JsonInstance instance) {
-
-        Collection<ValidationMessage> messages = new ArrayList<> ();
-
+    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         Collection<Object> instanceValue = instance.asCollection ();
         Integer maxItems = schema.getMaxItems ();
-        if (maxItems == null || instanceValue.size () <= maxItems)
-            return messages;
+        if (maxItems == null)
+            return new NullStep ();
 
-        messages.add (new MaxItemsError (instance.getPath (), maxItems));
-        return messages;
+        if (instanceValue.size () <= maxItems)
+            return new MaxItemsStep ();
+
+        return new MaxItemsStep (new MaxItemsError (instance.getPath (), maxItems));
     }
 }

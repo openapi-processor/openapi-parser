@@ -135,6 +135,19 @@ public class Validator {
         return new Type ().validate (schema, instance);
     }
 
+    private Collection<ValidationMessage> validateArray (JsonSchema schema, JsonInstance instance) {
+        Collection<ValidationMessage> messages = new ArrayList<> ();
+        CompositeStep step = new FlatStep ();
+
+        messages.addAll (new MaxItems ().validate (schema, instance).getMessages ());
+        messages.addAll (new MinItems ().validate (schema, instance));
+        messages.addAll (new UniqueItems ().validate (schema, instance));
+        messages.addAll (new Items (this).validate (schema, instance).getMessages ());
+
+        messages.addAll (step.getMessages ());
+        return messages;
+    }
+
     private ValidationStep validateObject (JsonSchema schema, JsonInstance instance) {
         CompositeStep step = new FlatStep ();
         step.add (new MaxProperties ().validate (schema, instance));
@@ -143,15 +156,6 @@ public class Validator {
         step.add (new Properties (this).validate(schema, instance));
         step.add (new Dependencies (this).validate (schema, instance));
         return step;
-    }
-
-    private Collection<ValidationMessage> validateArray (JsonSchema schema, JsonInstance instance) {
-        Collection<ValidationMessage> messages = new ArrayList<> ();
-        messages.addAll (new MaxItems ().validate (schema, instance));
-        messages.addAll (new MinItems ().validate (schema, instance));
-        messages.addAll (new UniqueItems ().validate (schema, instance));
-        messages.addAll (new Items (this).validate (schema, instance).getMessages ());
-        return messages;
     }
 
     private Collection<ValidationMessage> validateString (JsonSchema schema, JsonInstance instance) {
