@@ -40,4 +40,9 @@ public class SimpleStep implements ValidationStep {
     public boolean isValid () {
         return message == null;
     }
+
+    @Override
+    public String toString () {
+        return isValid () ? "valid" : "invalid";
+    }
 }

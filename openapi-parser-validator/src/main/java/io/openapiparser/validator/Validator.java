@@ -32,14 +32,18 @@ public class Validator {
 
     public ValidationStep validate(JsonSchema schema, JsonInstance instance) {
         CompositeStep step = new CompositeStep ();
+        step.add (new ValidateStep (schema, instance));
+
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
         while (schema.isRef()) {
             schema = schema.getRefSchema ();
+            step.add (new SchemaRefStep (schema));
         }
 
         while (instance.isRef()) {
             instance = instance.getRefInstance ();
+            step.add (new InstanceRefStep (instance));
         }
 
         // if
@@ -107,6 +111,7 @@ public class Validator {
 
         for (JsonSchema sao : allOf) {
             step.add (validate (sao, instance));
+            // todo all of error
         }
 
         return step;

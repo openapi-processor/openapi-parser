@@ -7,12 +7,11 @@ package io.openapiparser.validator.steps;
 
 import io.openapiparser.validator.ValidationMessage;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class CompositeStep implements ValidationStep {
-    private final Collection<ValidationStep> steps;
+    protected final Collection<ValidationStep> steps;
 
     public CompositeStep () {
         this.steps = new ArrayList<> ();
@@ -35,11 +34,7 @@ public class CompositeStep implements ValidationStep {
     }
 
     public Collection<ValidationStep> getSteps () {
-        return steps;
-//        return steps.stream ()
-//            .map (ValidationStep::getSteps)
-//            .flatMap (Collection::stream)
-//            .collect (Collectors.toList ());
+        return Collections.singletonList (this);
     }
 
     @Override
