@@ -7,11 +7,10 @@ package io.openapiparser.validator.number;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.ValidationMessage;
+import io.openapiparser.validator.steps.NullStep;
+import io.openapiparser.validator.steps.ValidationStep;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * validates minimum and exclusiveMinimum.
@@ -23,16 +22,12 @@ import java.util.Collection;
  */
 public class Minimum {
 
-    public Collection<ValidationMessage> validate (
-        JsonSchema schema, JsonInstance instance) {
-
-        Collection<ValidationMessage> messages = new ArrayList<> ();
-
+    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         Number minimum = schema.getMinimum ();
         Boolean exclusive = schema.getExclusiveMinimum ();
 
         if (minimum == null)
-            return messages;
+            return new NullStep ();
 
         boolean valid;
         if (exclusive) {
@@ -42,10 +37,10 @@ public class Minimum {
         }
 
         if (!valid) {
-            messages.add (new MinimumError (instance.getPath (), minimum, exclusive));
+            return new MinimumStep (new MinimumError (instance.getPath (), minimum, exclusive));
         }
 
-        return messages;
+        return new MinimumStep ();
     }
 
     private int compareTo (JsonInstance instance, Number minimum) {
