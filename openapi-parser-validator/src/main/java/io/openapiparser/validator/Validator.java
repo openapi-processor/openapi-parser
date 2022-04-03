@@ -114,6 +114,14 @@ public class Validator {
 
         step.add (validateType (schema, instance));
 
+        step.add (new MessageStep (messages));
+        return step;
+    }
+
+    private ValidationStep validateType (JsonSchema schema, JsonInstance instance) {
+        CompositeStep step = new FlatStep ();
+        step.add (new Type ().validate (schema, instance));
+
         if (instance.isArray ()) {
             step.add (validateArray (schema, instance));
 
@@ -127,12 +135,7 @@ public class Validator {
             step.add (validateString (schema, instance));
         }
 
-        step.add (new MessageStep (messages));
         return step;
-    }
-
-    private ValidationStep validateType (JsonSchema schema, JsonInstance instance) {
-        return new Type ().validate (schema, instance);
     }
 
     private ValidationStep validateArray (JsonSchema schema, JsonInstance instance) {
