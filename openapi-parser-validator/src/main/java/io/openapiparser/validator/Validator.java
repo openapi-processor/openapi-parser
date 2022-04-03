@@ -143,7 +143,7 @@ public class Validator {
 
         messages.addAll (new MaxProperties ().validate (schema, instance).getMessages ());
         messages.addAll (new MinProperties ().validate (schema, instance).getMessages ());
-        messages.addAll (new Required ().validate (schema, instance));
+        messages.addAll (new Required ().validate (schema, instance).getMessages ());
 
         // https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.4.4
 

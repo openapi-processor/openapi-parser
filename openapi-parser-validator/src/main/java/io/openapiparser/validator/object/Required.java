@@ -7,7 +7,7 @@ package io.openapiparser.validator.object;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.ValidationMessage;
+import io.openapiparser.validator.steps.*;
 
 import java.util.*;
 
@@ -21,26 +21,23 @@ import java.util.*;
  */
 public class Required {
 
-    public Collection<ValidationMessage> validate (
-        JsonSchema schema, JsonInstance instance) {
-
-        Collection<ValidationMessage> messages = new ArrayList<> ();
-
+    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         Set<String> instanceProperties = new HashSet<>(instance.asObject ().keySet ());
         Collection<String> requiredProperties = schema.getRequired ();
 
         if (requiredProperties == null)
-            return messages;
+            return new NullStep ();
 
+        CompositeStep step = new RequiredStep ();
         requiredProperties.forEach (p -> {
             boolean found = instanceProperties.contains (p);
             if (found) {
                 return;
             }
 
-            messages.add (new RequiredError (instance.getPath (), p));
+            step.add (new ErrorStep (new RequiredError (instance.getPath (), p)));
         });
 
-        return messages;
+        return step;
     }
 }
