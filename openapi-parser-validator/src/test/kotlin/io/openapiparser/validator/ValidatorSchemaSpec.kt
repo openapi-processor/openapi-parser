@@ -6,6 +6,7 @@
 package io.openapiparser.validator
 
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.openapiparser.reader.UriReader
 import io.openapiparser.schema.*
@@ -25,9 +26,9 @@ class ValidatorSchemaSpec : StringSpec({
         val instance = JsonInstance(resolverResult.document, instanceContext)
 
         val validator = Validator()
-        val messages = validator.validate(schema, instance)
+        val step = validator.validate(schema, instance)
 
-        messages.shouldBeEmpty()
+        step.isValid.shouldBeTrue()
     }
 
 })

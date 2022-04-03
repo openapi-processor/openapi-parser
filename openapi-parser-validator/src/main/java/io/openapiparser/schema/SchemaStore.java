@@ -120,7 +120,7 @@ public class SchemaStore {
             schemaResult.getDocument (),
             createContext (schemaResult));
 
-        Collection<ValidationMessage> messages = validator.validate (metaSchema, instance);
+        Collection<ValidationMessage> messages = validator.validate (metaSchema, instance).getMessages ();
         if (!messages.isEmpty ()) {
             // todo
             throw new RuntimeException ();

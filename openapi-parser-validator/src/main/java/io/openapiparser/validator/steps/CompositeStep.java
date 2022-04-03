@@ -52,7 +52,9 @@ public class CompositeStep implements ValidationStep {
 
     @Override
     public boolean isValid () {
-        return steps.stream ()
-            .allMatch (s -> isValid ());
+        Collection<ValidationMessage> messages = getMessages ();
+        return messages.isEmpty ();
+//        return steps.stream ()
+//            .allMatch (s -> isValid ());
     }
 }

@@ -8,8 +8,7 @@ package io.openapiparser.validator.support
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.kotest.core.spec.style.freeSpec
-import io.kotest.matchers.collections.shouldBeEmpty
-import io.kotest.matchers.collections.shouldNotBeEmpty
+import io.kotest.matchers.shouldBe
 import io.openapiparser.converter.Types.asMap
 import io.openapiparser.jackson.JacksonConverter
 import io.openapiparser.schema.*
@@ -88,14 +87,12 @@ fun draftSpec(draftPath: String, extras: List<Any> = emptyList()) = freeSpec {
                             test.description {
                                 val instance = createInstance(test.data)
 
+                                // act
                                 val validator = Validator()
-                                val messages = validator.validate(schema, instance)
+                                val step = validator.validate(schema, instance)
 
-                                if (test.valid) {
-                                    messages.shouldBeEmpty()
-                                } else {
-                                    messages.shouldNotBeEmpty()
-                                }
+                                // assert
+                                step.isValid.shouldBe(test.valid)
                             }
                         }
                     }

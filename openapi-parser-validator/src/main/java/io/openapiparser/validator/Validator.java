@@ -10,8 +10,7 @@ import io.openapiparser.validator.any.*;
 import io.openapiparser.validator.array.*;
 import io.openapiparser.validator.number.*;
 import io.openapiparser.validator.object.*;
-import io.openapiparser.validator.steps.CompositeStep;
-import io.openapiparser.validator.steps.ValidationStep;
+import io.openapiparser.validator.steps.*;
 import io.openapiparser.validator.string.*;
 
 import java.io.UnsupportedEncodingException;
@@ -35,7 +34,7 @@ public class Validator {
         this.settings = settings;
     }
 
-    public Collection<ValidationMessage> validate(JsonSchema schema, JsonInstance instance) {
+    public ValidationStep validate(JsonSchema schema, JsonInstance instance) {
         CompositeStep step = new CompositeStep ();
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
@@ -53,15 +52,16 @@ public class Validator {
 
         // https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.3
         for (JsonSchema sao : schema.getAllOf ()) {
-            messages.addAll (validate (sao, instance));
+            step.add (validate (sao, instance));
         }
 
         // https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.4
         Collection<JsonSchema> anyOf = schema.getAnyOf ();
         int anyOfValidCount = 0;
         for (JsonSchema anyOfSchema : anyOf) {
-            boolean valid = validate (anyOfSchema, instance).isEmpty ();
-            if (valid) {
+//            boolean valid = validate (anyOfSchema, instance).isEmpty ();
+            ValidationStep anyOfStep = validate (anyOfSchema, instance);
+            if (anyOfStep.isValid ()) {
                 anyOfValidCount++;
                 break;
             }
@@ -75,8 +75,9 @@ public class Validator {
         Collection<JsonSchema> oneOf = schema.getOneOf ();
         int oneOfValidCount = 0;
         for (JsonSchema oneOfSchema : oneOf) {
-            boolean valid = validate (oneOfSchema, instance).isEmpty ();
-            if (valid) {
+//            boolean valid = validate (oneOfSchema, instance).isEmpty ();
+            ValidationStep oneOfStep = validate (oneOfSchema, instance);
+            if (oneOfStep.isValid ()) {
                 oneOfValidCount++;
             }
         }
@@ -88,8 +89,9 @@ public class Validator {
         // https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.6
         JsonSchema not = schema.getNot ();
         if (not != null) {
-            boolean valid = validate (not, instance).isEmpty ();
-            if (valid) {
+//            boolean valid = validate (not, instance).isEmpty ();
+            ValidationStep notStep = validate (not, instance);
+            if (notStep.isValid ()) {
                 messages.add (new NotError (instance.getPath ()));
             }
         }
@@ -117,7 +119,7 @@ public class Validator {
             messages.addAll (validateArray (schema, instance));
 
         } else if (instance.isObject ()) {
-            messages.addAll (validateObject (schema, instance));
+            step.add (validateObject (schema, instance));
 
         } else if (instance.getRawValue () instanceof Number) {
             messages.addAll (validateNumber (schema, instance));
@@ -126,19 +128,20 @@ public class Validator {
             messages.addAll (validateString (schema, instance));
         }
 
-        messages.addAll (step.getMessages ());
-        return messages;
+        //messages.addAll (step.getMessages ());
+        step.add (new MessageStep (messages));
+        return step;
     }
 
     private ValidationStep validateType (JsonSchema schema, JsonInstance instance) {
         return new Type ().validate (schema, instance);
     }
 
-    /** https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.4
-     */
-    private Collection<? extends ValidationMessage> validateObject (
+    // draf4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.4
+    private ValidationStep validateObject (
         JsonSchema schema, JsonInstance instance) {
 
+        CompositeStep step = new CompositeStep ();
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
         messages.addAll (new MaxProperties ().validate (schema, instance));
@@ -186,7 +189,7 @@ public class Validator {
             JsonInstance propInstance = instance.getValue (propName);
 
             if (propSchema != null) {
-                messages.addAll (validate (propSchema, propInstance));
+                step.add (validate (propSchema, propInstance));
                 checkAdditionalProperty = false;
             }
 
@@ -196,14 +199,14 @@ public class Validator {
                 if (m.find()) {
                     JsonSchema patternSchema = patternProperties.get (pattern);
                     JsonInstance value = instance.getValue (propName);
-                    messages.addAll (validate (patternSchema, value));
+                    step.add (validate (patternSchema, value));
                     checkAdditionalProperty = false;
                 }
             }
 
             if (checkAdditionalProperty && additionalProperties != null) {
                 JsonInstance value = instance.getValue (propName);
-                messages.addAll (validate (additionalProperties, value));
+                step.add (validate (additionalProperties, value));
             }
         });
 
@@ -213,7 +216,7 @@ public class Validator {
             JsonDependency propDependency = dependencies.get (propName);
             if (propDependency != null) {
                 if (propDependency.isSchema ()) {
-                    messages.addAll (validate (propDependency.getSchema (), instance));
+                    step.add (validate (propDependency.getSchema (), instance));
                 } else {
                     Set<String> instanceProperties = new HashSet<>(instance.asObject ().keySet ());
 
@@ -226,7 +229,9 @@ public class Validator {
             }
         });
 
-        return messages;
+//        return messages;
+        step.add (new MessageStep (messages));
+        return step;
     }
 
     private Collection<ValidationMessage> validateArray (JsonSchema schema, JsonInstance instance) {
@@ -234,7 +239,7 @@ public class Validator {
         messages.addAll (new MaxItems ().validate (schema, instance));
         messages.addAll (new MinItems ().validate (schema, instance));
         messages.addAll (new UniqueItems ().validate (schema, instance));
-        messages.addAll (new Items (this).validate (schema, instance));
+        messages.addAll (new Items (this).validate (schema, instance).getMessages ());
         return messages;
     }
 
