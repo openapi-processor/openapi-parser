@@ -6,7 +6,6 @@
 package io.openapiparser.validator.object;
 
 import io.openapiparser.validator.ValidationMessage;
-import io.openapiparser.validator.array.MaxItems;
 
 /**
  * Created by {@link MaxProperties}.

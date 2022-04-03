@@ -7,7 +7,8 @@ package io.openapiparser.validator.object;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.ValidationMessage;
+import io.openapiparser.validator.steps.NullStep;
+import io.openapiparser.validator.steps.ValidationStep;
 
 import java.util.*;
 
@@ -21,18 +22,16 @@ import java.util.*;
  */
 public class MaxProperties {
 
-    public Collection<ValidationMessage> validate (
-        JsonSchema schema, JsonInstance instance) {
-
-        Collection<ValidationMessage> messages = new ArrayList<> ();
-
+    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         Set<String> instanceProperties = new HashSet<>(instance.asObject ().keySet ());
         Integer maxProperties = schema.getMaxProperties ();
 
-        if (maxProperties == null || instanceProperties.size () <= maxProperties)
-            return messages;
+        if (maxProperties == null)
+            return new NullStep ();
 
-        messages.add (new MaxPropertiesError (instance.getPath (), maxProperties));
-        return messages;
+        if (instanceProperties.size () <= maxProperties)
+            return new MaxPropertiesStep ();
+
+        return new MaxPropertiesStep (new MaxPropertiesError (instance.getPath (), maxProperties));
     }
 }

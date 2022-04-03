@@ -128,7 +128,6 @@ public class Validator {
             messages.addAll (validateString (schema, instance));
         }
 
-        //messages.addAll (step.getMessages ());
         step.add (new MessageStep (messages));
         return step;
     }
@@ -138,13 +137,11 @@ public class Validator {
     }
 
     // draf4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.4
-    private ValidationStep validateObject (
-        JsonSchema schema, JsonInstance instance) {
-
-        CompositeStep step = new CompositeStep ();
+    private ValidationStep validateObject (JsonSchema schema, JsonInstance instance) {
+        CompositeStep step = new FlatStep ();
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
-        messages.addAll (new MaxProperties ().validate (schema, instance));
+        messages.addAll (new MaxProperties ().validate (schema, instance).getMessages ());
         messages.addAll (new MinProperties ().validate (schema, instance));
         messages.addAll (new Required ().validate (schema, instance));
 
