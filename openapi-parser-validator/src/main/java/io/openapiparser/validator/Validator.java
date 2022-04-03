@@ -141,9 +141,9 @@ public class Validator {
         CompositeStep step = new FlatStep ();
         Collection<ValidationMessage> messages = new ArrayList<> ();
 
-        messages.addAll (new MaxProperties ().validate (schema, instance).getMessages ());
-        messages.addAll (new MinProperties ().validate (schema, instance).getMessages ());
-        messages.addAll (new Required ().validate (schema, instance).getMessages ());
+        step.add (new MaxProperties ().validate (schema, instance));
+        step.add (new MinProperties ().validate (schema, instance));
+        step.add (new Required ().validate (schema, instance));
 
         // https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.4.4
 
