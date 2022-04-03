@@ -139,14 +139,12 @@ public class Validator {
     // draf4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.4
     private ValidationStep validateObject (JsonSchema schema, JsonInstance instance) {
         CompositeStep step = new FlatStep ();
-        Collection<ValidationMessage> messages = new ArrayList<> ();
-
         step.add (new MaxProperties ().validate (schema, instance));
         step.add (new MinProperties ().validate (schema, instance));
         step.add (new Required ().validate (schema, instance));
 
-        // https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.4.4
-
+        // draft4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.4.4
+        CompositeStep propStep = new PropertiesStep ();
         Map<String, JsonSchema> schemaProperties = schema.getProperties ();
         Map<String, JsonSchema> patternProperties = schema.getPatternProperties ();
         JsonSchema additionalProperties = schema.getAdditionalProperties ();
@@ -173,7 +171,7 @@ public class Validator {
                 JsonPointer pointer = instance.getPointer ();
 
                 instanceProperties.forEach (k -> {
-                    messages.add (new AdditionalPropertiesError (null, pointer.append (k).toString ()));
+                    propStep.add (new ErrorStep (new PropertiesError (null, pointer.append (k).toString ())));
                 });
             }
         }
@@ -186,7 +184,7 @@ public class Validator {
             JsonInstance propInstance = instance.getValue (propName);
 
             if (propSchema != null) {
-                step.add (validate (propSchema, propInstance));
+                propStep.add (validate (propSchema, propInstance));
                 checkAdditionalProperty = false;
             }
 
@@ -196,38 +194,39 @@ public class Validator {
                 if (m.find()) {
                     JsonSchema patternSchema = patternProperties.get (pattern);
                     JsonInstance value = instance.getValue (propName);
-                    step.add (validate (patternSchema, value));
+                    propStep.add (validate (patternSchema, value));
                     checkAdditionalProperty = false;
                 }
             }
 
             if (checkAdditionalProperty && additionalProperties != null) {
                 JsonInstance value = instance.getValue (propName);
-                step.add (validate (additionalProperties, value));
+                propStep.add (validate (additionalProperties, value));
             }
         });
 
-        // https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.5
+        // draft4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.5
+        CompositeStep depStep = new DependencyStep ();
         Map<String, JsonDependency> dependencies = schema.getDependencies ();
         instance.asObject ().forEach ((propName, unused) -> {
             JsonDependency propDependency = dependencies.get (propName);
             if (propDependency != null) {
                 if (propDependency.isSchema ()) {
-                    step.add (validate (propDependency.getSchema (), instance));
+                    depStep.add (validate (propDependency.getSchema (), instance));
                 } else {
                     Set<String> instanceProperties = new HashSet<>(instance.asObject ().keySet ());
 
                     propDependency.getProperties ().forEach ( p -> {
                         if (!instanceProperties.contains (p)) {
-                            messages.add(new DependencyError (instance.getPath (), p));
+                            depStep.add (new ErrorStep (new DependencyError (instance.getPath (), p)));
                         }
                     });
                 }
             }
         });
 
-//        return messages;
-        step.add (new MessageStep (messages));
+        step.add (propStep);
+        step.add (depStep);
         return step;
     }
 
