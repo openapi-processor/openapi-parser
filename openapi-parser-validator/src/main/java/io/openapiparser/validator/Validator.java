@@ -14,9 +14,6 @@ import io.openapiparser.validator.object.Properties;
 import io.openapiparser.validator.steps.*;
 import io.openapiparser.validator.string.*;
 
-import java.io.UnsupportedEncodingException;
-import java.net.*;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -177,82 +174,5 @@ public class Validator {
         step.add (new IpV6 ().validate (schema, instance));
         step.add (new Uri ().validate (schema, instance));
         return step;
-    }
-
-//    private JsonInstance getValue (JsonInstance instance, URI uri) {
-//        return instance.getValue (uri.getFragment ());
-//    }
-
-//    @Deprecated
-//    private @Nullable Object getValue (Object source, URI uri) {
-//        return getValue (source, uri.getFragment ());
-//    }
-
-//    @Deprecated // => JsonInstance
-//    private @Nullable Object getValue (Object instance, @Nullable String path) {
-//        if (path == null || path.isEmpty ())
-//            return instance;
-//
-//        if (instance instanceof Map) {
-//            Bucket bucket = new Bucket (asMap (instance));
-//            return bucket.getRawValue (JsonPointer.fromJsonPointer (path));
-//
-//        } else if (isArray (instance)) {
-//            Object[] items = asCol (instance).toArray ();
-//            int idx = JsonPointer.fromJsonPointer (path).tailIndex ();
-//            return items[idx];
-//        }
-//
-//        return instance;
-//    }
-
-    private URI append (URI uri, String value) {
-        String target = uri.toString ();
-        if (!target.contains("#")) {
-          target += "#";
-        }
-
-        if (target.charAt(target.length() - 1) != '/') {
-          target += "/";
-        }
-
-        return URI.create (target + encode (value
-            .replace ("~", "~0")
-            .replace ("/", "~1")
-        ));
-    }
-
-    private static String encode (String value) {
-        try {
-            return URLEncoder.encode (value, StandardCharsets.UTF_8.name());
-        } catch (UnsupportedEncodingException ex) {
-            // todo
-            throw new RuntimeException ();
-        }
-    }
-
-    private boolean isRef (Object instance) {
-        if (!isObject (instance))
-            return false;
-
-        return asObject (instance).containsKey ("$ref");
-    }
-
-    private boolean isObject (Object current) {
-        return current instanceof Map;
-    }
-
-    private Map<String, Object> asObject (Object value) {
-        //noinspection unchecked
-        return (Map<String, Object>) value;
-    }
-
-    private boolean isArray (Object current) {
-        return current instanceof Collection;
-    }
-
-    private Collection<Object> asArray (Object value) {
-        //noinspection unchecked
-        return (Collection<Object>) value;
     }
 }
