@@ -10,6 +10,7 @@ import io.openapiparser.validator.any.*;
 import io.openapiparser.validator.array.*;
 import io.openapiparser.validator.number.*;
 import io.openapiparser.validator.object.*;
+import io.openapiparser.validator.object.Properties;
 import io.openapiparser.validator.steps.*;
 import io.openapiparser.validator.string.*;
 
@@ -136,74 +137,15 @@ public class Validator {
         return new Type ().validate (schema, instance);
     }
 
-    // draf4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.4
+    // draft4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4
+
     private ValidationStep validateObject (JsonSchema schema, JsonInstance instance) {
         CompositeStep step = new FlatStep ();
         step.add (new MaxProperties ().validate (schema, instance));
         step.add (new MinProperties ().validate (schema, instance));
         step.add (new Required ().validate (schema, instance));
 
-        // draft4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.4.4
-        CompositeStep propStep = new PropertiesStep ();
-        Map<String, JsonSchema> schemaProperties = schema.getProperties ();
-        Map<String, JsonSchema> patternProperties = schema.getPatternProperties ();
-        JsonSchema additionalProperties = schema.getAdditionalProperties ();
-
-        if (additionalProperties instanceof JsonSchemaBoolean && additionalProperties.isFalse ()) {
-            Set<String> instanceProperties = new HashSet<>(instance.asObject ().keySet ());
-
-            instanceProperties.removeAll (schemaProperties.keySet ());
-
-            Iterator<String> it = instanceProperties.iterator();
-            while (it.hasNext()) {
-                String property = it.next ();
-
-                for (String pattern : patternProperties.keySet ()) {
-                    Pattern p = Pattern.compile(pattern);
-                    Matcher m = p.matcher(property);
-                    if (m.find()) {
-                        it.remove ();
-                    }
-                }
-            }
-
-            if (!instanceProperties.isEmpty ()) {
-                JsonPointer pointer = instance.getPointer ();
-
-                instanceProperties.forEach (k -> {
-                    propStep.add (new ErrorStep (new PropertiesError (null, pointer.append (k).toString ())));
-                });
-            }
-        }
-
-        // todo instance.forEach() on property names
-        instance.asObject ().forEach ((propName, unused) -> {
-            boolean checkAdditionalProperty = true;
-
-            JsonSchema propSchema = schemaProperties.get (propName);
-            JsonInstance propInstance = instance.getValue (propName);
-
-            if (propSchema != null) {
-                propStep.add (validate (propSchema, propInstance));
-                checkAdditionalProperty = false;
-            }
-
-            for (String pattern : patternProperties.keySet ()) {
-                Pattern p = Pattern.compile(pattern);
-                Matcher m = p.matcher(propName);
-                if (m.find()) {
-                    JsonSchema patternSchema = patternProperties.get (pattern);
-                    JsonInstance value = instance.getValue (propName);
-                    propStep.add (validate (patternSchema, value));
-                    checkAdditionalProperty = false;
-                }
-            }
-
-            if (checkAdditionalProperty && additionalProperties != null) {
-                JsonInstance value = instance.getValue (propName);
-                propStep.add (validate (additionalProperties, value));
-            }
-        });
+        step.add (new Properties (this).validate(schema, instance));
 
         // draft4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.5
         CompositeStep depStep = new DependencyStep ();
@@ -225,7 +167,7 @@ public class Validator {
             }
         });
 
-        step.add (propStep);
+        //step.add (propStep);
         step.add (depStep);
         return step;
     }
