@@ -262,7 +262,7 @@ public class Validator {
 
         Collection<ValidationMessage> messages = new ArrayList<> ();
         messages.addAll (new MultipleOf ().validate (schema, instance).getMessages ());
-        messages.addAll (new Maximum ().validate (schema, instance));
+        messages.addAll (new Maximum ().validate (schema, instance).getMessages ());
         messages.addAll (new Minimum ().validate (schema, instance));
         return messages;
     }

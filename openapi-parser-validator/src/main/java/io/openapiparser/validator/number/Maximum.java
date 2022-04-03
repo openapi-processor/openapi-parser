@@ -7,11 +7,10 @@ package io.openapiparser.validator.number;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.ValidationMessage;
+import io.openapiparser.validator.steps.NullStep;
+import io.openapiparser.validator.steps.ValidationStep;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * maximum and exclusiveMaximum.
@@ -23,16 +22,12 @@ import java.util.Collection;
  */
 public class Maximum {
 
-    public Collection<ValidationMessage> validate (
-        JsonSchema schema, JsonInstance instance) {
-
-        Collection<ValidationMessage> messages = new ArrayList<> ();
-
+    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         Number maximum = schema.getMaximum ();
         Boolean exclusive = schema.getExclusiveMaximum ();
 
         if (maximum == null)
-            return messages;
+            return new NullStep ();
 
         boolean valid;
         if (exclusive) {
@@ -42,10 +37,10 @@ public class Maximum {
         }
 
         if (!valid) {
-            messages.add (new MaximumError (instance.getPath (), maximum, exclusive));
+            return new MaximumStep (new MaximumError (instance.getPath (), maximum, exclusive));
         }
 
-        return messages;
+        return new MaximumStep ();
     }
 
     private int compareTo (JsonInstance instance, Number maximum) {
