@@ -7,12 +7,11 @@ package io.openapiparser.validator.string;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.ValidationMessage;
+import io.openapiparser.validator.steps.NullStep;
+import io.openapiparser.validator.steps.ValidationStep;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * validates format: date-time.
@@ -24,14 +23,10 @@ import java.util.Collection;
  */
 public class DateTime {
 
-    public Collection<ValidationMessage> validate (
-        JsonSchema schema, JsonInstance instance) {
-
-        Collection<ValidationMessage> messages = new ArrayList<> ();
-
+    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         String format = schema.getFormat ();
         if (format == null || !format.equals ("date-time"))
-            return messages;
+            return new NullStep ();
 
         String instanceValue = instance.asString ();
         DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
@@ -40,9 +35,9 @@ public class DateTime {
             formatter.parse (instanceValue, OffsetDateTime::from);
 
         } catch (RuntimeException ex) {
-            messages.add (new DateTimeError (instance.getPath ()));
+            return new DateTimeStep (new DateTimeError (instance.getPath ()));
         }
 
-        return messages;
+        return new DateTimeStep ();
     }
 }
