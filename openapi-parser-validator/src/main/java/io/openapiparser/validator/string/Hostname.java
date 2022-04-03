@@ -7,10 +7,8 @@ package io.openapiparser.validator.string;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.ValidationMessage;
-
-import java.util.ArrayList;
-import java.util.Collection;
+import io.openapiparser.validator.steps.NullStep;
+import io.openapiparser.validator.steps.ValidationStep;
 
 /**
  * validates hostname.
@@ -22,22 +20,19 @@ import java.util.Collection;
  */
 public class Hostname {
 
-    public Collection<ValidationMessage> validate (
-        JsonSchema schema, JsonInstance instance) {
-
-        Collection<ValidationMessage> messages = new ArrayList<> ();
-
+    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         String format = schema.getFormat ();
         if (format == null || !format.equals ("hostname"))
-            return messages;
+            return new NullStep ();
 
         String instanceValue = instance.asString ();
         boolean valid = isValid (instanceValue);
+
         if (!valid) {
-            messages.add (new HostnameError (instance.getPath ()));
+            return new HostnameStep (new HostnameError (instance.getPath ()));
         }
 
-        return messages;
+        return new HostnameStep ();
     }
 
     boolean isValid(String ip) {
