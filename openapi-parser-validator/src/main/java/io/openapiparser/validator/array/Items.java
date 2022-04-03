@@ -6,8 +6,8 @@
 package io.openapiparser.validator.array;
 
 import io.openapiparser.schema.*;
-import io.openapiparser.validator.ValidationMessage;
 import io.openapiparser.validator.Validator;
+import io.openapiparser.validator.steps.*;
 
 import java.util.*;
 import java.util.stream.IntStream;
@@ -30,28 +30,29 @@ public class Items {
         this.validator = validator;
     }
 
-    public Collection<ValidationMessage> validate (
-        JsonSchema schema, JsonInstance instance) {
-
-        Collection<ValidationMessage> messages = new ArrayList<> ();
+    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         int instanceSize = instance.getArraySize ();
 
         JsonSchemas items = schema.getItems ();
         if (items.isEmpty ()) {
-            return messages;
+            return new NullStep ();
 
-        } else if (items.isNull ()) {
+        } /*else if (items.isNull ()) {
             int i = 0; // todo
 
-        } else if (items.isSingle ()) {
-            JsonSchema itemsSchema = items.getSchema ();
+        } */ else if (items.isSingle ()) {
+            CompositeStep step = new ItemsStep ();
 
+            JsonSchema itemsSchema = items.getSchema ();
             IntStream.range (0, instanceSize)
                 .forEach (idx -> {
                     JsonInstance value = instance.getValue (idx);
-                    messages.addAll (validator.validate (itemsSchema, value));
+                    step.add (validator.validate (itemsSchema, value));
                 });
+
+            return step;
         } else {
+            CompositeStep step = new ItemsStep ();
             JsonSchemas additional = schema.getAdditionalItems ();
 
             if (additional.isEmpty ()) {
@@ -66,7 +67,7 @@ public class Items {
                     .forEach (idx -> {
                         JsonInstance value = instance.getValue (idx);
                         if (idx < items.size ()) {
-                            messages.addAll (validator.validate (itemSchemas.next (), value));
+                            step.add (validator.validate (itemSchemas.next (), value));
                         }
                     });
             }
@@ -75,7 +76,7 @@ public class Items {
                 JsonSchema additionalSchema = additional.getSchema ();
 
                 if (isBooleanFalse (additionalSchema) && instanceSize > items.size ()) {
-                    messages.add (new ItemsSizeError (instance.getPath (), items.size ()));
+                    step.add (new ErrorStep (new ItemsSizeError (instance.getPath (), items.size ())));
                 }
 
                 IntStream.range (0, instanceSize)
@@ -83,15 +84,15 @@ public class Items {
                         JsonInstance value = instance.getValue (idx);
 
                         if (idx < items.size ()) {
-                            messages.addAll (validator.validate (itemSchemas.next (), value));
+                            step.add (validator.validate (itemSchemas.next (), value));
 
                         } else {
-                            messages.addAll (validator.validate (additionalSchema, value));
+                            step.add (validator.validate (additionalSchema, value));
                         }
                     });
             }
+            return step;
         }
-        return messages;
     }
 
     private boolean isBooleanFalse (JsonSchema schema) {
