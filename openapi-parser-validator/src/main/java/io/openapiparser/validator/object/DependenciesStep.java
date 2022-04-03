@@ -7,5 +7,5 @@ package io.openapiparser.validator.object;
 
 import io.openapiparser.validator.steps.CompositeStep;
 
-public class DependencyStep extends CompositeStep {
+public class DependenciesStep extends CompositeStep {
 }

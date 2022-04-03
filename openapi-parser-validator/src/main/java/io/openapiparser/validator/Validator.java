@@ -18,8 +18,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * the validator.
@@ -137,38 +135,13 @@ public class Validator {
         return new Type ().validate (schema, instance);
     }
 
-    // draft4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4
-
     private ValidationStep validateObject (JsonSchema schema, JsonInstance instance) {
         CompositeStep step = new FlatStep ();
         step.add (new MaxProperties ().validate (schema, instance));
         step.add (new MinProperties ().validate (schema, instance));
         step.add (new Required ().validate (schema, instance));
-
         step.add (new Properties (this).validate(schema, instance));
-
-        // draft4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.5
-        CompositeStep depStep = new DependencyStep ();
-        Map<String, JsonDependency> dependencies = schema.getDependencies ();
-        instance.asObject ().forEach ((propName, unused) -> {
-            JsonDependency propDependency = dependencies.get (propName);
-            if (propDependency != null) {
-                if (propDependency.isSchema ()) {
-                    depStep.add (validate (propDependency.getSchema (), instance));
-                } else {
-                    Set<String> instanceProperties = new HashSet<>(instance.asObject ().keySet ());
-
-                    propDependency.getProperties ().forEach ( p -> {
-                        if (!instanceProperties.contains (p)) {
-                            depStep.add (new ErrorStep (new DependencyError (instance.getPath (), p)));
-                        }
-                    });
-                }
-            }
-        });
-
-        //step.add (propStep);
-        step.add (depStep);
+        step.add (new Dependencies (this).validate (schema, instance));
         return step;
     }
 

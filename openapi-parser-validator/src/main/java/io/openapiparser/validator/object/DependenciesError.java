@@ -10,8 +10,8 @@ import io.openapiparser.validator.ValidationMessage;
 /**
  * Created by {@link io.openapiparser.validator.Validator}.
  */
-public class DependencyError extends ValidationMessage {
-    public DependencyError (String path, String propertyName) {
+public class DependenciesError extends ValidationMessage {
+    public DependenciesError (String path, String propertyName) {
         super (path, String.format ("should have dependency property %s", propertyName));
     }
 }
