@@ -122,7 +122,7 @@ public class Validator {
             step.add (validateObject (schema, instance));
 
         } else if (instance.getRawValue () instanceof Number) {
-            messages.addAll (validateNumber (schema, instance));
+            step.add (validateNumber (schema, instance));
 
         } else if (instance.getRawValue () instanceof String) {
             messages.addAll (validateString (schema, instance));
@@ -257,14 +257,12 @@ public class Validator {
         return messages;
     }
 
-    private Collection<ValidationMessage> validateNumber (
-        JsonSchema schema, JsonInstance instance) {
-
-        Collection<ValidationMessage> messages = new ArrayList<> ();
-        messages.addAll (new MultipleOf ().validate (schema, instance).getMessages ());
-        messages.addAll (new Maximum ().validate (schema, instance).getMessages ());
-        messages.addAll (new Minimum ().validate (schema, instance).getMessages ());
-        return messages;
+    private ValidationStep validateNumber (JsonSchema schema, JsonInstance instance) {
+        CompositeStep step = new FlatStep ();
+        step.add (new MultipleOf ().validate (schema, instance));
+        step.add (new Maximum ().validate (schema, instance));
+        step.add (new Minimum ().validate (schema, instance));
+        return step;
     }
 
 //    private JsonInstance getValue (JsonInstance instance, URI uri) {
