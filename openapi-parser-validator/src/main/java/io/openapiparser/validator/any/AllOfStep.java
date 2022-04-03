@@ -3,7 +3,10 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.validator.steps;
+package io.openapiparser.validator.any;
+
+import io.openapiparser.validator.steps.CompositeStep;
+import io.openapiparser.validator.steps.ValidationStep;
 
 public class AllOfStep extends CompositeStep {
 
