@@ -7,9 +7,8 @@ package io.openapiparser.validator.array;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.ValidationMessage;
+import io.openapiparser.validator.steps.ValidationStep;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -22,17 +21,13 @@ import java.util.Collection;
  */
 public class MinItems {
 
-    public Collection<ValidationMessage> validate (
-        JsonSchema schema, JsonInstance instance) {
-
-        Collection<ValidationMessage> messages = new ArrayList<> ();
-
+    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         Collection<Object> instanceValue = instance.asCollection ();
         int minItems = schema.getMinItems ();
         if (instanceValue.size () < minItems) {
-            messages.add (new MinItemsError (instance.getPath (), minItems));
+            return new MinItemsStep (new MinItemsError (instance.getPath (), minItems));
         }
 
-        return messages;
+        return new MinItemsStep ();
     }
 }

@@ -140,7 +140,7 @@ public class Validator {
         CompositeStep step = new FlatStep ();
 
         messages.addAll (new MaxItems ().validate (schema, instance).getMessages ());
-        messages.addAll (new MinItems ().validate (schema, instance));
+        messages.addAll (new MinItems ().validate (schema, instance).getMessages ());
         messages.addAll (new UniqueItems ().validate (schema, instance));
         messages.addAll (new Items (this).validate (schema, instance).getMessages ());
 
