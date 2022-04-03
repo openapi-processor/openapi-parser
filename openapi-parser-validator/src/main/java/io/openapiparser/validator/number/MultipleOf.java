@@ -7,11 +7,10 @@ package io.openapiparser.validator.number;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.ValidationMessage;
+import io.openapiparser.validator.steps.NullStep;
+import io.openapiparser.validator.steps.ValidationStep;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * validates multipleOf.
@@ -23,12 +22,10 @@ import java.util.Collection;
  */
 public class MultipleOf {
 
-    public Collection<ValidationMessage> validate (JsonSchema schema, JsonInstance instance) {
-        Collection<ValidationMessage> messages = new ArrayList<> ();
-
+    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         Number multipleOf = schema.getMultipleOf ();
         if (multipleOf == null)
-            return messages;
+            return new NullStep ();
 
         Number instanceValue = instance.asNumber();
         boolean invalid = new BigDecimal (instanceValue.toString ())
@@ -36,9 +33,9 @@ public class MultipleOf {
             .compareTo (BigDecimal.ZERO) != 0;
 
         if (invalid) {
-            messages.add (new MultipleOfError (instance.getPath (), multipleOf));
+            return new MultipleOfStep (new MultipleOfError (instance.getPath (), multipleOf));
         }
 
-        return messages;
+        return new MultipleOfStep ();
     }
 }
