@@ -8,12 +8,13 @@ package io.openapiparser.validator.any;
 import io.openapiparser.validator.ValidationMessage;
 import io.openapiparser.validator.steps.CompositeStep;
 import io.openapiparser.validator.steps.ValidationStep;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Collection;
 import java.util.Collections;
 
 public class AnyOfStep extends CompositeStep {
-    private ValidationMessage message;
+    private @Nullable ValidationMessage message;
 
     public void set (ValidationMessage message) {
         this.message = message;
