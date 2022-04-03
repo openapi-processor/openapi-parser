@@ -7,10 +7,9 @@ package io.openapiparser.validator.string;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.ValidationMessage;
+import io.openapiparser.validator.steps.NullStep;
+import io.openapiparser.validator.steps.ValidationStep;
 import io.openapiparser.validator.support.IpV6Validator;
-
-import java.util.*;
 
 /**
  * validates ipv6.
@@ -22,21 +21,17 @@ import java.util.*;
  */
 public class IpV6 {
 
-    public Collection<ValidationMessage> validate (
-        JsonSchema schema, JsonInstance instance) {
-
-        Collection<ValidationMessage> messages = new ArrayList<> ();
-
+    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         String format = schema.getFormat ();
         if (format == null || !format.equals ("ipv6"))
-            return messages;
+            return new NullStep ();
 
         String instanceValue = instance.asString ();
         boolean valid = new IpV6Validator (instanceValue).validate ();
         if (!valid) {
-            messages.add (new IpV6Error (instance.getPath ()));
+            return new IpV6Step (new IpV6Error (instance.getPath ()));
         }
 
-        return messages;
+        return new IpV6Step ();
     }
 }
