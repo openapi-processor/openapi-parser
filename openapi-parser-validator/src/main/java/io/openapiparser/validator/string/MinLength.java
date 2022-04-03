@@ -7,10 +7,7 @@ package io.openapiparser.validator.string;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.ValidationMessage;
-
-import java.util.ArrayList;
-import java.util.Collection;
+import io.openapiparser.validator.steps.ValidationStep;
 
 /**
  * validates minLength.
@@ -22,19 +19,15 @@ import java.util.Collection;
  */
 public class MinLength {
 
-    public Collection<ValidationMessage> validate (
-        JsonSchema schema, JsonInstance instance) {
-
-        Collection<ValidationMessage> messages = new ArrayList<> ();
-
+    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         Integer minLength = schema.getMinLength ();
 
         String instanceValue = instance.asString ();
         boolean valid = instanceValue.codePointCount (0, instanceValue.length ()) >= minLength;
         if (!valid) {
-            messages.add (new MinLengthError(instance.getPath (), minLength));
+            return new MinLengthStep (new MinLengthError(instance.getPath (), minLength));
         }
 
-        return messages;
+        return new MinLengthStep ();
     }
 }
