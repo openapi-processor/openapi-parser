@@ -10,6 +10,7 @@ import io.openapiparser.validator.any.*;
 import io.openapiparser.validator.array.*;
 import io.openapiparser.validator.number.*;
 import io.openapiparser.validator.object.*;
+import io.openapiparser.validator.steps.ValidationStep;
 import io.openapiparser.validator.string.*;
 
 import java.io.UnsupportedEncodingException;
@@ -108,7 +109,7 @@ public class Validator {
             }
         }
 
-        messages.addAll (new Type ().validate (schema, instance));
+        messages.addAll (validateType (schema, instance).getMessages ());
 
         if (instance.isArray ()) {
             messages.addAll (validateArray (schema, instance));
@@ -124,6 +125,10 @@ public class Validator {
         }
 
         return messages;
+    }
+
+    private ValidationStep validateType (JsonSchema schema, JsonInstance instance) {
+        return new Type ().validate (schema, instance);
     }
 
     /** https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.4
@@ -165,7 +170,7 @@ public class Validator {
                 JsonPointer pointer = instance.getPointer ();
 
                 instanceProperties.forEach (k -> {
-                    messages.add (new AdditionalPropertiesError (pointer.append (k).toString ()));
+                    messages.add (new AdditionalPropertiesError (null, pointer.append (k).toString ()));
                 });
             }
         }

@@ -7,7 +7,8 @@ package io.openapiparser.validator.any;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.ValidationMessage;
+import io.openapiparser.validator.steps.NullStep;
+import io.openapiparser.validator.steps.ValidationStep;
 
 import java.math.BigInteger;
 import java.util.*;
@@ -22,12 +23,10 @@ import java.util.*;
  */
 public class Type {
 
-    public Collection<ValidationMessage> validate (JsonSchema schema, JsonInstance instance) {
-        Collection<ValidationMessage> messages = new ArrayList<> ();
-
+    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         final Collection<String> types = schema.getType ();
         if (types.isEmpty ())
-            return messages;
+            return new NullStep ();
 
         boolean matches = false;
         for (String type : types) {
@@ -54,10 +53,10 @@ public class Type {
         }
 
         if (!matches) {
-            messages.add (new TypeError (instance.getPath (), types));
+            return new TypeStep (new TypeError (instance.getPath (), types));
         }
 
-        return messages;
+        return new TypeStep ();
     }
 
     private boolean isBoolean (JsonInstance instance) {
