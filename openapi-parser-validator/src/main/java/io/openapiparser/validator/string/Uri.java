@@ -7,10 +7,9 @@ package io.openapiparser.validator.string;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.ValidationMessage;
+import io.openapiparser.validator.steps.NullStep;
+import io.openapiparser.validator.steps.ValidationStep;
 import io.openapiparser.validator.support.UriValidator;
-
-import java.util.*;
 
 /**
  * validates format: uri.
@@ -22,22 +21,18 @@ import java.util.*;
  */
 public class Uri {
 
-    public Collection<ValidationMessage> validate (
-        JsonSchema schema, JsonInstance instance) {
-
-        Collection<ValidationMessage> messages = new ArrayList<> ();
-
+    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         String format = schema.getFormat ();
         if (format == null || !format.equals ("uri"))
-            return messages;
+            return new NullStep ();
 
         String instanceValue = instance.asString ();
 
         boolean valid = new UriValidator (instanceValue).validate ();
         if (!valid) {
-            messages.add (new UriError (instance.getPath ()));
+            return new UriStep (new UriError (instance.getPath ()));
         }
 
-        return messages;
+        return new UriStep ();
     }
 }

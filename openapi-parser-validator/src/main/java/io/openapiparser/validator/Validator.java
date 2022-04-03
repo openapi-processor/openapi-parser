@@ -172,7 +172,7 @@ public class Validator {
         messages.addAll (new Hostname ().validate (schema, instance).getMessages ());
         messages.addAll (new IpV4 ().validate (schema, instance).getMessages ());
         messages.addAll (new IpV6 ().validate (schema, instance).getMessages ());
-        messages.addAll (new Uri ().validate (schema, instance));
+        messages.addAll (new Uri ().validate (schema, instance).getMessages ());
         return messages;
     }
 
