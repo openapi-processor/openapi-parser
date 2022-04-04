@@ -19,7 +19,7 @@ public class JsonInstance {
 
     private final Object root;
     private final Object value;
-    private final JsonPointer valuePointer;
+    private final JsonPointer valuePointer;  // location
 
     public JsonInstance (Object value, JsonInstanceContext context) {
         this.context = context;
@@ -142,6 +142,15 @@ public class JsonInstance {
 
     public boolean isEqual (JsonInstance other) {
         return Equals.equals (value, other.value);
+    }
+
+    @Override
+    public String toString () {
+        String location = valuePointer.toString ();
+        if (location == null) {
+            return String.format ("%s", context.getScope ());
+        }
+        return String.format ("%s", valuePointer);
     }
 
     private @Nullable URI getRef () {

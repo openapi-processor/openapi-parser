@@ -327,6 +327,15 @@ public class JsonSchemaObject implements JsonSchema {
         return schemaObject.convert ("format", new StringNullableConverter ());
     }
 
+    @Override
+    public String toString () {
+        String location = schemaObject.getLocation ().toString ();
+        if (location == null) {
+            return String.format ("%s", context.getScope ());
+        }
+        return String.format ("%s", schemaObject.getLocation ());
+    }
+
     private @Nullable JsonSchema getJsonSchemaOf (String property) {
         return schemaObject.convert (property, new JsonSchemaConverter (context));
     }

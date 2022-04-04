@@ -42,4 +42,9 @@ public class JsonSchemaBoolean implements JsonSchema {
     public boolean isFalse () {
         return !value;
     }
+
+    @Override
+    public String toString () {
+        return String.format ("%s - %s", pointer.toString (), value ? "true" : "false");
+    }
 }
