@@ -53,7 +53,7 @@ public class Type {
         }
 
         if (!matches) {
-            return new TypeStep (new TypeError (instance.getPath (), types));
+            return new TypeStep (new TypeError (instance.getScope (), instance.getPath (), types));
         }
 
         return new TypeStep ();
