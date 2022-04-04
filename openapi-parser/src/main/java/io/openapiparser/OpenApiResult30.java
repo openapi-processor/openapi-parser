@@ -9,6 +9,7 @@ import io.openapiparser.model.v30.OpenApi;
 import io.openapiparser.schema.*;
 import io.openapiparser.validator.Validator;
 import io.openapiparser.validator.ValidationMessage;
+import io.openapiparser.validator.steps.ValidationStep;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -54,7 +55,8 @@ public class OpenApiResult30 implements OpenApiResult {
     public boolean validate (Validator validator, SchemaStore schemaStore) {
         JsonSchema schema = schemaStore.addSchema (OPENAPI_SCHEMA_30_ID, OPENAPI_SCHEMA_30);
         JsonInstance instance = new JsonInstance (root.getRawValues (), context.getInstanceContext ());
-        validationMessages = validator.validate (schema, instance);
+        ValidationStep result = validator.validate (schema, instance);
+        validationMessages = result.getMessages ();
         return validationMessages.isEmpty ();
     }
 

@@ -17,6 +17,7 @@ import io.openapiparser.schema.JsonInstanceContext
 import io.openapiparser.schema.JsonSchemaBoolean
 import io.openapiparser.schema.SchemaStore
 import io.openapiparser.validator.Validator
+import io.openapiparser.validator.steps.ValidationStep
 import io.openapiparser.OpenApiResult30.OPENAPI_SCHEMA as OPENAPI_SCHEMA_30
 import io.openapiparser.OpenApiResult31.OPENAPI_SCHEMA as OPENAPI_SCHEMA_31
 import io.openapiparser.model.v30.OpenApi as OpenApi30
@@ -85,7 +86,8 @@ class OpenApiResultSpec: StringSpec({
         every { store.addSchema(OPENAPI_SCHEMA_30) } returns schema
 
         val validator = mockk<Validator>()
-        every { validator.validate(any(), any()) } returns emptyList()
+        val step = mockk<ValidationStep>()
+        every { validator.validate(any(), any()) } returns step
 
         // when
         val result = OpenApiResult30(ctx, bucket)
@@ -109,7 +111,8 @@ class OpenApiResultSpec: StringSpec({
         every { store.addSchema(OPENAPI_SCHEMA_31) } returns schema
 
         val validator = mockk<Validator>()
-        every { validator.validate(any(), any()) } returns emptyList()
+        val step = mockk<ValidationStep>()
+        every { validator.validate(any(), any()) } returns step
 
         // when
         val result = OpenApiResult31(ctx, bucket)
