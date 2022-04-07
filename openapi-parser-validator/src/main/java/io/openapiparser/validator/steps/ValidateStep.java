@@ -7,12 +7,8 @@ package io.openapiparser.validator.steps;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.ValidationMessage;
 
-import java.util.Collection;
-import java.util.Collections;
-
-public class ValidateStep implements ValidationStep {
+public class ValidateStep extends CompositeStep {
     private final JsonSchema schema;
     private final JsonInstance instance;
 
@@ -22,17 +18,9 @@ public class ValidateStep implements ValidationStep {
     }
 
     @Override
-    public Collection<ValidationStep> getSteps () {
-        return Collections.singletonList (this);
-    }
-
-    @Override
-    public Collection<ValidationMessage> getMessages () {
-        return Collections.emptyList ();
-    }
-
-    @Override
-    public boolean isValid () {
-        return true;
+    public String toString () {
+        return String.format ("%s (instance: %s), (schema: %s)", isValid () ? "valid" : "invalid",
+            schema.toString (),
+            instance.toString ());
     }
 }

@@ -31,8 +31,7 @@ public class Validator {
     }
 
     public ValidationStep validate(JsonSchema schema, JsonInstance instance) {
-        CompositeStep step = new CompositeStep ();
-        step.add (new ValidateStep (schema, instance));
+        ValidateStep step = new ValidateStep (schema, instance);
 
         while (schema.isRef()) {
             schema = schema.getRefSchema ();
@@ -120,7 +119,7 @@ public class Validator {
         }
 
         if (oneOf.size () > 0 && oneOfValidCount != 1) {
-            step.set (new OneOfError (instance.getPath ()));
+            step.set (new OneOfError (schema, instance));
         }
 
         return step;

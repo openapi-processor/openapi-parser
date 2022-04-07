@@ -50,4 +50,9 @@ public class CompositeStep implements ValidationStep {
         return steps.stream ()
             .allMatch (ValidationStep::isValid);
     }
+
+    @Override
+    public String toString () {
+        return isValid () ? "valid" : "invalid";
+    }
 }
