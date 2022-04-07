@@ -5,13 +5,16 @@
 
 package io.openapiparser.validator.any;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
 /**
  * Created by {@link io.openapiparser.validator.Validator}.
  */
 public class OneOfError extends ValidationMessage {
-    public OneOfError (String path) {
-        super (path, String.format ("should validate against exactly one schema of %s", path));
+
+    public OneOfError (JsonSchema schema, JsonInstance instance) {
+        super (schema, instance, "should validate against exactly one schema");
     }
 }
