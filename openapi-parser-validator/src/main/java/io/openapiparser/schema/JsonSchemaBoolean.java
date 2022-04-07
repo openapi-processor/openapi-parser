@@ -45,6 +45,6 @@ public class JsonSchemaBoolean implements JsonSchema {
 
     @Override
     public String toString () {
-        return String.format ("%s - %s", pointer.toString (), value ? "true" : "false");
+        return String.format ("%s (%b)", pointer.toString (), value);
     }
 }
