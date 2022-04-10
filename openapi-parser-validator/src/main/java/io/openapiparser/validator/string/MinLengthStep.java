@@ -19,14 +19,6 @@ public class MinLengthStep extends SimpleStep {
 
     @Override
     protected ValidationMessage getError () {
-        return new TypeError (schema, instance, schema.getType ());
-    }
-
-    public MinLengthStep () {
-        super ();
-    }
-
-    public MinLengthStep (ValidationMessage message) {
-        super(message);
+        return new MinLengthError (schema, instance);
     }
 }
