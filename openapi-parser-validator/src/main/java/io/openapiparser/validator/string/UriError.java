@@ -5,13 +5,15 @@
 
 package io.openapiparser.validator.string;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
 /**
- * Created by {@link Uri}.
+ * Created by {@link UriStep}.
  */
 public class UriError extends ValidationMessage {
-    public UriError (String path) {
-        super (path, "should conform to rfc3968");
+    public UriError (JsonSchema schema, JsonInstance instance) {
+        super (schema, instance, "should conform to rfc3968");
     }
 }

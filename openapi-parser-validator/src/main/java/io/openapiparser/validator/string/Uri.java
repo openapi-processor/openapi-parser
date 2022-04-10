@@ -26,13 +26,13 @@ public class Uri {
         if (format == null || !format.equals ("uri"))
             return new NullStep ();
 
-        String instanceValue = instance.asString ();
+        UriStep step = new UriStep (schema, instance);
 
-        boolean valid = new UriValidator (instanceValue).validate ();
+        boolean valid = new UriValidator (instance.asString ()).validate ();
         if (!valid) {
-            return new UriStep (new UriError (instance.getPath ()));
+            step.setInvalid ();
         }
 
-        return new UriStep ();
+        return step;
     }
 }
