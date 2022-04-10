@@ -5,13 +5,16 @@
 
 package io.openapiparser.validator.number;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
 /**
- * Created by {@link MultipleOf}.
+ * Created by {@link MultipleOfStep}.
  */
 public class MultipleOfError extends ValidationMessage {
-    public MultipleOfError (String path, Number multipleOf) {
-        super (path, String.format ("the value should be a multiple of %s", multipleOf.toString ()));
+    public MultipleOfError (JsonSchema schema, JsonInstance instance) {
+        super (schema, instance, String.format ("the value should be a multiple of %s",
+            schema.getMultipleOf ().toString ()));
     }
 }

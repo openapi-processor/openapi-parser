@@ -27,15 +27,17 @@ public class MultipleOf {
         if (multipleOf == null)
             return new NullStep ();
 
+        MultipleOfStep step = new MultipleOfStep (schema, instance);
+
         Number instanceValue = instance.asNumber();
         boolean invalid = new BigDecimal (instanceValue.toString ())
             .remainder (new BigDecimal (multipleOf.toString ()))
             .compareTo (BigDecimal.ZERO) != 0;
 
         if (invalid) {
-            return new MultipleOfStep (new MultipleOfError (instance.getPath (), multipleOf));
+            step.setInvalid ();
         }
 
-        return new MultipleOfStep ();
+        return step;
     }
 }

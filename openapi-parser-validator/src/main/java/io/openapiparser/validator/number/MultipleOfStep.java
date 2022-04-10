@@ -5,16 +5,19 @@
 
 package io.openapiparser.validator.number;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 import io.openapiparser.validator.steps.SimpleStep;
 
 public class MultipleOfStep extends SimpleStep {
 
-    public MultipleOfStep () {
-        super ();
+    public MultipleOfStep (JsonSchema schema, JsonInstance instance) {
+        super(schema, instance);
     }
 
-    public MultipleOfStep (ValidationMessage message) {
-        super(message);
+    @Override
+    protected ValidationMessage getError () {
+        return new MultipleOfError (schema, instance);
     }
 }
