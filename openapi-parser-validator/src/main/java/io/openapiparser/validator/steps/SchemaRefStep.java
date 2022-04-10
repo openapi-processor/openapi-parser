@@ -32,4 +32,9 @@ public class SchemaRefStep implements ValidationStep {
     public boolean isValid () {
         return true;
     }
+
+    @Override
+    public String toString () {
+        return String.format ("%s", schema.toString ());
+    }
 }

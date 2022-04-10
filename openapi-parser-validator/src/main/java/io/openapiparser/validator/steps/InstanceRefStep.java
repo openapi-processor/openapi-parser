@@ -32,4 +32,9 @@ public class InstanceRefStep implements ValidationStep {
     public boolean isValid () {
         return true;
     }
+
+    @Override
+    public String toString () {
+        return String.format ("%s", instance.toString ());
+    }
 }
