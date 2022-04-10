@@ -5,22 +5,19 @@
 
 package io.openapiparser.validator.any;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
-import java.net.URI;
 import java.util.Collection;
 
 /**
- * Created by {@link Type}.
+ * Created by {@link TypeStep}.
  */
 public class TypeError extends ValidationMessage {
 
-    public TypeError (URI scope, String path, Collection<String> types) {
-        this (scope.toString (), path, types);
-    }
-
-    public TypeError (String scope, String path, Collection<String> types) {
-        super (scope, path, String.format ("the type should be any of [%s]",
+    public TypeError (JsonSchema schema, JsonInstance instance, Collection<String> types) {
+        super (schema, instance, String.format ("the type should be any of [%s]",
             String.join (", ", types)));
     }
 }

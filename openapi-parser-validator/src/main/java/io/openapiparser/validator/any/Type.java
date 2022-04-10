@@ -28,6 +28,8 @@ public class Type {
         if (types.isEmpty ())
             return new NullStep ();
 
+        TypeStep step = new TypeStep (schema, instance);
+
         boolean matches = false;
         for (String type : types) {
             if ("null".equals (type) && instance.isNull ()) {
@@ -53,10 +55,10 @@ public class Type {
         }
 
         if (!matches) {
-            return new TypeStep (new TypeError (instance.getScope (), instance.getPath (), types));
+            step.setInvalid ();
         }
 
-        return new TypeStep ();
+        return step;
     }
 
     private boolean isBoolean (JsonInstance instance) {

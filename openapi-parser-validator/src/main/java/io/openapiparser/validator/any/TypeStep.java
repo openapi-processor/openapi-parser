@@ -5,16 +5,19 @@
 
 package io.openapiparser.validator.any;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 import io.openapiparser.validator.steps.SimpleStep;
 
 public class TypeStep extends SimpleStep {
 
-    public TypeStep () {
-        super ();
+    public TypeStep (JsonSchema schema, JsonInstance instance) {
+        super(schema, instance);
     }
 
-    public TypeStep (ValidationMessage message) {
-        super(message);
+    @Override
+    protected ValidationMessage getError () {
+        return new TypeError (schema, instance, schema.getType ());
     }
 }
