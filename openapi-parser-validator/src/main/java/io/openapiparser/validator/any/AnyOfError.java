@@ -5,13 +5,22 @@
 
 package io.openapiparser.validator.any;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
+import java.util.Collection;
+
 /**
- * Created by {@link io.openapiparser.validator.Validator}.
+ * Created by {@link io.openapiparser.validator.any.AnyOfStep}.
  */
 public class AnyOfError extends ValidationMessage {
-    public AnyOfError (String path) {
-        super (path, String.format ("should validate against any schema of %s", path));
+
+    public AnyOfError (
+        JsonSchema schema,
+        JsonInstance instance,
+        Collection<ValidationMessage> messages
+    ) {
+        super (schema, instance, "should validate against any schema", messages);
     }
 }

@@ -80,7 +80,7 @@ public class Validator {
         if (anyOf.isEmpty ())
             return new NullStep ();
 
-        AnyOfStep step = new AnyOfStep ();
+        AnyOfStep step = new AnyOfStep (schema, instance);
 
         int anyOfValidCount = 0;
         for (JsonSchema anyOfSchema : anyOf) {
@@ -94,7 +94,7 @@ public class Validator {
         }
 
         if (anyOf.size () > 0 && anyOfValidCount == 0) {
-            step.set (new AnyOfError (instance.getPath ()));
+            step.setInvalid ();
         }
 
         return step;
