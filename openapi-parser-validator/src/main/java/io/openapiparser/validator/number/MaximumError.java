@@ -5,14 +5,17 @@
 
 package io.openapiparser.validator.number;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
 /**
- * Created by {@link Maximum}.
+ * Created by {@link MaximumStep}.
  */
 public class MaximumError extends ValidationMessage {
-    public MaximumError (String path, Number maximum, Boolean exclusive) {
-        super (path, String.format ("the value should be %s than %s",
-            exclusive ? "less" : "less or equal", maximum.toString ()));
+
+    public MaximumError (JsonSchema schema, JsonInstance instance) {
+        super (schema, instance, String.format ("the value should be %s than %s",
+            schema.getExclusiveMaximum () ? "less" : "less or equal", schema.getMaximum ().toString ()));
     }
 }

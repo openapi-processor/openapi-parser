@@ -29,6 +29,8 @@ public class Maximum {
         if (maximum == null)
             return new NullStep ();
 
+        MaximumStep step = new MaximumStep (schema, instance);
+
         boolean valid;
         if (exclusive) {
             valid = compareTo (instance, maximum) < 0;
@@ -37,10 +39,10 @@ public class Maximum {
         }
 
         if (!valid) {
-            return new MaximumStep (new MaximumError (instance.getPath (), maximum, exclusive));
+            step.setInvalid ();
         }
 
-        return new MaximumStep ();
+        return step;
     }
 
     private int compareTo (JsonInstance instance, Number maximum) {
