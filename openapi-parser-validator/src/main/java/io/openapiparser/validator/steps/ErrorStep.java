@@ -7,6 +7,7 @@ package io.openapiparser.validator.steps;
 
 import io.openapiparser.validator.ValidationMessage;
 
+@Deprecated
 public class ErrorStep extends SimpleStep {
 
     public ErrorStep (ValidationMessage message) {
