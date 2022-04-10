@@ -16,6 +16,7 @@ public class MaximumError extends ValidationMessage {
 
     public MaximumError (JsonSchema schema, JsonInstance instance) {
         super (schema, instance, String.format ("the value should be %s than %s",
-            schema.getExclusiveMaximum () ? "less" : "less or equal", schema.getMaximum ().toString ()));
+            schema.getExclusiveMaximum () ? "less" : "less or equal",
+            schema.getMaximum ().toString ()));
     }
 }

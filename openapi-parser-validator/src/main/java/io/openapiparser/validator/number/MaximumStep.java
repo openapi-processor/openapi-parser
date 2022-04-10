@@ -8,7 +8,6 @@ package io.openapiparser.validator.number;
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
-import io.openapiparser.validator.any.TypeError;
 import io.openapiparser.validator.steps.SimpleStep;
 
 public class MaximumStep extends SimpleStep {
