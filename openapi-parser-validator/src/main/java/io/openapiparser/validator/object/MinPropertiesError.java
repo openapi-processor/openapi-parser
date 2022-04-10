@@ -5,13 +5,16 @@
 
 package io.openapiparser.validator.object;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
 /**
- * Created by {@link MinProperties}.
+ * Created by {@link MinPropertiesStep}.
  */
 public class MinPropertiesError extends ValidationMessage {
-    public MinPropertiesError (String path, int size) {
-        super (path, String.format ("the size should be greater or equal to %d", size));
+
+    public MinPropertiesError (JsonSchema schema, JsonInstance instance, int size) {
+        super (schema, instance, String.format ("the size should be greater or equal to %d", size));
     }
 }

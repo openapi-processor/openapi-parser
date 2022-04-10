@@ -29,9 +29,11 @@ public class MinProperties {
         if (minProperties == null)
             return new NullStep ();
 
-        if (instanceProperties.size () >= minProperties)
-            return new MinPropertiesStep ();
+        MinPropertiesStep step = new MinPropertiesStep (schema, instance);
+        if (instanceProperties.size () < minProperties) {
+            step.setInvalid ();
+        }
 
-        return new MinPropertiesStep (new MinPropertiesError (instance.getPath (), minProperties));
+        return step;
     }
 }
