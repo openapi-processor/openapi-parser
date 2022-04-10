@@ -141,6 +141,8 @@ public class Validator {
         if (enums.isEmpty ())
             return new NullStep ();
 
+        EnumStep step = new EnumStep (schema, instance);
+
         boolean valid = false;
         for (JsonInstance value : enums) {
             if (instance.isEqual (value)) {
@@ -150,9 +152,10 @@ public class Validator {
         }
 
         if (!valid) {
-            return new EnumStep (new EnumError (instance.getPath ()));
+            step.setInvalid ();
         }
-        return new EnumStep ();
+
+        return step;
     }
 
     private ValidationStep validateType (JsonSchema schema, JsonInstance instance) {

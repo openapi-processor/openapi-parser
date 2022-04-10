@@ -5,16 +5,19 @@
 
 package io.openapiparser.validator.any;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 import io.openapiparser.validator.steps.SimpleStep;
 
 public class EnumStep extends SimpleStep {
 
-    public EnumStep () {
-        super ();
+    public EnumStep (JsonSchema schema, JsonInstance instance) {
+        super(schema, instance);
     }
 
-    public EnumStep (ValidationMessage message) {
-        super(message);
+    @Override
+    protected ValidationMessage getError () {
+        return new EnumError (schema, instance);
     }
 }

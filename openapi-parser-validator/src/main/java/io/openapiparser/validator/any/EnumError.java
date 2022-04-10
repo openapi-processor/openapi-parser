@@ -5,13 +5,16 @@
 
 package io.openapiparser.validator.any;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
 /**
- * Created by {@link io.openapiparser.validator.Validator}.
+ * Created by {@link io.openapiparser.validator.any.EnumStep}.
  */
 public class EnumError extends ValidationMessage {
-    public EnumError (String path) {
-        super (path, "should be enum value");
+
+    public EnumError (JsonSchema schema, JsonInstance instance) {
+        super (schema, instance, "should be enum value");
     }
 }
