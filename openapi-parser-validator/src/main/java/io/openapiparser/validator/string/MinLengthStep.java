@@ -5,10 +5,22 @@
 
 package io.openapiparser.validator.string;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
+import io.openapiparser.validator.any.TypeError;
 import io.openapiparser.validator.steps.SimpleStep;
 
 public class MinLengthStep extends SimpleStep {
+
+    public MinLengthStep (JsonSchema schema, JsonInstance instance) {
+        super(schema, instance);
+    }
+
+    @Override
+    protected ValidationMessage getError () {
+        return new TypeError (schema, instance, schema.getType ());
+    }
 
     public MinLengthStep () {
         super ();

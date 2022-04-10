@@ -5,13 +5,18 @@
 
 package io.openapiparser.validator.string;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
 /**
- * Created by {@link MinLength}.
+ * Created by {@link MinLengthStep}.
  */
 public class MinLengthError extends ValidationMessage {
-    public MinLengthError (String path, Integer minLength) {
-        super (path, String.format ("the length should be greater or equal to %s", minLength));
+
+    public MinLengthError (JsonSchema schema, JsonInstance instance) {
+        super (schema, instance, String.format ("the length should be greater or equal to %s",
+            schema.getMinLength ()
+        ));
     }
 }

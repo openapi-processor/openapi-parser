@@ -20,14 +20,15 @@ import io.openapiparser.validator.steps.ValidationStep;
 public class MinLength {
 
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
-        Integer minLength = schema.getMinLength ();
+        MinLengthStep step = new MinLengthStep (schema, instance);
 
+        Integer minLength = schema.getMinLength ();
         String instanceValue = instance.asString ();
         boolean valid = instanceValue.codePointCount (0, instanceValue.length ()) >= minLength;
         if (!valid) {
-            return new MinLengthStep (new MinLengthError(instance.getPath (), minLength));
+            step.setInvalid ();
         }
 
-        return new MinLengthStep ();
+        return step;
     }
 }
