@@ -33,14 +33,15 @@ public class Email {
         if (format == null || !format.equals ("email"))
             return new NullStep ();
 
+        EmailStep step = new EmailStep (schema, instance);
+
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(EMAIL_REGEX);
         String instanceValue = instance.asString ();
         Matcher m = p.matcher(instanceValue);
         boolean valid = m.find ();
+        if (!valid)
+            step.setInvalid ();
 
-        if (valid)
-            return new EmailStep ();
-
-        return new EmailStep (new EmailError (instance.getPath ()));
+        return step;
     }
 }

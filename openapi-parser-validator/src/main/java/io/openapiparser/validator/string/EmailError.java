@@ -5,13 +5,15 @@
 
 package io.openapiparser.validator.string;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
 /**
- * Created by {@link Email}.
+ * Created by {@link EmailStep}.
  */
 public class EmailError extends ValidationMessage {
-    public EmailError (String path) {
-        super (path, "should conform to rfc5322");
+    public EmailError (JsonSchema schema, JsonInstance instance) {
+        super (schema, instance, "should conform to rfc5322");
     }
 }
