@@ -5,13 +5,17 @@
 
 package io.openapiparser.validator.string;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
 /**
- * Created by {@link Pattern}.
+ * Created by {@link PatternStep}.
  */
 public class PatternError extends ValidationMessage {
-    public PatternError (String path, String regex) {
-        super (path, String.format ("should match the regular expression %s", regex));
+
+    public PatternError (JsonSchema schema, JsonInstance instance) {
+        super (schema, instance, String.format ("should match the regular expression %s",
+            schema.getPattern ()));
     }
 }

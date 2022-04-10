@@ -27,14 +27,16 @@ public class Pattern {
         if (pattern == null)
             return new NullStep ();
 
+        PatternStep step = new PatternStep (schema, instance);
+
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(pattern);
         String instanceValue = instance.asString ();
         Matcher m = p.matcher(instanceValue);
         boolean valid = m.find ();
         if(!valid) {
-            return new PatternStep (new PatternError(instance.getPath (), pattern));
+            step.setInvalid ();
         }
 
-        return new PatternStep ();
+        return step;
     }
 }
