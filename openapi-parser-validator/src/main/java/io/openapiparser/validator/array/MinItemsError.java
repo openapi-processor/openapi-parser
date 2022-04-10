@@ -5,13 +5,16 @@
 
 package io.openapiparser.validator.array;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
 /**
- * Created by {@link MinItems}.
+ * Created by {@link MinItemsStep}.
  */
 public class MinItemsError extends ValidationMessage {
-    public MinItemsError (String path, int size) {
-        super (path, String.format ("the size should be greater or equal to %d", size));
+
+    public MinItemsError (JsonSchema schema, JsonInstance instance, int size) {
+        super (schema, instance, String.format ("the size should be greater or equal to %d", size));
     }
 }

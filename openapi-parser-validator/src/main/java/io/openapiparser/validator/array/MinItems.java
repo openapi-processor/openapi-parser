@@ -22,12 +22,15 @@ import java.util.Collection;
 public class MinItems {
 
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
+        MinItemsStep step = new MinItemsStep (schema, instance);
+
         Collection<Object> instanceValue = instance.asCollection ();
         int minItems = schema.getMinItems ();
         if (instanceValue.size () < minItems) {
-            return new MinItemsStep (new MinItemsError (instance.getPath (), minItems));
+            step.setInvalid ();
+            return step;
         }
 
-        return new MinItemsStep ();
+        return step;
     }
 }
