@@ -102,11 +102,11 @@ public class Validator {
 
     // draft4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.5
     private ValidationStep validateOneOf (JsonSchema schema, JsonInstance instance) {
-        OneOfStep step = new OneOfStep ();
-
         Collection<JsonSchema> oneOf = schema.getOneOf ();
         if (oneOf.isEmpty ())
             return new NullStep ();
+
+        OneOfStep step = new OneOfStep (schema, instance);
 
         int oneOfValidCount = 0;
         for (JsonSchema oneOfSchema : oneOf) {
@@ -119,7 +119,7 @@ public class Validator {
         }
 
         if (oneOf.size () > 0 && oneOfValidCount != 1) {
-            step.set (new OneOfError (schema, instance));
+            step.setInvalid ();
         }
 
         return step;

@@ -8,6 +8,8 @@ package io.openapiparser.validator;
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
 
+import java.util.*;
+
 // todo interface
 public class ValidationMessage {
     private final String text;
@@ -15,9 +17,12 @@ public class ValidationMessage {
     private final JsonSchema schema;
     private final JsonInstance instance;
 
-    private final String scope;
-    private final String path;
+    private Collection<ValidationMessage> nestedMessage = Collections.emptyList ();
 
+    @Deprecated private final String scope;
+    @Deprecated private final String path;
+
+    @Deprecated
     public ValidationMessage (String path, String text) {
         this.text = text;
         this.schema = null;
@@ -25,6 +30,8 @@ public class ValidationMessage {
         this.scope = "?";
         this.path = path;
     }
+
+    @Deprecated
     public ValidationMessage (String scope, String path, String text) {
         this.text = text;
         this.schema = null;
@@ -39,6 +46,20 @@ public class ValidationMessage {
         this.instance = instance;
         this.scope = instance.getScope ().toString ();
         this.path = instance.getPath ();
+    }
+
+    public ValidationMessage (
+        JsonSchema schema,
+        JsonInstance instance,
+        String text,
+        Collection<ValidationMessage> nestedMessage) {
+
+        this.text = text;
+        this.schema = schema;
+        this.instance = instance;
+        this.scope = instance.getScope ().toString ();
+        this.path = instance.getPath ();
+        this.nestedMessage = nestedMessage;
     }
 
     @Deprecated
@@ -69,6 +90,10 @@ public class ValidationMessage {
 
     public String getText () {
         return text;
+    }
+
+    public Collection<ValidationMessage> getNestedMessages () {
+        return nestedMessage;
     }
 
     @Override

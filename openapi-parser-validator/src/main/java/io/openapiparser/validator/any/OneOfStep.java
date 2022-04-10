@@ -5,40 +5,39 @@
 
 package io.openapiparser.validator.any;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 import io.openapiparser.validator.steps.CompositeStep;
-import io.openapiparser.validator.steps.ValidationStep;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Collection;
 import java.util.Collections;
 
 public class OneOfStep extends CompositeStep {
-    private @Nullable ValidationMessage message;
+    private final JsonSchema schema;
+    private final JsonInstance instance;
+    private boolean valid = true;
 
-    public void set (ValidationMessage message) {
-        this.message = message;
+    public OneOfStep (JsonSchema schema, JsonInstance instance) {
+        this.schema = schema;
+        this.instance = instance;
+    }
+
+    public void setInvalid () {
+        valid = false;
     }
 
     @Override
     public Collection<ValidationMessage> getMessages () {
-        if (message == null)
+        if (isValid ())
             return Collections.emptyList ();
 
-        return Collections.singletonList (message);
+        return Collections.singletonList (
+            new OneOfError (schema, instance, super.getMessages ()));
     }
 
     @Override
     public boolean isValid () {
-        int validCount = 0;
-
-        for (ValidationStep step : steps) {
-            boolean valid = step.isValid ();
-            if (valid) {
-                validCount++;
-            }
-        }
-
-        return validCount == 1;
+        return valid;
     }
 }
