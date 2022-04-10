@@ -98,6 +98,7 @@ public class ValidationMessage {
 
     @Override
     public String toString () {
-        return String.format ("%s: %s", path, text);
+        return String.format ("%s (instance: %s)  (schema: %s)", text,
+            getInstancePath (), getSchemaPath ());
     }
 }
