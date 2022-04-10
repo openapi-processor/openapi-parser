@@ -5,14 +5,17 @@
 
 package io.openapiparser.validator.number;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
 /**
- * Created by {@link Minimum}.
+ * Created by {@link MinimumStep}.
  */
 public class MinimumError extends ValidationMessage {
-    public MinimumError (String path, Number minimum, Boolean exclusive) {
-        super (path, String.format ("the value should be %s than %s",
-            exclusive ? "greater" : "greater or equal", minimum.toString ()));
+    public MinimumError (JsonSchema schema, JsonInstance instance) {
+        super (schema, instance, String.format ("the value should be %s than %s",
+            schema.getExclusiveMinimum () ? "greater" : "greater or equal",
+            schema.getMinimum ().toString ()));
     }
 }

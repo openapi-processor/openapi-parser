@@ -29,6 +29,8 @@ public class Minimum {
         if (minimum == null)
             return new NullStep ();
 
+        MinimumStep step = new MinimumStep (schema, instance);
+
         boolean valid;
         if (exclusive) {
             valid = compareTo (instance, minimum) > 0;
@@ -37,10 +39,10 @@ public class Minimum {
         }
 
         if (!valid) {
-            return new MinimumStep (new MinimumError (instance.getPath (), minimum, exclusive));
+            step.setInvalid ();
         }
 
-        return new MinimumStep ();
+        return step;
     }
 
     private int compareTo (JsonInstance instance, Number minimum) {
