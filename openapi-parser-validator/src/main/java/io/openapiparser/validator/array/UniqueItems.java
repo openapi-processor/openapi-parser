@@ -22,16 +22,19 @@ import java.util.*;
 public class UniqueItems {
 
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
+        UniqueItemsStep step = new UniqueItemsStep (schema, instance);
+
         Collection<Object> instanceValue = instance.asCollection ();
         if (schema.isUniqueItems ()) {
             Set<Object> items = new HashSet<> ();
             for (Object item : instanceValue) {
                 if (!items.add (item)) {
-                    return new UniqueItemsStep (new UniqueItemsError (instance.getPath ()));
+                    step.setInvalid ();
+                    return step;
                 }
             }
         }
 
-        return new UniqueItemsStep ();
+        return step;
     }
 }

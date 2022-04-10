@@ -5,13 +5,16 @@
 
 package io.openapiparser.validator.array;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
 /**
- * Created by {@link UniqueItems}.
+ * Created by {@link UniqueItemsStep}.
  */
 public class UniqueItemsError extends ValidationMessage {
-    public UniqueItemsError (String path) {
-        super (path, "the items are not unique");
+
+    public UniqueItemsError (JsonSchema schema, JsonInstance instance) {
+        super (schema, instance, "the items should be unique");
     }
 }
