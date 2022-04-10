@@ -28,6 +28,8 @@ public class DateTime {
         if (format == null || !format.equals ("date-time"))
             return new NullStep ();
 
+        DateTimeStep step = new DateTimeStep (schema, instance);
+
         String instanceValue = instance.asString ();
         DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
 
@@ -35,9 +37,9 @@ public class DateTime {
             formatter.parse (instanceValue, OffsetDateTime::from);
 
         } catch (RuntimeException ex) {
-            return new DateTimeStep (new DateTimeError (instance.getPath ()));
+            step.setInvalid ();
         }
 
-        return new DateTimeStep ();
+        return step;
     }
 }

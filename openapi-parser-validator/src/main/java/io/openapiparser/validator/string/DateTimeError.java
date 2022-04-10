@@ -5,13 +5,15 @@
 
 package io.openapiparser.validator.string;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
 /**
- * Created by {@link DateTime}.
+ * Created by {@link DateTimeStep}.
  */
 public class DateTimeError extends ValidationMessage {
-    public DateTimeError (String path) {
-        super (path, "should conform to ISO 8601");
+    public DateTimeError (JsonSchema schema, JsonInstance instance) {
+        super (schema, instance, "should conform to ISO 8601");
     }
 }
