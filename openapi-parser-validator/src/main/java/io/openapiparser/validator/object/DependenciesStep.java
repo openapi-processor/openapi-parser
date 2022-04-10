@@ -5,7 +5,16 @@
 
 package io.openapiparser.validator.object;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.steps.CompositeStep;
 
 public class DependenciesStep extends CompositeStep {
+    private final JsonSchema schema;
+    private final JsonInstance instance;
+
+    public DependenciesStep (JsonSchema schema, JsonInstance instance) {
+        this.schema = schema;
+        this.instance = instance;
+    }
 }

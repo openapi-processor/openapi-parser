@@ -27,7 +27,7 @@ public class Dependencies {
     }
 
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
-        CompositeStep step = new DependenciesStep ();
+        DependenciesStep step = new DependenciesStep (schema, instance);
 
         Map<String, JsonDependency> dependencies = schema.getDependencies ();
         instance.asObject ().forEach ((propName, unused) -> {
@@ -40,7 +40,9 @@ public class Dependencies {
 
                     propDependency.getProperties ().forEach ( p -> {
                         if (!instanceProperties.contains (p)) {
-                            step.add (new ErrorStep (new DependenciesError (instance.getPath (), p)));
+                            DependencyStep depStep = new DependencyStep (schema, instance, p);
+                            depStep.setInvalid ();
+                            step.add (depStep);
                         }
                     });
                 }

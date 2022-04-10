@@ -5,13 +5,16 @@
 
 package io.openapiparser.validator.object;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
 /**
- * Created by {@link io.openapiparser.validator.Validator}.
+ * Created by {@link io.openapiparser.validator.object.DependenciesStep}.
  */
 public class DependenciesError extends ValidationMessage {
-    public DependenciesError (String path, String propertyName) {
-        super (path, String.format ("should have dependency property %s", propertyName));
+
+    public DependenciesError (JsonSchema schema, JsonInstance instance, String propertyName) {
+        super (schema, instance, String.format ("should have dependency property '%s'", propertyName));
     }
 }
