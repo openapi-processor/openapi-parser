@@ -5,13 +5,16 @@
 
 package io.openapiparser.validator.array;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
 /**
- * Created by {@link MaxItems}.
+ * Created by {@link MaxItemsStep}.
  */
 public class MaxItemsError extends ValidationMessage {
-    public MaxItemsError (String path, int size) {
-        super (path, String.format ("the size should be less or equal to %d", size));
+
+    public MaxItemsError (JsonSchema schema, JsonInstance instance, int size) {
+        super (schema, instance, String.format ("the size should be less or equal to %d", size));
     }
 }

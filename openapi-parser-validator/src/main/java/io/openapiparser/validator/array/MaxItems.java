@@ -28,9 +28,12 @@ public class MaxItems {
         if (maxItems == null)
             return new NullStep ();
 
-        if (instanceValue.size () <= maxItems)
-            return new MaxItemsStep ();
+        MaxItemsStep step = new MaxItemsStep (schema, instance);
 
-        return new MaxItemsStep (new MaxItemsError (instance.getPath (), maxItems));
+        if (instanceValue.size () <= maxItems)
+            return step;
+
+        step.setInvalid ();
+        return step;
     }
 }
