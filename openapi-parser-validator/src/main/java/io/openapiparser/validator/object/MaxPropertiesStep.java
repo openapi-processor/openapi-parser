@@ -5,16 +5,19 @@
 
 package io.openapiparser.validator.object;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 import io.openapiparser.validator.steps.SimpleStep;
 
 public class MaxPropertiesStep extends SimpleStep {
 
-    public MaxPropertiesStep () {
-        super ();
+    public MaxPropertiesStep (JsonSchema schema, JsonInstance instance) {
+        super(schema, instance);
     }
 
-    public MaxPropertiesStep (ValidationMessage message) {
-        super(message);
+    @Override
+    protected ValidationMessage getError () {
+        return new MaxPropertiesError (schema, instance, schema.getMaxProperties ());
     }
 }

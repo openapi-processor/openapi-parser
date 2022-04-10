@@ -5,13 +5,16 @@
 
 package io.openapiparser.validator.object;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
 /**
- * Created by {@link MaxProperties}.
+ * Created by {@link MaxPropertiesStep}.
  */
 public class MaxPropertiesError extends ValidationMessage {
-    public MaxPropertiesError (String path, int size) {
-        super (path, String.format ("the size should be less or equal to %d", size));
+
+    public MaxPropertiesError (JsonSchema schema, JsonInstance instance, int size) {
+        super (schema, instance, String.format ("the size should be less or equal to %d", size));
     }
 }

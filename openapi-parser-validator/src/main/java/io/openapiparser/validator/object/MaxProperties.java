@@ -29,9 +29,11 @@ public class MaxProperties {
         if (maxProperties == null)
             return new NullStep ();
 
-        if (instanceProperties.size () <= maxProperties)
-            return new MaxPropertiesStep ();
+        MaxPropertiesStep step = new MaxPropertiesStep (schema, instance);
 
-        return new MaxPropertiesStep (new MaxPropertiesError (instance.getPath (), maxProperties));
+        if (instanceProperties.size () > maxProperties)
+            step.setInvalid ();
+
+        return step;
     }
 }
