@@ -76,7 +76,9 @@ public class Items {
                 JsonSchema additionalSchema = additional.getSchema ();
 
                 if (isBooleanFalse (additionalSchema) && instanceSize > items.size ()) {
-                    step.add (new ErrorStep (new ItemsSizeError (instance.getPath (), items.size ())));
+                    ItemsSizeStep sStep = new ItemsSizeStep (additionalSchema, instance);
+                    sStep.setInvalid ();
+                    step.add (sStep);
                 }
 
                 IntStream.range (0, instanceSize)

@@ -5,13 +5,16 @@
 
 package io.openapiparser.validator.array;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
 /**
  * Created by {@link Items}.
  */
 public class ItemsSizeError extends ValidationMessage {
-    public ItemsSizeError (String path, int size) {
-        super (path, String.format ("the size should be less or equal to %d", size));
+    public ItemsSizeError (JsonSchema schema, JsonInstance instance) {
+        super (schema, instance, String.format ("the size should be less or equal to %d",
+            schema.getItems ().size ()));
     }
 }
