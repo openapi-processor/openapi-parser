@@ -50,10 +50,13 @@ public class Validator {
         step.add (validateAllOf (schema, instance));
         step.add (validateAnyOf (schema, instance));
         step.add (validateOneOf (schema, instance));
-
         step.add (validateNot (schema, instance));
         step.add (validateEnum (schema, instance));
         step.add (validateType (schema, instance));
+        step.add (validateIfArray (schema, instance));
+        step.add (validateIfObject (schema, instance));
+        step.add (validateIfNumber (schema, instance));
+        step.add (validateIfString (schema, instance));
 
         return step;
     }
@@ -167,24 +170,61 @@ public class Validator {
     }
 
     private ValidationStep validateType (JsonSchema schema, JsonInstance instance) {
-        CompositeStep step = new FlatStep ();
-        step.add (new Type ().validate (schema, instance));
+        return new Type ().validate (schema, instance);
+    }
 
-        if (instance.isArray ()) {
-            step.add (validateArray (schema, instance));
-
-        } else if (instance.isObject ()) {
-            step.add (validateObject (schema, instance));
-
-        } else if (instance.isNumber ()) {
-            step.add (validateNumber (schema, instance));
-
-        } else if (instance.isString ()) {
-            step.add (validateString (schema, instance));
+    private ValidationStep validateIfArray (JsonSchema schema, JsonInstance instance) {
+        if (!instance.isArray ()) {
+            return new NullStep ();
         }
 
-        return step;
+        return validateArray (schema, instance);
     }
+
+    private ValidationStep validateIfObject (JsonSchema schema, JsonInstance instance) {
+        if (!instance.isObject ()) {
+            return new NullStep ();
+        }
+
+        return validateObject (schema, instance);
+    }
+
+    private ValidationStep validateIfNumber (JsonSchema schema, JsonInstance instance) {
+        if (!instance.isNumber ()) {
+            return new NullStep ();
+        }
+
+        return validateNumber (schema, instance);
+    }
+
+    private ValidationStep validateIfString (JsonSchema schema, JsonInstance instance) {
+        if (!instance.isString ()) {
+            return new NullStep ();
+        }
+
+        return validateString (schema, instance);
+    }
+
+//    @Deprecated
+//    private ValidationStep validateTypeOld (JsonSchema schema, JsonInstance instance) {
+//        CompositeStep step = new FlatStep ();
+//        step.add (new Type ().validate (schema, instance));
+//
+//        if (instance.isArray ()) {
+//            step.add (validateArray (schema, instance));
+//
+//        } else if (instance.isObject ()) {
+//            step.add (validateObject (schema, instance));
+//
+//        } else if (instance.isNumber ()) {
+//            step.add (validateNumber (schema, instance));
+//
+//        } else if (instance.isString ()) {
+//            step.add (validateString (schema, instance));
+//        }
+//
+//        return step;
+//    }
 
     private ValidationStep validateArray (JsonSchema schema, JsonInstance instance) {
         CompositeStep step = new FlatStep ();
