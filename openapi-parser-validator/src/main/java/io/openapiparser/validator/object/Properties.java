@@ -9,7 +9,6 @@ import io.openapiparser.schema.*;
 import io.openapiparser.validator.Validator;
 import io.openapiparser.validator.steps.*;
 
-import java.net.URI;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,7 +29,7 @@ public class Properties {
     }
 
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
-        PropertiesStep step = new PropertiesStep ();
+        PropertiesStep step = new PropertiesStep (schema, instance);
 
         Map<String, JsonSchema> schemaProperties = schema.getProperties ();
         Map<String, JsonSchema> patternProperties = schema.getPatternProperties ();
@@ -55,11 +54,10 @@ public class Properties {
             }
 
             if (!instanceProperties.isEmpty ()) {
-                JsonPointer pointer = instance.getPointer ();
-                URI scope = instance.getScope ();
-
                 instanceProperties.forEach (k -> {
-                    step.add (new PropertiesError (scope, pointer.append (k).toString ()));
+                    PropertyStep pStep = new PropertyStep (schema, instance, k);
+                    pStep.setInvalid ();
+                    step.add (pStep);
                 });
             }
         }

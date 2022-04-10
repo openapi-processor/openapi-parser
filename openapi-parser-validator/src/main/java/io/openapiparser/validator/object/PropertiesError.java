@@ -5,20 +5,16 @@
 
 package io.openapiparser.validator.object;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
-import java.net.URI;
-
 /**
- * Created by {@link io.openapiparser.validator.Validator}.
+ * Created by {@link io.openapiparser.validator.object.Properties}.
  */
 public class PropertiesError extends ValidationMessage {
 
-    public PropertiesError (URI scope, String path) {
-        this (scope.toString (), path);
-    }
-
-    public PropertiesError (String scope, String path) {
-        super (scope, path, "invalid property");
+    public PropertiesError (JsonSchema schema, JsonInstance instance) {
+        super (schema, instance, "should not have an invalid property");
     }
 }
