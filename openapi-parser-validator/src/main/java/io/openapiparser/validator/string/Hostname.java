@@ -25,14 +25,15 @@ public class Hostname {
         if (format == null || !format.equals ("hostname"))
             return new NullStep ();
 
+        HostnameStep step = new HostnameStep (schema, instance);
+
         String instanceValue = instance.asString ();
         boolean valid = isValid (instanceValue);
-
         if (!valid) {
-            return new HostnameStep (new HostnameError (instance.getPath ()));
+            step.setInvalid ();
         }
 
-        return new HostnameStep ();
+        return step;
     }
 
     boolean isValid(String ip) {

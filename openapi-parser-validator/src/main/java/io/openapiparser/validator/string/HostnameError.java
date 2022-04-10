@@ -5,13 +5,15 @@
 
 package io.openapiparser.validator.string;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
 /**
- * Created by {@link Hostname}.
+ * Created by {@link HostnameStep}.
  */
 public class HostnameError extends ValidationMessage {
-    public HostnameError (String path) {
-        super (path, "should conform to rfc1034");
+    public HostnameError (JsonSchema schema, JsonInstance instance) {
+        super (schema, instance, "should conform to rfc1034");
     }
 }
