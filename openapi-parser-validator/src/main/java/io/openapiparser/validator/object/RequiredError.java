@@ -5,13 +5,16 @@
 
 package io.openapiparser.validator.object;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
 /**
- * Created by {@link Required}.
+ * Created by {@link RequiredStep}.
  */
 public class RequiredError extends ValidationMessage {
-    public RequiredError (String path, String property) {
-        super (path, String.format ("should have a property '%s'", property));
+
+    public RequiredError (JsonSchema schema, JsonInstance instance, String propertyName) {
+        super (schema, instance, String.format ("should have a property '%s'", propertyName));
     }
 }

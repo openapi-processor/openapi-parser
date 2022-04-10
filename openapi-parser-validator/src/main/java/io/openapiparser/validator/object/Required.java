@@ -28,14 +28,16 @@ public class Required {
         if (requiredProperties == null)
             return new NullStep ();
 
-        CompositeStep step = new RequiredStep ();
+        RequiredStep step = new RequiredStep (schema, instance);
         requiredProperties.forEach (p -> {
             boolean found = instanceProperties.contains (p);
             if (found) {
                 return;
             }
 
-            step.add (new ErrorStep (new RequiredError (instance.getPath (), p)));
+            RequireStep rStep = new RequireStep (schema, instance, p);
+            rStep.setInvalid ();
+            step.add (rStep);
         });
 
         return step;
