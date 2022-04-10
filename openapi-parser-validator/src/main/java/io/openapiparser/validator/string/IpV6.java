@@ -26,12 +26,14 @@ public class IpV6 {
         if (format == null || !format.equals ("ipv6"))
             return new NullStep ();
 
+        IpV6Step step = new IpV6Step (schema, instance);
+
         String instanceValue = instance.asString ();
         boolean valid = new IpV6Validator (instanceValue).validate ();
         if (!valid) {
-            return new IpV6Step (new IpV6Error (instance.getPath ()));
+            step.setInvalid ();
         }
 
-        return new IpV6Step ();
+        return step;
     }
 }
