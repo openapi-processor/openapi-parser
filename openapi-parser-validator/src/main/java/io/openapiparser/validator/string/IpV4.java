@@ -26,12 +26,14 @@ public class IpV4 {
         if (format == null || !format.equals ("ipv4"))
             return new NullStep ();
 
+        IpV4Step step = new IpV4Step (schema, instance);
+
         String instanceValue = instance.asString ();
         boolean valid = new IpV4Validator (instanceValue).validate ();
         if (!valid) {
-            return new IpV4Step (new IpV4Error (instance.getPath ()));
+            step.setInvalid ();
         }
 
-        return new IpV4Step ();
+        return step;
     }
 }

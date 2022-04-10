@@ -5,13 +5,15 @@
 
 package io.openapiparser.validator.string;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
 /**
- * Created by {@link IpV4}.
+ * Created by {@link IpV4Step}.
  */
 public class IpV4Error extends ValidationMessage {
-    public IpV4Error (String path) {
-        super (path, "should conform to rfc2673");
+    public IpV4Error (JsonSchema schema, JsonInstance instance) {
+        super (schema, instance, "should conform to rfc2673");
     }
 }
