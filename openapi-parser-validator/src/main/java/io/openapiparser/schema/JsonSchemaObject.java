@@ -36,9 +36,13 @@ public class JsonSchemaObject implements JsonSchema {
         schemaProperties = getPropertiesX ();
     }
 
-    private JsonSchemaObject (Bucket object) {
-        this.schemaObject = object;
-        schemaProperties = getPropertiesX ();
+    @Override
+    public JsonSchemaContext getContext () {
+        return context;
+    }
+
+    public JsonPointer getLocation () {
+        return schemaObject.getLocation ();
     }
 
     @Override

@@ -29,6 +29,16 @@ public class JsonSchemaBoolean implements JsonSchema {
     }
 
     @Override
+    public JsonSchemaContext getContext () {
+        return context;
+    }
+
+    @Override
+    public JsonPointer getLocation () {
+        return pointer;
+    }
+
+    @Override
     public boolean getBoolean () {
         return value;
     }

@@ -12,6 +12,9 @@ import java.util.*;
 
 public interface JsonSchema {
 
+    JsonSchemaContext getContext();
+    JsonPointer getLocation ();
+
     /**
      * value if the schema is a {@link JsonSchemaBoolean}.
      *
@@ -124,8 +127,8 @@ public interface JsonSchema {
         return Collections.emptyMap ();
     }
 
-    default JsonSchema getAdditionalProperties () {
-        return new JsonSchemaObject (Collections.emptyMap ());
+    default @Nullable JsonSchema getAdditionalProperties () {
+        return null;
     }
 
     default Map<String, JsonDependency> getDependencies () {
