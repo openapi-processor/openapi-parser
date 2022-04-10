@@ -5,13 +5,16 @@
 
 package io.openapiparser.validator.string;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
 /**
- * Created by {@link MaxLength}.
+ * Created by {@link MaxLengthStep}.
  */
 public class MaxLengthError extends ValidationMessage {
-    public MaxLengthError (String path, Integer maxLength) {
-        super (path, String.format ("the length should be less or equal to %s", maxLength));
+    public MaxLengthError (JsonSchema schema, JsonInstance instance) {
+        super (schema, instance, String.format ("the length should be less or equal to %s",
+            schema.getMaxLength ()));
     }
 }

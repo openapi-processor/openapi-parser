@@ -25,12 +25,14 @@ public class MaxLength {
         if (maxLength == null)
             return new NullStep ();
 
+        MaxLengthStep step = new MaxLengthStep (schema, instance);
+
         String instanceValue = instance.asString ();
         boolean valid = instanceValue.codePointCount (0, instanceValue.length ()) <= maxLength;
         if (!valid) {
-            return new MaxLengthStep (new MaxLengthError(instance.getPath (), maxLength));
+            step.setInvalid ();
         }
 
-        return new MaxLengthStep ();
+        return step;
     }
 }
