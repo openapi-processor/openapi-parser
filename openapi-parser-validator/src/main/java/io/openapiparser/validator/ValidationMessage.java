@@ -52,8 +52,8 @@ public class ValidationMessage {
         JsonSchema schema,
         JsonInstance instance,
         String text,
-        Collection<ValidationMessage> nestedMessage) {
-
+        Collection<ValidationMessage> nestedMessage
+    ) {
         this.text = text;
         this.schema = schema;
         this.instance = instance;
