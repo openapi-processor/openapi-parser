@@ -64,11 +64,19 @@ public class Validator {
         if (allOf.isEmpty ())
             return new NullStep ();
 
-        CompositeStep step = new AllOfStep ();
+        AllOfStep step = new AllOfStep (schema, instance);
 
-        for (JsonSchema sao : allOf) {
-            step.add (validate (sao, instance));
-            // todo all of error
+        int allOfValidCount = 0;
+        for (JsonSchema allOfSchema : allOf) {
+            ValidationStep aos = validate (allOfSchema, instance);
+            step.add (aos);
+
+            if (aos.isValid ())
+                allOfValidCount++;
+        }
+
+        if (allOf.size () > 0 && allOfValidCount != allOf.size ()) {
+            step.setInvalid ();
         }
 
         return step;
