@@ -5,13 +5,21 @@
 
 package io.openapiparser.validator.any;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
+import java.util.Collection;
+
 /**
- * Created by {@link io.openapiparser.validator.Validator}.
+ * Created by {@link io.openapiparser.validator.any.NotStep}.
  */
 public class NotError extends ValidationMessage {
-    public NotError (String path) {
-        super (path, String.format ("should not validate against schema %s", path));
+    public NotError (
+        JsonSchema schema,
+        JsonInstance instance,
+        Collection<ValidationMessage> messages
+    ) {
+        super(schema, instance, "should not validate against schema", messages);
     }
 }

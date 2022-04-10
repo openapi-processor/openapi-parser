@@ -132,13 +132,7 @@ public class Validator {
             return new NullStep ();
 
         ValidationStep step = validate (not, instance);
-        return new NotStep (step);
-
-        // todo
-//        if (valid) {
-//                messages.add (new NotError (instance.getPath ()));
-//            }
-//        }
+        return new NotStep (schema, instance, step);
     }
 
     // draft4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.1
