@@ -20,7 +20,7 @@ public class ValidateStep extends CompositeStep {
     @Override
     public String toString () {
         return String.format ("%s (instance: %s), (schema: %s)", isValid () ? "valid" : "invalid",
-            schema.toString (),
-            instance.toString ());
+            instance.toString (),
+            schema.toString ());
     }
 }
