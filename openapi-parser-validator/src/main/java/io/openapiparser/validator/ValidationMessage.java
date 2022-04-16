@@ -57,6 +57,10 @@ public class ValidationMessage {
         return text;
     }
 
+    public boolean hasNestedMessages () {
+        return ! nestedMessage.isEmpty ();
+    }
+
     public Collection<ValidationMessage> getNestedMessages () {
         return nestedMessage;
     }
