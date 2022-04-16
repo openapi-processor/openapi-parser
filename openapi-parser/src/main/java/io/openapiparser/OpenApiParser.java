@@ -29,6 +29,15 @@ public class OpenApiParser {
         }
     }
 
+    public OpenApiResult parse(String resource) throws Exception {
+        try {
+            return createResult (resolver.resolve (resource));
+        } catch (Exception e) {
+            // todo
+            throw e;
+        }
+    }
+
     private OpenApiResult createResult (ResolverResult result) {
         Object document = result.getDocument ();
         Bucket api = new Bucket (result.getUri (), asMap (document));
