@@ -17,4 +17,11 @@ public class PropertiesStep extends CompositeStep {
         this.schema = schema;
         this.instance = instance;
     }
+
+    @Override
+    public String toString () {
+        return String.format ("%s (instance: %s), (schema: %s)", isValid () ? "valid" : "invalid",
+            instance.toString (),
+            schema.toString ());
+    }
 }
