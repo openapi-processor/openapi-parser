@@ -40,4 +40,11 @@ public class OneOfStep extends CompositeStep {
     public boolean isValid () {
         return valid;
     }
+
+    @Override
+    public String toString () {
+        return String.format ("%s (instance: %s), (schema: %s)", isValid () ? "valid" : "invalid",
+            instance.toString (),
+            schema.toString ());
+    }
 }
