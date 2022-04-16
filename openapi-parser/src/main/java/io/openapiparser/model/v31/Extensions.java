@@ -23,4 +23,6 @@ public interface Extensions {
      * @return map of extension properties
      */
     Map<String, Object> getExtensions ();
+
+    // todo get specific extension
 }
