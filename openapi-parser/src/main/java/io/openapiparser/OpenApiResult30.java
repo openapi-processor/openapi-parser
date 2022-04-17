@@ -18,9 +18,6 @@ import static io.openapiparser.OpenApiSchemas.OPENAPI_SCHEMA_30;
 import static io.openapiparser.OpenApiSchemas.OPENAPI_SCHEMA_30_ID;
 
 public class OpenApiResult30 implements OpenApiResult {
-    @Deprecated
-    public static final String OPENAPI_SCHEMA = "/openapi/schemas/v3.0/schema.yaml";
-
     private final Context context;
     private final Bucket root;
 
