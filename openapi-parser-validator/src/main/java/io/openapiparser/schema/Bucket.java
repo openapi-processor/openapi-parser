@@ -70,7 +70,6 @@ public class Bucket {
      * @param location the location (json pointer) inside {@code source}
      * @param properties the document properties
      */
-    @SuppressWarnings ("NullableProblems")
     public Bucket (URI source, String location, Map<String, Object> properties) {
         this.source = source;
         this.location = JsonPointer.from (location);
