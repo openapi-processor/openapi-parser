@@ -49,6 +49,7 @@ tasks.getByName<Test>("test") {
 
 tasks.withType<JavaCompile>().configureEach {
     options.release.set(8)
+    options.compilerArgs.add("-Xlint:deprecation")
 }
 
 jacoco {
