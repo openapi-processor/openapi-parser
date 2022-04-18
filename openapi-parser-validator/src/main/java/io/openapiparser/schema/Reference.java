@@ -49,6 +49,8 @@ public class Reference {
 
     /**
      * the value of the reference.
+     *
+     * @return $ref value
      */
     public String getRefValue () {
         return ref.getRef ();
@@ -56,6 +58,8 @@ public class Reference {
 
     /**
      * the scope at the reference value.
+     *
+     * @return scope of $ref
      */
     public URI getValueScope () {
         return value.getScope ();
