@@ -10,14 +10,19 @@
 :jackson: https://github.com/FasterXML/jackson
 :snakeyaml: https://bitbucket.org/snakeyaml/snakeyaml/src/master/
 
-**work in progress, i.e. the api is not yet stable. It is usable to get information from a 3.0.x or 3.1.0 OpenAPI description but there is (nearly) no validation.**
+**work in progress**
+
+It is usable, but has the following limitations at the moment:
+
+* it does support most but not all OpenAPI object properties
+* JSON schema validation is only available for OpenAPI 3.0.x
 
 == openapi-parser & validator
 
 a Java 8 based link:{openapi}[OpenAPI] 3.0.x & 3.1 parser with validation and pluggable document reader & json/yaml converter.
 
 * parse OpenAPI 3.0.x & 3.1
-* validate OpenAPI 3.0.x & 3.1 (json schema validation)
+* validate OpenAPI 3.0.x & 3.1 (json schema validation, handles $ref's in the OpenAPI document)
 * separate apis for OpenAPI 3.0 & 3.1
 * easily get resolved $ref object
 * minimal dependencies
