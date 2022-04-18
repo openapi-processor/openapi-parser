@@ -159,6 +159,6 @@ public class JsonInstance {
         if (!Types.isString (ref))
             return null;
 
-        return URI.create ((String)ref);
+        return UriSupport.createUri ((String)ref);
     }
 }

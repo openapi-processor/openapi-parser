@@ -103,6 +103,8 @@ public class Ref {
 
     /**
      * get the scope of the ref.
+     *
+     * @return scope uti
      */
     public URI getScope () {
         return scope;
@@ -132,12 +134,12 @@ public class Ref {
      * @return the full ref uri
      */
     public URI getFullRefUri () {
-        return scope.resolve (ref);
+        return scope.resolve (UriSupport.encodePath (ref));
     }
 
     @Override
     public String toString () {
-        return scope.resolve (ref).toString ();
+        return getFullRef ();
     }
 
     private URI withoutFragment () {
