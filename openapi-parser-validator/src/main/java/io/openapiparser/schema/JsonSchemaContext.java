@@ -30,10 +30,12 @@ public class JsonSchemaContext {
         return references.getRef (resolved);
     }
 
+    @Deprecated
     public String getId (Map<String, Object> properties) {
         return idProvider.getId (properties);
     }
 
+    @Deprecated
     public JsonSchemaContext withSource (URI source) {
         if (scope.equals (source)) {
             return this;
