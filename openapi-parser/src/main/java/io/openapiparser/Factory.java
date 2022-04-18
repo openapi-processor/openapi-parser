@@ -19,7 +19,7 @@ public class Factory<T> {
         try {
             return clazz
                 .getDeclaredConstructor (Context.class, Bucket.class)
-                .newInstance (context.withSource (target.getSource ()), target);
+                .newInstance (context.withScope (target.getSource ()), target);
         } catch (Exception e) {
             throw new RuntimeException (String.format("failed to create %s", clazz.getName ()), e);
         }

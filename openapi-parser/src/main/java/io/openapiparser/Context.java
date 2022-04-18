@@ -7,6 +7,7 @@ package io.openapiparser;
 
 import io.openapiparser.converter.StringNullableConverter;
 import io.openapiparser.schema.*;
+import io.openapiparser.schema.Reference;
 import io.openapiparser.schema.ReferenceRegistry;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -14,6 +15,7 @@ import java.net.URI;
 import java.util.Map;
 
 import static io.openapiparser.schema.Keywords.REF;
+import static io.openapiparser.schema.UriSupport.createUri;
 
 /**
  * the context is used to resolve $ref's.
@@ -23,17 +25,19 @@ import static io.openapiparser.schema.Keywords.REF;
  * to another source file the "current" context will create a new context with the new source file.
  */
 public class Context {
-    private final URI baseUri;
+    private final URI scope;
     private final ReferenceRegistry references;
+    private final IdProvider idProvider;
 
-    public Context (URI baseUri, ReferenceRegistry references) {
-        this.baseUri = baseUri;
+    public Context (URI scope, ReferenceRegistry references) {
+        this.scope = scope;
         this.references = references;
+        this.idProvider = new IdProvider ();
     }
 
-    public io.openapiparser.schema.Reference getReference (String ref) {
-        URI absoluteRef = baseUri.resolve (JsonPointerSupport.encodePath (ref));
-        return references.getRef(absoluteRef);
+    public Reference getReference (URI ref) {
+        URI resolved = scope.resolve (ref);
+        return references.getRef (resolved);
     }
 
     public @Nullable Bucket getRefObjectOrNull (Bucket bucket) {
@@ -53,32 +57,52 @@ public class Context {
     }
 
     public JsonInstanceContext getInstanceContext () {
-        return new JsonInstanceContext (baseUri, references);
+        return new JsonInstanceContext (scope, references);
     }
 
     private @Nullable Bucket getRefObject(String ref) {
-        io.openapiparser.schema.Reference reference = getReference (ref);
+        Reference reference = getReference (createUri (ref));
+        Context refContext = withScope (reference.getValueScope ());
+
         Map<String, Object> value = reference.getValue ();
         if (value == null) {
             // todo if it is null it was not resolved, throw?
             return null;
         }
-        return new Bucket (reference.getDocumentUri (), reference.getRefValue (), value);
+        return new Bucket (refContext.withId(value), reference.getPointer (), value);
     }
 
     /**
-     * get a context with the given source uri.
+     * get a context with the given scope.
      *
-     * If this context has the same source uri it will return itself otherwise it will create a new
-     * context with the given source uri.
+     * If this context has the same scope it will return itself otherwise it will create a new
+     * context with the given scope.
      *
-     * @param source the new source uri.
-     * @return context with the source uri
+     * @param targetScope the new scope uri.
+     * @return context with the scope uri
      */
-    public Context withSource (URI source) {
-        if (baseUri.equals (source)) {
+    public Context withScope (@Nullable URI targetScope) {
+        // todo possible??
+        if (targetScope == null) {
             return this;
         }
-        return new Context (source, references);
+
+        return new Context (scope.resolve (targetScope), references);
+    }
+
+    public URI withId (Map<String, Object> properties) {
+        String id = idProvider.getId (properties);
+        if (id == null) {
+            return scope;
+        }
+
+        return withId (id);
+    }
+
+    public URI withId (@Nullable String id) {
+        if (id == null) {
+            return scope;
+        }
+        return scope.resolve (id);
     }
 }
