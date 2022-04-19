@@ -58,7 +58,12 @@ fun draftSpec(draftPath: String, extras: List<Any> = emptyList()) = freeSpec {
     fun createSchema(schema: Any, documents: List<Document>): JsonSchema {
         val resolver = Resolver(TestUriReader(documents), JacksonConverter(), DocumentStore())
         val result = resolver.resolve(URI.create(""), schema)
-        return JsonSchemaObject(asMap(schema), JsonSchemaContext(result.uri, result.registry))
+
+        return if (schema is Boolean) {
+            JsonSchemaBoolean(schema, JsonSchemaContext(result.uri, result.registry))
+        } else {
+            JsonSchemaObject(asMap(schema), JsonSchemaContext(result.uri, result.registry))
+        }
     }
 
     fun createInstance(instance: Any?): JsonInstance {
