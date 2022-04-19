@@ -8,6 +8,8 @@ package io.openapiparser.validator;
 import io.openapiparser.schema.*;
 import io.openapiparser.validator.any.*;
 import io.openapiparser.validator.array.*;
+import io.openapiparser.validator.bool.Boolean;
+import io.openapiparser.validator.bool.BooleanStep;
 import io.openapiparser.validator.number.*;
 import io.openapiparser.validator.object.*;
 import io.openapiparser.validator.object.Properties;
@@ -53,6 +55,7 @@ public class Validator {
         step.add (validateNot (schema, instance));
         step.add (validateEnum (schema, instance));
         step.add (validateType (schema, instance));
+        step.add (validateBoolean (schema, instance));
         step.add (validateArray (schema, instance));
         step.add (validateObject (schema, instance));
         step.add (validateNumber (schema, instance));
@@ -173,6 +176,14 @@ public class Validator {
         return new Type ().validate (schema, instance);
     }
 
+    private ValidationStep validateBoolean (JsonSchema schema, JsonInstance instance) {
+        if (! isBooleanSchema (schema)) {
+            return new NullStep ();
+        }
+
+        return new Boolean ().validate (schema, instance);
+    }
+
     private ValidationStep validateArray (JsonSchema schema, JsonInstance instance) {
         if (!instance.isArray ()) {
             return new NullStep ();
@@ -228,5 +239,9 @@ public class Validator {
         step.add (new IpV6 ().validate (schema, instance));
         step.add (new Uri ().validate (schema, instance));
         return step;
+    }
+
+    private boolean isBooleanSchema (JsonSchema schema) {
+        return schema instanceof JsonSchemaBoolean;
     }
 }

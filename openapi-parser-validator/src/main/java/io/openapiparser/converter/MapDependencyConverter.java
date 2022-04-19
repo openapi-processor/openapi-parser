@@ -32,7 +32,7 @@ public class MapDependencyConverter implements PropertyConverter<Map<String, Jso
 
         Map<String, JsonDependency> result = new LinkedHashMap<> ();
         objects.forEach ((propKey, propValue) -> {
-            if (propValue instanceof Map) {
+            if (propValue instanceof Map || propValue instanceof Boolean) {
                 JsonSchema schema = create (name, propValue, getLocation (parentLocation, propKey));
                 result.put (propKey, new JsonDependency (schema));
 
