@@ -54,6 +54,7 @@ public class Validator {
         step.add (validateOneOf (schema, instance));
         step.add (validateNot (schema, instance));
         step.add (validateEnum (schema, instance));
+        step.add (validateConst (schema, instance));
         step.add (validateType (schema, instance));
         step.add (validateBoolean (schema, instance));
         step.add (validateArray (schema, instance));
@@ -149,6 +150,7 @@ public class Validator {
         return new NotStep (schema, instance, step);
     }
 
+    // draft6: https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.23
     // draft4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.1
     private ValidationStep validateEnum (JsonSchema schema, JsonInstance instance) {
         Collection<JsonInstance> enums = schema.getEnum ();
@@ -166,6 +168,21 @@ public class Validator {
         }
 
         if (!valid) {
+            step.setInvalid ();
+        }
+
+        return step;
+    }
+
+    // draft6: https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.24
+    private ValidationStep validateConst (JsonSchema schema, JsonInstance instance) {
+        JsonInstance constValue = schema.getConst ();
+        if (constValue == null)
+            return new NullStep ();
+
+        ConstStep step = new ConstStep (schema, instance);
+
+        if (!instance.isEqual (constValue)) {
             step.setInvalid ();
         }
 

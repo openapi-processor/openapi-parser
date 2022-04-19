@@ -18,17 +18,17 @@ public class JsonInstance {
     private final JsonInstanceContext context;
 
     private final Object root;
-    private final Object value;
+    private final @Nullable Object value;
     private final JsonPointer valuePointer;  // location
 
-    public JsonInstance (Object value, JsonInstanceContext context) {
+    public JsonInstance (@Nullable Object value, JsonInstanceContext context) {
         this.context = context;
         this.root = value;
         this.value = value;
         this.valuePointer = JsonPointer.EMPTY;
     }
 
-    public JsonInstance (Object root, JsonPointer valuePointer, Object value, JsonInstanceContext context) {
+    public JsonInstance (Object root, JsonPointer valuePointer, @Nullable Object value, JsonInstanceContext context) {
         this.context = context;
         this.root = root;
         this.value = value;
@@ -48,7 +48,7 @@ public class JsonInstance {
         return valuePointer.toString ();
     }
 
-    public Object getRawValue () {
+    public @Nullable Object getRawValue () {
         return value;
     }
 

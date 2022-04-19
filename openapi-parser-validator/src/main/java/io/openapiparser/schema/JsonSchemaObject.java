@@ -271,6 +271,18 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     @Override
+    public @Nullable JsonInstance getConst () {
+        if (!schemaObject.hasProperty ("const")) {
+            return null;
+        }
+
+        Object raw = schemaObject.getRawValue ("const");
+        return new JsonInstance (raw, new JsonInstanceContext (
+            getLocation ().toUri (), new ReferenceRegistry ())
+        );
+    }
+
+    @Override
     public Collection<String> getType () {
         boolean exists = schemaObject.hasProperty ("type");
         if (!exists)

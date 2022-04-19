@@ -143,6 +143,10 @@ public interface JsonSchema {
         return Collections.emptyList ();
     }
 
+    default @Nullable JsonInstance getConst () {
+        return null;
+    }
+
     default Collection<String> getType () {
         return Collections.emptyList ();
     }
