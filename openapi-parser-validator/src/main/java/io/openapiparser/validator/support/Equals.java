@@ -54,7 +54,7 @@ public class Equals {
         if (left.size () != right.size ())
             return false;
 
-        Iterator<Object> r = left.iterator ();
+        Iterator<Object> r = right.iterator ();
         for (Object l : left) {
             if (! equals (l, r.next ())) {
                 return false;
