@@ -9,7 +9,6 @@ import io.openapiparser.schema.*;
 import io.openapiparser.validator.any.*;
 import io.openapiparser.validator.array.*;
 import io.openapiparser.validator.bool.Boolean;
-import io.openapiparser.validator.bool.BooleanStep;
 import io.openapiparser.validator.number.*;
 import io.openapiparser.validator.object.*;
 import io.openapiparser.validator.object.Properties;
