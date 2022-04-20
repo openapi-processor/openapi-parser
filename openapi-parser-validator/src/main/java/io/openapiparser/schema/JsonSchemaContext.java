@@ -11,14 +11,20 @@ import java.net.URI;
 import java.util.Map;
 
 public class JsonSchemaContext {
+    private final SchemaVersion version;
     private final URI scope;
     private final ReferenceRegistry references;
     private final IdProvider idProvider;
 
-    public JsonSchemaContext (URI scope, ReferenceRegistry references) {
+    public JsonSchemaContext (URI scope, ReferenceRegistry references, SchemaVersion version) {
+        this.version = version;
         this.scope = scope;
         this.references = references;
         this.idProvider = new IdProvider ();
+    }
+
+    public SchemaVersion getVersion () {
+        return version;
     }
 
     public URI getScope () {
@@ -40,7 +46,7 @@ public class JsonSchemaContext {
         if (scope.equals (source)) {
             return this;
         }
-        return new JsonSchemaContext (source, references);
+        return new JsonSchemaContext (source, references, version);
     }
 
     public JsonSchemaContext withScope (@Nullable URI targetScope) {
@@ -48,7 +54,7 @@ public class JsonSchemaContext {
         if (targetScope == null) {
             return this;
         }
-        return new JsonSchemaContext (scope.resolve (targetScope), references);
+        return new JsonSchemaContext (scope.resolve (targetScope), references, version);
     }
 
     public JsonSchemaContext withId (Map<String, Object> properties) {
@@ -64,6 +70,6 @@ public class JsonSchemaContext {
         if (id == null) {
             return this;
         }
-        return new JsonSchemaContext (scope.resolve (id), references);
+        return new JsonSchemaContext (scope.resolve (id), references, version);
     }
 }

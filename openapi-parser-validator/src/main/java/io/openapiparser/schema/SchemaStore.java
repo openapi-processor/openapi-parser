@@ -13,7 +13,6 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static io.openapiparser.converter.Types.asMap;
-import static io.openapiparser.schema.SchemaVersions.DRAFT4;
 
 public class SchemaStore {
     private static final AtomicInteger schemaUriId = new AtomicInteger ();
@@ -86,7 +85,7 @@ public class SchemaStore {
     }
 
     public void loadDraft4 () {
-        addSchema(DRAFT4, "/json-schema/draft-04/schema.json");
+        addSchema(SchemaVersion.Draft4.getSchema (), "/json-schema/draft-04/schema.json");
     }
 
     private JsonSchema registerSchema (ResolverResult schemaResult) {
@@ -140,12 +139,14 @@ public class SchemaStore {
 
         if (document instanceof Boolean) {
             return new JsonSchemaBoolean (
-                (Boolean) document, new JsonSchemaContext (result.getUri (), null));
+                (Boolean) document,
+                new JsonSchemaContext (result.getUri (), null, SchemaVersion.None));
 
         } else if (document instanceof Map) {
 
             return new JsonSchemaObject (
-                asMap (document), new JsonSchemaContext (result.getUri (), result.getRegistry ()));
+                asMap (document),
+                new JsonSchemaContext (result.getUri (), result.getRegistry (), SchemaVersion.None));
 
         } else {
             // todo

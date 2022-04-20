@@ -13,6 +13,7 @@ import io.openapiparser.converter.Types.asMap
 import io.openapiparser.jackson.JacksonConverter
 import io.openapiparser.schema.*
 import io.openapiparser.validator.Validator
+import io.openapiparser.validator.ValidatorSettings
 import java.net.URI
 import java.nio.file.Files
 import java.nio.file.Path
@@ -23,7 +24,11 @@ import kotlin.io.path.name
  *
  * include(draftSpec("/suites/JSON-Schema-Test-Suite/tests/draft4"))
  */
-fun draftSpec(draftPath: String, extras: List<Any> = emptyList()) = freeSpec {
+fun draftSpec(
+    draftPath: String,
+    settings: ValidatorSettings = ValidatorSettings(),
+    extras: List<Any> = emptyList()) = freeSpec {
+
     val json = ObjectMapper()
     json.registerModule(KotlinModule())
 
@@ -60,9 +65,11 @@ fun draftSpec(draftPath: String, extras: List<Any> = emptyList()) = freeSpec {
         val result = resolver.resolve(URI.create(""), schema)
 
         return if (schema is Boolean) {
-            JsonSchemaBoolean(schema, JsonSchemaContext(result.uri, result.registry))
+            JsonSchemaBoolean(
+                schema, JsonSchemaContext(result.uri, result.registry, settings.version))
         } else {
-            JsonSchemaObject(asMap(schema), JsonSchemaContext(result.uri, result.registry))
+            JsonSchemaObject(
+                asMap(schema), JsonSchemaContext(result.uri, result.registry, settings.version))
         }
     }
 
@@ -93,7 +100,7 @@ fun draftSpec(draftPath: String, extras: List<Any> = emptyList()) = freeSpec {
                                 val instance = createInstance(test.data)
 
                                 // act
-                                val validator = Validator()
+                                val validator = Validator(settings)
                                 val step = validator.validate(schema, instance)
 
                                 // assert

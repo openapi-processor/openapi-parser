@@ -6,11 +6,16 @@
 package io.openapiparser.validator
 
 import io.kotest.core.spec.style.FreeSpec
+import io.openapiparser.schema.SchemaVersion
 import io.openapiparser.validator.support.*
 
 class JsonSchemaDraft4Spec: FreeSpec ({
+    val settings = ValidatorSettings()
+    settings.version = SchemaVersion.Draft4
+
     include(draftSpec(
         "/suites/JSON-Schema-Test-Suite/tests/draft4",
+        settings,
         listOf(
             // (optional) ecmascript-regex.json, too many fails to list them
             Exclude("ecmascript-regex.json"),

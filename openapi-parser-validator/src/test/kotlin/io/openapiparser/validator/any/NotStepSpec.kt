@@ -10,18 +10,14 @@ import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.shouldBe
-import io.openapiparser.schema.JsonInstance
-import io.openapiparser.schema.JsonInstanceContext
-import io.openapiparser.schema.JsonSchemaContext
-import io.openapiparser.schema.JsonSchemaObject
-import io.openapiparser.schema.ReferenceRegistry
+import io.openapiparser.schema.*
 import io.openapiparser.validator.ValidationMessage
 import io.openapiparser.validator.support.TestStep
 import java.net.URI
 
 class NotStepSpec : StringSpec({
 
-    val sctx = JsonSchemaContext(URI(""), ReferenceRegistry())
+    val sctx = JsonSchemaContext(URI(""), ReferenceRegistry(), SchemaVersion.None)
     val schema = JsonSchemaObject(mapOf(), sctx)
 
     val ictx = JsonInstanceContext(URI(""), ReferenceRegistry())

@@ -7,7 +7,6 @@ package io.openapiparser.validator
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.booleans.shouldBeTrue
-import io.kotest.matchers.collections.shouldBeEmpty
 import io.openapiparser.reader.UriReader
 import io.openapiparser.schema.*
 import io.openapiparser.snakeyaml.SnakeYamlConverter
@@ -19,7 +18,7 @@ class ValidatorSchemaSpec : StringSpec({
         val store = SchemaStore(resolver)
         store.loadDraft4()
 
-        val schema = store.getSchema(SchemaVersions.DRAFT4)
+        val schema = store.getSchema(SchemaVersion.Draft4.schema)
 
         val resolverResult = resolver.resolve("/json-schema/draft-04/schema.json")
         val instanceContext = JsonInstanceContext(resolverResult.uri, resolverResult.registry)

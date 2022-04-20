@@ -12,7 +12,7 @@ import java.net.URI
 
 class ValidationMessagePrinterSpec : StringSpec({
 
-    val sctx = JsonSchemaContext(URI(""), ReferenceRegistry())
+    val sctx = JsonSchemaContext(URI(""), ReferenceRegistry(), SchemaVersion.None)
     val schema = JsonSchemaObject(mapOf(), sctx)
 
     val ictx = JsonInstanceContext(URI(""), ReferenceRegistry())
