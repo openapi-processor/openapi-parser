@@ -5,11 +5,11 @@
 
 package io.openapiparser.validator.any;
 
-import io.openapiparser.schema.JsonInstance;
-import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.schema.*;
 import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
 
@@ -17,6 +17,9 @@ import java.util.*;
  * validates type.
  *
  * <p>See specification:
+ * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.25">
+ *     Draft6: type
+ * </a>,
  * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.2">
  *     Draft 4: type
  * </a>
@@ -41,7 +44,7 @@ public class Type {
             else if ("boolean".equals (type) && isBoolean (instance))
                 matches = true;
 
-            else if ("integer".equals (type) && isInteger (instance))
+            else if ("integer".equals (type) && isInteger (schema, instance))
                 matches = true;
 
             else if ("number".equals (type) && isNumber (instance))
@@ -65,12 +68,29 @@ public class Type {
         return instance.getRawValue () instanceof Boolean;
     }
 
-    private boolean isInteger (JsonInstance instance) {
+    private boolean isInteger (JsonSchema schema, JsonInstance instance) {
         Object value = instance.getRawValue ();
-        return value instanceof Integer
+
+        boolean isInteger =
+               value instanceof Integer
             || value instanceof Long
             || value instanceof Short
             || value instanceof BigInteger;
+
+        if (isInteger || isDraft4 (schema))
+            return isInteger;
+
+        if (value == null || ! isNumber (instance))
+            return false;
+
+        return hasZeroFraction (value.toString ());
+    }
+
+    private boolean hasZeroFraction (String value) {
+        // (value % 1) == 0
+        return new BigDecimal(value)
+            .remainder (BigDecimal.ONE)
+            .compareTo (BigDecimal.ZERO) == 0;
     }
 
     private boolean isNumber (JsonInstance instance) {
@@ -92,5 +112,9 @@ public class Type {
 
     private boolean isArray (JsonInstance instance) {
         return instance.getRawValue () instanceof Collection;
+    }
+
+    private boolean isDraft4(JsonSchema schema) {
+        return SchemaVersion.Draft4.equals (schema.getContext ().getVersion ());
     }
 }
