@@ -63,8 +63,12 @@ public interface JsonSchema {
         return null;
     }
 
-    default Boolean getExclusiveMaximum () {
+    default Boolean getExclusiveMaximumB () {
         return false; // default false (draft4)
+    }
+
+    default @Nullable Number getExclusiveMaximum () {
+        return null;
     }
 
     default @Nullable Number getMinimum () {

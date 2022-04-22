@@ -3,34 +3,40 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.validator.number;
+package io.openapiparser.validator.number.draft4;
 
 import io.openapiparser.schema.*;
-import io.openapiparser.validator.steps.NullStep;
-import io.openapiparser.validator.steps.ValidationStep;
+import io.openapiparser.validator.steps.*;
 
 import java.math.BigDecimal;
 
 /**
- * maximum.
+ * maximum and exclusiveMaximum.
  *
  * <p>See specification:
  * <p>
- * Draft 6:
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.2">
- *     maximum</a>,
+ * Draft 4:
+ * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.1.2">
+ *     maximum and exclusiveMaximum</a>
  */
-public class Maximum {
+public class Maximum4 {
 
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         Number maximum = schema.getMaximum ();
+        Boolean exclusive = schema.getExclusiveMaximumB ();
 
         if (maximum == null)
             return new NullStep ();
 
-        MaximumStep step = new MaximumStep (schema, instance);
+        Maximum4Step step = new Maximum4Step (schema, instance);
 
-        boolean valid = compareTo (instance, maximum) <= 0;
+        boolean valid;
+        if (exclusive) {
+            valid = compareTo (instance, maximum) < 0;
+        } else {
+            valid = compareTo (instance, maximum) <= 0;
+        }
+
         if (!valid) {
             step.setInvalid ();
         }

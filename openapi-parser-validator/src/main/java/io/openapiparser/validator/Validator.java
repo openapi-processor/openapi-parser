@@ -10,6 +10,7 @@ import io.openapiparser.validator.any.*;
 import io.openapiparser.validator.array.*;
 import io.openapiparser.validator.bool.Boolean;
 import io.openapiparser.validator.number.*;
+import io.openapiparser.validator.number.draft4.Maximum4;
 import io.openapiparser.validator.object.*;
 import io.openapiparser.validator.object.Properties;
 import io.openapiparser.validator.steps.*;
@@ -234,8 +235,16 @@ public class Validator {
 
         CompositeStep step = new FlatStep ();
         step.add (new MultipleOf ().validate (schema, instance));
-        step.add (new Maximum ().validate (schema, instance));
-        step.add (new Minimum ().validate (schema, instance));
+
+        if (isDraft4 (schema)) {
+            step.add (new Maximum4 ().validate (schema, instance));
+            step.add (new Minimum ().validate (schema, instance));
+        } else {
+            step.add (new Maximum ().validate (schema, instance));
+            step.add (new ExclusiveMaximum ().validate (schema, instance));
+            step.add (new Minimum ().validate (schema, instance));
+        }
+
         return step;
     }
 
@@ -259,5 +268,9 @@ public class Validator {
 
     private boolean isBooleanSchema (JsonSchema schema) {
         return schema instanceof JsonSchemaBoolean;
+    }
+
+    private boolean isDraft4(JsonSchema schema) {
+        return SchemaVersion.Draft4.equals (schema.getContext ().getVersion ());
     }
 }

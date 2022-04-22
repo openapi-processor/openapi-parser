@@ -12,25 +12,25 @@ import io.openapiparser.validator.steps.ValidationStep;
 import java.math.BigDecimal;
 
 /**
- * maximum.
+ * exclusiveMaximum.
  *
  * <p>See specification:
  * <p>
  * Draft 6:
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.2">
- *     maximum</a>,
+ * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.3">
+ *     exclusiveMaximum</a>,
  */
-public class Maximum {
+public class ExclusiveMaximum {
 
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
-        Number maximum = schema.getMaximum ();
+        Number maximum = schema.getExclusiveMaximum ();
 
         if (maximum == null)
             return new NullStep ();
 
-        MaximumStep step = new MaximumStep (schema, instance);
+        ExclusiveMaximumStep step = new ExclusiveMaximumStep (schema, instance);
 
-        boolean valid = compareTo (instance, maximum) <= 0;
+        boolean valid = compareTo (instance, maximum) < 0;
         if (!valid) {
             step.setInvalid ();
         }

@@ -84,12 +84,17 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     @Override
-    public Boolean getExclusiveMaximum () {
+    public Boolean getExclusiveMaximumB () {
         Boolean exclusive = schemaObject.convert ("exclusiveMaximum", new BooleanConverter ());
         if (exclusive == null)
             return false;
 
         return exclusive;
+    }
+
+    @Override
+    public @Nullable Number getExclusiveMaximum () {
+        return schemaObject.convert ("exclusiveMaximum", new NumberConverter ());
     }
 
     @Override
