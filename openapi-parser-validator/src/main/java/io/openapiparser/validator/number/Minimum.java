@@ -19,8 +19,7 @@ import java.math.BigDecimal;
  * <p>See specification:
  * <p>Draft 6:
  * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.4">
- *   minimum
- * </a>
+ *     minimum</a>
  */
 public class Minimum {
 

@@ -18,8 +18,7 @@ import java.math.BigDecimal;
  * <p>See specification:
  * <p>Draft 4:
  * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.1.3">
- *   minimum and exclusiveMinimum
- * </a>
+ *     minimum and exclusiveMinimum</a>
  */
 public class Minimum4 {
 

@@ -14,9 +14,12 @@ import io.openapiparser.validator.steps.ValidationStep;
  * validates maxLength.
  *
  * <p>See specification:
+ * <p>Draft 6:
+ * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.6">
+ *     maxLength</a>
+ * <br>Draft 4:
  * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.2.1">
- *     Draft 4: maxLength
- * </a>
+ *     maxLength</a>
  */
 public class MaxLength {
 

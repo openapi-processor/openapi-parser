@@ -13,9 +13,12 @@ import io.openapiparser.validator.steps.ValidationStep;
  * validates minLength.
  *
  * <p>See specification:
+ * <p>Draft 6:
+ * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.7">
+ *     minLength</a>
+ * <br>Draft 4:
  * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.2.2">
- *     Draft 4: minLength
- * </a>
+ *     minLength</a>
  */
 public class MinLength {
 
