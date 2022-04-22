@@ -145,7 +145,7 @@ public class JsonSchemaObject implements JsonSchema {
 //        if (raw == null)
 //            return new JsonSchemas ((JsonSchema) null);
 
-        if (raw instanceof Map) {
+        if (raw instanceof Map || raw instanceof Boolean) {
             return new JsonSchemas (getJsonSchemaOf ("items"));
 
         } else if (raw instanceof Collection) {
