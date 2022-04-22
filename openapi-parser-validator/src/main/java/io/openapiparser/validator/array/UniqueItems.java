@@ -15,9 +15,14 @@ import java.util.*;
  * validate uniqueItems.
  *
  * <p>See specification:
+ *
+ * <p>Draft 6:
+ * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.13">
+ *     uniqueItems</a>
+ *
+ * <br>Draft 4:
  * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.3.4">
- *     Draft 4: uniqueItems
- * </a>
+ *     uniqueItems</a>
  */
 public class UniqueItems {
 
