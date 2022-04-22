@@ -193,6 +193,10 @@ public class JsonSchemaObject implements JsonSchema {
         return unique;
     }
 
+    public @Nullable JsonSchema getContains () {
+        return getJsonSchemaOf ("contains");
+    }
+
     @Override
     public @Nullable Integer getMaxProperties () {
         return schemaObject.convert ("maxProperties", new IntegerConverter ());

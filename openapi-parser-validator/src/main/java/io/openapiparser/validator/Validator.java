@@ -211,6 +211,7 @@ public class Validator {
         step.add (new MaxItems ().validate (schema, instance));
         step.add (new MinItems ().validate (schema, instance));
         step.add (new UniqueItems ().validate (schema, instance));
+        step.add (new Contains (this).validate (schema, instance));
         step.add (new Items (this).validate (schema, instance));
         return step;
     }
