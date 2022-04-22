@@ -11,11 +11,10 @@ import io.openapiparser.validator.steps.*;
 import java.math.BigDecimal;
 
 /**
- * maximum and exclusiveMaximum.
+ * validates maximum and exclusiveMaximum.
  *
  * <p>See specification:
- * <p>
- * Draft 4:
+ * <p>Draft 4:
  * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.1.2">
  *     maximum and exclusiveMaximum</a>
  */

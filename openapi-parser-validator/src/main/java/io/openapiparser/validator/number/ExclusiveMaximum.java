@@ -12,11 +12,10 @@ import io.openapiparser.validator.steps.ValidationStep;
 import java.math.BigDecimal;
 
 /**
- * exclusiveMaximum.
+ * validates exclusiveMaximum.
  *
  * <p>See specification:
- * <p>
- * Draft 6:
+ * <p>Draft 6:
  * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.3">
  *     exclusiveMaximum</a>,
  */

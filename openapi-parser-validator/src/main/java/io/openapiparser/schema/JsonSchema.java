@@ -75,8 +75,12 @@ public interface JsonSchema {
         return null;
     }
 
-    default Boolean getExclusiveMinimum () {
+    default Boolean getExclusiveMinimumB () {
         return false;  // default false (draft4)
+    }
+
+    default @Nullable Number getExclusiveMinimum () {
+        return null;
     }
 
     default @Nullable Integer getMaxLength () {

@@ -15,8 +15,7 @@ import java.math.BigDecimal;
  * maximum.
  *
  * <p>See specification:
- * <p>
- * Draft 6:
+ * <p>Draft 6:
  * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.2">
  *     maximum</a>,
  */

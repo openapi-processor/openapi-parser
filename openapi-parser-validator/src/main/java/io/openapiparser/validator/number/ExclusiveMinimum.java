@@ -14,25 +14,25 @@ import io.openapiparser.validator.steps.ValidationStep;
 import java.math.BigDecimal;
 
 /**
- * validates minimum.
+ * validates exclusiveMinimum.
  *
  * <p>See specification:
  * <p>Draft 6:
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.4">
- *   minimum
+ * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.5">
+ *   exclusiveMinimum
  * </a>
  */
-public class Minimum {
+public class ExclusiveMinimum {
 
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
-        Number minimum = schema.getMinimum ();
+        Number minimum = schema.getExclusiveMinimum ();
 
         if (minimum == null)
             return new NullStep ();
 
-        MinimumStep step = new MinimumStep (schema, instance);
+        ExclusiveMinimumStep step = new ExclusiveMinimumStep (schema, instance);
 
-        boolean valid = compareTo (instance, minimum) >= 0;
+        boolean valid = compareTo (instance, minimum) > 0;
         if (!valid) {
             step.setInvalid ();
         }

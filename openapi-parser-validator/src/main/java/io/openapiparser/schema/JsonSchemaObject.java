@@ -103,12 +103,17 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     @Override
-    public Boolean getExclusiveMinimum () {
+    public Boolean getExclusiveMinimumB () {
         Boolean exclusive = schemaObject.convert ("exclusiveMinimum", new BooleanConverter ());
         if (exclusive == null)
             return false;
 
         return exclusive;
+    }
+
+    @Override
+    public @Nullable Number getExclusiveMinimum () {
+        return schemaObject.convert ("exclusiveMinimum", new NumberConverter ());
     }
 
     @Override

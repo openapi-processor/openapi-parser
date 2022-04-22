@@ -11,6 +11,7 @@ import io.openapiparser.validator.array.*;
 import io.openapiparser.validator.bool.Boolean;
 import io.openapiparser.validator.number.*;
 import io.openapiparser.validator.number.draft4.Maximum4;
+import io.openapiparser.validator.number.draft4.Minimum4;
 import io.openapiparser.validator.object.*;
 import io.openapiparser.validator.object.Properties;
 import io.openapiparser.validator.steps.*;
@@ -237,12 +238,13 @@ public class Validator {
         step.add (new MultipleOf ().validate (schema, instance));
 
         if (isDraft4 (schema)) {
+            step.add (new Minimum4 ().validate (schema, instance));
             step.add (new Maximum4 ().validate (schema, instance));
-            step.add (new Minimum ().validate (schema, instance));
         } else {
-            step.add (new Maximum ().validate (schema, instance));
-            step.add (new ExclusiveMaximum ().validate (schema, instance));
             step.add (new Minimum ().validate (schema, instance));
+            step.add (new Maximum ().validate (schema, instance));
+            step.add (new ExclusiveMinimum ().validate (schema, instance));
+            step.add (new ExclusiveMaximum ().validate (schema, instance));
         }
 
         return step;

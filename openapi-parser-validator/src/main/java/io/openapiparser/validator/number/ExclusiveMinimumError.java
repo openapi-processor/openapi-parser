@@ -10,11 +10,11 @@ import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
 /**
- * Created by {@link MinimumStep}.
+ * Created by {@link ExclusiveMinimumStep}.
  */
-public class MinimumError extends ValidationMessage {
-    public MinimumError (JsonSchema schema, JsonInstance instance) {
-        super (schema, instance, String.format ("the value should be greater or equal than %s",
-            schema.getMinimum ()));
+public class ExclusiveMinimumError extends ValidationMessage {
+    public ExclusiveMinimumError (JsonSchema schema, JsonInstance instance) {
+        super (schema, instance, String.format ("the value should be greater than %s",
+            schema.getExclusiveMinimum ()));
     }
 }

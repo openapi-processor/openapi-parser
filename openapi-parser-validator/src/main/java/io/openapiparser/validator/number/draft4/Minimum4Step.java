@@ -10,14 +10,14 @@ import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 import io.openapiparser.validator.steps.SimpleStep;
 
-public class Maximum4Step extends SimpleStep {
+public class Minimum4Step extends SimpleStep {
 
-    public Maximum4Step (JsonSchema schema, JsonInstance instance) {
+    public Minimum4Step (JsonSchema schema, JsonInstance instance) {
         super(schema, instance);
     }
 
     @Override
     protected ValidationMessage getError () {
-        return new Maximum4Error (schema, instance);
+        return new Minimum4Error (schema, instance);
     }
 }
