@@ -15,9 +15,14 @@ import java.util.*;
  * validates dependencies.
  *
  * <p>See specification:
+ *
+ * <p>Draft 6:
+ * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.21">
+ *     dependencies</a>
+ *
+ * <br>Draft 4:
  * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.5">
- *     Draft 4: dependencies
- * </a>
+ *     dependencies</a>
  */
 public class Dependencies {
     private final Validator validator;

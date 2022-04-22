@@ -17,8 +17,18 @@ import java.util.regex.Pattern;
  * validates additionalProperties, properties and patternProperties.
  *
  * <p>See specification:
+ *
+ * <p>Draft 6:
+ * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.18">
+ *     properties</a>,
+ * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.19">
+ *     patternProperties</a>,
+ * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.20">
+ *     additionalProperties</a>
+ *
+ * <br>Draft 4:
  * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.4">
- *     Draft 4: additionalProperties, properties and patternProperties
+ *     additionalProperties, properties and patternProperties
  * </a>
  */
 public class Properties {
