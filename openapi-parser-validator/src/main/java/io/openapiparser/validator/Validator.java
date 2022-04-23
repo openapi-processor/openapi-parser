@@ -265,12 +265,12 @@ public class Validator {
         step.add (new MaxLength ().validate (schema, instance));
         step.add (new MinLength ().validate (schema, instance));
         step.add (new Pattern ().validate (schema, instance));
-        step.add (new DateTime ().validate (schema, instance));
-        step.add (new Email ().validate (schema, instance));
-        step.add (new Hostname ().validate (schema, instance));
-        step.add (new IpV4 ().validate (schema, instance));
-        step.add (new IpV6 ().validate (schema, instance));
-        step.add (new Uri ().validate (schema, instance));
+        step.add (new DateTime (settings).validate (schema, instance));
+        step.add (new Email (settings).validate (schema, instance));
+        step.add (new Hostname (settings).validate (schema, instance));
+        step.add (new IpV4 (settings).validate (schema, instance));
+        step.add (new IpV6 (settings).validate (schema, instance));
+        step.add (new Uri (settings).validate (schema, instance));
         return step;
     }
 

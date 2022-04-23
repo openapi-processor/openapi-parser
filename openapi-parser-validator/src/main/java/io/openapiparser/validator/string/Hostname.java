@@ -7,6 +7,7 @@ package io.openapiparser.validator.string;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.validator.ValidatorSettings;
 import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 
@@ -14,15 +15,25 @@ import io.openapiparser.validator.steps.ValidationStep;
  * validates hostname.
  *
  * <p>See specification:
+ *
+ * <p>Draft 6:
+ * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-8.3.3">
+ *     hostname</a>
+ *
+ * <br>Draft 4:
  * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-7.3.3">
- *     Draft 4: hostname
- * </a>
+ *     hostname</a>
  */
 public class Hostname {
+    private final ValidatorSettings settings;
+
+    public Hostname (ValidatorSettings settings) {
+        this.settings = settings;
+    }
 
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         String format = schema.getFormat ();
-        if (format == null || !format.equals ("hostname"))
+        if (!shouldValidate (format))
             return new NullStep ();
 
         HostnameStep step = new HostnameStep (schema, instance);
@@ -36,7 +47,13 @@ public class Hostname {
         return step;
     }
 
-    boolean isValid(String ip) {
+    boolean shouldValidate (String format) {
+        return format != null
+            && format.equals ("hostname")
+            && settings.validateFormat ("hostname");
+    }
+
+    private boolean isValid(String ip) {
         String[] labels = ip.split ("\\.");
         if (labels.length == 0) {
             return false;
@@ -59,19 +76,19 @@ public class Hostname {
         return true;
     }
 
-    boolean isValidChar (int c) {
+    private boolean isValidChar (int c) {
         return isNumber (c) || isLetter (c) || isDash (c);
     }
 
-    boolean isNumber (int c) {
+    private boolean isNumber (int c) {
         return c >= 48 && c <= 57;
     }
 
-    boolean isLetter (int c) {
+    private boolean isLetter (int c) {
         return (c >= 65 && c <= 90) || (c >= 97 && c <= 122);
     }
 
-    boolean isDash (int c) {
+    private boolean isDash (int c) {
         return c == 45;
     }
 }

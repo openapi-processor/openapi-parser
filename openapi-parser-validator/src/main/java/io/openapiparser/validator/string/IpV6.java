@@ -7,6 +7,7 @@ package io.openapiparser.validator.string;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.validator.ValidatorSettings;
 import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 import io.openapiparser.validator.support.IpV6Validator;
@@ -15,15 +16,25 @@ import io.openapiparser.validator.support.IpV6Validator;
  * validates ipv6.
  *
  * <p>See specification:
+ *
+ * <p>Draft 6:
+ * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-8.3.5">
+ *     ipv6</a>
+ *
+ * <br>Draft 4:
  * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-7.3.5">
- *     Draft 4: ipv6
- * </a>
+ *     ipv6</a>
  */
 public class IpV6 {
+    private final ValidatorSettings settings;
+
+    public IpV6 (ValidatorSettings settings) {
+        this.settings = settings;
+    }
 
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         String format = schema.getFormat ();
-        if (format == null || !format.equals ("ipv6"))
+        if (!shouldValidate (format))
             return new NullStep ();
 
         IpV6Step step = new IpV6Step (schema, instance);
@@ -35,5 +46,11 @@ public class IpV6 {
         }
 
         return step;
+    }
+
+    private boolean shouldValidate (String format) {
+        return format != null
+            && format.equals ("ipv6")
+            && settings.validateFormat ("ipv6");
     }
 }

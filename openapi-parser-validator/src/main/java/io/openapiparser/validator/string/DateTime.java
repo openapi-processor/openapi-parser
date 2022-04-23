@@ -7,6 +7,7 @@ package io.openapiparser.validator.string;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.validator.ValidatorSettings;
 import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 
@@ -14,18 +15,28 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * validates format: date-time.
+ * validates format: date-time (except leap seconds).
  *
  * <p>See specification:
+ *
+ * <p>Draft 6:
+ * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-8.3.1">
+ *     date-time</a>
+ *
+ * <br>Draft 4:
  * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-7.3.1">
- *     Draft 4: date-time (except leap seconds)
- * </a>
+ *     date-time</a>
  */
 public class DateTime {
+    private final ValidatorSettings settings;
+
+    public DateTime (ValidatorSettings settings) {
+        this.settings = settings;
+    }
 
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         String format = schema.getFormat ();
-        if (format == null || !format.equals ("date-time"))
+        if (!shouldValidate (format))
             return new NullStep ();
 
         DateTimeStep step = new DateTimeStep (schema, instance);
@@ -41,5 +52,11 @@ public class DateTime {
         }
 
         return step;
+    }
+
+    private boolean shouldValidate (String format) {
+        return format != null
+            && format.equals ("date-time")
+            && settings.validateFormat ("date-time");
     }
 }
