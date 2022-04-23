@@ -271,6 +271,7 @@ public class Validator {
         step.add (new IpV4 (settings).validate (schema, instance));
         step.add (new IpV6 (settings).validate (schema, instance));
         step.add (new Uri (settings).validate (schema, instance));
+        step.add (new UriReference (settings).validate (schema, instance));
         return step;
     }
 

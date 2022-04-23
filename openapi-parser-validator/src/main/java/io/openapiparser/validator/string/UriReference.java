@@ -13,22 +13,18 @@ import io.openapiparser.validator.steps.ValidationStep;
 import io.openapiparser.validator.support.UriValidator;
 
 /**
- * validates format: uri.
+ * validates format: uri-reference.
  *
  * <p>See specification:
  *
  * <p>Draft 6:
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-8.3.6">
- *     uri</a>
- *
- * <br>Draft 4:
- * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-7.3.6">
- *     uri</a>
+ * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-8.3.7">
+ *     uri-reference</a>
  */
-public class Uri {
+public class UriReference {
     private final ValidatorSettings settings;
 
-    public Uri (ValidatorSettings settings) {
+    public UriReference (ValidatorSettings settings) {
         this.settings = settings;
     }
 
@@ -39,7 +35,7 @@ public class Uri {
 
         UriStep step = new UriStep (schema, instance);
 
-        boolean valid = new UriValidator (instance.asString ()).validateAbsolute ();
+        boolean valid = new UriValidator (instance.asString ()).validate ();
         if (!valid) {
             step.setInvalid ();
         }
@@ -49,7 +45,7 @@ public class Uri {
 
     private boolean shouldValidate (String format) {
         return format != null
-            && format.equals ("uri")
-            && settings.validateFormat ("uri");
+            && format.equals ("uri-reference")
+            && settings.validateFormat ("uri-reference");
     }
 }
