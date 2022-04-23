@@ -7,8 +7,11 @@ package io.openapiparser.validator;
 
 import io.openapiparser.schema.SchemaVersion;
 
+import java.util.*;
+
 public class ValidatorSettings {
     private SchemaVersion version = SchemaVersion.Draft6;
+    private final Set<String> disabledFormats = new HashSet<> ();
 
     public boolean isDraft4 () {
         return SchemaVersion.Draft4.equals (version);
@@ -32,5 +35,13 @@ public class ValidatorSettings {
      */
     public void setVersion (SchemaVersion version) {
         this.version = version;
+    }
+
+    public void disableFormats (String... formats) {
+        Collections.addAll (disabledFormats, formats);
+    }
+
+    public boolean shouldValidateFormat (String format) {
+        return disabledFormats.contains (format);
     }
 }
