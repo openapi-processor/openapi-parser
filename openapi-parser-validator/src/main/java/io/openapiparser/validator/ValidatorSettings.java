@@ -37,11 +37,22 @@ public class ValidatorSettings {
         this.version = version;
     }
 
+    /**
+     * add formats that should not be validated.
+     *
+     * @param formats format
+     */
     public void disableFormats (String... formats) {
         Collections.addAll (disabledFormats, formats);
     }
 
-    public boolean shouldValidateFormat (String format) {
-        return disabledFormats.contains (format);
+    /**
+     * check if a format should be validated
+     *
+     * @param format the format
+     * @return true if it should be validated, else false
+     */
+    public boolean validateFormat (String format) {
+        return !disabledFormats.contains (format);
     }
 }
