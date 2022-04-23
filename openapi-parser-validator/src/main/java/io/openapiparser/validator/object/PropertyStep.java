@@ -20,6 +20,6 @@ public class PropertyStep extends SimpleStep {
 
     @Override
     protected ValidationMessage getError () {
-        return new DependenciesError (schema, instance, propertyName);
+        return new PropertiesError (schema, instance, propertyName);
     }
 }

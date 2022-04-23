@@ -14,7 +14,7 @@ import io.openapiparser.validator.ValidationMessage;
  */
 public class PropertiesError extends ValidationMessage {
 
-    public PropertiesError (JsonSchema schema, JsonInstance instance) {
-        super (schema, instance, "should not have an invalid property");
+    public PropertiesError (JsonSchema schema, JsonInstance instance, String propertyName) {
+        super (schema, instance, String.format ("should not have invalid property '%s'",propertyName));
     }
 }
