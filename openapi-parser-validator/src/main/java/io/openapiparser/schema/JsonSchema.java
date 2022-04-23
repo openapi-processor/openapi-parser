@@ -147,6 +147,10 @@ public interface JsonSchema {
         return Collections.emptyMap ();
     }
 
+    default @Nullable JsonSchema getPropertyNames () {
+        return null;
+    }
+
     default @Nullable JsonSchema getJsonSchema (String propName) {
         return null;
     }

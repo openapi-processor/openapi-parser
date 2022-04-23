@@ -227,6 +227,7 @@ public class Validator {
         step.add (new Required ().validate (schema, instance));
         step.add (new Properties (this).validate(schema, instance));
         step.add (new Dependencies (this).validate (schema, instance));
+        step.add (new PropertyNames (this).validate (schema, instance));
         return step;
     }
 

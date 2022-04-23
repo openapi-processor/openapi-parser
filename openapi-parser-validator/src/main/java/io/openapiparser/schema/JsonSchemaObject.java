@@ -255,6 +255,11 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     @Override
+    public @Nullable JsonSchema getPropertyNames () {
+        return getJsonSchemaOf ("propertyNames");
+    }
+
+    @Override
     public @Nullable JsonSchema getJsonSchema (String property) {
         return schemaProperties.convert (property, new JsonSchemaConverter (context));
     }

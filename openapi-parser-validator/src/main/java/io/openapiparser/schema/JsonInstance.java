@@ -52,6 +52,15 @@ public class JsonInstance {
         return value;
     }
 
+    public JsonInstance getPropertyName (String propertyName) {
+        if (!isObject ())
+            throw new RuntimeException(); // todo
+
+        JsonPointer propertyPointer = valuePointer.append (propertyName);
+
+        return new JsonInstance (root, propertyPointer, propertyName, context);
+    }
+
     public JsonInstance getValue (String property) {
         if (!isObject ())
             throw new RuntimeException(); // todo
