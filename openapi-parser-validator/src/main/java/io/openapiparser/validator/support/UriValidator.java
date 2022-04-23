@@ -13,6 +13,22 @@ package io.openapiparser.validator.support;
 public class UriValidator {
     private static class ValidatorException extends RuntimeException { }
 
+    private static class Components {
+        String scheme;
+        String authority;
+        String path;
+        String query;
+        String fragment;
+
+        private boolean isRelative () {
+            return scheme.length () == 0;
+        }
+
+        public boolean hasAuthority () {
+            return authority.length () > 0;
+        }
+    }
+
     private final String source;
 
     public UriValidator (String source) {
@@ -21,16 +37,15 @@ public class UriValidator {
 
     public boolean validate () {
         try {
-            int componentStart = 0;
-            int componentEnd = findScheme ();
-            String scheme = getComponent (componentStart, componentEnd);
-            checkScheme (scheme);
+            Components components = splitComponents ();
 
-            componentStart = componentEnd + 1;
-            componentEnd = findAuthority (componentStart);
-            String authority = getComponent (componentStart, componentEnd);
-            checkAuthority (authority);
-
+            if (!components.isRelative ()) {
+                checkScheme (components.scheme);
+            }
+            checkAuthority (components.authority);
+            checkPath (components.path, components.hasAuthority());
+            checkQuery (components.query);
+            checkFragment (components.fragment);
             return true;
 
         } catch (ValidatorException ex) {
@@ -38,32 +53,43 @@ public class UriValidator {
         }
     }
 
-    private int findAuthority (int start) {
-        int pos = start;
-        int length = source.length ();
+    public boolean validateAbsolute () {
+        try {
+            Components components = splitComponents ();
 
-        if (pos >= length) {
-            return pos;
+            checkScheme (components.scheme);
+            checkAuthority (components.authority);
+            checkPath (components.path, components.hasAuthority());
+            checkQuery (components.query);
+            checkFragment (components.fragment);
+            return true;
+
+        } catch (ValidatorException ex) {
+            return false;
+        }
+    }
+
+    private void checkScheme(String scheme) {
+        if (scheme == null || scheme.length () == 0) {
+            throw new ValidatorException ();
         }
 
-        String authorityStart = source.substring (pos, pos + 2);
-        if (!authorityStart.equals ("//")) {
-            return pos;
+        int first = scheme.codePointAt (0);
+        if (!isLetter(first)) {
+            throw new ValidatorException ();
         }
 
-        pos += 2;
-        String authorityStopOn = "/?#";
-
-        for (int i = pos; i < length; i++) {
-            char c = source.charAt (i);
-
-            if (authorityStopOn.indexOf (c) == 0) {
-                break;
-            }
-
-            pos++;
+        if (scheme.length () == 1) {
+            return;
         }
-        return pos;
+
+        boolean allMatch = scheme.substring (1)
+            .codePoints ()
+            .allMatch (this::isSchemeChar);
+
+        if (!allMatch) {
+            throw new ValidatorException ();
+        }
     }
 
     private void checkAuthority (String authority) {
@@ -125,6 +151,77 @@ public class UriValidator {
         }
     }
 
+    private void checkPath (String path, boolean hasAuthority) {
+        int length = path.length ();
+        boolean emptyPath = length == 0;
+        boolean hasSlash = !emptyPath && path.codePointAt (0) == SLASH;
+        boolean hasDoubleSlash = hasSlash && length > 1 && path.codePointAt (1) == SLASH;
+
+        if (hasAuthority) {
+            if (!emptyPath && !hasSlash) {
+                throw new ValidatorException ();
+            }
+        } else {
+            if (hasDoubleSlash) {
+                throw new ValidatorException ();
+            }
+        }
+
+        String[] segments = path.split ("/");
+        for (String segment : segments) {
+
+            for (int i = 0; i < segment.length (); i++) {
+                int c = segment.codePointAt (i);
+
+                if (c == PERCENT && segment.length () > i + 2) {
+                    String encoded = segment.substring (i + 1, i + 2);
+                    ValidInt validInt = ValidInt.parseHex (encoded);
+                    if (!validInt.isValid ()) {
+                        throw new ValidatorException ();
+                    }
+                } else {
+                    boolean valid = isUnreserved (c)
+                        || isSubDelim (c)
+                        || c == COLON
+                        || c == AT;
+
+                    if (!valid) {
+                        throw new ValidatorException ();
+                    }
+                }
+            }
+        }
+    }
+
+    private void checkQuery (String query) {
+        // todo
+    }
+
+    private void checkFragment (String fragment) {
+        for (int i = 0; i < fragment.length (); i++) {
+            int c = fragment.codePointAt (i);
+
+            if (c == PERCENT && fragment.length () > i + 2) {
+                String encoded = fragment.substring (i + 1, i + 2);
+                ValidInt validInt = ValidInt.parseHex (encoded);
+                if (!validInt.isValid ()) {
+                    throw new ValidatorException ();
+                }
+            } else {
+                boolean valid = isUnreserved (c)
+                    || isSubDelim (c)
+                    || c == SLASH
+                    || c == COLON
+                    || c == QUESTION_MARK
+                    || c == AT;
+
+                if (!valid) {
+                    throw new ValidatorException ();
+                }
+            }
+        }
+    }
+
     private boolean isIpV6 (String source) {
         if (source.length () <= 2) {
             return false;
@@ -174,8 +271,50 @@ public class UriValidator {
         }
     }
 
-    private int findScheme () {
-        int pos = 0;
+    private Components splitComponents () {
+        Components components = new Components ();
+
+        int componentStart = 0;
+        int componentEnd = findScheme (componentStart);
+
+        components.scheme = extractComponent (componentStart, componentEnd);
+        if (components.scheme.length () != 0) {
+            componentStart = componentEnd + 1 /* ':' separator */;
+        }
+
+        componentEnd = findAuthority (componentStart);
+        components.authority = extractComponent (componentStart, componentEnd);
+        if (components.authority.length () != 0) {
+            componentStart = componentEnd;
+        }
+
+        componentEnd = findPath (componentStart);
+        components.path = extractComponent (componentStart, componentEnd);
+        if (components.path.length () != 0) {
+            componentStart = componentEnd;
+        }
+
+        componentEnd = findQuery (componentStart);
+        if (componentEnd != componentStart) {
+            componentStart += 1; // skip '?' separator
+        }
+
+        components.query = extractComponent (componentStart, componentEnd);
+        if (components.query.length () != 0) {
+            componentStart = componentEnd;
+        }
+
+        componentEnd = findFragment (componentStart);
+        if (componentEnd != componentStart) {
+            componentStart += 1; // skip '#' separator
+        }
+
+        components.fragment = extractComponent (componentStart, componentEnd);
+        return components;
+    }
+
+    private int findScheme (int start) {
+        int pos = start;
         int length = source.length ();
 
         String noSchemeOn = "/?#";
@@ -187,7 +326,7 @@ public class UriValidator {
                 break;
             }
 
-            if (schemeStopOn.indexOf (c) == 0) {
+            if (schemeStopOn.indexOf (c) >= 0) {
                 pos = i;
                 break;
             }
@@ -195,30 +334,109 @@ public class UriValidator {
         return pos;
     }
 
-    private void checkScheme(String scheme) {
-        if (scheme == null || scheme.length () == 0) {
-            throw new ValidatorException ();
+    private int findAuthority (int start) {
+        int pos = start;
+        int length = source.length ();
+
+        if (pos >= length) {
+            return pos;
         }
 
-        int first = scheme.codePointAt (0);
-        if (!isLetter(first)) {
-            throw new ValidatorException ();
+        if (length <= 3 /* //+ */) {
+            return pos;
         }
 
-        if (scheme.length () == 1) {
-            return;
+        String authorityStart = source.substring (pos, pos + 2);
+        if (!authorityStart.equals ("//")) {
+            return pos;
         }
 
-        boolean allMatch = scheme.substring (1)
-            .codePoints ()
-            .allMatch (this::isSchemeChar);
+        pos += 2;
+        String authorityStopOn = "/?#";
 
-        if (!allMatch) {
-            throw new ValidatorException ();
+        for (int i = pos; i < length; i++) {
+            char c = source.charAt (i);
+
+            if (authorityStopOn.indexOf (c) >= 0) {
+                break;
+            }
+
+            pos++;
         }
+        return pos;
     }
 
-    private String getComponent (int start, int end) {
+    private int findPath (int start) {
+        int pos = start;
+        int length = source.length ();
+
+        if (pos >= length) {
+            return pos;
+        }
+
+        String pathStopOn = "?#";
+
+        for (int i = pos; i < length; i++) {
+            char c = source.charAt (i);
+
+            if (pathStopOn.indexOf (c) >= 0) {
+                break;
+            }
+
+            pos++;
+        }
+        return pos;
+    }
+
+    private int findQuery (int start) {
+        int pos = start;
+        int length = source.length ();
+
+        if (pos >= length) {
+            return pos;
+        }
+
+        String queryStart = source.substring (pos, pos + 1);
+        if (!queryStart.equals ("?")) {
+            return pos;
+        }
+        pos += 1;
+
+        String pathStopOn = "#";
+
+        for (int i = pos; i < length; i++) {
+            char c = source.charAt (i);
+
+            if (pathStopOn.indexOf (c) >= 0) {
+                break;
+            }
+
+            pos++;
+        }
+        return pos;
+    }
+
+    private int findFragment (int start) {
+        int pos = start;
+        int length = source.length ();
+
+        if (pos >= length) {
+            return pos;
+        }
+
+        String queryStart = source.substring (pos, pos + 1);
+        if (!queryStart.equals ("#")) {
+            return pos;
+        }
+        pos += 1;
+
+        for (int i = pos; i < length; i++) {
+            pos++;
+        }
+        return pos;
+    }
+
+    private String extractComponent (int start, int end) {
         return source.substring (start, end);
     }
 
@@ -273,9 +491,11 @@ public class UriValidator {
     private static final int COMMA = 0x2c;
     private static final int HYPHEN = 0x2d;
     private static final int DOT = 0x2e;
+    private static final int SLASH = 0x2f;
     private static final int COLON = 0x3a;
     private static final int SEMICOLON = 0x3b;
     private static final int EQUALS = 0x3d;
+    private static final int QUESTION_MARK = 0x3f;
     private static final int AT = 0x40;
     private static final int OPEN_BRACKET = 0x5b;
     private static final int CLOSE_BRACKET = 0x5d;

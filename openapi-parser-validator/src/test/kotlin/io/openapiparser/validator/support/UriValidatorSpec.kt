@@ -41,10 +41,32 @@ class UriValidatorSpec : StringSpec({
     ) { uri, description, valid  ->
         "<$uri> - $description" {
             if (valid)
+                UriValidator(uri).validateAbsolute().shouldBeTrue()
+            else
+                UriValidator(uri).validateAbsolute().shouldBeFalse()
+        }
+    }
+
+    forAll(
+        // scheme
+        row("//foo.bar", "protocol relative with empty path", true),
+        row("//foo.bar/", "protocol relative starts with / path", true),
+        row("//", "no authority should not start with //", false),
+        row("", "absolute empty", true),
+        row("/", "absolute empty", true),
+        row("/a", "absolute unreserved", true),
+        row("/%20", "absolute percent encoded", true),
+        row("/%2", "absolute bad percent encoded", false),
+        row("/:", "absolute colon", true),
+        row("/@", "absolute at", true),
+        row("/!", "absolute sub-delims", true),
+        row("\\", "invalid char", false),
+    ) { uri, description, valid  ->
+        "<$uri> - $description" {
+            if (valid)
                 UriValidator(uri).validate().shouldBeTrue()
             else
                 UriValidator(uri).validate().shouldBeFalse()
         }
     }
-
 })
