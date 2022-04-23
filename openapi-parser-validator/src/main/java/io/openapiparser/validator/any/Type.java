@@ -17,12 +17,14 @@ import java.util.*;
  * validates type.
  *
  * <p>See specification:
+ *
+ * <p>Draft 6:
  * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.25">
- *     Draft6: type
- * </a>,
+ *     type</a>
+ *
+ * <br>Draft 4:
  * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.2">
- *     Draft 4: type
- * </a>
+ *     type</a>
  */
 public class Type {
 

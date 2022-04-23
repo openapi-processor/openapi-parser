@@ -66,7 +66,8 @@ public class Validator {
         return step;
     }
 
-    // draft4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.3
+    // Draft 6: https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.26
+    // Draft 4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.3
     private ValidationStep validateAllOf (JsonSchema schema, JsonInstance instance) {
         Collection<JsonSchema> allOf = schema.getAllOf ();
         if (allOf.isEmpty ())
@@ -90,7 +91,8 @@ public class Validator {
         return step;
     }
 
-    // draft4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.4
+    // Draft 6: https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.27
+    // Draft 4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.4
     private ValidationStep validateAnyOf (JsonSchema schema, JsonInstance instance) {
         Collection<JsonSchema> anyOf = schema.getAnyOf ();
         if (anyOf.isEmpty ())
@@ -116,7 +118,8 @@ public class Validator {
         return step;
     }
 
-    // draft4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.5
+    // Draft 6: https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.28
+    // Draft 4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.5
     private ValidationStep validateOneOf (JsonSchema schema, JsonInstance instance) {
         Collection<JsonSchema> oneOf = schema.getOneOf ();
         if (oneOf.isEmpty ())
@@ -141,7 +144,8 @@ public class Validator {
         return step;
     }
 
-    // draft4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.6
+    // Draft 6: https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.29
+    // Draft 4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.6
     private ValidationStep validateNot (JsonSchema schema, JsonInstance instance) {
         JsonSchema not = schema.getNot ();
         if (not == null)
@@ -151,8 +155,8 @@ public class Validator {
         return new NotStep (schema, instance, step);
     }
 
-    // draft6: https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.23
-    // draft4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.1
+    // Draft 6: https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.23
+    // Draft 4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.1
     private ValidationStep validateEnum (JsonSchema schema, JsonInstance instance) {
         Collection<JsonInstance> enums = schema.getEnum ();
         if (enums.isEmpty ())
@@ -175,7 +179,7 @@ public class Validator {
         return step;
     }
 
-    // draft6: https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.24
+    // Draft 6: https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.24
     private ValidationStep validateConst (JsonSchema schema, JsonInstance instance) {
         JsonInstance constValue = schema.getConst ();
         if (constValue == null)
