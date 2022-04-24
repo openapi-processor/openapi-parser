@@ -61,15 +61,22 @@ fun draftSpec(
     }
 
     fun createSchema(schema: Any, documents: List<Document>): JsonSchema {
-        val resolver = Resolver(TestUriReader(documents), JacksonConverter(), DocumentStore())
+        val resolver = Resolver(
+            TestUriReader(documents),
+            JacksonConverter(),
+            DocumentStore(),
+            settings.version
+        )
         val result = resolver.resolve(URI.create(""), schema)
 
         return if (schema is Boolean) {
             JsonSchemaBoolean(
-                schema, JsonSchemaContext(result.uri, result.registry, settings.version))
+                schema,
+                JsonSchemaContext(result.uri, result.registry, settings.version))
         } else {
             JsonSchemaObject(
-                asMap(schema), JsonSchemaContext(result.uri, result.registry, settings.version))
+                asMap(schema),
+                JsonSchemaContext(result.uri, result.registry, settings.version))
         }
     }
 

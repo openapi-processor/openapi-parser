@@ -14,13 +14,11 @@ public class JsonSchemaContext {
     private final SchemaVersion version;
     private final URI scope;
     private final ReferenceRegistry references;
-    private final IdProvider idProvider;
 
     public JsonSchemaContext (URI scope, ReferenceRegistry references, SchemaVersion version) {
         this.version = version;
         this.scope = scope;
         this.references = references;
-        this.idProvider = new IdProvider ();
     }
 
     public SchemaVersion getVersion () {
@@ -38,7 +36,7 @@ public class JsonSchemaContext {
 
     @Deprecated
     public String getId (Map<String, Object> properties) {
-        return idProvider.getId (properties);
+        return version.getIdProvider ().getId (properties);
     }
 
     @Deprecated
@@ -58,7 +56,7 @@ public class JsonSchemaContext {
     }
 
     public JsonSchemaContext withId (Map<String, Object> properties) {
-        String id = idProvider.getId (properties);
+        String id = version.getIdProvider ().getId (properties);
         if (id == null) {
             return this;
         }

@@ -12,10 +12,15 @@ import java.util.Map;
 import static io.openapiparser.converter.Types.as;
 import static io.openapiparser.converter.Types.isString;
 
-/**
- * find (draft4) scope in given object properties.
- */
 public class IdProvider {
+    public static IdProvider LATEST = new IdProvider ("$id");
+    public static IdProvider DRAFT4 = new IdProvider ("id");
+
+    private final String idKeyword;
+
+    private IdProvider (String id) {
+        this.idKeyword = id;
+    }
 
     /**
      * get the scope from object properties if available.
@@ -24,7 +29,7 @@ public class IdProvider {
      * @return scope id or null
      */
     public @Nullable String getId (Map<String, Object> properties) {
-        Object id = properties.get ("id");
+        Object id = properties.get (idKeyword);
         Object ref = properties.get ("$ref");
 
         if (isString (ref) || !isString (id))

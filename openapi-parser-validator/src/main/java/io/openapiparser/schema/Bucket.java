@@ -24,7 +24,6 @@ public class Bucket {
     private final URI source; // scope
     private final JsonPointer location;
     private final Map<String, Object> properties;
-    private final IdProvider idProvider = new IdProvider ();
 
     public static Bucket empty() {
         return new Bucket (Collections.emptyMap ());
@@ -193,8 +192,7 @@ public class Bucket {
      * @param pointer property location
      * @return property value or null if the property does not exist
      */
-    // todo getRawValue()  extract to own class to avoid the need for the id provider here ?
-    public @Nullable RawValue getRawValueX (JsonPointer pointer) {
+    public @Nullable RawValue getRawValue (JsonPointer pointer, IdProvider idProvider) {
         JsonPointer current = JsonPointer.EMPTY;
         Object value = properties;
         URI scope = source;

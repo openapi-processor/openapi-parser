@@ -27,13 +27,20 @@ public class Resolver {
     private final Reader reader;
     private final Converter converter;
     private final DocumentStore documents;
-    private final IdProvider idProvider;
+    private final SchemaVersion version;
 
     public Resolver (Reader reader, Converter converter, DocumentStore documents) {
         this.reader = reader;
         this.converter = converter;
         this.documents = documents;
-        this.idProvider = new IdProvider (); // todo inject
+        this.version = SchemaVersion.Default;
+    }
+
+    public Resolver (Reader reader, Converter converter, DocumentStore documents, SchemaVersion version) {
+        this.reader = reader;
+        this.converter = converter;
+        this.documents = documents;
+        this.version = version;
     }
 
     public ResolverResult resolve (URI uri) {
@@ -76,10 +83,6 @@ public class Resolver {
      * @return the scope of the document, may be same as {@code scope}
      */
     private URI getScope (URI scope, Object document) {
-//        if (!(document instanceof Map)) {
-//            return scope;
-//        }
-
         String id = getScopeId (document);
         if (id != null) {
             return URI.create (id);
@@ -88,8 +91,7 @@ public class Resolver {
         return scope;
     }
 
-    // todo: getScope??? used
-    private URI findScope (URI scope, Bucket bucket) {
+    private URI getScopeBucket (URI scope, Bucket bucket) {
         String id = getScopeId (bucket);
         if (id == null)
             return scope;
@@ -101,7 +103,6 @@ public class Resolver {
         }
 
         return scopeDocument;
-//        return ref.getFullRefUri ();
     }
 
     private void collectIds (URI scope, Object document) {
@@ -113,7 +114,7 @@ public class Resolver {
     }
 
     private void collectIds (URI scope, Bucket bucket) {
-        URI currentScope = findScope (scope, bucket);
+        URI currentScope = getScopeBucket (scope, bucket);
 
         bucket.forEach ((name, value) -> {
             bucket.walkPropertyTree (name, props -> {
@@ -139,60 +140,35 @@ public class Resolver {
     private void collectReferences (URI scope, Bucket bucket, ReferenceRegistry references)
         throws ResolverException {
 
-        URI scopeX = findScope (scope, bucket);
+        URI currentScope = getScopeBucket (scope, bucket);
 
         bucket.forEach((name, value) -> {
             if (name.equals (Keywords.REF) && value instanceof String) {
-                Ref ref = createRef (scopeX, name, value);
+                Ref ref = createRef (currentScope, name, value);
                 URI documentUri = ref.getDocumentUri ();
 
                 if (!hasDocument (documentUri)) {
-                    Object document = addDocument (scopeX /*just error reporting*/, documentUri, ref);
+                    Object document = addDocument (currentScope, documentUri, ref);
                     if (document != null) {
-                        collectReferences (documentUri/*scopeX*/,/*, documentUri,*/ document, references);
+                        collectReferences (documentUri, document, references);
                     }
                 }
 
-                addReference (scopeX, documentUri, ref, references);
+                addReference (ref, references);
 
             } else {
                 bucket.walkPropertyTree (name, props -> {
-                    collectReferences (scopeX, /*, bucket.getSource (),*/ props, references);
+                    collectReferences (currentScope, props, references);
                 });
             }
         });
     }
 
     private void resolveReferences (ReferenceRegistry references) {
-        references.resolveX(this::resolveX);
+        references.resolveX(this::resolve);
     }
 
-    private Object resolve (/*URI documentUri, String documentRef*/ Ref ref) {
-        // $ref points directly to id?
-        URI id = ref.getFullRefUri ();
-        Object idDocument = getDocument (id);
-        if (idDocument != null)
-            return idDocument;
-
-        // no, try to resolve by document and pointer
-        URI documentUri = ref.getDocumentUri ();
-        Object document = getDocument (documentUri);
-        Bucket bucket = toBucket (documentUri, document);
-        if (bucket == null)
-            return document;
-
-        if (!ref.hasPointer ()) {
-            return bucket.getRawValues ();
-        }
-
-        Object property = bucket.getRawValue (JsonPointer.from (ref.getPointer ()));
-        if (property == null) {
-            throw new ResolverException (String.format ("failed to resolve ref <%s/%s>.", documentUri, ref));
-        }
-        return property;
-    }
-
-    private RawValue resolveX (/*URI documentUri, String documentRef*/ Ref ref) {
+    private RawValue resolve (Ref ref) {
         // $ref points directly to id?
         URI id = ref.getFullRefUri ();
         Object idDocument = getDocument (id);
@@ -210,7 +186,10 @@ public class Resolver {
             return new RawValue(documentUri, bucket.getRawValues ());
         }
 
-        RawValue property = bucket.getRawValueX (JsonPointer.from (ref.getPointer ()));
+        RawValue property = bucket.getRawValue (
+            JsonPointer.from (ref.getPointer ()),
+            version.getIdProvider ());
+
         if (property == null) {
             throw new ResolverException (String.format ("failed to resolve ref <%s/%s>.", documentUri, ref));
         }
@@ -224,14 +203,11 @@ public class Resolver {
         return new Bucket (uri, asMap (source));
     }
 
-    private void addReference (
-        URI baseUri, URI documentUri, Ref ref, ReferenceRegistry references) {
-
+    private void addReference (Ref ref, ReferenceRegistry references) {
         references.add (ref);
-//        references.add (baseUri, /*documentUri*/ref.getDocumentUri (), ref.getRef ());
     }
 
-    private Object addDocument (URI uri /*????*/, URI documentUri, Ref ref) {
+    private Object addDocument (URI scope, URI documentUri, Ref ref) {
         try {
             if (!ref.hasDocument ())
                 return null;
@@ -247,7 +223,7 @@ public class Resolver {
             return document;
         } catch (ResolverException ex) {
             throw new ResolverException (
-                String.format ("failed to resolve '%s' $referenced from '%s'", ref.getRef (), uri),
+                String.format ("failed to resolve '%s' $referenced from '%s'", ref.getRef (), scope),
                 ex);
         }
     }
@@ -262,7 +238,7 @@ public class Resolver {
         if (!isMap (value))
             return null;
 
-        return idProvider.getId (asMap (value));
+        return version.getIdProvider ().getId (asMap (value));
     }
 
     /**

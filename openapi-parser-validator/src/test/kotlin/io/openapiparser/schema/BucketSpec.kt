@@ -183,7 +183,7 @@ class BucketSpec: StringSpec({
         ))
 
         val pointer = JsonPointer.from("/definitions/foo/definitions/bar")
-        val rawValue = bucket.getRawValueX(pointer)
+        val rawValue = bucket.getRawValue(pointer, SchemaVersion.Draft4.idProvider)
 
         rawValue?.scope.toString() shouldBe "https://host/fooId"
     }

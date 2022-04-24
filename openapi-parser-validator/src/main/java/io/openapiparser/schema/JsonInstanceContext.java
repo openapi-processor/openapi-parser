@@ -11,33 +11,37 @@ import java.net.URI;
 import java.util.Map;
 
 public class JsonInstanceContext {
+    private final SchemaVersion version;
     private final URI scope;
     private final ReferenceRegistry references;
-    private final IdProvider idProvider;
 
-    private final boolean followRefs;
+    //private final boolean followRefs;
 
     public JsonInstanceContext (URI scope, ReferenceRegistry references) {
-        this.scope = scope;
-        this.references = references;
-        this.idProvider = new IdProvider ();
-
-        followRefs = !this.references.isEmpty ();
-        if (followRefs) {
-            visitRef (scope);
-        }
+        this(scope, references, SchemaVersion.Default);
     }
 
-    public JsonInstanceContext (URI scope, ReferenceRegistry references, boolean followRefs) {
+    public JsonInstanceContext (URI scope, ReferenceRegistry references, SchemaVersion version) {
         this.scope = scope;
         this.references = references;
-        this.idProvider = new IdProvider ();
+        this.version = version;
 
-        this.followRefs = followRefs;
-        if (followRefs) {
-            visitRef (scope);
-        }
+//        followRefs = !this.references.isEmpty ();
+//        if (followRefs) {
+//            visitRef (scope);
+//        }
     }
+
+//    public JsonInstanceContext (URI scope, ReferenceRegistry references, boolean followRefs) {
+//        this.scope = scope;
+//        this.references = references;
+//        this.idProvider = SchemaVersion.Default.getIdProvider ();
+//
+//        this.followRefs = followRefs;
+//        if (followRefs) {
+//            visitRef (scope);
+//        }
+//    }
 
     public URI getScope () {
         return scope;
@@ -62,7 +66,7 @@ public class JsonInstanceContext {
     }
 
     public JsonInstanceContext withId (Map<String, Object> properties) {
-        String id = idProvider.getId (properties);
+        String id = version.getIdProvider ().getId (properties);
         if (id == null) {
             return this;
         }
@@ -78,8 +82,8 @@ public class JsonInstanceContext {
     }
 
     public boolean isRef(URI ref) {
-        if (!followRefs)
-            return false;
+//        if (!followRefs)
+//            return false;
 
         if (!hasReference (ref))
             return false;
@@ -89,8 +93,8 @@ public class JsonInstanceContext {
     }
 
     public void visitRef(URI ref) {
-        if (!followRefs)
-            return;
+//        if (!followRefs)
+//            return;
 
         if (!hasReference (ref))
             return;

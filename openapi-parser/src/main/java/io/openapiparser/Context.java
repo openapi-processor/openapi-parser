@@ -27,12 +27,12 @@ import static io.openapiparser.schema.UriSupport.createUri;
 public class Context {
     private final URI scope;
     private final ReferenceRegistry references;
-    private final IdProvider idProvider;
+    private final SchemaVersion version;
 
     public Context (URI scope, ReferenceRegistry references) {
         this.scope = scope;
         this.references = references;
-        this.idProvider = new IdProvider ();
+        this.version = SchemaVersion.Draft4;
     }
 
     public Reference getReference (URI ref) {
@@ -91,7 +91,7 @@ public class Context {
     }
 
     public URI withId (Map<String, Object> properties) {
-        String id = idProvider.getId (properties);
+        String id = version.getIdProvider ().getId (properties);
         if (id == null) {
             return scope;
         }
