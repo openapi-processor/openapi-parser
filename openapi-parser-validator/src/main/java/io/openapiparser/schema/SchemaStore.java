@@ -140,13 +140,13 @@ public class SchemaStore {
         if (document instanceof Boolean) {
             return new JsonSchemaBoolean (
                 (Boolean) document,
-                new JsonSchemaContext (result.getUri (), null, SchemaVersion.None));
+                new JsonSchemaContext (result.getUri (), null, SchemaVersion.Default));
 
         } else if (document instanceof Map) {
 
             return new JsonSchemaObject (
                 asMap (document),
-                new JsonSchemaContext (result.getUri (), result.getRegistry (), SchemaVersion.None));
+                new JsonSchemaContext (result.getUri (), result.getRegistry (), SchemaVersion.Default));
 
         } else {
             // todo

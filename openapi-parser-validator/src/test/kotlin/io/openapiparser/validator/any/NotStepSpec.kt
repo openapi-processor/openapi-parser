@@ -17,7 +17,7 @@ import java.net.URI
 
 class NotStepSpec : StringSpec({
 
-    val sctx = JsonSchemaContext(URI(""), ReferenceRegistry(), SchemaVersion.None)
+    val sctx = JsonSchemaContext(URI(""), ReferenceRegistry(), SchemaVersion.Default)
     val schema = JsonSchemaObject(mapOf(), sctx)
 
     val ictx = JsonInstanceContext(URI(""), ReferenceRegistry())
