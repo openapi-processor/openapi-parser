@@ -42,7 +42,6 @@ public class Bucket {
      * @param source the document URI
      * @param properties the document properties
      */
-    @SuppressWarnings ("NullableProblems")
     public Bucket (URI source, Map<String, Object> properties) {
         this.source = source;
         this.location = JsonPointer.EMPTY;
@@ -56,7 +55,6 @@ public class Bucket {
      * @param location the location (json pointer) inside {@code source}
      * @param properties the document properties
      */
-    @SuppressWarnings ("NullableProblems")
     public Bucket (URI source, JsonPointer location, Map<String, Object> properties) {
         this.source = source;
         this.location = location;
