@@ -16,11 +16,11 @@ import static io.openapiparser.converter.Types.asMap;
  * walks the object tree of the given {@code Bucket}, skipping "unknown" properties and inserts the
  * collected scopes (i.e. $ids) into the document store.
  */
-public class BucketWalker {
+public class IdDetector {
     private final SchemaVersion version;
     private final DocumentStore documents;
 
-    public BucketWalker (SchemaVersion version, DocumentStore documents) {
+    public IdDetector (SchemaVersion version, DocumentStore documents) {
         this.version = version;
         this.documents = documents;
     }

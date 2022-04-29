@@ -9,12 +9,12 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.booleans.shouldBeTrue
 import java.net.URI
 
-class BucketWalkerSpec : StringSpec({
+class IdDetectorSpec : StringSpec({
 
     "walks empty bucket" {
         val version = SchemaVersion.Draft4
         val documents = DocumentStore()
-        val walker = BucketWalker(version, documents)
+        val walker = IdDetector(version, documents)
 
         val bucket = Bucket(emptyMap())
 
@@ -26,7 +26,7 @@ class BucketWalkerSpec : StringSpec({
     "walks schema keyword in bucket" {
         val version = SchemaVersion.Draft4
         val documents = DocumentStore()
-        val walker = BucketWalker(version, documents)
+        val walker = IdDetector(version, documents)
 
         val bucket = Bucket(mapOf(
             "not" to mapOf(
@@ -43,7 +43,7 @@ class BucketWalkerSpec : StringSpec({
     "walks schema array keyword in bucket" {
         val version = SchemaVersion.Draft4
         val documents = DocumentStore()
-        val walker = BucketWalker(version, documents)
+        val walker = IdDetector(version, documents)
 
         val bucket = Bucket(mapOf(
             "oneOf" to listOf(
@@ -61,7 +61,7 @@ class BucketWalkerSpec : StringSpec({
     "walks schema map keyword in bucket" {
         val version = SchemaVersion.Draft4
         val documents = DocumentStore()
-        val walker = BucketWalker(version, documents)
+        val walker = IdDetector(version, documents)
 
         val bucket = Bucket(mapOf(
             "definitions" to mapOf(
