@@ -65,6 +65,12 @@ class JsonSchemaDraft6Spec: FreeSpec ({
                     "http://localhost:1234/name.json",
                     "/suites/JSON-Schema-Test-Suite/remotes/name.json"
                 )
+            ),
+            Remote(
+                "remote ref with ref to definitions", Document(
+                    "http://localhost:1234/ref-and-definitions.json",
+                    "/suites/JSON-Schema-Test-Suite/remotes/ref-and-definitions.json"
+                )
             )
         )
     ))
