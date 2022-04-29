@@ -110,21 +110,7 @@ public class Resolver {
         if (bucket == null)
             return;
 
-        collectIds (scope, bucket);
-    }
-
-    private void collectIds (URI scope, Bucket bucket) {
-        URI currentScope = getScopeBucket (scope, bucket);
-
-        bucket.forEach ((name, value) -> {
-            bucket.walkPropertyTree (name, props -> {
-                // enum contains values
-                if (name.equals ("enum"))
-                    return;
-
-                collectIds (currentScope, props);
-            });
-        });
+        new IdDetector (version, documents).walk (scope, bucket);
     }
 
     private void collectReferences (URI scope, Object document, ReferenceRegistry registry)
