@@ -13,8 +13,8 @@ import static io.openapiparser.converter.Types.as;
 import static io.openapiparser.converter.Types.isString;
 
 public class IdProvider {
-    public static IdProvider LATEST = new IdProvider ("$id");
-    public static IdProvider DRAFT4 = new IdProvider ("id");
+    public static final IdProvider LATEST = new IdProvider ("$id");
+    public static final IdProvider DRAFT4 = new IdProvider ("id");
 
     private final String idKeyword;
 
