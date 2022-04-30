@@ -17,6 +17,10 @@ class JsonSchemaDraft6Spec: FreeSpec ({
         "/suites/JSON-Schema-Test-Suite/tests/draft6",
         settings,
         listOf(
+            // (optional) json-pointer.json, not implemented
+            Exclude("json-pointer.json"),
+            // (optional) uri-template.json, not implemented
+            Exclude("uri-template.json"),
             // (optional) ecmascript-regex.json, too many fails to list them
             Exclude("ecmascript-regex.json"),
             // (optional) date-time.json, supports all except leap second
