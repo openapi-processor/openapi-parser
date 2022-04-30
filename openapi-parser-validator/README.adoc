@@ -18,7 +18,7 @@ It is tested against the official link:{json-schema-testsuite}[JSON Schema Test 
 
 * *Draft 4* => OpenAPI 3.0.x
 ** format: *date-time* (see limitations)
-** format: *email* (regex, todo replace with code)
+** format: *email* (regex)
 ** format: *hostname* (code)
 ** format: *ipv4* (code)
 ** format: *ipv6* (code)
