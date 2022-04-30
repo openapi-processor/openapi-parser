@@ -42,23 +42,7 @@ public class SchemaKeywords {
         Map<String, Keyword> keywords = new HashMap<> (initDraft6 ());
 
         // core
-//        keywords.put ("$id", keyword (URI));
-
-        // validation: numbers
-//        keywords.put ("exclusiveMaximum", keyword(NUMBER));
-//        keywords.put ("exclusiveMinimum", keyword(NUMBER));
-
-        // validation: arrays
-//        keywords.put ("contains", keyword (SCHEMA));
-
-        // validation: objects
-//        keywords.put ("propertyNames", keyword (SCHEMA));
-
-        // validation: any
-//        keywords.put ("const", keyword (ANY));
-
-        // validation: meta data
-//        keywords.put ("examples", keyword (ARRAY));
+        keywords.put ("$comment", keyword (STRING));
 
         return Collections.unmodifiableMap (keywords);
     }
