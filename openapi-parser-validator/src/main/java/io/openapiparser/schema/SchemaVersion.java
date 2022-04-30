@@ -8,8 +8,10 @@ package io.openapiparser.schema;
 import java.net.URI;
 
 public enum SchemaVersion {
-    Default ("http://json-schema.org/draft-06/schema#",
-        SchemaKeywords.draft6, IdProvider.LATEST),
+    Default ("http://json-schema.org/draft-07/schema#",
+        SchemaKeywords.draft7, IdProvider.LATEST),
+    Draft7("http://json-schema.org/draft-07/schema#",
+        SchemaKeywords.draft7, IdProvider.LATEST),
     Draft6("http://json-schema.org/draft-06/schema#",
         SchemaKeywords.draft6, IdProvider.LATEST),
     Draft4("http://json-schema.org/draft-04/schema#",

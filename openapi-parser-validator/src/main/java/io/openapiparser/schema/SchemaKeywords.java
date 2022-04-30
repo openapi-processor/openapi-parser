@@ -12,6 +12,7 @@ import java.util.*;
 import static io.openapiparser.schema.KeywordType.*;
 
 public class SchemaKeywords {
+    public static final SchemaKeywords draft7 = new SchemaKeywords (initDraft7 ());
     public static final SchemaKeywords draft6 = new SchemaKeywords (initDraft6 ());
     public static final SchemaKeywords draft4 = new SchemaKeywords (initDraft4 ());
 
@@ -35,6 +36,31 @@ public class SchemaKeywords {
             return false;
 
         return match.isNavigatable ();
+    }
+
+    private static Map<String, Keyword> initDraft7 () {
+        Map<String, Keyword> keywords = new HashMap<> (initDraft6 ());
+
+        // core
+//        keywords.put ("$id", keyword (URI));
+
+        // validation: numbers
+//        keywords.put ("exclusiveMaximum", keyword(NUMBER));
+//        keywords.put ("exclusiveMinimum", keyword(NUMBER));
+
+        // validation: arrays
+//        keywords.put ("contains", keyword (SCHEMA));
+
+        // validation: objects
+//        keywords.put ("propertyNames", keyword (SCHEMA));
+
+        // validation: any
+//        keywords.put ("const", keyword (ANY));
+
+        // validation: meta data
+//        keywords.put ("examples", keyword (ARRAY));
+
+        return Collections.unmodifiableMap (keywords);
     }
 
     private static Map<String, Keyword> initDraft6 () {
