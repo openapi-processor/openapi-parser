@@ -59,8 +59,8 @@ public class JsonSchemaObject implements JsonSchema {
     public JsonSchema getRefSchema () {
         Reference reference = context.getReference (getRef ());
         JsonSchemaContext refContext = context.withScope (reference.getValueScope ());
-        Map<String, Object> props = reference.getValue ();
-        return new JsonSchemaObject(reference.getPointer (), props, refContext.withId (props));
+        JsonSchemaConverter converter = new JsonSchemaConverter (refContext);
+        return converter.convert ("$ref", reference.getValue (), reference.getPointer ().toString ());
     }
 
     @Override
