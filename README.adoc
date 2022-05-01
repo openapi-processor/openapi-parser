@@ -16,13 +16,14 @@ It is usable, but has the following limitations at the moment:
 
 * it does support most but not all OpenAPI object properties
 * JSON schema validation is only available for OpenAPI 3.0.x
+* api may change
 
 == openapi-parser & validator
 
 a Java 8 based link:{openapi}[OpenAPI] 3.0.x & 3.1 parser with validation and pluggable document reader & json/yaml converter.
 
 * parse OpenAPI 3.0.x & 3.1
-* validate OpenAPI 3.0.x & 3.1 (json schema validation, handles $ref's in the OpenAPI document)
+* validate OpenAPI 3.0.x & 3.1 (json schema validation, can follow $ref's in the OpenAPI document)
 * separate apis for OpenAPI 3.0 & 3.1
 * easily get resolved $ref object
 * minimal dependencies
