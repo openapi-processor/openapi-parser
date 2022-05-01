@@ -13,7 +13,7 @@ import io.openapiparser.snakeyaml.SnakeYamlConverter
 
 class ValidatorSchemaSpec : StringSpec({
 
-    "validates draft4 & refs with draft4" {
+    "validates draft 4 with draft 4" {
         val resolver = Resolver(UriReader(), SnakeYamlConverter(), DocumentStore())
         val store = SchemaStore(resolver)
         store.loadDraft4()
@@ -21,7 +21,7 @@ class ValidatorSchemaSpec : StringSpec({
         val schema = store.getSchema(SchemaVersion.Draft4.schema)
 
         val resolverResult = resolver.resolve("/json-schema/draft-04/schema.json")
-        val instanceContext = JsonInstanceContext(resolverResult.uri, resolverResult.registry)
+        val instanceContext = JsonInstanceContext(resolverResult.uri, ReferenceRegistry())
         val instance = JsonInstance(resolverResult.document, instanceContext)
 
         val validator = Validator()
