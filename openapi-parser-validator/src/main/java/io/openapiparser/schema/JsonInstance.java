@@ -39,8 +39,7 @@ public class JsonInstance {
         return context.getScope ();
     }
 
-    // todo rename to getLocation()
-    public JsonPointer getPointer () {
+    public JsonPointer getLocation () {
         return location;
     }
 
