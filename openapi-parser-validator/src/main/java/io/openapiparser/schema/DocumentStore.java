@@ -20,7 +20,7 @@ public class DocumentStore {
 
     private static class LazyDocument { }
 
-    private static LazyDocument PENDING = new LazyDocument ();
+    private static final LazyDocument PENDING = new LazyDocument ();
 
     public void add (URI uri) {
         documents.put (uri, PENDING);
@@ -32,6 +32,10 @@ public class DocumentStore {
 
     public Object get (URI uri) {
         return documents.get (uri);
+    }
+
+    public boolean isEmpty () {
+        return documents.isEmpty ();
     }
 
     public boolean contains (URI uri) {
