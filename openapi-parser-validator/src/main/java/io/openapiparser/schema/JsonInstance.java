@@ -19,20 +19,20 @@ public class JsonInstance {
 
     private final Object root;
     private final @Nullable Object value;
-    private final JsonPointer valuePointer;  // location
+    private final JsonPointer location;
 
     public JsonInstance (@Nullable Object value, JsonInstanceContext context) {
         this.context = context;
         this.root = value;
         this.value = value;
-        this.valuePointer = JsonPointer.EMPTY;
+        this.location = JsonPointer.EMPTY;
     }
 
-    public JsonInstance (Object root, JsonPointer valuePointer, @Nullable Object value, JsonInstanceContext context) {
+    public JsonInstance (Object root, JsonPointer location, @Nullable Object value, JsonInstanceContext context) {
         this.context = context;
         this.root = root;
         this.value = value;
-        this.valuePointer = valuePointer;
+        this.location = location;
     }
 
     public URI getScope () {
@@ -41,11 +41,11 @@ public class JsonInstance {
 
     // todo rename to getLocation()
     public JsonPointer getPointer () {
-        return valuePointer;
+        return location;
     }
 
     public String getPath () {
-        return valuePointer.toString ();
+        return location.toString ();
     }
 
     public @Nullable Object getRawValue () {
@@ -56,7 +56,7 @@ public class JsonInstance {
         if (!isObject ())
             throw new RuntimeException(); // todo
 
-        JsonPointer propertyPointer = valuePointer.append (propertyName);
+        JsonPointer propertyPointer = location.append (propertyName);
 
         return new JsonInstance (root, propertyPointer, propertyName, context);
     }
@@ -65,7 +65,7 @@ public class JsonInstance {
         if (!isObject ())
             throw new RuntimeException(); // todo
 
-        JsonPointer propertyPointer = valuePointer.append (property);
+        JsonPointer propertyPointer = location.append (property);
         Object propertyValue = asObject ().get (property);
 
         return new JsonInstance (root, propertyPointer, propertyValue, context);
@@ -75,7 +75,7 @@ public class JsonInstance {
         if (!isArray ())
             throw new RuntimeException(); // todo
 
-        JsonPointer idxPointer = valuePointer.append (idx);
+        JsonPointer idxPointer = location.append (idx);
         Object[] items = asCol (value).toArray ();
 
         return new JsonInstance (root, idxPointer, items[idx], context);
@@ -154,11 +154,11 @@ public class JsonInstance {
 
     @Override
     public String toString () {
-        String location = valuePointer.toString ();
+        String location = this.location.toString ();
         if (location == null) {
             return String.format ("%s", context.getScope ());
         }
-        return String.format ("%s", valuePointer);
+        return String.format ("%s", this.location);
     }
 
     private @Nullable URI getRef () {
