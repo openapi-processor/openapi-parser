@@ -17,20 +17,17 @@ import static io.openapiparser.converter.Types.*;
 public class JsonInstance {
     private final JsonInstanceContext context;
 
-    private final Object root;
     private final @Nullable Object value;
     private final JsonPointer location;
 
     public JsonInstance (@Nullable Object value, JsonInstanceContext context) {
         this.context = context;
-        this.root = value;
         this.value = value;
         this.location = JsonPointer.EMPTY;
     }
 
-    public JsonInstance (Object root, JsonPointer location, @Nullable Object value, JsonInstanceContext context) {
+    public JsonInstance (JsonPointer location, @Nullable Object value, JsonInstanceContext context) {
         this.context = context;
-        this.root = root;
         this.value = value;
         this.location = location;
     }
@@ -57,7 +54,7 @@ public class JsonInstance {
 
         JsonPointer propertyPointer = location.append (propertyName);
 
-        return new JsonInstance (root, propertyPointer, propertyName, context);
+        return new JsonInstance (propertyPointer, propertyName, context);
     }
 
     public JsonInstance getValue (String property) {
@@ -67,7 +64,7 @@ public class JsonInstance {
         JsonPointer propertyPointer = location.append (property);
         Object propertyValue = asObject ().get (property);
 
-        return new JsonInstance (root, propertyPointer, propertyValue, context);
+        return new JsonInstance (propertyPointer, propertyValue, context);
     }
 
     public JsonInstance getValue (int idx) {
@@ -77,7 +74,7 @@ public class JsonInstance {
         JsonPointer idxPointer = location.append (idx);
         Object[] items = asCol (value).toArray ();
 
-        return new JsonInstance (root, idxPointer, items[idx], context);
+        return new JsonInstance (idxPointer, items[idx], context);
     }
 
     public int getArraySize () {
