@@ -99,13 +99,12 @@ public class JsonInstance {
         return context.isRef (ref);
     }
 
+    public URI getRefKey () {
+        return context.getReferenceKey (getRef ());
+    }
+
     public JsonInstance getRefInstance () {
-        if (!isRef ())
-            throw new RuntimeException (); // todo
-
         URI ref = getRef ();
-        context.visitRef (ref);
-
         Reference reference = context.getReference (ref);
         JsonInstanceContext refContext = context.withScope (reference.getValueScope ());
         Object rawValue = reference.getRawValue ();

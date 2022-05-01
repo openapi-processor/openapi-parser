@@ -15,8 +15,6 @@ public class JsonInstanceContext {
     private final URI scope;
     private final ReferenceRegistry references;
 
-    //private final boolean followRefs;
-
     public JsonInstanceContext (URI scope, ReferenceRegistry references) {
         this(scope, references, SchemaVersion.Default);
     }
@@ -25,23 +23,7 @@ public class JsonInstanceContext {
         this.scope = scope;
         this.references = references;
         this.version = version;
-
-//        followRefs = !this.references.isEmpty ();
-//        if (followRefs) {
-//            visitRef (scope);
-//        }
     }
-
-//    public JsonInstanceContext (URI scope, ReferenceRegistry references, boolean followRefs) {
-//        this.scope = scope;
-//        this.references = references;
-//        this.idProvider = SchemaVersion.Default.getIdProvider ();
-//
-//        this.followRefs = followRefs;
-//        if (followRefs) {
-//            visitRef (scope);
-//        }
-//    }
 
     public URI getScope () {
         return scope;
@@ -55,6 +37,9 @@ public class JsonInstanceContext {
     public Reference getReference (URI ref) {
         URI resolved = scope.resolve (ref);
         return references.getRef (resolved);
+    }
+    public URI getReferenceKey (URI ref) {
+        return scope.resolve (ref);
     }
 
     public JsonInstanceContext withScope (@Nullable URI targetScope) {
@@ -82,25 +67,10 @@ public class JsonInstanceContext {
     }
 
     public boolean isRef(URI ref) {
-//        if (!followRefs)
-//            return false;
-
         if (!hasReference (ref))
             return false;
 
         Reference reference = getReference (ref);
-        return reference.visitCnt == 0;
+        return reference != null;
     }
-
-    public void visitRef(URI ref) {
-//        if (!followRefs)
-//            return;
-
-        if (!hasReference (ref))
-            return;
-
-        Reference reference = getReference (ref);
-        reference.visitCnt += 1;
-    }
-
 }

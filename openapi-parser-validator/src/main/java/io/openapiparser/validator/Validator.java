@@ -17,6 +17,7 @@ import io.openapiparser.validator.object.Properties;
 import io.openapiparser.validator.steps.*;
 import io.openapiparser.validator.string.*;
 
+import java.net.URI;
 import java.util.*;
 
 /**
@@ -24,6 +25,7 @@ import java.util.*;
  */
 public class Validator {
     private final ValidatorSettings settings;
+    private final Set<URI> visited = new HashSet<> ();
 
     public Validator () {
         settings = new ValidatorSettings ();
@@ -42,6 +44,11 @@ public class Validator {
         }
 
         while (instance.isRef()) {
+            URI refKey = instance.getRefKey ();
+            if (visited.contains (refKey))
+                break;
+
+            visited.add (refKey);
             instance = instance.getRefInstance ();
             step.add (new InstanceRefStep (instance));
         }
