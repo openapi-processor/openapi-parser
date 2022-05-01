@@ -15,6 +15,6 @@ import io.openapiparser.validator.ValidationMessage;
 public class BooleanError extends ValidationMessage {
 
     public BooleanError (JsonSchema schema, JsonInstance instance) {
-        super (schema, instance, "should not validate with false");
+        super (schema, instance, "should not validate against 'false'");
     }
 }
