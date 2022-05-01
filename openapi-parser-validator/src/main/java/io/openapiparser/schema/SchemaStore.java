@@ -127,13 +127,14 @@ public class SchemaStore {
     }
 
     private JsonInstanceContext createContext (ResolverResult schemaResult) {
-        return new JsonInstanceContext (schemaResult.getUri (), schemaResult.getRegistry (), false);
+        return new JsonInstanceContext (schemaResult.getUri (), schemaResult.getRegistry ());
     }
 
     private URI generateUri () {
         return URI.create (String.format ("schema-%d", schemaUriId.getAndIncrement ()));
     }
 
+    // todo try to auto detect schema version (known uris, known $schema)
     private JsonSchema createSchema (ResolverResult result) {
         Object document = result.getDocument ();
 
