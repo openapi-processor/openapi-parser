@@ -52,15 +52,6 @@ public class ReferenceRegistry {
      *
      * @param resolver resolver callback that resolves the ref
      */
-    public void resolve (Function<Ref, Object> resolver) {
-        Iterator<Pending> iterator = pending.iterator ();
-        while (iterator.hasNext ()) {
-            Pending next = iterator.next ();
-            add (next, resolver.apply (next.ref));
-            iterator.remove ();
-        }
-    }
-
     public void resolveX (Function<Ref, RawValue> resolver) {
         Iterator<Pending> iterator = pending.iterator ();
         while (iterator.hasNext ()) {
