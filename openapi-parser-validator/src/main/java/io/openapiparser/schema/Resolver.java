@@ -151,7 +151,7 @@ public class Resolver {
     }
 
     private void resolveReferences (ReferenceRegistry references) {
-        references.resolveX(this::resolve);
+        references.resolve (this::resolve);
     }
 
     private RawValue resolve (Ref ref) {

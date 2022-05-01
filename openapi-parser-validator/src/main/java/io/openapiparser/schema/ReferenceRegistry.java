@@ -52,7 +52,7 @@ public class ReferenceRegistry {
      *
      * @param resolver resolver callback that resolves the ref
      */
-    public void resolveX (Function<Ref, RawValue> resolver) {
+    public void resolve (Function<Ref, RawValue> resolver) {
         Iterator<Pending> iterator = pending.iterator ();
         while (iterator.hasNext ()) {
             Pending next = iterator.next ();
