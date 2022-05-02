@@ -65,3 +65,16 @@ tasks.jacocoTestReport {
     }
 }
 
+configure<org.checkerframework.gradle.plugin.CheckerFrameworkExtension> {
+//    skipCheckerFramework = true
+//    excludeTests = true
+    extraJavacArgs = listOf("-Awarns")
+
+    checkers = listOf(
+        "org.checkerframework.checker.nullness.NullnessChecker",
+//        "org.checkerframework.checker.interning.InterningChecker",
+//        "org.checkerframework.checker.resourceleak.ResourceLeakChecker",
+//        "org.checkerframework.checker.index.IndexChecker"
+    )
+}
+

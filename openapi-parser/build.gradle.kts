@@ -44,6 +44,7 @@ tasks {
 //    }
 }
 
+/*
 configure<org.checkerframework.gradle.plugin.CheckerFrameworkExtension> {
 //    skipCheckerFramework = true
 //    excludeTests = true
@@ -56,3 +57,4 @@ configure<org.checkerframework.gradle.plugin.CheckerFrameworkExtension> {
 //        "org.checkerframework.checker.index.IndexChecker"
     )
 }
+*/
