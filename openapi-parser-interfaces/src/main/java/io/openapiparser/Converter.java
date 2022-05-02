@@ -12,7 +12,7 @@ public interface Converter {
 
     /**
      * converts a source (json/yaml) document into a java object tree. The tree structure is based
-     * on {@code Map<String, Object>}. The root may not be {@link java.util.Map} if the document
+     * on {@code Map<String, Object>}. The root may not be a {@link java.util.Map} if the document
      * just contains a single value.
      *
      * @param api a json/yaml document.
