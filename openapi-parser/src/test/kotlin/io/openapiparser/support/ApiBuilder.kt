@@ -97,7 +97,7 @@ class ApiBuilder {
         if (api == null) {
             return UriReader()
         }
-        return StringReader(api)
+        return StringReader(api!!)
     }
 }
 
