@@ -73,7 +73,7 @@ class ResolverSpec: StringSpec({
 
     "throws if conversion fails" {
         val converter = mockk<Converter>()
-        every { converter.convert(any()) } throws ConverterException("failed", null)
+        every { converter.convert(any()) } throws ConverterException("failed", Exception())
 
         shouldThrow<ResolverException> {
             val resolver = Resolver(StringReader("broken"), converter, mockk())
