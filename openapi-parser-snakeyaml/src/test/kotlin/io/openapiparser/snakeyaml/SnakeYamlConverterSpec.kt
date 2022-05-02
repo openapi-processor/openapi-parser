@@ -14,16 +14,6 @@ import io.openapiparser.snakeyaml.support.convertToMap
 
 class SnakeYamlConverterSpec : StringSpec ({
 
-    "throws on null input" {
-        val converter = SnakeYamlConverter()
-
-        val exception = shouldThrow<ConverterException> {
-            converter.convert(null)
-        }
-
-        exception.message shouldContain "empty"
-    }
-
     "throws on empty input" {
         val converter = SnakeYamlConverter()
 

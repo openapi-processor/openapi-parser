@@ -14,16 +14,6 @@ import io.openapiparser.jackson.support.convertToMap
 
 class JacksonConverterSpec : StringSpec({
 
-    "throws on null input" {
-        val converter = JacksonConverter()
-
-        val exception = shouldThrow<ConverterException> {
-            converter.convert(null)
-        }
-
-        exception.message shouldContain "empty"
-    }
-
     "throws on empty input" {
         val converter = JacksonConverter()
 
