@@ -1,11 +1,9 @@
 @file:Suppress("UnstableApiUsage", "DSL_SCOPE_VIOLATION")
 
 plugins {
-//    java
-//    id("org.barfuin.gradle.jacocolog") version "2.0.0"
+    java
     alias(libs.plugins.jacoco)
     alias(libs.plugins.nexus)
-//    id("io.github.gradle-nexus.publish-plugin")  version "1.1.0"
 }
 
 repositories {
