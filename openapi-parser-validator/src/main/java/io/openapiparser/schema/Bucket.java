@@ -190,6 +190,7 @@ public class Bucket {
      * get the raw value with scope at the given property pointer position.
      *
      * @param pointer property location
+     * @param idProvider id provider of the schema version
      * @return property value or null if the property does not exist
      */
     public @Nullable RawValue getRawValue (JsonPointer pointer, IdProvider idProvider) {
