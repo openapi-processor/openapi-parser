@@ -21,7 +21,7 @@ class ReferenceRegistrySpec : StringSpec({
         registry.add(Ref(URI("https://document"), "#/definitions/foo"))
 
         registry.resolve {
-            return@resolve RawValue(it.scope, (document["definitions"] as Map<*, *>)["foo"])
+            return@resolve RawValue(it.scope, (document["definitions"] as Map<*, *>)["foo"]!!)
         }
 
         val ref = registry.getRef(URI("https://document#/definitions/foo"))
