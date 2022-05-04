@@ -75,7 +75,7 @@ fun draftSpec(
                 JsonSchemaContext(result.uri, result.registry, settings.version))
         } else {
             JsonSchemaObject(
-                asMap(schema),
+                asMap(schema)!!,
                 JsonSchemaContext(result.uri, result.registry, settings.version))
         }
     }

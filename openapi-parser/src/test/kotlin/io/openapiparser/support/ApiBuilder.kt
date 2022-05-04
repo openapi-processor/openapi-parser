@@ -52,7 +52,7 @@ class ApiBuilder {
 
         return OpenApi30(
             Context(result.uri, result.registry),
-            Bucket(result.uri, Types.asMap(result.document))
+            Bucket(result.uri, Types.asMap(result.document)!!)
         )
     }
 
@@ -62,7 +62,7 @@ class ApiBuilder {
 
         return OpenApi31(
             Context(result.uri, result.registry),
-            Bucket(result.uri, Types.asMap(result.document))
+            Bucket(result.uri, Types.asMap(result.document)!!)
         )
     }
 
@@ -79,7 +79,7 @@ class ApiBuilder {
 
         return factory(
             Context(result.uri, result.registry),
-            Bucket(result.uri, Types.asMap(result.document))
+            Bucket(result.uri, Types.asMap(result.document)!!)
         )
     }
 
