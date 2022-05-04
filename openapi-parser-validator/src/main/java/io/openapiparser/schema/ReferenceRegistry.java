@@ -5,6 +5,8 @@
 
 package io.openapiparser.schema;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 import java.net.URI;
 import java.util.*;
 import java.util.function.Function;
@@ -22,7 +24,7 @@ public class ReferenceRegistry {
         }
 
         @Override
-        public boolean equals (Object o) {
+        public boolean equals (@Nullable Object o) {
             if (this == o)
                 return true;
 
