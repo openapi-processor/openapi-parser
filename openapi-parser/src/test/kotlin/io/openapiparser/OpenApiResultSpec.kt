@@ -13,10 +13,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import io.openapiparser.OpenApiSchemas.*
-import io.openapiparser.schema.Bucket
-import io.openapiparser.schema.JsonInstanceContext
-import io.openapiparser.schema.JsonSchemaBoolean
-import io.openapiparser.schema.SchemaStore
+import io.openapiparser.schema.*
 import io.openapiparser.validator.Validator
 import io.openapiparser.validator.steps.ValidationStep
 import io.openapiparser.model.v30.OpenApi as OpenApi30
@@ -73,9 +70,10 @@ class OpenApiResultSpec: StringSpec({
     }
 
     "should validate api 30" {
+        val sctx = mockk<JsonSchemaContext>()
         val document = emptyMap<String, Any>()
         val bucket = Bucket(URI.create(""), "/unused", document)
-        val schema = JsonSchemaBoolean(true)
+        val schema = JsonSchemaBoolean(true, sctx)
 
         val jic = mockk<JsonInstanceContext>()
         val ctx = mockk<Context>()
@@ -98,9 +96,10 @@ class OpenApiResultSpec: StringSpec({
     }
 
     "should validate api 31".config(enabled = false) {
+        val sctx = mockk<JsonSchemaContext>()
         val document = emptyMap<String, Any>()
         val bucket = Bucket(URI.create(""), "/unused", document)
-        val schema = JsonSchemaBoolean(true)
+        val schema = JsonSchemaBoolean(true, sctx)
 
 
         val jic = mockk<JsonInstanceContext>()
