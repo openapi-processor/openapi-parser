@@ -39,16 +39,15 @@ public class Types {
 
     public static <T> T convertNotNull (String path, @Nullable Object value, Class<T> type) {
         final T result = convertOrNull (path, value, type);
-        if (value == null)
+        if (result == null)
             throw new NoValueException (path);
 
         return result;
     }
 
-    @SuppressWarnings ("return")
-    @Deprecated
-    public static <T> T convertOrThrow (String path, @Nullable Object value, Class<T> type) {
-        return convertNotNull (path, value, type);
+    @SuppressWarnings ("unchecked")
+    static Collection<Object> convertCollection (String path, @Nullable Object value) {
+        return convert (path, value, Collection.class);
     }
 
     @SuppressWarnings ("unchecked")
@@ -57,31 +56,26 @@ public class Types {
     }
 
     @SuppressWarnings ("unchecked")
-    public static Map<String, Object> convertMapOrNull (String path, @Nullable Object value) {
+    public static @Nullable Map<String, Object> convertMapOrNull (String path, @Nullable Object value) {
         return convertOrNull (path, value, Map.class);
     }
 
     @SuppressWarnings ("unchecked")
-    public static <T> T as (Object o) {
+    public static <T> @Nullable T as (@Nullable Object o) {
         return (T) o;
     }
 
     @SuppressWarnings ("unchecked")
-    public static Map<String, Object> asMap (Object o) {
+    public static @Nullable Map<String, Object> asMap (@Nullable Object o) {
         return (Map<String, Object>) o;
     }
 
     @SuppressWarnings ("unchecked")
-    public static <T> Collection<T> asCol (Object o) {
+    public static <T> @Nullable Collection<T> asCol (@Nullable Object o) {
         return (Collection<T>) o;
     }
 
-    @SuppressWarnings ("unchecked")
-    static Collection<Object> convertCollection (String path, @Nullable Object value) {
-        return convert (path, value, Collection.class);
-    }
-
-    public static boolean isString (Object o) {
+    public static boolean isString (@Nullable Object o) {
         return o instanceof String;
     }
 }
