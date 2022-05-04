@@ -37,7 +37,7 @@ class JsonPointerSpec : StringSpec({
         val document = asMap(converter.convert(source))
 
         listOf(
-            Pointer("", document),
+            Pointer("", document!!),
             Pointer("/foo", listOf("bar", "baz")),
             Pointer("/foo/0", "bar"),
             Pointer("/", 0),
@@ -76,7 +76,7 @@ class JsonPointerSpec : StringSpec({
         val document = asMap(converter.convert(source))
 
         listOf(
-            Pointer("#", document),
+            Pointer("#", document!!),
             Pointer("#/foo", listOf("bar", "baz")),
             Pointer("#/foo/0", "bar"),
             Pointer("#/", 0),
