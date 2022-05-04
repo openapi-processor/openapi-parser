@@ -5,6 +5,8 @@
 
 package io.openapiparser.schema;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 import java.net.URI;
 
 public enum SchemaVersion {
@@ -35,7 +37,7 @@ public enum SchemaVersion {
         return idProvider;
     }
 
-    public Keyword getKeyword (String name) {
+    public @Nullable Keyword getKeyword (String name) {
         return keywords.getKeyword (name);
     }
 }
