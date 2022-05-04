@@ -6,6 +6,7 @@
 package io.openapiparser.converter;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
 
 import java.util.Collection;
 import java.util.Map;
@@ -66,7 +67,7 @@ public class Types {
     }
 
     @SuppressWarnings ("unchecked")
-    public static @Nullable Map<String, Object> asMap (@Nullable Object o) {
+    public static @PolyNull Map<String, Object> asMap (@PolyNull Object o) {
         return (Map<String, Object>) o;
     }
 
