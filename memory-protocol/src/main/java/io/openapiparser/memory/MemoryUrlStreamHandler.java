@@ -19,7 +19,7 @@ class MemoryUrlStreamHandler extends URLStreamHandler {
         }
 
         return new URLConnection (url) {
-            private String data;
+            private String data = "";
 
             @Override
             public void connect () throws IOException {

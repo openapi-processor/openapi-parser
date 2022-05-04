@@ -5,6 +5,8 @@
 
 package io.openapiparser.memory;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 import java.net.*;
 
 /**
@@ -19,7 +21,7 @@ public class MemoryUrlStreamHandlerFactory implements URLStreamHandlerFactory {
     }
 
     @Override
-    public URLStreamHandler createURLStreamHandler (String protocol) {
+    public @Nullable URLStreamHandler createURLStreamHandler (String protocol) {
         if (!"memory".equals (protocol))
             return null;
 
