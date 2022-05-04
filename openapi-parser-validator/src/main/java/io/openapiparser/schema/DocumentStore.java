@@ -5,6 +5,8 @@
 
 package io.openapiparser.schema;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +32,7 @@ public class DocumentStore {
         documents.put (uri, document);
     }
 
-    public Object get (URI uri) {
+    public @Nullable Object get (URI uri) {
         return documents.get (uri);
     }
 
