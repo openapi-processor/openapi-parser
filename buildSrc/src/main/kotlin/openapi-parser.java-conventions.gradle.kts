@@ -52,6 +52,10 @@ tasks.withType<JavaCompile>().configureEach {
     options.compilerArgs.add("-Xlint:deprecation")
 }
 
+tasks.withType<JavaExec>().configureEach {
+    args("-ea")
+}
+
 jacoco {
     toolVersion = "0.8.7"
 }
