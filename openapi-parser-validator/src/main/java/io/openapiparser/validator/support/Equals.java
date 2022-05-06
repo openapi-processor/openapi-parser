@@ -5,13 +5,15 @@
 
 package io.openapiparser.validator.support;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 import java.math.BigDecimal;
 import java.util.*;
 
 public class Equals {
 
     @SuppressWarnings ("unchecked")
-    public static boolean equals (Object left, Object right) {
+    public static boolean equals (@Nullable Object left, @Nullable Object right) {
         if (left == null && right == null) {
             return true;
 
