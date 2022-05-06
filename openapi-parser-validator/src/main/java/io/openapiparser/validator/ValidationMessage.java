@@ -42,7 +42,7 @@ public class ValidationMessage {
         return schema.getContext ().getScope ().toString ();
     }
 
-    public @Nullable String getSchemaPath () {
+    public String getSchemaPath () {
         return schema.getLocation ().toString ();
     }
 
@@ -50,7 +50,7 @@ public class ValidationMessage {
         return instance.getScope ().toString ();
     }
 
-    public @Nullable String getInstancePath () {
+    public String getInstancePath () {
         return instance.getPath ();
     }
 
