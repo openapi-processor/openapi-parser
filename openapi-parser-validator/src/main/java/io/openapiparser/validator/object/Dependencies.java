@@ -11,6 +11,8 @@ import io.openapiparser.validator.steps.*;
 
 import java.util.*;
 
+import static io.openapiparser.support.Nullness.nonNull;
+
 /**
  * validates dependencies.
  *
@@ -35,13 +37,15 @@ public class Dependencies {
         DependenciesStep step = new DependenciesStep (schema, instance);
 
         Map<String, JsonDependency> dependencies = schema.getDependencies ();
-        instance.asObject ().forEach ((propName, unused) -> {
+        Map<String, Object> instanceObject = nonNull(instance.asObject ());
+
+        instanceObject.keySet ().forEach (propName -> {
             JsonDependency propDependency = dependencies.get (propName);
             if (propDependency != null) {
                 if (propDependency.isSchema ()) {
                     step.add (validator.validate (propDependency.getSchema (), instance));
                 } else {
-                    Set<String> instanceProperties = new HashSet<> (instance.asObject ().keySet ());
+                    Set<String> instanceProperties = new HashSet<> (instanceObject.keySet ());
 
                     propDependency.getProperties ().forEach ( p -> {
                         if (!instanceProperties.contains (p)) {
