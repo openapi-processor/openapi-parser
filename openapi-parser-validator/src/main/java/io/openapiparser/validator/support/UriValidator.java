@@ -14,11 +14,19 @@ public class UriValidator {
     private static class ValidatorException extends RuntimeException { }
 
     private static class Components {
-        String scheme;
-        String authority;
-        String path;
-        String query;
-        String fragment;
+        private String scheme;
+        private String authority;
+        private String path;
+        private String query;
+        private String fragment;
+
+        public Components (String scheme, String authority, String path, String query, String fragment) {
+            this.scheme = scheme;
+            this.authority = authority;
+            this.path = path;
+            this.query = query;
+            this.fragment = fragment;
+        }
 
         private boolean isRelative () {
             return scheme.length () == 0;
@@ -272,25 +280,23 @@ public class UriValidator {
     }
 
     private Components splitComponents () {
-        Components components = new Components ();
-
         int componentStart = 0;
         int componentEnd = findScheme (componentStart);
 
-        components.scheme = extractComponent (componentStart, componentEnd);
-        if (components.scheme.length () != 0) {
+        String scheme = extractComponent (componentStart, componentEnd);
+        if (scheme.length () != 0) {
             componentStart = componentEnd + 1 /* ':' separator */;
         }
 
         componentEnd = findAuthority (componentStart);
-        components.authority = extractComponent (componentStart, componentEnd);
-        if (components.authority.length () != 0) {
+        String authority = extractComponent (componentStart, componentEnd);
+        if (authority.length () != 0) {
             componentStart = componentEnd;
         }
 
         componentEnd = findPath (componentStart);
-        components.path = extractComponent (componentStart, componentEnd);
-        if (components.path.length () != 0) {
+        String path = extractComponent (componentStart, componentEnd);
+        if (path.length () != 0) {
             componentStart = componentEnd;
         }
 
@@ -299,8 +305,8 @@ public class UriValidator {
             componentStart += 1; // skip '?' separator
         }
 
-        components.query = extractComponent (componentStart, componentEnd);
-        if (components.query.length () != 0) {
+        String query = extractComponent (componentStart, componentEnd);
+        if (query.length () != 0) {
             componentStart = componentEnd;
         }
 
@@ -309,8 +315,9 @@ public class UriValidator {
             componentStart += 1; // skip '#' separator
         }
 
-        components.fragment = extractComponent (componentStart, componentEnd);
-        return components;
+        String fragment = extractComponent (componentStart, componentEnd);
+
+        return new Components (scheme, authority, path, query, fragment);
     }
 
     private int findScheme (int start) {
