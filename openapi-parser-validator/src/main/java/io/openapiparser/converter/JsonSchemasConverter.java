@@ -6,6 +6,7 @@
 package io.openapiparser.converter;
 
 import io.openapiparser.schema.*;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.*;
@@ -25,7 +26,7 @@ public class JsonSchemasConverter implements PropertyConverter<Collection<JsonSc
 
     @Override
     public @Nullable Collection<JsonSchema> convert (String name, Object value, String location) {
-        Collection<?> objects = convertOrNull (location, value, Collection.class);
+        Collection<@NonNull ?> objects = convertOrNull (location, value, Collection.class);
         if (objects == null)
             return null;
 
