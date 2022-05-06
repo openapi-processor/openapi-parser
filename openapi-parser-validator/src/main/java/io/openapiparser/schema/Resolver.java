@@ -12,10 +12,12 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.InputStream;
 import java.net.URI;
 import java.util.Map;
 
 import static io.openapiparser.converter.Types.*;
+import static io.openapiparser.support.Nullness.nonNull;
 
 /**
  * loads the base document and resolves all internal and external $ref's. In case of an external
@@ -182,7 +184,7 @@ public class Resolver {
         return property;
     }
 
-    private @Nullable Bucket toBucket(URI uri, Object source) {
+    private @Nullable Bucket toBucket(URI uri, @Nullable Object source) {
         if (!(source instanceof Map)) {
             return null;
         }
@@ -193,7 +195,7 @@ public class Resolver {
         references.add (ref);
     }
 
-    private Object addDocument (URI scope, URI documentUri, Ref ref) {
+    private @Nullable Object addDocument (URI scope, URI documentUri, Ref ref) {
         try {
             if (!ref.hasDocument ())
                 return null;
@@ -241,7 +243,7 @@ public class Resolver {
         return documents.contains (documentUri);
     }
 
-    private Object getDocument (URI documentUri) {
+    private @Nullable Object getDocument (URI documentUri) {
         return documents.get (documentUri);
     }
 
@@ -271,7 +273,8 @@ public class Resolver {
 
     private Object loadDocument (String resourcePath) throws SchemaStoreException {
         try {
-            return converter.convert (Strings.of (getClass ().getResourceAsStream (resourcePath)));
+            InputStream source = nonNull (getClass ().getResourceAsStream (resourcePath));
+            return converter.convert (Strings.of (source));
         } catch (Exception e) {
             throw new ResolverException (String.format ("failed to resolve '%s'.", resourcePath), e);
         }

@@ -5,6 +5,8 @@
 
 package io.openapiparser.schema;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 import java.net.URI;
 
 /**
@@ -70,12 +72,12 @@ public class Reference {
      *
      * @return the raw value.
      */
-    public Object getRawValue () {
+    public @Nullable Object getRawValue () {
         return value.getValue ();
     }
 
     @SuppressWarnings ({"unchecked", "TypeParameterUnusedInFormals"})
-    public <T> T getValue () {
+    public <T> @Nullable T getValue () {
         return (T) value.getValue ();
     }
 

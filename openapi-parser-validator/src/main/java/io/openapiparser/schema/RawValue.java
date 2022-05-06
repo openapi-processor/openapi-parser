@@ -5,13 +5,15 @@
 
 package io.openapiparser.schema;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 import java.net.URI;
 
 public class RawValue {
     private final URI scope;
-    private final Object value;
+    private final @Nullable Object value;
 
-    public RawValue (URI scope, Object value) {
+    public RawValue (URI scope, @Nullable Object value) {
         this.scope = scope;
         this.value = value;
     }
@@ -20,7 +22,7 @@ public class RawValue {
         return scope;
     }
 
-    public Object getValue () {
+    public @Nullable Object getValue () {
         return value;
     }
 }
