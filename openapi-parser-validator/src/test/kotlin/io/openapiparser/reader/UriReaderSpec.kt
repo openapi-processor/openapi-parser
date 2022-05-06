@@ -3,12 +3,12 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.support
+package io.openapiparser.reader
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.openapiparser.memory.Memory
-import io.openapiparser.reader.UriReader
+import io.openapiparser.support.Strings
 import java.net.URI
 
 class UriReaderSpec: StringSpec({
