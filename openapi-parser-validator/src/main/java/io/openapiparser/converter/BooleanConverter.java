@@ -15,7 +15,7 @@ import static io.openapiparser.converter.Types.convertOrNull;
 public class BooleanConverter implements PropertyConverter<Boolean> {
 
     @Override
-    public @Nullable Boolean convert (String name, Object value, String location) {
+    public @Nullable Boolean convert (String name, @Nullable Object value, String location) {
         return convertOrNull (location, value, Boolean.class);
     }
 }

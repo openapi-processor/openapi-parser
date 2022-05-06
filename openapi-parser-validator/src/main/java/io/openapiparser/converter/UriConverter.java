@@ -15,7 +15,7 @@ import java.net.URI;
 public class UriConverter implements PropertyConverter<URI> {
 
     @Override
-    public @Nullable URI convert (String name, Object value, String location) {
+    public @Nullable URI convert (String name, @Nullable Object value, String location) {
         if (value == null)
             return null;
 

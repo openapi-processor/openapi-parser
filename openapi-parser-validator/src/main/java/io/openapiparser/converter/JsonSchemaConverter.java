@@ -24,7 +24,7 @@ public class JsonSchemaConverter implements PropertyConverter<JsonSchema> {
     }
 
     @Override
-    public @Nullable JsonSchema convert (String name, Object value, String location) {
+    public @Nullable JsonSchema convert (String name, @Nullable Object value, String location) {
         if (value == null)
             return null;
         if (value instanceof Boolean) {

@@ -25,7 +25,7 @@ public class JsonSchemasConverter implements PropertyConverter<Collection<JsonSc
     }
 
     @Override
-    public @Nullable Collection<JsonSchema> convert (String name, Object value, String location) {
+    public @Nullable Collection<JsonSchema> convert (String name, @Nullable Object value, String location) {
         Collection<@NonNull ?> objects = convertOrNull (location, value, Collection.class);
         if (objects == null)
             return null;

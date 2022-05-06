@@ -23,7 +23,7 @@ public class BucketConverter implements PropertyConverter<Bucket> {
     }
 
     @Override
-    public @Nullable Bucket convert (String name, Object value, String location) {
+    public @Nullable Bucket convert (String name, @Nullable Object value, String location) {
         if (value == null)
             return null;
 

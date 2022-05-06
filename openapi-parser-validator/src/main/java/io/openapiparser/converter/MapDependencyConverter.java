@@ -24,7 +24,9 @@ public class MapDependencyConverter implements PropertyConverter<Map<String, Jso
     }
 
     @Override
-    public @Nullable Map<String, JsonDependency> convert (String name, Object value, String location) {
+    public @Nullable Map<String, JsonDependency> convert (
+        String name, @Nullable Object value, String location)
+    {
         Map<String, Object> objects = convertMapOrNull (location, value);
         if (objects == null)
             return null;

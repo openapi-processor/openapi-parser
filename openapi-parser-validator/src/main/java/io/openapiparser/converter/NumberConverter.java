@@ -15,7 +15,7 @@ import static io.openapiparser.converter.Types.convertOrNull;
 public class NumberConverter implements PropertyConverter<Number> {
 
     @Override
-    public @Nullable Number convert (String name, Object value, String location) {
+    public @Nullable Number convert (String name, @Nullable Object value, String location) {
         return convertOrNull (location, value, Number.class);
     }
 }

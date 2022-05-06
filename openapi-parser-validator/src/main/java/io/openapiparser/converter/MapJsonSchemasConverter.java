@@ -24,7 +24,7 @@ public class MapJsonSchemasConverter implements PropertyConverter<Map<String, Js
     }
 
     @Override
-    public @Nullable Map<String, JsonSchema> convert (String name, Object value, String location) {
+    public @Nullable Map<String, JsonSchema> convert (String name, @Nullable Object value, String location) {
         Map<String, Object> objects = convertMapOrNull (location, value);
         if (objects == null)
             return null;

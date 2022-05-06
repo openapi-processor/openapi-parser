@@ -5,6 +5,8 @@
 
 package io.openapiparser.converter;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 import static io.openapiparser.converter.Types.convertNotNull;
 
 /**
@@ -14,7 +16,7 @@ import static io.openapiparser.converter.Types.convertNotNull;
 public class StringNotNullConverter implements PropertyConverter<String> {
 
     @Override
-    public String convert (String name, Object value, String location) {
+    public String convert (String name, @Nullable Object value, String location) {
         return convertNotNull (location, value, String.class);
     }
 }

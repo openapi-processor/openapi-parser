@@ -15,7 +15,7 @@ import static io.openapiparser.converter.Types.convertOrNull;
 public class StringNullableConverter implements PropertyConverter<String> {
 
     @Override
-    public @Nullable String convert (String name, Object value, String location) {
+    public @Nullable String convert (String name, @Nullable Object value, String location) {
         return convertOrNull (location, value, String.class);
     }
 }
