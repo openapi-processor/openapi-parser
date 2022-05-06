@@ -35,11 +35,6 @@ public class JsonSchemaContext {
     }
 
     @Deprecated
-    public String getId (Map<String, Object> properties) {
-        return version.getIdProvider ().getId (properties);
-    }
-
-    @Deprecated
     public JsonSchemaContext withSource (URI source) {
         if (scope.equals (source)) {
             return this;
