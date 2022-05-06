@@ -5,7 +5,6 @@ plugins {
 
 dependencies {
     implementation(project(":openapi-parser-interfaces"))
-    implementation(project(":openapi-parser-support"))
     implementation(libs.slf4j)
 
     testImplementation(project(":memory-protocol"))
