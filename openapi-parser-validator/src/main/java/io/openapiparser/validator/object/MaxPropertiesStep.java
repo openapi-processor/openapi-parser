@@ -10,6 +10,8 @@ import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 import io.openapiparser.validator.steps.SimpleStep;
 
+import static io.openapiparser.support.Nullness.nonNull;
+
 public class MaxPropertiesStep extends SimpleStep {
 
     public MaxPropertiesStep (JsonSchema schema, JsonInstance instance) {
@@ -18,6 +20,6 @@ public class MaxPropertiesStep extends SimpleStep {
 
     @Override
     protected ValidationMessage getError () {
-        return new MaxPropertiesError (schema, instance, schema.getMaxProperties ());
+        return new MaxPropertiesError (schema, instance, nonNull(schema.getMaxProperties ()));
     }
 }

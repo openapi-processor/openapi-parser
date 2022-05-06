@@ -9,12 +9,14 @@ import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
+import static io.openapiparser.support.Nullness.nonNull;
+
 /**
  * Created by {@link MultipleOfStep}.
  */
 public class MultipleOfError extends ValidationMessage {
     public MultipleOfError (JsonSchema schema, JsonInstance instance) {
         super (schema, instance, String.format ("the value should be a multiple of %s",
-            schema.getMultipleOf ().toString ()));
+            nonNull(schema.getMultipleOf ())));
     }
 }
