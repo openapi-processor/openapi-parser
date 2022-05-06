@@ -11,6 +11,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.*;
 
 import static io.openapiparser.converter.Types.convertOrNull;
+import static io.openapiparser.support.Nullness.nonNull;
 
 /**
  * get a collection of {@link JsonSchema}s.
@@ -28,17 +29,17 @@ public class JsonSchemasConverter implements PropertyConverter<Collection<JsonSc
         if (objects == null)
             return null;
 
-        JsonPointer parentLocation = JsonPointer.fromJsonPointer (location);
+        JsonPointer parentLocation = JsonPointer.from (location);
 
         int index = 0;
         Collection<JsonSchema> result = new ArrayList<> ();
         for (Object item : objects) {
-            result.add (create (name, item, getLocation(parentLocation, index++)));
+            result.add (nonNull(create (name, item, getLocation(parentLocation, index++))));
         }
         return Collections.unmodifiableCollection (result);
     }
 
-    private JsonSchema create (String name, Object value, String location) {
+    private @Nullable JsonSchema create (String name, Object value, String location) {
         return new JsonSchemaConverter (parentContext).convert (name, value, location);
     }
 
