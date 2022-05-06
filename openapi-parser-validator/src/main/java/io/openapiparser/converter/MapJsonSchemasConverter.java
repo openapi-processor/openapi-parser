@@ -11,6 +11,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.*;
 
 import static io.openapiparser.converter.Types.convertMapOrNull;
+import static io.openapiparser.support.Nullness.nonNull;
 
 /**
  * get a map of {@link String} to {@link JsonSchema}.
@@ -32,13 +33,15 @@ public class MapJsonSchemasConverter implements PropertyConverter<Map<String, Js
 
         Map<String, JsonSchema> result = new LinkedHashMap<> ();
         objects.forEach ((propKey, propValue) -> {
-            result.put (propKey, create (name, propValue, getLocation(parentLocation, propKey)));
+            result.put (propKey, nonNull(
+                create (name, propValue, getLocation (parentLocation, propKey))
+            ));
         });
 
         return Collections.unmodifiableMap (result);
     }
 
-    private JsonSchema create (String name, Object value, String location) {
+    private @Nullable JsonSchema create (String name, Object value, String location) {
         return new JsonSchemaConverter (parentContext).convert (name, value, location);
     }
 
