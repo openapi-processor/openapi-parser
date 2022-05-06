@@ -11,6 +11,8 @@ import io.openapiparser.validator.steps.*;
 
 import java.util.*;
 
+import static io.openapiparser.support.Nullness.nonNull;
+
 /**
  * validates required.
  *
@@ -27,7 +29,8 @@ import java.util.*;
 public class Required {
 
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
-        Set<String> instanceProperties = new HashSet<>(instance.asObject ().keySet ());
+        Map<String, Object> instanceObject = nonNull(instance.asObject ());
+        Set<String> instanceProperties = new HashSet<>(instanceObject.keySet ());
         Collection<String> requiredProperties = schema.getRequired ();
 
         if (requiredProperties == null)

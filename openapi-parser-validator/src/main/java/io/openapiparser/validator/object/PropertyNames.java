@@ -11,8 +11,9 @@ import io.openapiparser.validator.Validator;
 import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+
+import static io.openapiparser.support.Nullness.nonNull;
 
 /**
  * validates propertyNames.
@@ -37,7 +38,8 @@ public class PropertyNames {
 
         PropertyNamesStep step = new PropertyNamesStep (schema, instance);
 
-        Set<String> instanceProperties = new HashSet<>(instance.asObject ().keySet ());
+        Map<String, Object> instanceObject = nonNull(instance.asObject ());
+        Set<String> instanceProperties = new HashSet<>(instanceObject.keySet ());
         for (String instanceProperty : instanceProperties) {
             JsonInstance propertyName = instance.getPropertyName (instanceProperty);
             step.add (validator.validate (propertyNames, propertyName));

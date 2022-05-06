@@ -10,6 +10,7 @@ import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidatorSettings;
 import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -54,7 +55,7 @@ public class DateTime {
         return step;
     }
 
-    private boolean shouldValidate (String format) {
+    private boolean shouldValidate (@Nullable String format) {
         return format != null
             && format.equals ("date-time")
             && settings.validateFormat ("date-time");

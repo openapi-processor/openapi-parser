@@ -12,6 +12,8 @@ import io.openapiparser.validator.steps.ValidationStep;
 
 import java.util.*;
 
+import static io.openapiparser.support.Nullness.nonNull;
+
 /**
  * validates maxProperties.
  *
@@ -28,9 +30,9 @@ import java.util.*;
 public class MaxProperties {
 
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
-        Set<String> instanceProperties = new HashSet<>(instance.asObject ().keySet ());
+        Map<String, Object> instanceObject = nonNull(instance.asObject ());
+        Set<String> instanceProperties = new HashSet<>(instanceObject.keySet ());
         Integer maxProperties = schema.getMaxProperties ();
-
         if (maxProperties == null)
             return new NullStep ();
 

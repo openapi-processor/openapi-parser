@@ -13,6 +13,8 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static io.openapiparser.support.Nullness.nonNull;
+
 /**
  * validates additionalProperties, properties and patternProperties.
  *
@@ -46,7 +48,8 @@ public class Properties {
         JsonSchema additionalProperties = schema.getAdditionalProperties ();
 
         if (additionalProperties instanceof JsonSchemaBoolean && additionalProperties.isFalse ()) {
-            Set<String> instanceProperties = new HashSet<>(instance.asObject ().keySet ());
+            Map<String, Object> instanceObject = nonNull(instance.asObject ());
+            Set<String> instanceProperties = new HashSet<>(instanceObject.keySet ());
 
             instanceProperties.removeAll (schemaProperties.keySet ());
 
@@ -72,8 +75,8 @@ public class Properties {
             }
         }
 
-        // todo instance.forEach() on property names
-        instance.asObject ().forEach ((propName, unused) -> {
+        Map<String, Object> instanceObject = nonNull(instance.asObject ());
+        instanceObject.keySet ().forEach (propName -> {
             boolean checkAdditionalProperty = true;
 
             JsonSchema propSchema = schemaProperties.get (propName);
