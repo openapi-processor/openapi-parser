@@ -7,6 +7,7 @@ package io.openapiparser.model.v30;
 
 import io.openapiparser.*;
 import io.openapiparser.schema.Bucket;
+import io.openapiparser.support.Required;
 
 import java.util.Map;
 

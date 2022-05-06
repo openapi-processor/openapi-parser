@@ -5,7 +5,7 @@
 
 package io.openapiparser.model.v30;
 
-import io.openapiparser.Required;
+import io.openapiparser.support.Required;
 import io.openapiparser.converter.NoValueException;
 
 /**
