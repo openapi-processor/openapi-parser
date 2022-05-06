@@ -10,7 +10,7 @@ public class MessageTextBuilder {
     public String getText (Message message) {
         String location = trim(lastPartOfPath(message.getInstanceScope ()), 20);
 
-        String instancePath = message.getInstancePath () != null
+        String instancePath = message.getInstancePath ().length () != 0
             ? trim (message.getInstancePath (), 40)
             : "/";
 

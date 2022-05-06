@@ -158,7 +158,7 @@ public class JsonPointer {
         try {
             return Integer.parseInt (tokens.get (tokens.size () - 1));
         } catch (NumberFormatException ex) {
-            throw new JsonPointerInvalidException (pointer, tail(), ex);
+            throw new JsonPointerInvalidException (toString (), tail(), ex);
         }
     }
 
@@ -172,8 +172,8 @@ public class JsonPointer {
     }
 
     @Override
-    public @Nullable String toString () {
-        return pointer;
+    public String toString () {
+        return pointer != null ? pointer : "";
     }
 
     private static String encode (String pointer) {

@@ -102,7 +102,7 @@ class JsonPointerSpec : StringSpec({
     }
 
     "handles null source" {
-        JsonPointer.from(null).toString().shouldBeNull()
+        JsonPointer.from(null).toString().shouldBe("")
     }
 
     "throws on invalid json pointer" {
