@@ -5,6 +5,8 @@
 
 package io.openapiparser.validator.result;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 import java.util.Objects;
 
 public class MessageKey {
@@ -22,7 +24,7 @@ public class MessageKey {
     }
 
     @Override
-    public boolean equals (Object o) {
+    public boolean equals (@Nullable Object o) {
         if (this == o)
             return true;
 

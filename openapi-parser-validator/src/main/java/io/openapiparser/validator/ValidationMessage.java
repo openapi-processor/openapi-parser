@@ -7,6 +7,7 @@ package io.openapiparser.validator;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.*;
 
@@ -41,7 +42,7 @@ public class ValidationMessage {
         return schema.getContext ().getScope ().toString ();
     }
 
-    public String getSchemaPath () {
+    public @Nullable String getSchemaPath () {
         return schema.getLocation ().toString ();
     }
 
@@ -49,7 +50,7 @@ public class ValidationMessage {
         return instance.getScope ().toString ();
     }
 
-    public String getInstancePath () {
+    public @Nullable String getInstancePath () {
         return instance.getPath ();
     }
 
