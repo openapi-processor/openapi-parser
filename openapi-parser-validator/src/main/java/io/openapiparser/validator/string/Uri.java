@@ -11,6 +11,7 @@ import io.openapiparser.validator.ValidatorSettings;
 import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 import io.openapiparser.validator.support.UriValidator;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * validates format: uri.
@@ -47,7 +48,7 @@ public class Uri {
         return step;
     }
 
-    private boolean shouldValidate (String format) {
+    private boolean shouldValidate (@Nullable String format) {
         return format != null
             && format.equals ("uri")
             && settings.validateFormat ("uri");

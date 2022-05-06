@@ -11,6 +11,7 @@ import io.openapiparser.validator.ValidatorSettings;
 import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 import io.openapiparser.validator.support.IpV6Validator;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * validates ipv6.
@@ -48,7 +49,7 @@ public class IpV6 {
         return step;
     }
 
-    private boolean shouldValidate (String format) {
+    private boolean shouldValidate (@Nullable String format) {
         return format != null
             && format.equals ("ipv6")
             && settings.validateFormat ("ipv6");

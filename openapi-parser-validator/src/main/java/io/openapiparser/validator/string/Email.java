@@ -10,6 +10,7 @@ import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidatorSettings;
 import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.regex.Matcher;
 
@@ -57,7 +58,7 @@ public class Email {
         return step;
     }
 
-    private boolean shouldValidate (String format) {
+    private boolean shouldValidate (@Nullable String format) {
         return format != null
             && format.equals ("email")
             && settings.validateFormat ("email");

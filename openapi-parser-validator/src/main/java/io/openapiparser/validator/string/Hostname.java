@@ -10,6 +10,7 @@ import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidatorSettings;
 import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * validates hostname.
@@ -47,7 +48,7 @@ public class Hostname {
         return step;
     }
 
-    boolean shouldValidate (String format) {
+    boolean shouldValidate (@Nullable String format) {
         return format != null
             && format.equals ("hostname")
             && settings.validateFormat ("hostname");
