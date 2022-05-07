@@ -5,5 +5,5 @@
 
 package io.openapiparser.schema;
 
-public class NotImplementedException extends RuntimeException {
+public class JsonSchemaNotImplementedException extends RuntimeException {
 }
