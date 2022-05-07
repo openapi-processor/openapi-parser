@@ -5,14 +5,16 @@
 
 package io.openapiparser.schema;
 
+import io.openapiparser.converter.TypeMismatchException;
 import io.openapiparser.converter.Types;
 import io.openapiparser.validator.support.Equals;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.*;
 
 import java.net.URI;
 import java.util.*;
 
 import static io.openapiparser.converter.Types.*;
+import static io.openapiparser.support.Nullness.nonNull;
 
 public class JsonInstance {
     private final JsonInstanceContext context;
@@ -49,39 +51,28 @@ public class JsonInstance {
     }
 
     public JsonInstance getPropertyName (String propertyName) {
-        if (!isObject ())
-            throw new RuntimeException(); // todo
-
-        JsonPointer propertyPointer = location.append (propertyName);
-
-        return new JsonInstance (propertyPointer, propertyName, context);
+        return new JsonInstance (
+            location.append (propertyName),
+            getPropertyKey (propertyName),
+            context);
     }
 
     public JsonInstance getValue (String property) {
-        if (!isObject ())
-            throw new RuntimeException(); // todo
-
-        JsonPointer propertyPointer = location.append (property);
-        Object propertyValue = asObject ().get (property);
-
-        return new JsonInstance (propertyPointer, propertyValue, context);
+        return new JsonInstance (
+            location.append (property),
+            getPropertyValue (property),
+            context);
     }
 
     public JsonInstance getValue (int idx) {
-        if (!isArray ())
-            throw new RuntimeException(); // todo
-
-        JsonPointer idxPointer = location.append (idx);
-        Object[] items = asCol (value).toArray ();
-
-        return new JsonInstance (idxPointer, items[idx], context);
+        return new JsonInstance (
+            location.append (idx),
+            getArrayValue (idx),
+            context);
     }
 
     public int getArraySize () {
-        if (!isArray ())
-            throw new RuntimeException(); // todo
-
-        return asCollection ().size ();
+        return getArraySizeX ();
     }
 
     public boolean isRef () {
@@ -96,11 +87,19 @@ public class JsonInstance {
     }
 
     public URI getRefKey () {
-        return context.getReferenceKey (getRef ());
+        URI ref = getRef ();
+        if (ref == null)
+            throw new RuntimeException (); // todo
+
+        return context.getReferenceKey (ref);
     }
 
     public JsonInstance getRefInstance () {
         URI ref = getRef ();
+        if (ref == null) {
+            throw new RuntimeException (); // todo
+        }
+
         Reference reference = context.getReference (ref);
         JsonInstanceContext refContext = context.withScope (reference.getValueScope ());
         Object rawValue = reference.getRawValue ();
@@ -108,11 +107,11 @@ public class JsonInstance {
         return new JsonInstance (props, refContext.withId (props));
     }
 
-    public Map<String, Object> asObject () {
+    public @Nullable Map<String, Object> asObject () {
         return asMap (value);
     }
 
-    public Collection<Object> asCollection () {
+    public @Nullable Collection<Object> asCollection () {
         return asCol (value);
     }
 
@@ -128,18 +127,22 @@ public class JsonInstance {
         return value == null;
     }
 
+    @EnsuresNonNullIf (expression = "value", result = true)
     public boolean isString () {
         return value instanceof String;
     }
 
+    @EnsuresNonNullIf (expression = "value", result = true)
     public boolean isNumber () {
         return value instanceof Number;
     }
 
+    @EnsuresNonNullIf (expression = "value", result = true)
     public boolean isObject () {
         return value instanceof Map;
     }
 
+    @EnsuresNonNullIf (expression = "value", result = true)
     public boolean isArray () {
         return value instanceof Collection;
     }
@@ -158,11 +161,42 @@ public class JsonInstance {
     }
 
     private @Nullable URI getRef () {
-        Map<String, Object> object = asObject ();
+        Map<String, Object> object = nonNull(asObject ());
         Object ref = object.get (Keywords.REF);
         if (!Types.isString (ref))
             return null;
 
-        return UriSupport.createUri ((String)ref);
+        return UriSupport.createUri ((String)nonNull(ref));
+    }
+
+    private @Nullable String getPropertyKey (String property) {
+        if (value == null || !isObject ())
+            throw new TypeMismatchException (location.append (property).toString (), Map.class);
+
+        Map<String, Object> object = asMap (value);
+        return property;
+    }
+
+    private @Nullable Object getPropertyValue (String property) {
+        if (value == null || !isObject ())
+            throw new TypeMismatchException (location.append (property).toString (), Map.class);
+
+        Map<String, Object> object = asMap (value);
+        return object.get (property);
+    }
+
+    private @Nullable Object getArrayValue (int idx) {
+        if (value == null || !isArray ())
+            throw new TypeMismatchException (location.toString (), Collection.class);
+
+        Object[] items = asCol (value).toArray ();
+        return items[idx];
+    }
+
+    private int getArraySizeX () {
+        if (value == null || !isArray ())
+            throw new TypeMismatchException (location.toString (), Collection.class);
+
+        return asCol (value).size ();
     }
 }
