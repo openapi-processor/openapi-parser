@@ -114,21 +114,21 @@ class BucketSpec: StringSpec({
         val bucket = Bucket(URI("https://document"), "/me", mapOf(
             "foo" to "bar"
         ))
-        val pointer = JsonPointer.fromJsonPointer("/foo")
+        val pointer = JsonPointer.from("/foo")
 
         bucket.getRawValue(pointer) shouldBe "bar"
     }
 
     "get object value by null pointer" {
         val bucket = Bucket(URI("https://document"), "/me", mapOf("foo" to "bar"))
-        val pointer = JsonPointer.fromJsonPointer(null)
+        val pointer = JsonPointer.from(null)
 
         bucket.getRawValue(pointer) shouldBe bucket.rawValues
     }
 
     "throws if get object value is null" {
         val bucket = Bucket(URI("https://document"), "/me", mapOf())
-        val pointer = JsonPointer.fromJsonPointer("/object")
+        val pointer = JsonPointer.from("/object")
 
         shouldThrow<NoValueException> {
             bucket.getRawValue(pointer)
@@ -139,7 +139,7 @@ class BucketSpec: StringSpec({
         val bucket = Bucket(URI("https://document"), "/me", mapOf(
             "foo" to listOf("bar"))
         )
-        val pointer = JsonPointer.fromJsonPointer("/foo/0")
+        val pointer = JsonPointer.from("/foo/0")
 
         bucket.getRawValue(pointer) shouldBe "bar"
     }
@@ -149,7 +149,7 @@ class BucketSpec: StringSpec({
             "array" to listOf(null)
         ))
 
-        val pointer = JsonPointer.fromJsonPointer("/array/0")
+        val pointer = JsonPointer.from("/array/0")
 
         shouldThrow<NoValueException> {
             bucket.getRawValue(pointer)
@@ -161,7 +161,7 @@ class BucketSpec: StringSpec({
             "array" to listOf<Any>()
         ))
 
-        val pointer = JsonPointer.fromJsonPointer("/array/0")
+        val pointer = JsonPointer.from("/array/0")
 
         shouldThrow<ArrayIndexOutOfBoundsException> {
             bucket.getRawValue(pointer)

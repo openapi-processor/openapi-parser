@@ -43,6 +43,6 @@ public class MapSetStringsOrEmptyConverter implements PropertyConverter<Map<Stri
     }
 
     private String getLocation (String location, String property) {
-        return JsonPointer.fromJsonPointer (location).getJsonPointer (property);
+        return JsonPointer.from (location).getJsonPointer (property);
     }
 }

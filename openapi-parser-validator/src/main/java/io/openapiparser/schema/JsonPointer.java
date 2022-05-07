@@ -26,18 +26,6 @@ public class JsonPointer {
     final private List<String> tokens;
 
     /**
-     * creates a json pointer from a json pointer string. Throws if the string is not a valid json
-     * pointer.
-     *
-     * @param jsonPointer json pointer
-     * @return a json pointer object
-     */ // of() , from ()??
-    @Deprecated
-    static public JsonPointer fromJsonPointer (@Nullable String jsonPointer) {
-        return from (jsonPointer);
-    }
-
-    /**
      * creates a json pointer from a uri fragment string. Throws if the fragment is not a valid json
      * pointer.
      *

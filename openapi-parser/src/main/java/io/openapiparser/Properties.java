@@ -29,7 +29,7 @@ public class Properties {
 
     @Experimental
     public @Nullable Object getRawValueOf (String pointer) {
-        return bucket.getRawValue (JsonPointer.fromJsonPointer (pointer));
+        return bucket.getRawValue (JsonPointer.from (pointer));
     }
 
     @Experimental

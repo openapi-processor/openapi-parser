@@ -37,6 +37,6 @@ public class MapObjectsOrEmptySelfConverter<T> implements PropertiesConverter<Ma
     }
 
     private String getLocation (String location, String property) {
-        return JsonPointer.fromJsonPointer (location).getJsonPointer (property);
+        return JsonPointer.from (location).getJsonPointer (property);
     }
 }

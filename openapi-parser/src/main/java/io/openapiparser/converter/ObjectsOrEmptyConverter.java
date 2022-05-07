@@ -30,7 +30,7 @@ public class ObjectsOrEmptyConverter<T> implements PropertyConverter<Collection<
         if (objects == null)
             return Collections.emptyList ();
 
-        JsonPointer parentPointer = JsonPointer.fromJsonPointer (location);
+        JsonPointer parentPointer = JsonPointer.from (location);
 
         Collection<T> result = new ArrayList<> ();
 
