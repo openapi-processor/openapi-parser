@@ -5,6 +5,7 @@
 
 package io.openapiparser.converter;
 
+import io.openapiparser.schema.JsonPointer;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -23,4 +24,8 @@ public interface PropertyConverter<T> {
      * @return T converted value
      */
     @Nullable T convert (String name, @Nullable Object value, String location);
+
+    default @Nullable T convert (String name, @Nullable Object value, JsonPointer location) {
+        return convert (name, value, location.toString ());
+    }
 }

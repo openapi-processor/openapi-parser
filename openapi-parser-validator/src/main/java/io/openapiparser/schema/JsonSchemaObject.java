@@ -12,6 +12,8 @@ import java.net.URI;
 import java.util.*;
 
 import static io.openapiparser.converter.Types.*;
+import static io.openapiparser.schema.Keywords.REF;
+import static io.openapiparser.schema.Keywords.SCHEMA;
 
 public class JsonSchemaObject implements JsonSchema {
     private JsonSchemaContext context;  // todo final
@@ -47,25 +49,31 @@ public class JsonSchemaObject implements JsonSchema {
 
     @Override
     public boolean isRef () {
-        return schemaObject.hasProperty ("$ref");
+        return schemaObject.hasProperty (REF);
     }
 
     @Override
     public URI getRef () {
-        return schemaObject.convert ("$ref", new UriConverter ());
+        return schemaObject.convert (REF, new UriConverter ());
     }
 
     @Override
     public JsonSchema getRefSchema () {
         Reference reference = context.getReference (getRef ());
         JsonSchemaContext refContext = context.withScope (reference.getValueScope ());
-        JsonSchemaConverter converter = new JsonSchemaConverter (refContext);
-        return converter.convert ("$ref", reference.getValue (), reference.getPointer ().toString ());
+
+        JsonSchema schema = new JsonSchemaConverter (refContext)
+            .convert (REF, reference.getValue (), reference.getPointer ());
+
+        if (schema == null)
+            throw new NoValueException (getLocation ().append (REF));
+
+        return schema;
     }
 
     @Override
     public @Nullable URI getMetaSchema () {
-        return schemaObject.convert ("$schema", new UriConverter ());
+        return schemaObject.convert (SCHEMA, new UriConverter ());
     }
 
     @Override

@@ -5,12 +5,18 @@
 
 package io.openapiparser.converter;
 
+import io.openapiparser.schema.JsonPointer;
+
 /**
  * thrown if a property has no value ({@code null} or is missing).
  */
 public class NoValueException extends RuntimeException {
 
     public NoValueException (String location) {
-        super(String.format ("property '%s' has no value", location));
+        super (String.format ("property '%s' has no value", location));
+    }
+
+    public NoValueException (JsonPointer location) {
+        this (location.toString ());
     }
 }
