@@ -13,6 +13,8 @@ import java.util.Map;
 
 /**
  * type conversion/cast utility functions.
+ *
+ * todo move to support package
  */
 public class Types {
 
@@ -54,7 +56,7 @@ public class Types {
     }
 
     @SuppressWarnings ("unchecked")
-    public static <T> @Nullable T as (@Nullable Object o) {
+    public static <T> @PolyNull T as (@PolyNull Object o) {
         return (T) o;
     }
 
