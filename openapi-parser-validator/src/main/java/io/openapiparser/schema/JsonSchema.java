@@ -22,17 +22,17 @@ public interface JsonSchema {
      */
     // @JsonSchemaBooleanOnly
     default boolean getBoolean () {
-        throw new JsonSchemaNotImplementedException ();
+        throw new NotImplementedException ();
     }
 
     // @JsonSchemaBooleanOnly
     default boolean isTrue () {
-        throw new JsonSchemaNotImplementedException ();
+        throw new NotImplementedException ();
     }
 
     // @JsonSchemaBooleanOnly
     default boolean isFalse () {
-        throw new JsonSchemaNotImplementedException ();
+        throw new NotImplementedException ();
     }
 
     default boolean isRef () {
@@ -40,11 +40,11 @@ public interface JsonSchema {
     }
 
     default @Nullable URI getRef () {
-        throw new JsonSchemaNotImplementedException ();
+        throw new NotImplementedException ();
     }
 
     default JsonSchema getRefSchema () {
-        throw new JsonSchemaNotImplementedException ();
+        throw new NotImplementedException ();
     }
 
     default @Nullable URI getMetaSchema () {
