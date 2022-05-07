@@ -142,9 +142,6 @@ public class JsonSchemaObject implements JsonSchema {
             return new JsonSchemas();
 
         Object raw = schemaObject.getRawValue ("items");
-//        if (raw == null)
-//            return new JsonSchemas ((JsonSchema) null);
-
         if (raw instanceof Map || raw instanceof Boolean) {
             return new JsonSchemas (getJsonSchemaOf ("items"));
 
@@ -204,7 +201,11 @@ public class JsonSchemaObject implements JsonSchema {
 
     @Override
     public Integer getMinProperties () {
-        return schemaObject.convert ("minProperties", new IntegerConverter ());
+        Integer value = schemaObject.convert ("minProperties", new IntegerConverter ());
+        if (value == null)
+            return 0;
+
+        return value;
     }
 
     @Override
@@ -308,11 +309,8 @@ public class JsonSchemaObject implements JsonSchema {
             return Collections.emptyList ();
 
         Object raw = schemaObject.getRawValue ("type");
-        if (raw == null)
-            return  Collections.singletonList (null);
-
-        else if (raw instanceof String) {
-            String type = convert (null, raw, String.class);
+        if (raw instanceof String) {
+            String type = convert ("", raw, String.class);
             return Collections.singletonList (type);
         }
 
