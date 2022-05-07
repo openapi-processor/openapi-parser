@@ -50,7 +50,10 @@ public class JsonInstanceContext {
         return new JsonInstanceContext (scope.resolve (targetScope), references);
     }
 
-    public JsonInstanceContext withId (Map<String, Object> properties) {
+    public JsonInstanceContext withId (@Nullable Map<String, Object> properties) {
+        if (properties == null)
+            return this;
+
         String id = version.getIdProvider ().getId (properties);
         if (id == null) {
             return this;
