@@ -13,6 +13,8 @@ import io.openapiparser.validator.steps.ValidationStep;
 import io.openapiparser.validator.support.UriValidator;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import static io.openapiparser.support.Nullness.nonNull;
+
 /**
  * validates format: uri-reference.
  *
@@ -36,7 +38,8 @@ public class UriReference {
 
         UriStep step = new UriStep (schema, instance);
 
-        boolean valid = new UriValidator (instance.asString ()).validate ();
+        String instanceValue = getInstanceValue (instance);
+        boolean valid = new UriValidator (instanceValue).validate ();
         if (!valid) {
             step.setInvalid ();
         }
@@ -48,5 +51,9 @@ public class UriReference {
         return format != null
             && format.equals ("uri-reference")
             && settings.validateFormat ("uri-reference");
+    }
+
+    private String getInstanceValue (JsonInstance instance) {
+        return nonNull (instance.asString ());
     }
 }

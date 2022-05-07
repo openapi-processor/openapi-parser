@@ -13,6 +13,8 @@ import io.openapiparser.validator.steps.ValidationStep;
 
 import java.util.Collection;
 
+import static io.openapiparser.support.Nullness.nonNull;
+
 /**
  * validates contains.
  *
@@ -36,7 +38,7 @@ public class Contains {
 
         ContainsStep step = new ContainsStep (schema, instance);
 
-        Collection<Object> instanceValue = instance.asCollection ();
+        Collection<Object> instanceValue = getInstanceValue (instance);
         int instanceSize = instanceValue.size ();
 
         for (int idx = 0; idx < instanceSize; idx++) {
@@ -49,5 +51,9 @@ public class Contains {
 
         step.setInvalid ();
         return step;
+    }
+
+    private Collection<Object> getInstanceValue (JsonInstance instance) {
+        return nonNull (instance.asCollection ());
     }
 }

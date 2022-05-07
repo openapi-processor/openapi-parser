@@ -12,6 +12,8 @@ import io.openapiparser.validator.steps.ValidationStep;
 
 import java.math.BigDecimal;
 
+import static io.openapiparser.support.Nullness.nonNull;
+
 /**
  * validates multipleOf.
  *
@@ -32,7 +34,7 @@ public class MultipleOf {
 
         MultipleOfStep step = new MultipleOfStep (schema, instance);
 
-        Number instanceValue = instance.asNumber();
+        Number instanceValue = getInstanceValue (instance);
         boolean invalid = new BigDecimal (instanceValue.toString ())
             .remainder (new BigDecimal (multipleOf.toString ()))
             .compareTo (BigDecimal.ZERO) != 0;
@@ -42,5 +44,9 @@ public class MultipleOf {
         }
 
         return step;
+    }
+
+    private Number getInstanceValue (JsonInstance instance) {
+        return nonNull (instance.asNumber ());
     }
 }

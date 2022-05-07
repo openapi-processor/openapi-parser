@@ -12,6 +12,8 @@ import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import static io.openapiparser.support.Nullness.nonNull;
+
 /**
  * validates hostname.
  *
@@ -39,7 +41,7 @@ public class Hostname {
 
         HostnameStep step = new HostnameStep (schema, instance);
 
-        String instanceValue = instance.asString ();
+        String instanceValue = getInstanceValue (instance);
         boolean valid = isValid (instanceValue);
         if (!valid) {
             step.setInvalid ();
@@ -52,6 +54,10 @@ public class Hostname {
         return format != null
             && format.equals ("hostname")
             && settings.validateFormat ("hostname");
+    }
+
+    private String getInstanceValue (JsonInstance instance) {
+        return nonNull (instance.asString ());
     }
 
     private boolean isValid(String ip) {

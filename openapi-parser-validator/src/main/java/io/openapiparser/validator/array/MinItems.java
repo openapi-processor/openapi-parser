@@ -11,6 +11,8 @@ import io.openapiparser.validator.steps.ValidationStep;
 
 import java.util.Collection;
 
+import static io.openapiparser.support.Nullness.nonNull;
+
 /**
  * validates minItems.
  *
@@ -29,7 +31,7 @@ public class MinItems {
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         MinItemsStep step = new MinItemsStep (schema, instance);
 
-        Collection<Object> instanceValue = instance.asCollection ();
+        Collection<Object> instanceValue = getInstanceValue (instance);
         int minItems = schema.getMinItems ();
         if (instanceValue.size () < minItems) {
             step.setInvalid ();
@@ -37,5 +39,9 @@ public class MinItems {
         }
 
         return step;
+    }
+
+    private Collection<Object> getInstanceValue (JsonInstance instance) {
+        return nonNull (instance.asCollection ());
     }
 }

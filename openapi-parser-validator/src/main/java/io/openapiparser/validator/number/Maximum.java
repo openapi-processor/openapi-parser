@@ -11,6 +11,8 @@ import io.openapiparser.validator.steps.ValidationStep;
 
 import java.math.BigDecimal;
 
+import static io.openapiparser.support.Nullness.nonNull;
+
 /**
  * maximum.
  *
@@ -38,7 +40,11 @@ public class Maximum {
     }
 
     private int compareTo (JsonInstance instance, Number maximum) {
-        return new BigDecimal (instance.asNumber ().toString ())
+        return new BigDecimal (getInstanceValue (instance).toString ())
             .compareTo (new BigDecimal (maximum.toString ()));
+    }
+
+    private Number getInstanceValue (JsonInstance instance) {
+        return nonNull (instance.asNumber ());
     }
 }

@@ -15,6 +15,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
+import static io.openapiparser.support.Nullness.nonNull;
+
 /**
  * validates format: date-time (except leap seconds).
  *
@@ -42,8 +44,8 @@ public class DateTime {
 
         DateTimeStep step = new DateTimeStep (schema, instance);
 
-        String instanceValue = instance.asString ();
         DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+        String instanceValue = getInstanceValue (instance);
 
         try {
             formatter.parse (instanceValue, OffsetDateTime::from);
@@ -59,5 +61,9 @@ public class DateTime {
         return format != null
             && format.equals ("date-time")
             && settings.validateFormat ("date-time");
+    }
+
+    private String getInstanceValue (JsonInstance instance) {
+        return nonNull (instance.asString ());
     }
 }

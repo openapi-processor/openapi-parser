@@ -14,6 +14,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.regex.Matcher;
 
+import static io.openapiparser.support.Nullness.nonNull;
+
 /**
  * validates email.
  *
@@ -49,7 +51,7 @@ public class Email {
         EmailStep step = new EmailStep (schema, instance);
 
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(EMAIL_REGEX);
-        String instanceValue = instance.asString ();
+        String instanceValue = getInstanceValue (instance);
         Matcher m = p.matcher(instanceValue);
         boolean valid = m.find ();
         if (!valid)
@@ -62,5 +64,9 @@ public class Email {
         return format != null
             && format.equals ("email")
             && settings.validateFormat ("email");
+    }
+
+    private String getInstanceValue (JsonInstance instance) {
+        return nonNull (instance.asString ());
     }
 }

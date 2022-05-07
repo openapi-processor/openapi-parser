@@ -9,6 +9,8 @@ import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.steps.ValidationStep;
 
+import static io.openapiparser.support.Nullness.nonNull;
+
 /**
  * validates minLength.
  *
@@ -26,12 +28,16 @@ public class MinLength {
         MinLengthStep step = new MinLengthStep (schema, instance);
 
         Integer minLength = schema.getMinLength ();
-        String instanceValue = instance.asString ();
+        String instanceValue = getInstanceValue (instance);
         boolean valid = instanceValue.codePointCount (0, instanceValue.length ()) >= minLength;
         if (!valid) {
             step.setInvalid ();
         }
 
         return step;
+    }
+
+    private String getInstanceValue (JsonInstance instance) {
+        return nonNull (instance.asString ());
     }
 }

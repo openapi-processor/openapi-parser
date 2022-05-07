@@ -11,6 +11,8 @@ import io.openapiparser.validator.steps.*;
 
 import java.util.*;
 
+import static io.openapiparser.support.Nullness.nonNull;
+
 /**
  * validate uniqueItems.
  *
@@ -29,7 +31,7 @@ public class UniqueItems {
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         UniqueItemsStep step = new UniqueItemsStep (schema, instance);
 
-        Collection<Object> instanceValue = instance.asCollection ();
+        Collection<Object> instanceValue = getInstanceValue (instance);
         if (schema.isUniqueItems ()) {
             Set<Object> items = new HashSet<> ();
             for (Object item : instanceValue) {
@@ -41,5 +43,9 @@ public class UniqueItems {
         }
 
         return step;
+    }
+
+    private Collection<Object> getInstanceValue (JsonInstance instance) {
+        return nonNull (instance.asCollection ());
     }
 }

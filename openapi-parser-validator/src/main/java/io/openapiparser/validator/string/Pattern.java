@@ -12,6 +12,8 @@ import io.openapiparser.validator.steps.ValidationStep;
 
 import java.util.regex.Matcher;
 
+import static io.openapiparser.support.Nullness.nonNull;
+
 /**
  * validates pattern.
  *
@@ -33,7 +35,7 @@ public class Pattern {
         PatternStep step = new PatternStep (schema, instance);
 
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(pattern);
-        String instanceValue = instance.asString ();
+        String instanceValue = getInstanceValue (instance);
         Matcher m = p.matcher(instanceValue);
         boolean valid = m.find ();
         if(!valid) {
@@ -41,5 +43,9 @@ public class Pattern {
         }
 
         return step;
+    }
+
+    private String getInstanceValue (JsonInstance instance) {
+        return nonNull (instance.asString ());
     }
 }

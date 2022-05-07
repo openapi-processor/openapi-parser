@@ -13,6 +13,8 @@ import io.openapiparser.validator.steps.ValidationStep;
 
 import java.math.BigDecimal;
 
+import static io.openapiparser.support.Nullness.nonNull;
+
 /**
  * validates minimum.
  *
@@ -40,7 +42,11 @@ public class Minimum {
     }
 
     private int compareTo (JsonInstance instance, Number minimum) {
-        return new BigDecimal (instance.asNumber ().toString ())
+        return new BigDecimal (getInstanceValue (instance).toString ())
             .compareTo (new BigDecimal (minimum.toString ()));
+    }
+
+    private Number getInstanceValue (JsonInstance instance) {
+        return nonNull (instance.asNumber ());
     }
 }

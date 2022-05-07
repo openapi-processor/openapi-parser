@@ -13,6 +13,8 @@ import io.openapiparser.validator.steps.ValidationStep;
 import io.openapiparser.validator.support.IpV6Validator;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import static io.openapiparser.support.Nullness.nonNull;
+
 /**
  * validates ipv6.
  *
@@ -40,7 +42,7 @@ public class IpV6 {
 
         IpV6Step step = new IpV6Step (schema, instance);
 
-        String instanceValue = instance.asString ();
+        String instanceValue = getInstanceValue (instance);
         boolean valid = new IpV6Validator (instanceValue).validate ();
         if (!valid) {
             step.setInvalid ();
@@ -53,5 +55,9 @@ public class IpV6 {
         return format != null
             && format.equals ("ipv6")
             && settings.validateFormat ("ipv6");
+    }
+
+    private String getInstanceValue (JsonInstance instance) {
+        return nonNull(instance.asString ());
     }
 }

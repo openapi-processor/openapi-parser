@@ -73,7 +73,19 @@ public class Types {
         return (Number) o;
     }
 
+    public static boolean isBoolean (@Nullable Object o) {
+        return o instanceof Boolean;
+    }
+
     public static boolean isString (@Nullable Object o) {
         return o instanceof String;
+    }
+
+    public static boolean isObject (@Nullable Object o) {
+        return o instanceof Map;
+    }
+
+    public static boolean isArray (@Nullable Object o) {
+        return o instanceof Collection;
     }
 }

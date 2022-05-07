@@ -13,6 +13,8 @@ import io.openapiparser.validator.steps.ValidationStep;
 import io.openapiparser.validator.support.IpV4Validator;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import static io.openapiparser.support.Nullness.nonNull;
+
 /**
  * validates ipv4.
  *
@@ -40,7 +42,7 @@ public class IpV4 {
 
         IpV4Step step = new IpV4Step (schema, instance);
 
-        String instanceValue = instance.asString ();
+        String instanceValue = getInstanceValue (instance);
         boolean valid = new IpV4Validator (instanceValue).validate ();
         if (!valid) {
             step.setInvalid ();
@@ -53,5 +55,9 @@ public class IpV4 {
         return format != null
             && format.equals ("ipv4")
             && settings.validateFormat ("ipv4");
+    }
+
+    private String getInstanceValue (JsonInstance instance) {
+        return nonNull(instance.asString ());
     }
 }

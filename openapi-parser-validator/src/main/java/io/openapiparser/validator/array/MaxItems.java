@@ -12,6 +12,8 @@ import io.openapiparser.validator.steps.ValidationStep;
 
 import java.util.Collection;
 
+import static io.openapiparser.support.Nullness.nonNull;
+
 /**
  * validates maxItems.
  *
@@ -28,7 +30,7 @@ import java.util.Collection;
 public class MaxItems {
 
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
-        Collection<Object> instanceValue = instance.asCollection ();
+        Collection<Object> instanceValue = getInstanceValue (instance);
         Integer maxItems = schema.getMaxItems ();
         if (maxItems == null)
             return new NullStep ();
@@ -40,5 +42,9 @@ public class MaxItems {
 
         step.setInvalid ();
         return step;
+    }
+
+    private Collection<Object> getInstanceValue (JsonInstance instance) {
+        return nonNull (instance.asCollection ());
     }
 }

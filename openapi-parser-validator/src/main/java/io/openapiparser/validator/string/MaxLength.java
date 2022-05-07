@@ -10,6 +10,8 @@ import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 
+import static io.openapiparser.support.Nullness.nonNull;
+
 /**
  * validates maxLength.
  *
@@ -30,12 +32,16 @@ public class MaxLength {
 
         MaxLengthStep step = new MaxLengthStep (schema, instance);
 
-        String instanceValue = instance.asString ();
+        String instanceValue = getInstanceValue (instance);
         boolean valid = instanceValue.codePointCount (0, instanceValue.length ()) <= maxLength;
         if (!valid) {
             step.setInvalid ();
         }
 
         return step;
+    }
+
+    private String getInstanceValue (JsonInstance instance) {
+        return nonNull (instance.asString ());
     }
 }
