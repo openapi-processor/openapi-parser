@@ -7,7 +7,6 @@ package io.openapiparser.schema;
 
 import io.openapiparser.converter.*;
 import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.checker.nullness.qual.PolyNull;
 
 import java.net.URI;
 import java.util.*;
@@ -99,7 +98,7 @@ public class Bucket {
      * @param <T> target type
      * @return a {@code T} object or null
      */
-    public <T> @PolyNull T convert (String property, PropertyConverter<T> converter) {
+    public <T> @Nullable T convert (String property, PropertyConverter<T> converter) {
         return converter.convert (property, getRawValue (property), getLocation (property));
     }
 
@@ -110,7 +109,7 @@ public class Bucket {
      * @param <T> target type
      * @return a {@code T} object or null
      */
-    public <T> @PolyNull T convert (PropertiesConverter<T> converter) {
+    public <T> @Nullable T convert (PropertiesConverter<T> converter) {
         return converter.convert (properties, location.toString ());
     }
 
