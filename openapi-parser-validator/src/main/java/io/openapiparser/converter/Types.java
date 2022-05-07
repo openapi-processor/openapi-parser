@@ -88,4 +88,8 @@ public class Types {
     public static boolean isArray (@Nullable Object o) {
         return o instanceof Collection;
     }
+
+    public static boolean isSchema (@Nullable Object o) {
+        return isObject (o) || isBoolean (o);
+    }
 }

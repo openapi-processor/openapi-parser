@@ -8,11 +8,13 @@ package io.openapiparser.converter;
 import io.openapiparser.Factory;
 import io.openapiparser.schema.JsonPointer;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
 import java.util.*;
 
 import static io.openapiparser.converter.Types.convertOrNull;
+import static io.openapiparser.support.Nullness.nonNull;
 
 /**
  * get a collection of {@link T}s.
@@ -25,7 +27,7 @@ public class ObjectsOrEmptyConverter<T> implements PropertyConverter<Collection<
     }
 
     @Override
-    public Collection<T> convert (String name, Object value, String location) {
+    public @Nullable Collection<T> convert (String name, @Nullable Object value, String location) {
         Collection<@NonNull ?> objects = convertOrNull (location, value, Collection.class);
         if (objects == null)
             return Collections.emptyList ();
@@ -44,7 +46,7 @@ public class ObjectsOrEmptyConverter<T> implements PropertyConverter<Collection<
     }
 
     private T create (String name, Object item, String location) {
-        return converter.convert (name, item, location);
+        return nonNull (converter.convert (name, item, location));
     }
 
     private String getIndexLocation (JsonPointer parent, int index) {

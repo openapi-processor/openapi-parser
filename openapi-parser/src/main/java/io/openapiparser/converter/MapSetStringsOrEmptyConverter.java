@@ -6,6 +6,7 @@
 package io.openapiparser.converter;
 
 import io.openapiparser.schema.JsonPointer;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.*;
 
@@ -20,7 +21,7 @@ import static java.util.Collections.unmodifiableSet;
 public class MapSetStringsOrEmptyConverter implements PropertyConverter<Map<String, Set<String>>> {
 
     @Override
-    public Map<String, Set<String>> convert (String name, Object value, String location) {
+    public @Nullable Map<String, Set<String>> convert (String name, @Nullable Object value, String location) {
         if (value == null)
             return Collections.emptyMap ();
 

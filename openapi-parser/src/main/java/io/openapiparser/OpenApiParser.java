@@ -12,6 +12,7 @@ import java.net.URI;
 
 import static io.openapiparser.Keywords.OPENAPI;
 import static io.openapiparser.converter.Types.asMap;
+import static io.openapiparser.support.Nullness.nonNull;
 
 public class OpenApiParser {
     private final Resolver resolver;
@@ -48,6 +49,10 @@ public class OpenApiParser {
         } else {
             throw new UnknownVersionException (version);
         }
+    }
+
+    private String getVersion (Bucket api) {
+        return nonNull (api.convert (OPENAPI, new StringNotNullConverter ()));
     }
 
     private boolean isVersion30(String version) {

@@ -25,7 +25,7 @@ public class MapObjectsOrEmptyConverter<T> implements PropertyConverter<Map<Stri
     }
 
     @Override
-    public Map<String, T> convert (String name, Object value, String location) {
+    public @Nullable Map<String, T> convert (String name,@Nullable Object value, String location) {
         Map<String, Object> properties = convertMapOrNull (location, value);
         if (properties == null)
             return Collections.emptyMap ();

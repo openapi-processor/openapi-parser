@@ -148,15 +148,17 @@ public class JsonSchemaObject implements JsonSchema {
             return new JsonSchemas();
 
         Object raw = schemaObject.getRawValue ("items");
-        if (raw instanceof Map || raw instanceof Boolean) {
+        if (isSchema (raw)) {
             return new JsonSchemas (getJsonSchemaOf ("items"));
 
-        } else if (raw instanceof Collection) {
-            return new JsonSchemas (getJsonSchemasOf ("items"));
+        } else if (isArray (raw)) {
+            Collection<JsonSchema> items = getJsonSchemasOf ("items");
+            if (items != null) {
+                return new JsonSchemas (items);
+            }
         }
 
-        // todo
-        throw new RuntimeException ();
+        throw new InvalidPropertyException (getLocation ().append ("items"));
     }
 
     @Override

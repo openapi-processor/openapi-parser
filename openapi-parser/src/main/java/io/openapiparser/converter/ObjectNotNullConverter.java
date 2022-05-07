@@ -6,6 +6,7 @@
 package io.openapiparser.converter;
 
 import io.openapiparser.Factory;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
 
@@ -19,7 +20,7 @@ public class ObjectNotNullConverter<T> extends ObjectNullableConverter<T> {
     }
 
     @Override
-    public T convert (String name, Object value, String location) {
+    public @Nullable T convert (String name, @Nullable Object value, String location) {
         final T object = super.convert (name, value, location);
         if (object == null)
             throw new NoValueException (location);

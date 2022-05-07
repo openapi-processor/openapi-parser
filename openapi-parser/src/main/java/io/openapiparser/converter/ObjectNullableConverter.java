@@ -27,7 +27,7 @@ public class ObjectNullableConverter<T> implements PropertyConverter<T> {
     }
 
     @Override
-    public @Nullable T convert (String name, Object value, String location) {
+    public @Nullable T convert (String name, @Nullable Object value, String location) {
         Bucket bucket = getBucket (value, location);
         if (bucket == null)
             return null;
@@ -35,7 +35,7 @@ public class ObjectNullableConverter<T> implements PropertyConverter<T> {
         return factory.create (bucket);
     }
 
-    private @Nullable Bucket getBucket (Object value, String location) {
+    private @Nullable Bucket getBucket (@Nullable Object value, String location) {
         if (value == null)
             return null;
 

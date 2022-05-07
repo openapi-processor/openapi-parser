@@ -11,6 +11,8 @@ import io.openapiparser.schema.JsonPointer;
 import java.net.URI;
 import java.util.*;
 
+import static io.openapiparser.support.Nullness.nonNull;
+
 /**
  * get a map of {@link T}s.
  */
@@ -33,7 +35,7 @@ public class MapObjectsOrEmptySelfConverter<T> implements PropertiesConverter<Ma
     }
 
     private T create (String name, Object item, String location) {
-        return converter.convert (name, item, location);
+        return nonNull (converter.convert (name, item, location));
     }
 
     private String getLocation (String location, String property) {

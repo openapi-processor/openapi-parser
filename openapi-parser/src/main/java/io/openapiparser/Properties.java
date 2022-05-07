@@ -13,6 +13,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.*;
 
+import static io.openapiparser.support.Nullness.nonNull;
+
 /**
  * base class of OpenAPI model objects to reduce duplication.
  */
@@ -33,7 +35,7 @@ public class Properties {
     }
 
     @Experimental
-    public <T> T getValueOf (String pointer, Class<T> target) {
+    public <T> @Nullable T getValueOf (String pointer, Class<T> target) {
         final Object rawValue = getRawValueOf (pointer);
         if (rawValue == null)
             throw new NoValueException (pointer);
@@ -65,7 +67,7 @@ public class Properties {
     }
 
     protected String getStringOrThrow (String property) {
-        return bucket.convert (property, new StringNotNullConverter ());
+        return nonNull (bucket.convert (property, new StringNotNullConverter ()));
     }
 
     /* Numbers */
@@ -119,24 +121,24 @@ public class Properties {
     /* Collections */
 
     protected <T> Collection<T> getObjectsOrEmpty (String property, Class<T> clazz) {
-        return bucket.convert (property, new ObjectsOrEmptyConverter<T> (
-            bucket.getSource (), new Factory<> (context, clazz)));
+        return nonNull (bucket.convert (property, new ObjectsOrEmptyConverter<T> (
+            bucket.getSource (), new Factory<> (context, clazz))));
     }
 
     /* String Collections */
 
     protected Collection<String> getStringsOrEmpty (String property) {
-        return bucket.convert (property, new StringsOrEmptyConverter ());
+        return nonNull (bucket.convert (property, new StringsOrEmptyConverter ()));
     }
 
     protected Collection<String> getStringsOrNull (String property) {
-        return bucket.convert (property, new StringsNullableConverter ());
+        return nonNull (bucket.convert (property, new StringsNullableConverter ()));
     }
 
     /* Maps */
 
     protected Map<String, String> getMapStringsOrEmpty (String property) {
-        return bucket.convert (property, new MapStringsOrEmptyConverter());
+        return nonNull (bucket.convert (property, new MapStringsOrEmptyConverter()));
     }
 
     protected <T> Map<String, T> getMapObjectsOrEmpty (Class<T> clazz) {
@@ -150,18 +152,20 @@ public class Properties {
     }
 
     protected <T> Map<String, T> getMapObjectsOrEmpty (String property, Class<T> clazz) {
-        return bucket.convert (property, new MapObjectsOrEmptyConverter<T> (bucket.getSource (),
-            new Factory<T> (context, clazz)));
+        return nonNull (bucket.convert (
+            property,
+            new MapObjectsOrEmptyConverter<T> (bucket.getSource (),
+            new Factory<T> (context, clazz))));
     }
 
     protected Map<String, Set<String>> getMapSetStringsOrEmpty (String property) {
-        return bucket.convert (property, new MapSetStringsOrEmptyConverter ());
+        return nonNull (bucket.convert (property, new MapSetStringsOrEmptyConverter ()));
     }
 
     /* other */
 
     protected Map<String, Object> getExtensions () {
-        return bucket.convert (new ExtensionsConverter ());
+        return nonNull (bucket.convert (new ExtensionsConverter ()));
     }
 
     /* ref */

@@ -5,8 +5,12 @@
 
 package io.openapiparser.converter;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 import java.util.Collections;
 import java.util.Map;
+
+import static io.openapiparser.support.Nullness.nonNull;
 
 /**
  * get a map of {@link String}s from {@code name} property {@code value}.
@@ -14,7 +18,7 @@ import java.util.Map;
 public class MapStringsOrEmptyConverter implements PropertyConverter<Map<String, String>> {
 
     @Override
-    public Map<String, String> convert (String name, Object value, String location) {
+    public @Nullable Map<String, String> convert (String name, @Nullable Object value, String location) {
         final Map<String, Object> values = Types.convertMapOrNull (location, value);
         if (value == null)
             return Collections.emptyMap ();
@@ -22,8 +26,8 @@ public class MapStringsOrEmptyConverter implements PropertyConverter<Map<String,
         return Collections.unmodifiableMap (asMap(values));
     }
 
-    @SuppressWarnings ("unchecked")
-    private static Map<String, String> asMap (Object value) {
-        return (Map<String, String>) value;
+    @SuppressWarnings ({"unchecked", "rawtypes"})
+    private static Map<String, String> asMap (@Nullable Map<String, Object> value) {
+        return (Map<String, String>) nonNull ((Map) value);
     }
 }
