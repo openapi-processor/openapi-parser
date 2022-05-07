@@ -5,28 +5,32 @@
 
 package io.openapiparser.schema;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 import java.util.Collection;
-import java.util.Collections;
+
+import static io.openapiparser.support.Nullness.nonNull;
 
 /**
  * handles json schema dependency which may be a schema or an array of string.
  */
+@SuppressWarnings ("NullableProblems")
 public class JsonDependency {
     private enum Kind {SCHEMA, ARRAY}
 
     private final Kind kind;
-    private final JsonSchema schema;
-    private final Collection<String> properties;
+    private final @Nullable JsonSchema schema;
+    private final @Nullable Collection<String> properties;
 
     public JsonDependency (JsonSchema schema) {
         this.kind = Kind.SCHEMA;
         this.schema = schema;
-        this.properties = Collections.emptyList ();
+        this.properties = null;
     }
 
     public JsonDependency (Collection<String> values) {
         this.kind = Kind.ARRAY;
-        this.schema = new JsonSchemaObject (Collections.emptyMap ());
+        this.schema = null;
         this.properties = values;
     }
 
@@ -35,10 +39,10 @@ public class JsonDependency {
     }
 
     public JsonSchema getSchema () {
-        return schema;
+        return nonNull(schema);
     }
 
     public Collection<String> getProperties () {
-        return properties;
+        return nonNull(properties);
     }
 }
