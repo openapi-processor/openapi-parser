@@ -38,14 +38,6 @@ public class Types {
         return convert (path, value, type);
     }
 
-    public static <T> T convertNotNull (String path, @Nullable Object value, Class<T> type) {
-        final T result = convertOrNull (path, value, type);
-        if (result == null)
-            throw new NoValueException (path);
-
-        return result;
-    }
-
     @SuppressWarnings ("unchecked")
     static Collection<Object> convertCollection (String path, @Nullable Object value) {
         return convert (path, value, Collection.class);
