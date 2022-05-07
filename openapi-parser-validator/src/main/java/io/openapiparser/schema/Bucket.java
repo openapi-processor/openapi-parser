@@ -14,6 +14,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static io.openapiparser.converter.Types.*;
+import static io.openapiparser.support.Nullness.nonNull;
 import static java.util.Collections.unmodifiableMap;
 
 /**
@@ -166,7 +167,6 @@ public class Bucket {
      * @param pointer property location
      * @return property value or null if the property does not exist
      */
-    // todo getRawObject()
     public @Nullable Object getRawValue (JsonPointer pointer) {
         JsonPointer current = JsonPointer.EMPTY;
         Object value = properties;
@@ -246,7 +246,7 @@ public class Bucket {
         JsonPointer propertyLocation = location.append (property);
 
         if (value instanceof Map) {
-            handler.visit (getBucket (property));
+            handler.visit (nonNull(getBucket (property)));
 
         } else if (value instanceof Collection) {
             int index = 0;
