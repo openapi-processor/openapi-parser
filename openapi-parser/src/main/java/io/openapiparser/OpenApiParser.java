@@ -24,8 +24,7 @@ public class OpenApiParser {
         try {
             return createResult (resolver.resolve (baseUri));
         } catch (Exception e) {
-            // todo
-            throw e;
+            throw new ParserException (e);
         }
     }
 
@@ -33,23 +32,21 @@ public class OpenApiParser {
         try {
             return createResult (resolver.resolve (resource));
         } catch (Exception e) {
-            // todo
-            throw e;
+            throw new ParserException (e);
         }
     }
 
     private OpenApiResult createResult (ResolverResult result) {
         Object document = result.getDocument ();
         Bucket api = new Bucket (result.getUri (), asMap (document));
-        String version = api.convert (OPENAPI, new StringNotNullConverter ());
+        String version = getVersion (api);
 
         if (isVersion30 (version)) {
             return new OpenApiResult30 (new Context (result.getUri (), result.getRegistry ()), api);
         } else if (isVersion31 (version)) {
             return new OpenApiResult31 (new Context (result.getUri (), result.getRegistry ()), api);
         } else {
-            // todo unknown version
-            throw new RuntimeException ();
+            throw new UnknownVersionException (version);
         }
     }
 
