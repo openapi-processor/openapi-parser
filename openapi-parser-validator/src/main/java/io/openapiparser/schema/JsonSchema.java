@@ -22,29 +22,29 @@ public interface JsonSchema {
      */
     // @JsonSchemaBooleanOnly
     default boolean getBoolean () {
-        throw new RuntimeException (); // todo
+        throw new NotImplementedException ();
     }
 
     // @JsonSchemaBooleanOnly
     default boolean isTrue () {
-        throw new RuntimeException (); // todo
+        throw new NotImplementedException ();
     }
 
     // @JsonSchemaBooleanOnly
     default boolean isFalse () {
-        throw new RuntimeException (); // todo
+        throw new NotImplementedException ();
     }
 
     default boolean isRef () {
         return false;
     }
 
-    default URI getRef () {
-        throw new RuntimeException (); // todo
+    default @Nullable URI getRef () {
+        throw new NotImplementedException ();
     }
 
     default JsonSchema getRefSchema () {
-        throw new RuntimeException (); // todo
+        throw new NotImplementedException ();
     }
 
     default @Nullable URI getMetaSchema () {
