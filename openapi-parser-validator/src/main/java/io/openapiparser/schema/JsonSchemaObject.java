@@ -17,15 +17,10 @@ import static io.openapiparser.schema.Keywords.SCHEMA;
 import static io.openapiparser.support.Nullness.nonNull;
 
 public class JsonSchemaObject implements JsonSchema {
-    private JsonSchemaContext context;  // todo final
+    private final JsonSchemaContext context;
 
     private final Bucket schemaObject;
     private final Bucket schemaProperties;
-
-    public JsonSchemaObject (Map<String, Object> document) {
-        schemaObject = new Bucket (document);
-        schemaProperties = getPropertiesX ();
-    }
 
     public JsonSchemaObject (Map<String, Object> document, JsonSchemaContext context) {
         this.context = context;
