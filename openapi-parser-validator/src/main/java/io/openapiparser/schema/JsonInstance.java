@@ -87,20 +87,11 @@ public class JsonInstance {
     }
 
     public URI getRefKey () {
-        URI ref = getRef ();
-        if (ref == null)
-            throw new RuntimeException (); // todo
-
-        return context.getReferenceKey (ref);
+        return context.getReferenceKey (nonNull(getRef ()));
     }
 
     public JsonInstance getRefInstance () {
-        URI ref = getRef ();
-        if (ref == null) {
-            throw new RuntimeException (); // todo
-        }
-
-        Reference reference = context.getReference (ref);
+        Reference reference = context.getReference (nonNull (getRef ()));
         JsonInstanceContext refContext = context.withScope (reference.getValueScope ());
         Object rawValue = reference.getRawValue ();
         Map<String, Object> props = asMap(rawValue);
@@ -171,15 +162,18 @@ public class JsonInstance {
 
     private @Nullable String getPropertyKey (String property) {
         if (value == null || !isObject ())
-            throw new TypeMismatchException (location.append (property).toString (), Map.class);
+            throw new TypeMismatchException (location.append (property), Map.class);
 
         Map<String, Object> object = asMap (value);
+        if (!object.containsKey (property))
+            throw new InvalidPropertyException (location.append (property));
+
         return property;
     }
 
     private @Nullable Object getPropertyValue (String property) {
         if (value == null || !isObject ())
-            throw new TypeMismatchException (location.append (property).toString (), Map.class);
+            throw new TypeMismatchException (location.append (property), Map.class);
 
         Map<String, Object> object = asMap (value);
         return object.get (property);
@@ -187,7 +181,7 @@ public class JsonInstance {
 
     private @Nullable Object getArrayValue (int idx) {
         if (value == null || !isArray ())
-            throw new TypeMismatchException (location.toString (), Collection.class);
+            throw new TypeMismatchException (location, Collection.class);
 
         Object[] items = asCol (value).toArray ();
         return items[idx];
@@ -195,7 +189,7 @@ public class JsonInstance {
 
     private int getArraySizeX () {
         if (value == null || !isArray ())
-            throw new TypeMismatchException (location.toString (), Collection.class);
+            throw new TypeMismatchException (location, Collection.class);
 
         return asCol (value).size ();
     }
