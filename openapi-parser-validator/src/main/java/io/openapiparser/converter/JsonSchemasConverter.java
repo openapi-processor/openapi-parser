@@ -35,13 +35,13 @@ public class JsonSchemasConverter implements PropertyConverter<Collection<JsonSc
         int index = 0;
         Collection<JsonSchema> result = new ArrayList<> ();
         for (Object item : objects) {
-            result.add (nonNull(create (name, item, getLocation(parentLocation, index++))));
+            result.add (create (name, item, getLocation(parentLocation, index++)));
         }
         return Collections.unmodifiableCollection (result);
     }
 
-    private @Nullable JsonSchema create (String name, Object value, String location) {
-        return new JsonSchemaConverter (parentContext).convert (name, value, location);
+    private JsonSchema create (String name, Object value, String location) {
+        return nonNull(new JsonSchemaConverter (parentContext).convert (name, value, location));
     }
 
     private String getLocation (JsonPointer parent, int index) {
