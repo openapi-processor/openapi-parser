@@ -6,7 +6,7 @@
 package io.openapiparser.converter;
 
 import io.openapiparser.schema.*;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.*;
 
 import java.util.*;
 
@@ -35,12 +35,12 @@ public class MapDependencyConverter implements PropertyConverter<Map<String, Jso
 
         Map<String, JsonDependency> result = new LinkedHashMap<> ();
         objects.forEach ((propKey, propValue) -> {
-            if (propValue instanceof Map || propValue instanceof Boolean) {
+            if (isObject(propValue) || isBoolean (propValue)) {
                 result.put (propKey, new JsonDependency (
-                    nonNull(create (name, propValue, getLocation (parentLocation, propKey)))
-                ));
-            } else if (propValue instanceof Collection) {
-                Collection<String> property = nonNull(asCol (propValue));
+                    create (name, propValue, getLocation (parentLocation, propKey)))
+                );
+            } else if (isArray (propValue)) {
+                Collection<String> property = asCol (propValue);
                 result.put (propKey, new JsonDependency (property));
             }
         });
@@ -48,8 +48,8 @@ public class MapDependencyConverter implements PropertyConverter<Map<String, Jso
         return Collections.unmodifiableMap (result);
     }
 
-    private @Nullable JsonSchema create (String name, Object value, String location) {
-        return new JsonSchemaConverter (parentContext).convert (name, value, location);
+    private JsonSchema create (String name, Object value, String location) {
+        return nonNull (new JsonSchemaConverter (parentContext).convert (name, value, location));
     }
 
     private String getLocation (JsonPointer parent, String property) {
