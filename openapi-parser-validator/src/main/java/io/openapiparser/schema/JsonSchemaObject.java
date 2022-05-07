@@ -14,6 +14,7 @@ import java.util.*;
 import static io.openapiparser.converter.Types.*;
 import static io.openapiparser.schema.Keywords.REF;
 import static io.openapiparser.schema.Keywords.SCHEMA;
+import static io.openapiparser.support.Nullness.nonNull;
 
 public class JsonSchemaObject implements JsonSchema {
     private JsonSchemaContext context;  // todo final
@@ -53,18 +54,17 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     @Override
-    public URI getRef () {
+    public @Nullable URI getRef () {
         return schemaObject.convert (REF, new UriConverter ());
     }
 
     @Override
     public JsonSchema getRefSchema () {
-        Reference reference = context.getReference (getRef ());
+        Reference reference = context.getReference (nonNull(getRef()));
         JsonSchemaContext refContext = context.withScope (reference.getValueScope ());
 
         JsonSchema schema = new JsonSchemaConverter (refContext)
             .convert (REF, reference.getValue (), reference.getPointer ());
-
         if (schema == null)
             throw new NoValueException (getLocation ().append (REF));
 
