@@ -9,8 +9,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
 
-import static io.openapiparser.converter.Types.as;
-import static io.openapiparser.converter.Types.isString;
+import static io.openapiparser.converter.Types.*;
 
 public class IdProvider {
     public static final IdProvider LATEST = new IdProvider ("$id");
@@ -35,6 +34,6 @@ public class IdProvider {
         if (isString (ref) || !isString (id))
             return null;
 
-        return as (id);
+        return asString (id);
     }
 }

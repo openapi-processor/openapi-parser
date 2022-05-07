@@ -116,12 +116,12 @@ public class JsonInstance {
         return asCol (value);
     }
 
-    public String asString () {
-        return as (value);
+    public @Nullable String asString () {
+        return Types.asString (value);
     }
 
-    public Number asNumber () {
-        return as (value);
+    public @Nullable Number asNumber () {
+        return Types.asNumber (value);
     }
 
     public boolean isNull () {

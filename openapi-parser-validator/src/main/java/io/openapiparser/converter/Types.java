@@ -56,11 +56,6 @@ public class Types {
     }
 
     @SuppressWarnings ("unchecked")
-    public static <T> @PolyNull T as (@PolyNull Object o) {
-        return (T) o;
-    }
-
-    @SuppressWarnings ("unchecked")
     public static @PolyNull Map<String, Object> asMap (@PolyNull Object o) {
         return (Map<String, Object>) o;
     }
@@ -68,6 +63,14 @@ public class Types {
     @SuppressWarnings ("unchecked")
     public static <T> @PolyNull Collection<T> asCol (@PolyNull Object o) {
         return (Collection<T>) o;
+    }
+
+    public static @PolyNull String asString (@PolyNull Object o) {
+        return (String) o;
+    }
+
+    public static @PolyNull Number asNumber (@PolyNull Object o) {
+        return (Number) o;
     }
 
     public static boolean isString (@Nullable Object o) {
