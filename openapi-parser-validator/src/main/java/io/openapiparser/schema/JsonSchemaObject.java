@@ -22,16 +22,19 @@ public class JsonSchemaObject implements JsonSchema {
     private final Bucket schemaObject;
     private final Bucket schemaProperties;
 
+
+    @SuppressWarnings("method.invocation")
     public JsonSchemaObject (Map<String, Object> document, JsonSchemaContext context) {
         this.context = context;
         schemaObject = new Bucket (context.getScope (), document);
-        schemaProperties = getPropertiesX ();
+        schemaProperties = getBucketProperties (schemaObject);
     }
 
+    @SuppressWarnings("method.invocation")
     public JsonSchemaObject (JsonPointer location, Map<String, Object> document, JsonSchemaContext context) {
         this.context = context;
         this.schemaObject = new Bucket (context.getScope (), location, document);
-        schemaProperties = getPropertiesX ();
+        schemaProperties = getBucketProperties (schemaObject);
     }
 
     @Override
@@ -379,8 +382,8 @@ public class JsonSchemaObject implements JsonSchema {
         return schemaObject.convert (property, new JsonSchemasConverter (context));
     }
 
-    private Bucket getPropertiesX () {
-        Bucket bucket = schemaObject.convert ("properties", new BucketConverter (schemaObject));
+    private Bucket getBucketProperties (Bucket schemaBucket) {
+        Bucket bucket = schemaBucket.convert ("properties", new BucketConverter (schemaBucket));
         if (bucket == null)
             return Bucket.empty ();
 
