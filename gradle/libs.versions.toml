@@ -6,20 +6,20 @@ plugin-kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10"
 plugin-checker = "org.checkerframework:checkerframework-gradle-plugin:0.6.5"
 plugin-outdated = "com.github.ben-manes:gradle-versions-plugin:0.39.0"
 checker = "org.checkerframework:checker:3.22.0"
-slf4j = "org.slf4j:slf4j-api:2.0.0-alpha6"
+slf4j = "org.slf4j:slf4j-api:2.0.0-alpha7"
 logback = "ch.qos.logback:logback-classic:1.3.0-alpha14"
 
-jackson-bom = "com.fasterxml.jackson:jackson-bom:2.12.5"
+jackson-bom = "com.fasterxml.jackson:jackson-bom:2.13.2"
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind" }
 jackson-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml" }
 jackson-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin" }
 
 snakeyaml = "org.yaml:snakeyaml:1.30"
 
-kotest-bom = "io.kotest:kotest-bom:5.0.3"
+kotest-bom = "io.kotest:kotest-bom:5.1.0"
 kotest-runner = { module = "io.kotest:kotest-runner-junit5" }
 kotest-datatest = { module = "io.kotest:kotest-framework-datatest" }
-mockk = "io.mockk:mockk:1.12.1"
+mockk = "io.mockk:mockk:1.12.3"
 
 [bundles]
 jackson = ["jackson-databind", "jackson-yaml"]
