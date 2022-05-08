@@ -7,7 +7,6 @@ package io.openapiparser.model.v3x
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.datatest.withData
 import io.kotest.matchers.maps.shouldBeEmpty
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
@@ -33,13 +32,13 @@ class DiscriminatorSpec : StringSpec({
              foo: '#/components/Foo'
         """
 
-        withData(
-            discriminator30(source).mapping,
-            discriminator31(source).mapping
-        ) { mapping ->
-            mapping.shouldNotBeNull()
-            mapping.size shouldBe 1
-        }
+        val d30 = discriminator30(source).mapping
+        d30.shouldNotBeNull()
+        d30.size shouldBe 1
+
+        val d31 = discriminator31(source).mapping
+        d31.shouldNotBeNull()
+        d31.size shouldBe 1
     }
 
     "gets discriminator mapping is empty if it is missing" {

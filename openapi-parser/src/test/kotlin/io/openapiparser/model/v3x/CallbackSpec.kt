@@ -6,7 +6,6 @@
 package io.openapiparser.model.v3x
 
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.datatest.withData
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.openapiparser.model.v30.callback as callback30
@@ -23,23 +22,22 @@ class CallbackSpec: StringSpec ({
         callback31(source).getPathItem("/foo").shouldNotBeNull()
     }
 
+    fun assertPathItems (pathItems: Map<String, Any>) {
+        pathItems.size shouldBe 2
+        pathItems["/foo"].shouldNotBeNull()
+        pathItems["/bar"].shouldNotBeNull()
+    }
+
     "gets callback path items" {
         val source = """
           /foo: {}
           /bar: {}
         """
 
-        withData(
-            callback30(source).pathItems,
-            callback31(source).pathItems,
-        ) { pathItems ->
-            pathItems.size shouldBe 2
-            pathItems["/foo"].shouldNotBeNull()
-            pathItems["/bar"].shouldNotBeNull()
-        }
+        assertPathItems(callback30(source).pathItems)
+        assertPathItems(callback31(source).pathItems)
     }
 
     include(testExtensions("Callback 30", ::callback30) { it.extensions })
     include(testExtensions("Callback 31", ::callback31) { it.extensions })
-
 })

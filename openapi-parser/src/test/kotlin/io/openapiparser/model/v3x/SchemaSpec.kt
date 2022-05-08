@@ -6,7 +6,6 @@
 package io.openapiparser.model.v3x
 
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.datatest.withData
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.collections.shouldBeEmpty
@@ -221,14 +220,15 @@ class SchemaSpec: StringSpec({
             bar: {}
         """
 
-        withData(
-            schema30(source).properties,
-            schema31(source).properties,
-        ) { properties ->
-            properties.size shouldBe 2
-            properties["foo"].shouldNotBeNull()
-            properties["bar"].shouldNotBeNull()
-        }
+        val p30 = schema30(source).properties
+        p30.size shouldBe 2
+        p30["foo"].shouldNotBeNull()
+        p30["bar"].shouldNotBeNull()
+
+        val p31 = schema31(source).properties
+        p31.size shouldBe 2
+        p31["foo"].shouldNotBeNull()
+        p31["bar"].shouldNotBeNull()
     }
 
     "gets schema properties is empty if missing" {

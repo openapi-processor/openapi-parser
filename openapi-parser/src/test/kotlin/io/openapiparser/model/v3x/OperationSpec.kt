@@ -6,7 +6,6 @@
 package io.openapiparser.model.v3x
 
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.datatest.withData
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.collections.shouldBeEmpty
@@ -66,12 +65,8 @@ class OperationSpec: StringSpec({
     "gets operation parameters" {
         val source = """parameters: [{}, {}]"""
 
-        withData(
-            operation30(source).parameters,
-            operation31(source).parameters
-        ) { parameters ->
-            parameters.size shouldBe 2
-        }
+        operation30(source).parameters.size shouldBe 2
+        operation31(source).parameters.size shouldBe 2
     }
 
     "gets operation parameters is empty if missing" {
@@ -96,14 +91,15 @@ class OperationSpec: StringSpec({
             bar: {}
         """
 
-        withData(
-            operation30(source).callbacks,
-            operation31(source).callbacks
-        ) { callbacks ->
-            callbacks.size shouldBe 2
-            callbacks["foo"].shouldNotBeNull()
-            callbacks["bar"].shouldNotBeNull()
-        }
+        val c30 = operation30(source).callbacks
+        c30.size shouldBe 2
+        c30["foo"].shouldNotBeNull()
+        c30["bar"].shouldNotBeNull()
+
+        val c31 = operation31(source).callbacks
+        c31.size shouldBe 2
+        c31["foo"].shouldNotBeNull()
+        c31["bar"].shouldNotBeNull()
     }
 
     "gets operation callbacks is empty if missing" {
@@ -124,13 +120,13 @@ class OperationSpec: StringSpec({
     }
 
     "gets operation security requirements" {
-        withData(
-            operation30("security: [{}, {}]").security,
-            operation31("security: [{}, {}]").security
-        ) { security ->
-            security.shouldNotBeNull()
-            security.size shouldBe 2
-        }
+        val s30 = operation30("security: [{}, {}]").security
+        s30.shouldNotBeNull()
+        s30.size shouldBe 2
+
+        val s31 = operation31("security: [{}, {}]").security
+        s31.shouldNotBeNull()
+        s31.size shouldBe 2
     }
 
     "gets operation empty security requirements if it is missing" {
@@ -139,13 +135,13 @@ class OperationSpec: StringSpec({
     }
 
     "gets server objects" {
-        withData(
-            operation30("servers: [{}, {}]").servers,
-            operation31("servers: [{}, {}]").servers
-        ) { servers ->
-            servers.shouldNotBeNull()
-            servers.size shouldBe 2
-        }
+        val s30 = operation30("servers: [{}, {}]").servers
+        s30.shouldNotBeNull()
+        s30.size shouldBe 2
+
+        val s31 = operation31("servers: [{}, {}]").servers
+        s31.shouldNotBeNull()
+        s31.size shouldBe 2
     }
 
     "gets empty server objects if it is missing" {

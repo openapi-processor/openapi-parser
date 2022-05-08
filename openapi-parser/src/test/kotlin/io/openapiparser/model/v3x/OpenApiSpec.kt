@@ -7,7 +7,6 @@ package io.openapiparser.model.v3x
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.datatest.withData
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.nulls.shouldBeNull
@@ -40,13 +39,13 @@ class OpenApiSpec: StringSpec({
     }
 
     "gets server objects" {
-        withData(
-            openapi30("servers: [{}, {}]").servers,
-            openapi31("servers: [{}, {}]").servers
-        ) { servers ->
-            servers.shouldNotBeNull()
-            servers.size shouldBe 2
-        }
+        val s30 = openapi30("servers: [{}, {}]").servers
+        s30.shouldNotBeNull()
+        s30.size shouldBe 2
+
+        val s31 = openapi31("servers: [{}, {}]").servers
+        s31.shouldNotBeNull()
+        s31.size shouldBe 2
     }
 
     "gets empty server objects if it is missing" {
@@ -61,12 +60,8 @@ class OpenApiSpec: StringSpec({
               bar: {}
         """
 
-        withData(
-            openapi30(source).components!!,
-            openapi31(source).components!!
-        ) { components ->
-            components.shouldNotBeNull()
-        }
+        openapi30(source).components.shouldNotBeNull()
+        openapi31(source).components.shouldNotBeNull()
     }
 
     "gets components is null if it missing" {
@@ -75,13 +70,13 @@ class OpenApiSpec: StringSpec({
     }
 
     "gets security requirements objects" {
-        withData(
-            openapi30("security: [{}, {}]").security,
-            openapi31("security: [{}, {}]").security
-        ) { security ->
-            security.shouldNotBeNull()
-            security.size shouldBe 2
-        }
+        val s30 = openapi30("security: [{}, {}]").security
+        s30.shouldNotBeNull()
+        s30.size shouldBe 2
+
+        val s31 = openapi31("security: [{}, {}]").security
+        s31.shouldNotBeNull()
+        s31.size shouldBe 2
     }
 
     "gets empty security requirements objects if it is missing" {
@@ -90,13 +85,13 @@ class OpenApiSpec: StringSpec({
     }
 
     "gets tags array" {
-        withData(
-            openapi30("tags: [{}, {}]").tags,
-            openapi31("tags: [{}, {}]").tags,
-        ) { tags ->
-            tags.shouldNotBeEmpty()
-            tags.size shouldBe 2
-        }
+        val t30 = openapi30("tags: [{}, {}]").tags
+        t30.shouldNotBeEmpty()
+        t30.size shouldBe 2
+
+        val t31 = openapi31("tags: [{}, {}]").tags
+        t31.shouldNotBeEmpty()
+        t31.size shouldBe 2
     }
 
     "gets empty tag objects if it is missing" {

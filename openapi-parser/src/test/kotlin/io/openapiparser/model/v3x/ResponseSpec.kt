@@ -7,7 +7,6 @@ package io.openapiparser.model.v3x
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.datatest.withData
 import io.kotest.matchers.maps.shouldBeEmpty
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
@@ -37,14 +36,15 @@ class ResponseSpec: StringSpec({
             bar: {}
         """
 
-        withData(
-            response30(source).headers,
-            response31(source).headers
-        ) { headers ->
-            headers.size shouldBe 2
-            headers["foo"].shouldNotBeNull()
-            headers["bar"].shouldNotBeNull()
-        }
+        val h30 = response30(source).headers
+        h30.size shouldBe 2
+        h30["foo"].shouldNotBeNull()
+        h30["bar"].shouldNotBeNull()
+
+        val h31 = response31(source).headers
+        h31.size shouldBe 2
+        h31["foo"].shouldNotBeNull()
+        h31["bar"].shouldNotBeNull()
     }
 
     "gets response headers is empty if missing" {
@@ -94,14 +94,15 @@ class ResponseSpec: StringSpec({
             bar: {}
         """
 
-        withData(
-            response30(source).links,
-            response31(source).links
-        ) { links ->
-            links.size shouldBe 2
-            links["foo"].shouldNotBeNull()
-            links["bar"].shouldNotBeNull()
-        }
+        val l30 = response30(source).links
+        l30.size shouldBe 2
+        l30["foo"].shouldNotBeNull()
+        l30["bar"].shouldNotBeNull()
+
+        val l31 = response31(source).links
+        l31.size shouldBe 2
+        l31["foo"].shouldNotBeNull()
+        l31["bar"].shouldNotBeNull()
     }
 
     "gets response links is empty if missing" {

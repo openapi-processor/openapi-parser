@@ -6,7 +6,6 @@
 package io.openapiparser.model.v3x
 
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.datatest.withData
 import io.kotest.matchers.maps.shouldBeEmpty
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
@@ -15,6 +14,12 @@ import io.openapiparser.model.v31.components as components31
 
 class ComponentsSpec: StringSpec({
 
+    fun assertMap (items: Map<String, Any>) {
+        items.size shouldBe 2
+        items["foo"].shouldNotBeNull()
+        items["bar"].shouldNotBeNull()
+    }
+
     "gets components schemas" {
         val source = """
           schemas:
@@ -22,14 +27,8 @@ class ComponentsSpec: StringSpec({
             bar: {}
         """
 
-        withData(
-            components30(source).schemas,
-            components31(source).schemas,
-        ) { schemas ->
-            schemas.size shouldBe 2
-            schemas["foo"].shouldNotBeNull()
-            schemas["bar"].shouldNotBeNull()
-        }
+        assertMap(components30(source).schemas)
+        assertMap(components31(source).schemas)
     }
 
     "gets components schemas is empty if missing" {
@@ -44,14 +43,8 @@ class ComponentsSpec: StringSpec({
             bar: {}
         """
 
-        withData(
-            components30(source).responses,
-            components31(source).responses
-        ) { responses ->
-            responses.size shouldBe 2
-            responses["foo"].shouldNotBeNull()
-            responses["bar"].shouldNotBeNull()
-        }
+        assertMap(components30(source).responses)
+        assertMap(components31(source).responses)
     }
 
     "gets components responses is empty if missing" {
@@ -66,14 +59,8 @@ class ComponentsSpec: StringSpec({
             bar: {}
         """
 
-        withData(
-            components30(source).parameters,
-            components31(source).parameters
-        ) { parameters ->
-            parameters.size shouldBe 2
-            parameters["foo"].shouldNotBeNull()
-            parameters["bar"].shouldNotBeNull()
-        }
+        assertMap(components30(source).parameters)
+        assertMap(components31(source).parameters)
     }
 
     "gets components parameters is empty if missing" {
@@ -88,14 +75,8 @@ class ComponentsSpec: StringSpec({
             bar: {}
         """
 
-        withData(
-            components30(source).examples,
-            components31(source).examples
-        ) { examples ->
-            examples.size shouldBe 2
-            examples["foo"].shouldNotBeNull()
-            examples["bar"].shouldNotBeNull()
-        }
+        assertMap(components30(source).examples)
+        assertMap(components31(source).examples)
     }
 
     "gets components examples is empty if missing" {
@@ -110,14 +91,8 @@ class ComponentsSpec: StringSpec({
             bar: {}
         """
 
-        withData(
-            components30(source).requestBodies,
-            components31(source).requestBodies
-        ) { requestBodies ->
-            requestBodies.size shouldBe 2
-            requestBodies["foo"].shouldNotBeNull()
-            requestBodies["bar"].shouldNotBeNull()
-        }
+        assertMap(components30(source).requestBodies)
+        assertMap(components31(source).requestBodies)
     }
 
     "gets components requestBodies is empty if missing" {
@@ -132,14 +107,8 @@ class ComponentsSpec: StringSpec({
             bar: {}
         """
 
-        withData(
-            components30(source).headers,
-            components31(source).headers
-        ) { headers ->
-            headers.size shouldBe 2
-            headers["foo"].shouldNotBeNull()
-            headers["bar"].shouldNotBeNull()
-        }
+        assertMap(components30(source).headers)
+        assertMap(components31(source).headers)
     }
 
     "gets components headers is empty if missing" {
@@ -154,14 +123,8 @@ class ComponentsSpec: StringSpec({
             bar: {}
         """
 
-        withData(
-            components30(source).securitySchemes,
-            components31(source).securitySchemes
-        ) { securitySchemes ->
-            securitySchemes.size shouldBe 2
-            securitySchemes["foo"].shouldNotBeNull()
-            securitySchemes["bar"].shouldNotBeNull()
-        }
+        assertMap(components30(source).securitySchemes)
+        assertMap(components31(source).securitySchemes)
     }
 
     "gets components securitySchemes is empty if missing" {
@@ -176,14 +139,8 @@ class ComponentsSpec: StringSpec({
             bar: {}
         """
 
-        withData(
-            components30(source).links,
-            components31(source).links
-        ) { links ->
-            links.size shouldBe 2
-            links["foo"].shouldNotBeNull()
-            links["bar"].shouldNotBeNull()
-        }
+        assertMap(components30(source).links)
+        assertMap(components31(source).links)
     }
 
     "gets components links is empty if missing" {
@@ -198,14 +155,8 @@ class ComponentsSpec: StringSpec({
             bar: {}
         """
 
-        withData(
-            components30(source).callbacks,
-            components31(source).callbacks
-        ) { callbacks ->
-            callbacks.size shouldBe 2
-            callbacks["foo"].shouldNotBeNull()
-            callbacks["bar"].shouldNotBeNull()
-        }
+        assertMap(components30(source).callbacks)
+        assertMap(components31(source).callbacks)
     }
 
     "gets components callbacks is empty if missing" {

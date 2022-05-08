@@ -6,7 +6,6 @@
 package io.openapiparser.model.v3x
 
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.datatest.withData
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.openapiparser.model.v30.paths as paths30
@@ -29,14 +28,15 @@ class PathsSpec: StringSpec({
           /bar: {}
         """
 
-        withData(
-            paths30(source).pathItems,
-            paths31(source).pathItems,
-        ) { pathItems ->
-            pathItems.size shouldBe 2
-            pathItems["/foo"].shouldNotBeNull()
-            pathItems["/bar"].shouldNotBeNull()
-        }
+        val p30 = paths30(source).pathItems
+        p30.size shouldBe 2
+        p30["/foo"].shouldNotBeNull()
+        p30["/bar"].shouldNotBeNull()
+
+        val p31 = paths31(source).pathItems
+        p31.size shouldBe 2
+        p31["/foo"].shouldNotBeNull()
+        p31["/bar"].shouldNotBeNull()
     }
 
     include(testExtensions("Paths30", ::paths30) { it.extensions })

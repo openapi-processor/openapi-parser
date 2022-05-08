@@ -3,10 +3,9 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.model.v3x;
+package io.openapiparser.model.v3x
 
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.datatest.withData
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.nulls.shouldBeNull
@@ -69,13 +68,13 @@ class PathItemSpec: StringSpec({
     // todo operations
 
     "gets path item server objects" {
-        withData(
-            pathItem30("servers: [{}, {}]").servers,
-            pathItem31("servers: [{}, {}]").servers
-        ) { servers ->
-            servers.shouldNotBeNull()
-            servers.size shouldBe 2
-        }
+        val s30 = pathItem30("servers: [{}, {}]").servers
+        s30.shouldNotBeNull()
+        s30.size shouldBe 2
+
+        val s31 = pathItem31("servers: [{}, {}]").servers
+        s31.shouldNotBeNull()
+        s31.size shouldBe 2
     }
 
     "gets path item empty server objects if it is missing" {
@@ -84,13 +83,13 @@ class PathItemSpec: StringSpec({
     }
 
     "gets path item parameters" {
-        withData(
-            pathItem30("parameters: [{}, {}]").parameters,
-            pathItem31("parameters: [{}, {}]").parameters
-        ) { parameters ->
-            parameters.shouldNotBeNull()
-            parameters.size shouldBe 2
-        }
+        val p30 = pathItem30("parameters: [{}, {}]").parameters
+        p30.shouldNotBeNull()
+        p30.size shouldBe 2
+
+        val p31 = pathItem31("parameters: [{}, {}]").parameters
+        p31.shouldNotBeNull()
+        p31.size shouldBe 2
     }
 
     "gets path item empty parameters objects if it is missing" {
