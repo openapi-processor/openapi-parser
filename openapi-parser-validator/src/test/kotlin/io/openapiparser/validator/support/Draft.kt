@@ -30,7 +30,7 @@ fun draftSpec(
     extras: List<Any> = emptyList()) = freeSpec {
 
     val json = ObjectMapper()
-    json.registerModule(KotlinModule())
+    json.registerModule(KotlinModule.Builder().build())
 
     val draft = Validator::class.java.getResource(draftPath)
     val root = Path.of(draft!!.toURI())
