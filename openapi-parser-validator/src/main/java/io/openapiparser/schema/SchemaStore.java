@@ -7,6 +7,7 @@ package io.openapiparser.schema;
 
 import io.openapiparser.validator.Validator;
 import io.openapiparser.validator.ValidationMessage;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
 import java.util.*;
@@ -14,6 +15,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static io.openapiparser.converter.Types.asMap;
 
+/**
+ * todo this class doesn't really know what it should do...
+ */
 public class SchemaStore {
     private static final AtomicInteger schemaUriId = new AtomicInteger ();
 
@@ -80,7 +84,7 @@ public class SchemaStore {
         return schemas.containsKey (id);
     }
 
-    public JsonSchema getSchema (URI id) {
+    public @Nullable JsonSchema getSchema (URI id) {
         return schemas.get (id);
     }
 
@@ -102,8 +106,9 @@ public class SchemaStore {
 
             validate (schemaResult, metaSchema);
         }
-        // todo no meta schema ??
 
+        // todo no meta schema ?
+        // todo use IdProvider
         URI key = schema.getId ();
         if (key == null) {
             key = generateUri ();
@@ -141,7 +146,7 @@ public class SchemaStore {
         if (document instanceof Boolean) {
             return new JsonSchemaBoolean (
                 (Boolean) document,
-                new JsonSchemaContext (result.getUri (), null, SchemaVersion.Default));
+                new JsonSchemaContext (result.getUri (), new ReferenceRegistry (), SchemaVersion.Default));
 
         } else if (document instanceof Map) {
 
