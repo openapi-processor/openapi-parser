@@ -25,7 +25,7 @@ class ValidatorSchemaSpec : StringSpec({
         val instance = JsonInstance(resolverResult.document, instanceContext)
 
         val validator = Validator()
-        val step = validator.validate(schema, instance)
+        val step = validator.validate(schema!!, instance)
 
         step.isValid.shouldBeTrue()
     }
