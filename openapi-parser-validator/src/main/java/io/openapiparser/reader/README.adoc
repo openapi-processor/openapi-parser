@@ -1,0 +1,6 @@
+:openapi: https://www.openapis.org/
+
+this package contains two simple `Reader` implementations:
+
+* `UriReader`: read link:{openapi}[OpenAPI] descriptions from an URI. Based on `java.net.URL`. No security at the moment.
+* `StringReader`: read an link:{openapi}[OpenAPI] description from a string. Used in the test code.
