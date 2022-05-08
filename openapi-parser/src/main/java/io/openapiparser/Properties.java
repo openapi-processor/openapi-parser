@@ -131,8 +131,8 @@ public class Properties {
         return nonNull (bucket.convert (property, new StringsOrEmptyConverter ()));
     }
 
-    protected Collection<String> getStringsOrNull (String property) {
-        return nonNull (bucket.convert (property, new StringsNullableConverter ()));
+    protected @Nullable Collection<String> getStringsOrNull (String property) {
+        return bucket.convert (property, new StringsNullableConverter ());
     }
 
     /* Maps */
