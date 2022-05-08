@@ -63,16 +63,6 @@ public class ValidatorSettings {
      * @return true if it should be validated, else false
      */
     public boolean validateFormat (Format format) {
-        return !formats.contains (format);
-    }
-
-    /**
-     * check if a format should be validated
-     *
-     * @param format the format
-     * @return true if it should be validated, else false
-     */
-    public boolean validateFormat (String format) {
-        return !formats.contains (Format.valueOf (format));
+        return formats.contains (format);
     }
 }

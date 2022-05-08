@@ -15,6 +15,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
+import static io.openapiparser.schema.Format.DATE_TIME;
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
@@ -59,8 +60,8 @@ public class DateTime {
 
     private boolean shouldValidate (@Nullable String format) {
         return format != null
-            && format.equals ("date-time")
-            && settings.validateFormat ("date-time");
+            && format.equals (DATE_TIME.getFormat ())
+            && settings.validateFormat (DATE_TIME);
     }
 
     private String getInstanceValue (JsonInstance instance) {

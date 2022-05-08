@@ -5,13 +5,13 @@
 
 package io.openapiparser.validator.string;
 
-import io.openapiparser.schema.JsonInstance;
-import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.schema.*;
 import io.openapiparser.validator.ValidatorSettings;
 import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import static io.openapiparser.schema.Format.HOSTNAME;
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
@@ -52,8 +52,8 @@ public class Hostname {
 
     boolean shouldValidate (@Nullable String format) {
         return format != null
-            && format.equals ("hostname")
-            && settings.validateFormat ("hostname");
+            && format.equals (HOSTNAME.getFormat ())
+            && settings.validateFormat (HOSTNAME);
     }
 
     private String getInstanceValue (JsonInstance instance) {

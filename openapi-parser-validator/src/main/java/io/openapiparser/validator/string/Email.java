@@ -5,8 +5,7 @@
 
 package io.openapiparser.validator.string;
 
-import io.openapiparser.schema.JsonInstance;
-import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.schema.*;
 import io.openapiparser.validator.ValidatorSettings;
 import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
@@ -14,6 +13,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.regex.Matcher;
 
+import static io.openapiparser.schema.Format.EMAIL;
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
@@ -62,8 +62,8 @@ public class Email {
 
     private boolean shouldValidate (@Nullable String format) {
         return format != null
-            && format.equals ("email")
-            && settings.validateFormat ("email");
+            && format.equals (EMAIL.getFormat ())
+            && settings.validateFormat (EMAIL);
     }
 
     private String getInstanceValue (JsonInstance instance) {

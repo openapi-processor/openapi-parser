@@ -5,14 +5,14 @@
 
 package io.openapiparser.validator.string;
 
-import io.openapiparser.schema.JsonInstance;
-import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.schema.*;
 import io.openapiparser.validator.ValidatorSettings;
 import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 import io.openapiparser.validator.support.UriValidator;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import static io.openapiparser.schema.Format.URI_REFERENCE;
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
@@ -49,8 +49,8 @@ public class UriReference {
 
     private boolean shouldValidate (@Nullable String format) {
         return format != null
-            && format.equals ("uri-reference")
-            && settings.validateFormat ("uri-reference");
+            && format.equals (URI_REFERENCE.getFormat ())
+            && settings.validateFormat (URI_REFERENCE);
     }
 
     private String getInstanceValue (JsonInstance instance) {

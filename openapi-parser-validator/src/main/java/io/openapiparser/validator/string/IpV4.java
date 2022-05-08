@@ -5,14 +5,14 @@
 
 package io.openapiparser.validator.string;
 
-import io.openapiparser.schema.JsonInstance;
-import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.schema.*;
 import io.openapiparser.validator.ValidatorSettings;
 import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 import io.openapiparser.validator.support.IpV4Validator;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import static io.openapiparser.schema.Format.IPV4;
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
@@ -53,8 +53,8 @@ public class IpV4 {
 
     private boolean shouldValidate (@Nullable String format) {
         return format != null
-            && format.equals ("ipv4")
-            && settings.validateFormat ("ipv4");
+            && format.equals (IPV4.getFormat ())
+            && settings.validateFormat (IPV4);
     }
 
     private String getInstanceValue (JsonInstance instance) {
