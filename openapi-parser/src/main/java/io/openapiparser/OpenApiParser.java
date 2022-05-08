@@ -29,7 +29,7 @@ public class OpenApiParser {
         }
     }
 
-    public OpenApiResult parse(String resource) throws Exception {
+    public OpenApiResult parse(String resource) {
         try {
             return createResult (resolver.resolve (resource));
         } catch (Exception e) {
