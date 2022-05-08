@@ -2,7 +2,6 @@
 :parser: https://github.com/openapi-processor/openapi-parser/tree/master/openapi-parser
 :platform: https://github.com/openapi-processor/openapi-parser/tree/master/openapi-parser-bom
 :validator: https://github.com/openapi-processor/openapi-parser/tree/master/openapi-parser-validator
-:support: https://github.com/openapi-processor/openapi-parser/tree/master/openapi-parser-support
 :interfaces: https://github.com/openapi-processor/openapi-parser/tree/master/openapi-parser-interfaces
 :converter-jackson: https://github.com/openapi-processor/openapi-parser/tree/master/openapi-parser-jackson
 :converter-snakeyaml: https://github.com/openapi-processor/openapi-parser/tree/master/openapi-parser-snakeyaml
@@ -47,10 +46,6 @@ json/yaml `Converter` based on link:{jackson}[Jackson].
 === link:{converter-snakeyaml}[openapi-parser-snakeyaml]
 
 yaml `Converter` based on link:{snakeyaml}[snakeyaml].
-
-=== link:{support}[openapi-parser-support]
-
-a small library with shared code of the link:{parser}[parser] and the link:{validator}[validator]. Contains two simple `Reader` implementations.
 
 === link:{interfaces}[openapi-parser-interfaces]
 
