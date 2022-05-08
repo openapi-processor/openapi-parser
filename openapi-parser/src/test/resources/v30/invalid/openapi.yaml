@@ -1,0 +1,18 @@
+openapi: 3.0.2x
+bla: {}
+info:
+#  title: test $ref into other file
+  version: 1.0.0
+
+paths:
+
+  /foo:
+    get:
+      responses:
+        '200':
+          fred: 8
+          description: none
+          content:
+            application/json:
+                schema:
+                  $ref: 'foo.yaml#/Foo'

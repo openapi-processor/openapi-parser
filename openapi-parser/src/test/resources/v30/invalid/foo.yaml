@@ -1,0 +1,6 @@
+Foo:
+  hjkh: jhkjh
+  type: object
+  properties:
+    bar:
+      type: string-x

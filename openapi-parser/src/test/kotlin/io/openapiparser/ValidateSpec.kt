@@ -6,6 +6,7 @@
 package io.openapiparser
 
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.openapiparser.reader.UriReader
 import io.openapiparser.schema.DocumentStore
@@ -15,6 +16,8 @@ import io.openapiparser.snakeyaml.SnakeYamlConverter
 import io.openapiparser.validator.*
 import io.openapiparser.validator.result.FullResultTextBuilder
 import io.openapiparser.validator.result.ListResultBuilder
+import io.openapiparser.validator.result.MessageCollector
+import io.openapiparser.validator.result.MessageTextBuilder
 
 class ValidateSpec: StringSpec({
 
@@ -33,12 +36,32 @@ class ValidateSpec: StringSpec({
 
         val validator = Validator()
         val valid = result.validate(validator, store)
-
-//        val printer = ListResultBuilder(FullResultTextBuilder())
-//        val messages = printer.print(result.validationMessages)
-//        print(messages)
-
         valid.shouldBeTrue()
     }
 
+    "print validation result" {
+        draft4()
+
+        val parser = OpenApiParser(resolver)
+        val result = parser.parse("/v30/invalid/openapi.yaml")
+
+        val validator = Validator()
+        val valid = result.validate(validator, store)
+        valid.shouldBeFalse()
+
+        // detailed
+        val printer = ListResultBuilder(FullResultTextBuilder())
+        val messages = printer.print(result.validationMessages)
+        print(messages)
+
+        println("\n\n")
+
+        // simpler
+        val collector = MessageCollector(result.validationMessages)
+        val collected = collector.collect()
+        val builder = MessageTextBuilder()
+        for (message in collected) {
+            println(builder.getText(message))
+        }
+    }
 })
