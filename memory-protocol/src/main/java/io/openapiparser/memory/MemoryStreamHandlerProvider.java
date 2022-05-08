@@ -8,14 +8,14 @@ package io.openapiparser.memory;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URLStreamHandler;
-//import java.net.spi.URLStreamHandlerProvider;
+import java.net.spi.URLStreamHandlerProvider;
 
 /**
  * Simple in-memory protocol for "loading" content from memory via URL.
  *
  * JDK-9+
  */
-public class MemoryStreamHandlerProvider /*extends URLStreamHandlerProvider*/ {
+public class MemoryStreamHandlerProvider extends URLStreamHandlerProvider {
 
     //@Override
     public @Nullable URLStreamHandler createURLStreamHandler (String protocol) {

@@ -39,7 +39,7 @@ object SystemTagExtension: TagExtension {
 object ProjectConfig: AbstractProjectConfig() {
     init {
         // register memory: protocol
-        MemoryUrlStreamHandlerFactory.register()
+        // MemoryUrlStreamHandlerFactory.register()
     }
 
     override fun extensions() = listOf(SystemTagExtension)
