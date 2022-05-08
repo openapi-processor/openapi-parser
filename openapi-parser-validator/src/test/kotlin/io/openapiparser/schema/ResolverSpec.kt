@@ -16,6 +16,7 @@ import io.mockk.mockk
 import io.openapiparser.Converter
 import io.openapiparser.ConverterException
 import io.openapiparser.Reader
+import io.openapiparser.converter.Types.asMap
 import io.openapiparser.jackson.JacksonConverter
 import io.openapiparser.memory.Memory
 import io.openapiparser.reader.StringReader
@@ -55,7 +56,7 @@ class ResolverSpec: StringSpec({
         val result = resolver.resolve(uri)
 
         result.uri shouldBe uri
-        val doc = result.document as Map<String, Any>
+        val doc = asMap(result.document)
         doc.shouldHaveSize(2)
         val ref = result.registry.getRef(URI.create("https://document#/definitions/foo"))
         ref.rawValue.shouldNotBeNull()
@@ -99,7 +100,7 @@ class ResolverSpec: StringSpec({
         val uri = URI("memory:/instant.yaml")
         val result = resolver.resolve(uri)
 
-        val doc = result.document as Map<String, Any>
+        val doc = asMap(result.document)
         doc.shouldContainExactly(mapOf("${'$'}ref" to "foo.yaml#/foo"))
         result.uri shouldBe uri
 
