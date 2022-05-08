@@ -1,4 +1,5 @@
 :json-schema: http://json-schema.org/
+:license: https://github.com/json-schema-org/json-schema-spec
 
 = JSON Schema
 
@@ -7,3 +8,7 @@ this folder contains copies of link:{json-schema}[JSON Schema] files.
 * `draft4/schema.json`:
 ** https://json-schema.org/draft-04/schema
 ** https://github.com/json-schema-org/json-schema-spec/blob/draft-04/schema.json
+
+== License
+
+link:{license}[JSON Schema License]
