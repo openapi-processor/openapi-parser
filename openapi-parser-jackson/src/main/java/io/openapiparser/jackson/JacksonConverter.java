@@ -7,7 +7,9 @@ package io.openapiparser.jackson;
 
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import io.openapiparser.*;
 
 import java.util.regex.Pattern;
@@ -21,12 +23,17 @@ public class JacksonConverter implements Converter {
     private static final String CONVERT_ERROR = "failed to convert %s document.";
     private static final Pattern JSON_PATTERN = Pattern.compile("^\\s*\\{");
 
-    private static final ObjectMapper json = new ObjectMapper();
-    private static final ObjectMapper yaml = new ObjectMapper(new YAMLFactory ());
+    private final ObjectMapper json;
+    private final ObjectMapper yaml;
 
     public JacksonConverter () {
-        json.disable (MapperFeature.USE_ANNOTATIONS);
-        yaml.disable (MapperFeature.USE_ANNOTATIONS);
+        json = JsonMapper.builder ()
+            .disable (MapperFeature.USE_ANNOTATIONS)
+            .build ();
+
+        yaml = YAMLMapper.builder (new YAMLFactory ())
+            .disable (MapperFeature.USE_ANNOTATIONS)
+            .build ();
     }
 
     @Override
