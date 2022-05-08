@@ -9,6 +9,8 @@ It is usable, but has the following limitations at the moment:
 * it does support most but not all OpenAPI object properties
 * JSON schema validation is only available for OpenAPI 3.0.x
 
+source code gifts (i.e pull requests) are welcome :-)
+
 == openapi-parser & validator
 
 a Java 8 based link:{openapi}[OpenAPI] 3.0.x & 3.1 parser with validation and pluggable document reader & json/yaml converter.
@@ -77,53 +79,48 @@ link:{converter-jackson}[`openapi-parser-jackson`] provides a default implementa
 
 == usage
 
-todo: create builder
+code example for parsing an OpenAPI yaml file and running the JSON Schema validation.
 
-* create OpenApiParser(Context)
-** Context (Uri, ReferenceResolver)
-** ReferenceResolver (Uri, Reader, Converter, ReferenceRegistry)
-* openapi.parse()
-* result.getVersion()
-* result.getModel(OpenApiResult30)
+[source,java]
+----
+import io.openapiparser.jackson.JacksonConverter;
+import io.openapiparser.model.v30.OpenApi;
+import io.openapiparser.reader.UriReader;
+import io.openapiparser.schema.*;
+import io.openapiparser.snakeyaml.SnakeYamlConverter;
+import io.openapiparser.validator.Validator;
+import io.openapiparser.validator.ValidatorSettings;
+import io.openapiparser.validator.result.*;
 
-== todo
+public class Example {
 
-just an incomplete & random list of topics:
+    void parseAndValidate () {
+        // setup resolver (handles documents and $refs)
+        Reader reader = new UriReader ();
+        DocumentStore documents = new DocumentStore ();
+        Converter converter = new SnakeYamlConverter ();
+        // Converter converter = new JacksonConverter ();
+        Resolver resolver = new Resolver (reader, converter, documents);
 
-* replace `Collection` with `Iterable` (where possible)?
+        // parser OpenAPI file or url
+        OpenApiParser parser = new OpenApiParser (resolver);
+        OpenApiResult result = parser.parse ("openapi.yaml");
+        // OpenAPI 3.1.x with model.v31.OpenAPI import
+        OpenApi model = result.getModel (OpenApi.class);
 
-* empty Schema?
-* there are a couple of places were a property has only a fixed number of possible values that currently return a primitive type, it could return an enum which would be more user-friendly? (but: the specification doesn't really describe the type as enum).
+        // validate OpenAPI
+        SchemaStore store = new SchemaStore (resolver);
+        ValidatorSettings settings = new ValidatorSettings ();
+        Validator validator = new Validator (settings);
+        boolean valid = result.validate (validator, store);
 
-* authentication
-
-* `Link` object
-* `Tag` object
-* `Xml` object
-* `Security Scheme` object
-* `OAuth Flows` object
-* `OAuth Flow` object
-* `Security Requirement` object
-
-* propagating parent properties?
-** path item / operation parameters
-
-* raw api?
-
-* merge schema and ref schema?
-
-* jackson
-** reduce init time: https://github.com/FasterXML/jackson-module-kotlin/issues/69
-** jackson-jr
-
-* alternative json/yaml parser
-** gson
-
-* get (typed) element by json pointer. Raw value is available by (experimental)
-
-    Object value = api.getRawValueOf("/paths/~1foo/get/responses/200/content/application~1json")
-
-** follow `$ref`
-
-* testing
-** create `should...` functions to simplify test code
+        // print validation messages (i.e. errors)
+        MessageCollector collector = new MessageCollector (result.getValidationMessages ());
+        LinkedList<Message> messages = collector.collect ();
+        MessageTextBuilder builder = new MessageTextBuilder ();
+        for (Message message : messages) {
+            System.out.println (builder.getText(message));
+        }
+    }
+}
+----
