@@ -15,7 +15,7 @@ repositories {
 //    dependsOn ("jacocoLogAggregatedCoverage")
 //}
 
-
+group = "io.openapiprocessor"
 extra["publishUser"] = buildProperty("PUBLISH_USER")
 extra["publishKey"] = buildProperty("PUBLISH_KEY")
 val publishUser: String by extra
