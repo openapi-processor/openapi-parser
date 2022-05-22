@@ -16,6 +16,9 @@ repositories {
 //}
 
 group = "io.openapiprocessor"
+version = libs.versions.openapiparser.get()
+println("version: $version")
+
 extra["publishUser"] = buildProperty("PUBLISH_USER")
 extra["publishKey"] = buildProperty("PUBLISH_KEY")
 val publishUser: String by extra
