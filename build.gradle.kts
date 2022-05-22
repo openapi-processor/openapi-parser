@@ -17,7 +17,7 @@ repositories {
 
 
 extra["publishUser"] = buildProperty("PUBLISH_USER")
-extra["publishKey"] = buildProperty("PUBLISH_USER")
+extra["publishKey"] = buildProperty("PUBLISH_KEY")
 val publishUser: String by extra
 val publishKey: String by extra
 
