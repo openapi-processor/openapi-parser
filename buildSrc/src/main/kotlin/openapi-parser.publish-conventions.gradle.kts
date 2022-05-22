@@ -53,7 +53,7 @@ publishing {
 
             credentials {
                 username = buildProperty("PUBLISH_USER")
-                password = buildProperty("PUBLISH_USER")
+                password = buildProperty("PUBLISH_KEY")
             }
         }
     }
