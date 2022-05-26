@@ -115,12 +115,12 @@ jobs:
         ./gradlew publishToSonatype
         ./gradlew --stop
 
-    - name: archive test results
-      uses: actions/upload-artifact@v1
-      if: always()
-      with:
-        name: publish results
-        path: build
+#    - name: archive test results
+#      uses: actions/upload-artifact@v1
+#      if: always()
+#      with:
+#        name: publish results
+#        path: build
 
 #  sonarqube:
 #    needs: [publish]
