@@ -67,7 +67,7 @@ jobs:
 
     - name: gradle check
       run: |
-        ./gradlew check
+        ./gradlew check --warning-mode all
         ./gradlew --stop
 
     - name: archive test results
