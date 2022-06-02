@@ -53,10 +53,7 @@ public class Validator {
             step.add (new InstanceRefStep (instance));
         }
 
-        // if
-        // then
-        // else
-
+        step.add (validateIf (schema, instance));
         step.add (validateAllOf (schema, instance));
         step.add (validateAnyOf (schema, instance));
         step.add (validateOneOf (schema, instance));
@@ -69,6 +66,34 @@ public class Validator {
         step.add (validateObject (schema, instance));
         step.add (validateNumber (schema, instance));
         step.add (validateString (schema, instance));
+
+        return step;
+    }
+
+    // Draft 7: https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-validation-01#section-6.6
+    private ValidationStep validateIf (JsonSchema schema, JsonInstance instance) {
+        JsonSchema jsIf = schema.getIf ();
+        JsonSchema jsThen = schema.getThen ();
+        JsonSchema jsElse = schema.getElse ();
+
+        if (jsIf == null || (jsThen == null && jsElse == null)) {
+            return new NullStep ();
+        }
+
+        IfStep step = new IfStep (schema, instance);
+
+        ValidationStep vsIf = validate (jsIf, instance);
+        step.setIf (vsIf);
+
+        if (vsIf.isValid ()) {
+            if (jsThen != null) {
+                step.setThen (validate (jsThen, instance));
+            }
+        } else {
+            if (jsElse != null) {
+                step.setElse (validate (jsElse, instance));
+            }
+        }
 
         return step;
     }

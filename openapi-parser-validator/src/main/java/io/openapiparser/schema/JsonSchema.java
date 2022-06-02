@@ -186,4 +186,16 @@ public interface JsonSchema {
     default @Nullable String getFormat () {
         return null;
     }
+
+    default @Nullable JsonSchema getIf () {
+        return null;
+    }
+
+    default @Nullable JsonSchema getThen () {
+        return null;
+    }
+
+    default @Nullable JsonSchema getElse () {
+        return null;
+    }
 }

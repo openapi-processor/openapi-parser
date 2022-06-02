@@ -368,6 +368,21 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     @Override
+    public @Nullable JsonSchema getIf () {
+        return getJsonSchemaOf ("if");
+    }
+
+    @Override
+    public @Nullable JsonSchema getThen () {
+        return getJsonSchemaOf ("then");
+    }
+
+    @Override
+    public @Nullable JsonSchema getElse () {
+        return getJsonSchemaOf ("else");
+    }
+
+    @Override
     public String toString () {
         String location = schemaObject.getLocation ().toString ();
         if (location == null) {
