@@ -14,6 +14,7 @@ public class ValidatorSettings {
     private SchemaVersion version = SchemaVersion.Draft6;
     private final EnumSet<Format> formats = EnumSet.noneOf(Format.class);
 
+    @Deprecated
     public boolean isDraft4 () {
         return SchemaVersion.Draft4.equals (version);
     }

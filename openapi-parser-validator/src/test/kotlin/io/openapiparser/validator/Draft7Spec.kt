@@ -7,17 +7,13 @@ package io.openapiparser.validator
 
 import io.kotest.core.annotation.Ignored
 import io.kotest.core.spec.style.FreeSpec
-import io.openapiparser.schema.SchemaVersion
 import io.openapiparser.validator.support.*
 
 @Ignored
 class Draft7Spec: FreeSpec ({
-    val settings = ValidatorSettings()
-    settings.version = SchemaVersion.Draft7
-
     include(draftSpec(
         "/suites/JSON-Schema-Test-Suite/tests/draft7",
-        settings,
+        ValidatorSettingsDefaults.draft7(),
         draft7Extras
     ))
 })

@@ -6,28 +6,12 @@
 package io.openapiparser.validator
 
 import io.kotest.core.spec.style.FreeSpec
-import io.openapiparser.schema.Format.*
-import io.openapiparser.schema.SchemaVersion
 import io.openapiparser.validator.support.*
 
 class Draft6Spec: FreeSpec ({
-    val settings = ValidatorSettings()
-    settings.version = SchemaVersion.Draft6
-    settings.enableFormats(
-        DATE_TIME,
-        EMAIL,
-        HOSTNAME,
-        IPV4,
-        IPV6,
-        URI,
-        URI_REFERENCE,
-        URI_TEMPLATE,
-        JSON_POINTER
-    )
-
     include(draftSpec(
         "/suites/JSON-Schema-Test-Suite/tests/draft6",
-        settings,
+        ValidatorSettingsDefaults.draft6(),
         draft6Extras
     ))
 })
