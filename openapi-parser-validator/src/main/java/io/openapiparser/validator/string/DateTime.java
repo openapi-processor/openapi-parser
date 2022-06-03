@@ -11,20 +11,22 @@ import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.time.LocalDate;
-import java.time.OffsetDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 
-import static io.openapiparser.schema.Format.DATE;
-import static io.openapiparser.schema.Format.DATE_TIME;
+import static io.openapiparser.schema.Format.*;
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
- * validates format: date-time (except leap seconds).
+ * validates format: date-time, date, time (except leap seconds).
  *
  * <p>See specification:
  *
- * <p>Draft 6:
+ * <p>Draft 7:
+ * <a href="https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-validation-01#section-7.3.1">
+ *     dates and time</a>
+ *
+ * <br>Draft 6:
  * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-8.3.1">
  *     date-time</a>
  *
@@ -59,7 +61,7 @@ public class DateTime {
     private boolean shouldValidate (@Nullable Format format) {
         return format != null
             && settings.validateFormat (format)
-            && (format.equals (DATE_TIME) || format.equals (DATE));
+            && (format.equals (DATE_TIME) || format.equals (DATE) || format.equals (TIME));
     }
 
     private String getInstanceValue (JsonInstance instance) {
@@ -71,6 +73,8 @@ public class DateTime {
             return new DateTimeParser ();
         else if (format.equals (DATE))
             return new DateParser ();
+        else if (format.equals (TIME))
+            return new TimeParser ();
         else
             // todo
             throw new RuntimeException ();
@@ -90,6 +94,13 @@ public class DateTime {
         @Override
         public LocalDate parse (String value) {
             return DateTimeFormatter.ISO_DATE.parse (value, LocalDate::from);
+        }
+    }
+
+    private static class TimeParser implements Parser<OffsetTime> {
+        @Override
+        public OffsetTime parse (String value) {
+            return DateTimeFormatter.ISO_OFFSET_TIME.parse (value, OffsetTime::from);
         }
     }
 }
