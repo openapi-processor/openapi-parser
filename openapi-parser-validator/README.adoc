@@ -12,7 +12,7 @@ It is tested against the official link:{json-schema-testsuite}[JSON Schema Test 
 
 * *Draft 7*
 ** format: *date* (`java.time.LocalDate`)
-** format: *time* (`java.time.OffsetTime`)
+** format: *time* (`java.time.OffsetTime`, see limitations)
 ** format: *idn-email* (not implemented)
 ** format: *idn-hostname* (not implemented)
 ** format: *regex* (`java.util.regex.Pattern`)
