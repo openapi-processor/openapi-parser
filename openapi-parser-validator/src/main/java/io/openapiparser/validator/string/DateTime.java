@@ -57,7 +57,9 @@ public class DateTime {
     }
 
     private boolean shouldValidate (@Nullable Format format) {
-        return format != null && settings.validateFormat (format);
+        return format != null
+            && settings.validateFormat (format)
+            && (format.equals (DATE_TIME) || format.equals (DATE));
     }
 
     private String getInstanceValue (JsonInstance instance) {
