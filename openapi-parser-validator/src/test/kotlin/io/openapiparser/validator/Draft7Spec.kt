@@ -28,6 +28,13 @@ val draft7Extras = listOf(
     // (optional) date-time.json, supports all except leap second
     Exclude("a valid date-time with a leap second, UTC"),
     Exclude("a valid date-time with a leap second, with minus offset"),
+    // (optional) time.json, supports all except leap second
+    Exclude("a valid time string with a leap second, Zulu"),
+    Exclude("valid leap second, zero time-offset"),
+    Exclude("valid leap second, positive time-offset"),
+    Exclude("valid leap second, large positive time-offset"),
+    Exclude("valid leap second, negative time-offset"),
+    Exclude("valid leap second, large negative time-offset"),
 
     // remote documents
     Remote(
