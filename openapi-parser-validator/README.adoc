@@ -13,13 +13,15 @@ It is tested against the official link:{json-schema-testsuite}[JSON Schema Test 
 * *Draft 7*
 ** format: *date* (`java.time.LocalDate`)
 ** format: *time* (`java.time.OffsetTime`)
+** format: *idn-email* (not implemented)
+** format: *idn-hostname* (not implemented)
 ** format: *regex* (`java.util.regex.Pattern`)
 ** format: all Draft 6 formats
 
 * *Draft 6*
 ** format: *uri-reference* (code)
-** format: *json-pointer* (not yet implemented)
-** format: *uri-template* (not yet implemented)
+** format: *json-pointer* (not implemented)
+** format: *uri-template* (not implemented)
 ** format: all Draft 4 formats
 
 * *Draft 4* => OpenAPI 3.0.x
@@ -49,13 +51,5 @@ It is tested against the official link:{json-schema-testsuite}[JSON Schema Test 
 `java.time.format.DateTimeFormatter` doesn't support leap seconds. This causes the two failing tests.
 
 * `[draft7|draft6|draft4]/optional/format/date-time.json`: passes *23* of *25* tests
-
-==== format: uri-template
-
-* `draft6/optional/format/uri-template.json`: not yet supported
-
-==== format: json-pointer
-
-* `draft6/optional/format/json-pointer.json`: not yet supported
 
 
