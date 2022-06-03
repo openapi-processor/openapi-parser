@@ -5,16 +5,17 @@
 
 package io.openapiparser.validator.string;
 
-import io.openapiparser.schema.JsonInstance;
-import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.schema.*;
 import io.openapiparser.validator.ValidatorSettings;
 import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
+import static io.openapiparser.schema.Format.DATE;
 import static io.openapiparser.schema.Format.DATE_TIME;
 import static io.openapiparser.support.Nullness.nonNull;
 
@@ -39,32 +40,54 @@ public class DateTime {
     }
 
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
-        String format = schema.getFormat ();
+        Format format = Format.of (schema.getFormat ());
         if (!shouldValidate (format))
             return new NullStep ();
 
         DateTimeStep step = new DateTimeStep (schema, instance);
 
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-        String instanceValue = getInstanceValue (instance);
-
         try {
-            formatter.parse (instanceValue, OffsetDateTime::from);
+            getParser (format).parse (getInstanceValue (instance));
 
-        } catch (RuntimeException ex) {
+        } catch (Exception ex) {
             step.setInvalid ();
         }
 
         return step;
     }
 
-    private boolean shouldValidate (@Nullable String format) {
-        return format != null
-            && format.equals (DATE_TIME.getFormat ())
-            && settings.validateFormat (DATE_TIME);
+    private boolean shouldValidate (@Nullable Format format) {
+        return format != null && settings.validateFormat (format);
     }
 
     private String getInstanceValue (JsonInstance instance) {
         return nonNull (instance.asString ());
+    }
+
+    private Parser<?> getParser (Format format) {
+        if (format.equals (DATE_TIME))
+            return new DateTimeParser ();
+        else if (format.equals (DATE))
+            return new DateParser ();
+        else
+            // todo
+            throw new RuntimeException ();
+    }
+
+    private interface Parser<T> {
+        T parse (String value);
+    }
+    private static class DateTimeParser implements Parser<OffsetDateTime> {
+        @Override
+        public OffsetDateTime parse (String value) {
+            return DateTimeFormatter.ISO_DATE_TIME.parse (value, OffsetDateTime::from);
+        }
+    }
+
+    private static class DateParser implements Parser<LocalDate> {
+        @Override
+        public LocalDate parse (String value) {
+            return DateTimeFormatter.ISO_DATE.parse (value, LocalDate::from);
+        }
     }
 }

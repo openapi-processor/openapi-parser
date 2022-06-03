@@ -5,7 +5,9 @@
 
 package io.openapiparser.schema;
 
-import static io.openapiparser.schema.SchemaVersion.*;
+import org.checkerframework.checker.nullness.qual.Nullable;
+
+import java.util.Arrays;
 
 public enum Format {
 
@@ -39,5 +41,12 @@ public enum Format {
 
     public String getFormat () {
         return format;
+    }
+
+    public static @Nullable Format of (String format) {
+        return Arrays.stream (values ())
+            .filter (v -> v.format.equals (format))
+            .findFirst ()
+            .orElse (null);
     }
 }
