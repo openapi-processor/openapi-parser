@@ -10,6 +10,10 @@ Used by openapi-parser but also usable as standalone JSON Schema validator.
 
 It is tested against the official link:{json-schema-testsuite}[JSON Schema Test Suite]. It passes all required tests of the test suite & most *optional* tests. See the limitations below.
 
+* *Draft 7*
+** format: *date* (code)
+** format: all Draft 6 formats
+
 * *Draft 6*
 ** format: *uri-reference* (code)
 ** format: *json-pointer* (not yet implemented)
@@ -23,8 +27,6 @@ It is tested against the official link:{json-schema-testsuite}[JSON Schema Test 
 ** format: *ipv4* (code)
 ** format: *ipv6* (code)
 ** format: *uri* (code)
-
-
 
 === limitations
 
