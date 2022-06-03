@@ -12,6 +12,7 @@ It is tested against the official link:{json-schema-testsuite}[JSON Schema Test 
 
 * *Draft 7*
 ** format: *date* (code)
+** format: *regex* (code, `java.util.regex`)
 ** format: all Draft 6 formats
 
 * *Draft 6*
@@ -34,15 +35,13 @@ It is tested against the official link:{json-schema-testsuite}[JSON Schema Test 
 
 `java.util.regex` doesn't support the full ECMA 262 regular expression dialect.
 
-* `draft6/optional/ecmascript-regex.json`: passes *51* of *74* tests
-* `draft4/optional/ecmascript-regex.json`: passes *51* of *74* tests
+* `[draft7|draft6|draft4]/optional/ecmascript-regex.json`: passes *51* of *74* tests
 
 ==== format: date-time
 
 `java.time.format.DateTimeFormatter` doesn't support leap seconds. This causes the two failing tests.
 
-* `draft6/optional/format/date-time.json`: passes *23* of *25* tests
-* `draft4/optional/format/date-time.json`: passes *23* of *25* tests
+* `[draft7|draft6|draft4]/optional/format/date-time.json`: passes *23* of *25* tests
 
 ==== format: uri-template
 
