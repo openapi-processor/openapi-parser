@@ -11,8 +11,9 @@ Used by openapi-parser but also usable as standalone JSON Schema validator.
 It is tested against the official link:{json-schema-testsuite}[JSON Schema Test Suite]. It passes all required tests of the test suite & most *optional* tests. See the limitations below.
 
 * *Draft 7*
-** format: *date* (code)
-** format: *regex* (code, `java.util.regex`)
+** format: *date* (`java.time.LocalDate`)
+** format: *time* (`java.time.OffsetTime`)
+** format: *regex* (`java.util.regex.Pattern`)
 ** format: all Draft 6 formats
 
 * *Draft 6*
@@ -22,7 +23,7 @@ It is tested against the official link:{json-schema-testsuite}[JSON Schema Test 
 ** format: all Draft 4 formats
 
 * *Draft 4* => OpenAPI 3.0.x
-** format: *date-time* (see limitations)
+** format: *date-time* (`java.time.OffsetDateTime`, see limitations)
 ** format: *email* (regex)
 ** format: *hostname* (code)
 ** format: *ipv4* (code)
@@ -36,6 +37,12 @@ It is tested against the official link:{json-schema-testsuite}[JSON Schema Test 
 `java.util.regex` doesn't support the full ECMA 262 regular expression dialect.
 
 * `[draft7|draft6|draft4]/optional/ecmascript-regex.json`: passes *51* of *74* tests
+
+==== format: time
+
+`java.time.format.DateTimeFormatter` doesn't support leap seconds. This causes the six failing tests.
+
+* `draft7/optional/format/time.json`: passes *32* of *38* tests
 
 ==== format: date-time
 
