@@ -11,13 +11,13 @@ import java.net.URI;
 
 public enum SchemaVersion {
     Default ("http://json-schema.org/draft-07/schema#",
-        SchemaKeywords.draft7, IdProvider.LATEST),
+        SchemaKeywords.draft7, IdProvider.DRAFT7),
     Draft201909("https://json-schema.org/draft/2019-09/schema",
-        SchemaKeywords.draft201909, IdProvider.LATEST),
+        SchemaKeywords.draft201909, IdProvider.DRAFT201909),
     Draft7("http://json-schema.org/draft-07/schema#",
-        SchemaKeywords.draft7, IdProvider.LATEST),
+        SchemaKeywords.draft7, IdProvider.DRAFT7),
     Draft6("http://json-schema.org/draft-06/schema#",
-        SchemaKeywords.draft6, IdProvider.LATEST),
+        SchemaKeywords.draft6, IdProvider.DRAFT6),
     Draft4("http://json-schema.org/draft-04/schema#",
         SchemaKeywords.draft4, IdProvider.DRAFT4);
 

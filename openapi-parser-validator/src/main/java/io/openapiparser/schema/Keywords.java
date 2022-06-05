@@ -7,6 +7,8 @@ package io.openapiparser.schema;
 
 public interface Keywords {
     String HASH = "#";
+    String ID = "$id";
+    String ID4 = "id";
     String REF = "$ref";
     String SCHEMA = "$schema";
 }

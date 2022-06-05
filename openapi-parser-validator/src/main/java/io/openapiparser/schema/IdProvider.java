@@ -12,13 +12,19 @@ import java.util.Map;
 import static io.openapiparser.converter.Types.*;
 
 public class IdProvider {
-    public static final IdProvider LATEST = new IdProvider ("$id");
-    public static final IdProvider DRAFT4 = new IdProvider ("id");
+    private enum RefSiblings { YES, NO }
+
+    public static final IdProvider DRAFT201909 = new IdProvider (Keywords.ID, RefSiblings.YES);
+    public static final IdProvider DRAFT7 = new IdProvider (Keywords.ID, RefSiblings.NO);
+    public static final IdProvider DRAFT6 = new IdProvider (Keywords.ID, RefSiblings.NO);
+    public static final IdProvider DRAFT4 = new IdProvider (Keywords.ID4, RefSiblings.NO);
 
     private final String idKeyword;
+    private final RefSiblings refSiblings;
 
-    private IdProvider (String id) {
+    private IdProvider (String id, RefSiblings siblings) {
         this.idKeyword = id;
+        this.refSiblings = siblings;
     }
 
     /**
@@ -28,10 +34,12 @@ public class IdProvider {
      * @return scope id or null
      */
     public @Nullable String getId (Map<String, Object> properties) {
-        Object id = properties.get (idKeyword);
-        Object ref = properties.get ("$ref");
+        Object ref = properties.get (Keywords.REF);
+        if (isString (ref) && refSiblings == RefSiblings.NO)
+            return null;
 
-        if (isString (ref) || !isString (id))
+        Object id = properties.get (idKeyword);
+        if (!isString (id))
             return null;
 
         return asString (id);
