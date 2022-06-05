@@ -41,6 +41,11 @@ public class SchemaKeywords {
 
     private static Map<String, Keyword> initDraft201909 () {
         Map<String, Keyword> keywords = new HashMap<> (initDraft7 ());
+
+        // core
+        keywords.put ("$anchor", keyword (STRING));
+        keywords.put ("$defs", keyword (SCHEMA_MAP));
+
         return Collections.unmodifiableMap (keywords);
     }
 
