@@ -44,6 +44,19 @@ public class SchemaKeywords {
         // core
         keywords.put ("$comment", keyword (STRING));
 
+        // validation: sub schemas
+        keywords.put ("if", keyword (SCHEMA));
+        keywords.put ("then", keyword (SCHEMA));
+        keywords.put ("else", keyword (SCHEMA));
+
+        // validation: annotations
+        keywords.put ("readOnly", keyword (BOOLEAN));
+        keywords.put ("writeOnly", keyword (BOOLEAN));
+
+        // validation: non json data
+        keywords.put ("contentMediaType", keyword (STRING));
+        keywords.put ("contentEncoding", keyword (STRING));
+
         return Collections.unmodifiableMap (keywords);
     }
 
