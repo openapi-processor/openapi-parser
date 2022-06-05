@@ -8,9 +8,11 @@ Used by openapi-parser but also usable as standalone JSON Schema validator.
 
 == supported JSON Schema versions
 
-It is tested against the official link:{json-schema-testsuite}[JSON Schema Test Suite]. It passes all required tests of the test suite & most *optional* tests. See the limitations below.
+It is tested against the official link:{json-schema-testsuite}[JSON Schema Test Suite]. It passes all required tests of the test suite & most *optional* tests. It implements the `format`s as listed. See the limitations below.
 
-* *Draft 7*
+* *draft-07* (http://json-schema.org/draft-07/schema#)
+** `contentMediaType`: not validated
+** `contentEncoding`: not validated
 ** format: *date* (`java.time.LocalDate`)
 ** format: *time* (`java.time.OffsetTime`, see limitations)
 ** format: *idn-email* (not implemented)
@@ -22,13 +24,13 @@ It is tested against the official link:{json-schema-testsuite}[JSON Schema Test 
 ** format: *uri-template.json* (not implemented)
 ** format: see Draft 6 formats
 
-* *Draft 6*
+* *draft-06* (http://json-schema.org/draft-06/schema#)
 ** format: *uri-reference* (code)
 ** format: *json-pointer* (not implemented)
 ** format: *uri-template* (not implemented)
 ** format: see Draft 4 formats
 
-* *Draft 4* => OpenAPI 3.0.x
+* *draft-04* (http://json-schema.org/draft-04/schema#) => OpenAPI 3.0.x
 ** format: *date-time* (`java.time.OffsetDateTime`, see limitations)
 ** format: *email* (regex)
 ** format: *hostname* (code)
