@@ -5,6 +5,7 @@
 
 package io.openapiparser.schema;
 
+import io.openapiparser.converter.StringNotNullConverter;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
@@ -29,6 +30,9 @@ public class IdDetector {
         JsonPointer location = bucket.getLocation ();
         URI currentScope = getScope (scope, bucket);
         registerScope (currentScope, bucket);
+
+        URI currentAnchor = getAnchor (currentScope, bucket);
+        registerAnchor (currentAnchor, bucket);
 
         bucket.forEach ((name, value) -> {
             JsonPointer keywordLocation = location.append (name);
@@ -101,6 +105,28 @@ public class IdDetector {
      */
     private @Nullable String getScopeId (Bucket bucket) {
         return version.getIdProvider ().getId (bucket.getRawValues ());
+    }
+
+    private @Nullable URI getAnchor (URI scope, Bucket bucket) {
+        String anchor = getAnchor (bucket);
+        if (anchor == null)
+            return null;
+
+        return scope.resolve ("#" + anchor);
+    }
+
+    private void registerAnchor (@Nullable URI anchor, Bucket bucket) {
+        if (anchor == null)
+            return;
+
+        registerScope (anchor, bucket);
+    }
+
+    private @Nullable String getAnchor (Bucket bucket) {
+        if (!bucket.hasProperty ("$anchor"))
+            return null;
+
+        return bucket.convert ("$anchor", new StringNotNullConverter ());
     }
 
     @SuppressWarnings ("unchecked")
