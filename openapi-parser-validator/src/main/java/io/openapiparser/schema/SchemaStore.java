@@ -88,6 +88,14 @@ public class SchemaStore {
         return schemas.get (id);
     }
 
+    public void loadDraft7 () {
+        addSchema(SchemaVersion.Draft7.getSchema (), "/json-schema/draft-07/schema.json");
+    }
+
+    public void loadDraft6 () {
+        addSchema(SchemaVersion.Draft6.getSchema (), "/json-schema/draft-06/schema.json");
+    }
+
     public void loadDraft4 () {
         addSchema(SchemaVersion.Draft4.getSchema (), "/json-schema/draft-04/schema.json");
     }

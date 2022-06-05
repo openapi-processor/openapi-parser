@@ -13,7 +13,7 @@ import io.openapiparser.snakeyaml.SnakeYamlConverter
 
 class ValidatorSchemaSpec : StringSpec({
 
-    "validates draft 4 with draft 4" {
+    "validates draft-04 with draft-04" {
         val resolver = Resolver(UriReader(), SnakeYamlConverter(), DocumentStore())
         val store = SchemaStore(resolver)
         store.loadDraft4()
@@ -30,4 +30,37 @@ class ValidatorSchemaSpec : StringSpec({
         step.isValid.shouldBeTrue()
     }
 
+    "validates draft-06 with draft-06" {
+        val resolver = Resolver(UriReader(), SnakeYamlConverter(), DocumentStore())
+        val store = SchemaStore(resolver)
+        store.loadDraft6()
+
+        val schema = store.getSchema(SchemaVersion.Draft6.schema)
+
+        val resolverResult = resolver.resolve("/json-schema/draft-06/schema.json")
+        val instanceContext = JsonInstanceContext(resolverResult.uri, ReferenceRegistry())
+        val instance = JsonInstance(resolverResult.document, instanceContext)
+
+        val validator = Validator()
+        val step = validator.validate(schema!!, instance)
+
+        step.isValid.shouldBeTrue()
+    }
+
+    "validates draft-07 with draft-07" {
+        val resolver = Resolver(UriReader(), SnakeYamlConverter(), DocumentStore())
+        val store = SchemaStore(resolver)
+        store.loadDraft7()
+
+        val schema = store.getSchema(SchemaVersion.Draft7.schema)
+
+        val resolverResult = resolver.resolve("/json-schema/draft-07/schema.json")
+        val instanceContext = JsonInstanceContext(resolverResult.uri, ReferenceRegistry())
+        val instance = JsonInstance(resolverResult.document, instanceContext)
+
+        val validator = Validator()
+        val step = validator.validate(schema!!, instance)
+
+        step.isValid.shouldBeTrue()
+    }
 })
