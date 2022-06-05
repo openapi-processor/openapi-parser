@@ -12,6 +12,7 @@ import java.util.*;
 import static io.openapiparser.schema.KeywordType.*;
 
 public class SchemaKeywords {
+    public static final SchemaKeywords draft201909 = new SchemaKeywords (initDraft201909 ());
     public static final SchemaKeywords draft7 = new SchemaKeywords (initDraft7 ());
     public static final SchemaKeywords draft6 = new SchemaKeywords (initDraft6 ());
     public static final SchemaKeywords draft4 = new SchemaKeywords (initDraft4 ());
@@ -36,6 +37,11 @@ public class SchemaKeywords {
             return false;
 
         return match.isNavigatable ();
+    }
+
+    private static Map<String, Keyword> initDraft201909 () {
+        Map<String, Keyword> keywords = new HashMap<> (initDraft7 ());
+        return Collections.unmodifiableMap (keywords);
     }
 
     private static Map<String, Keyword> initDraft7 () {

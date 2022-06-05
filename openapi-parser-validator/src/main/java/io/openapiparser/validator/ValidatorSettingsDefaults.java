@@ -11,6 +11,12 @@ import static io.openapiparser.schema.Format.*;
 
 public class ValidatorSettingsDefaults {
 
+    public static ValidatorSettings draft201909 () {
+        ValidatorSettings settings = new ValidatorSettings ();
+        settings.setVersion (SchemaVersion.Draft201909);
+        return settings;
+    }
+
     public static ValidatorSettings draft7 () {
         ValidatorSettings settings = new ValidatorSettings ();
         settings.setVersion (SchemaVersion.Draft7);

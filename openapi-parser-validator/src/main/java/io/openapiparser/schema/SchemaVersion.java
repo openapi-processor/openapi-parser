@@ -12,6 +12,8 @@ import java.net.URI;
 public enum SchemaVersion {
     Default ("http://json-schema.org/draft-07/schema#",
         SchemaKeywords.draft7, IdProvider.LATEST),
+    Draft201909("https://json-schema.org/draft/2019-09/schema",
+        SchemaKeywords.draft201909, IdProvider.LATEST),
     Draft7("http://json-schema.org/draft-07/schema#",
         SchemaKeywords.draft7, IdProvider.LATEST),
     Draft6("http://json-schema.org/draft-06/schema#",
