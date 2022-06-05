@@ -28,6 +28,7 @@ a Java 8 based link:{openapi}[OpenAPI] 3.0.x & 3.1 parser with validation and pl
 * minimal dependencies
 * pluggable document reader
 * pluggable json/yaml converter
+* pluggable `format` validators (planned)
 
 == modules
 
