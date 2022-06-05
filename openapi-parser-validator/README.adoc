@@ -15,14 +15,18 @@ It is tested against the official link:{json-schema-testsuite}[JSON Schema Test 
 ** format: *time* (`java.time.OffsetTime`, see limitations)
 ** format: *idn-email* (not implemented)
 ** format: *idn-hostname* (not implemented)
+** format: *iri* (not implemented)
+** format: *iri-reference* (not implemented)
 ** format: *regex* (`java.util.regex.Pattern`)
-** format: all Draft 6 formats
+** format: *relative-json-pointer.json* (not implemented)
+** format: *uri-template.json* (not implemented)
+** format: see Draft 6 formats
 
 * *Draft 6*
 ** format: *uri-reference* (code)
 ** format: *json-pointer* (not implemented)
 ** format: *uri-template* (not implemented)
-** format: all Draft 4 formats
+** format: see Draft 4 formats
 
 * *Draft 4* => OpenAPI 3.0.x
 ** format: *date-time* (`java.time.OffsetDateTime`, see limitations)
