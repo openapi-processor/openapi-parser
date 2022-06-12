@@ -143,6 +143,8 @@ public interface JsonSchema {
         return null;
     }
 
+    default @Nullable JsonSchema getUnevaluatedProperties () { return null; }
+
     default Map<String, JsonDependency> getDependencies () {
         return Collections.emptyMap ();
     }

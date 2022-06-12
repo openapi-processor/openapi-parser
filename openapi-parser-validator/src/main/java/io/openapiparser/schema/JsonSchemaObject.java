@@ -252,6 +252,11 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     @Override
+    public @Nullable JsonSchema getUnevaluatedProperties () {
+        return getJsonSchemaOf ("unevaluatedProperties");
+    }
+
+    @Override
     public Map<String, JsonDependency> getDependencies () {
         Map<String, JsonDependency> dependencies = schemaObject.convert (
             "dependencies", new MapDependencyConverter (context));
