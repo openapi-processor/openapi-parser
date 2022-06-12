@@ -46,6 +46,8 @@ public class SchemaKeywords {
         keywords.put ("$anchor", keyword (STRING));
         keywords.put ("$defs", keyword (SCHEMA_MAP));
 
+        keywords.put ("dependentSchemas", keyword(SCHEMA_MAP));
+
         return Collections.unmodifiableMap (keywords);
     }
 
