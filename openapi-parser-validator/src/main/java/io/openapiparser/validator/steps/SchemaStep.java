@@ -32,8 +32,9 @@ public class SchemaStep extends CompositeStep {
 
     @Override
     public String toString () {
-        return String.format ("%s (instance: %s), (schema: %s)", isValid () ? "valid" : "invalid",
-            instance.toString (),
-            schema.toString ());
+        return String.format ("%s (instance: %s), (schema: %s)",
+            isValid () ? "valid" : "invalid",
+            instance.toString ().isEmpty () ? "/" : instance.toString (),
+            schema.toString ().isEmpty () ? "/" : schema.toString ());
     }
 }
