@@ -149,6 +149,10 @@ public interface JsonSchema {
         return Collections.emptyMap ();
     }
 
+    default Map<String, JsonSchema> getDependentSchemas () {
+        return Collections.emptyMap ();
+    }
+
     default @Nullable JsonSchema getPropertyNames () {
         return null;
     }

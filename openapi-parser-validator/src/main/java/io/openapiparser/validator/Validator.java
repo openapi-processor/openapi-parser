@@ -9,6 +9,7 @@ import io.openapiparser.schema.*;
 import io.openapiparser.validator.any.*;
 import io.openapiparser.validator.array.*;
 import io.openapiparser.validator.bool.Boolean;
+import io.openapiparser.validator.conditional.DependentSchemas;
 import io.openapiparser.validator.number.*;
 import io.openapiparser.validator.number.draft4.Maximum4;
 import io.openapiparser.validator.number.draft4.Minimum4;
@@ -273,6 +274,7 @@ public class Validator {
         step.add (new Required ().validate (schema, instance));
         new Properties (this).validate(schema, instance, step);
         step.add (new Dependencies (this).validate (schema, instance));
+        step.add (new DependentSchemas (this).validate (schema, instance));
         step.add (new PropertyNames (this).validate (schema, instance));
     }
 

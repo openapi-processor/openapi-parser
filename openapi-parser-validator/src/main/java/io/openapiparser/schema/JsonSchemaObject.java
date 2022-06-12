@@ -269,6 +269,17 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     @Override
+    public Map<String, JsonSchema> getDependentSchemas () {
+        Map<String, JsonSchema> dependentSchemas = schemaObject.convert (
+            "dependentSchemas", new MapJsonSchemasConverter (context));
+
+        if (dependentSchemas == null)
+            return Collections.emptyMap ();
+
+        return dependentSchemas;
+    }
+
+    @Override
     public @Nullable JsonSchema getPropertyNames () {
         return getJsonSchemaOf ("propertyNames");
     }
