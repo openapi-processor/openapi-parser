@@ -45,6 +45,10 @@ public class Validator {
             refStep.add (validate (refSchema, instance));
             step.add (refStep);
             step = refStep;
+
+            if (!settings.getVersion ().allowsRefSiblings ()) {
+                return schemaStep;
+            }
         }
 
         while (instance.isRef()) {
