@@ -5,6 +5,7 @@
 
 package io.openapiparser.validator.steps;
 
+import io.openapiparser.validator.Annotation;
 import io.openapiparser.validator.ValidationMessage;
 
 import java.util.*;
@@ -44,6 +45,14 @@ public class CompositeStep implements ValidationStep {
     public Collection<ValidationMessage> getMessages () {
         return steps.stream ()
             .map (ValidationStep::getMessages)
+            .flatMap (Collection::stream)
+            .collect(Collectors.toList ());
+    }
+    @Override
+    public Collection<Annotation> getAnnotations (String keyword) {
+        return steps.stream ()
+            .filter (ValidationStep::isValid)
+            .map (s -> s.getAnnotations (keyword))
             .flatMap (Collection::stream)
             .collect(Collectors.toList ());
     }
