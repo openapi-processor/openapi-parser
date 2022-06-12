@@ -18,7 +18,11 @@ import static io.openapiparser.support.Nullness.nonNull;
  *
  * <p>See specification:
  *
- * <p>Draft 6:
+ * <p>Draft 7:
+ * <a href="https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-validation-01#section-6.5.7">
+ *     dependencies</a>
+ *
+ * <br>Draft 6:
  * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.21">
  *     dependencies</a>
  *
