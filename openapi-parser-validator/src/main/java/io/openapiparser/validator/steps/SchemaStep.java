@@ -7,10 +7,12 @@ package io.openapiparser.validator.steps;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.validator.Annotation;
 import io.openapiparser.validator.ValidationMessage;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 public class SchemaStep extends CompositeStep {
     private final JsonSchema schema;
@@ -28,6 +30,15 @@ public class SchemaStep extends CompositeStep {
 
         return Collections.singletonList (
             new ValidateError (schema, instance, super.getMessages ()));
+    }
+
+    @Override
+    public Collection<Annotation> getAnnotations (String keyword) {
+        return steps.stream ()
+            .filter (ValidationStep::isValid)
+            .map (s -> s.getAnnotations (keyword))
+            .flatMap (Collection::stream)
+            .collect(Collectors.toList ());
     }
 
     @Override
