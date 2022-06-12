@@ -38,12 +38,9 @@ public class PropertyStep implements ValidationStep {
         return step.getMessages ();
     }
 
-    public void addAnnotation (Object value) {
-        annotation = new Annotation (propertyName, value);
-    }
-
-    public @Nullable Annotation getAnnotation () {
-        return annotation;
+    @Override
+    public Collection<Annotation> getAnnotations (String keyword) {
+        return step.getAnnotations (keyword);
     }
 
     @Override

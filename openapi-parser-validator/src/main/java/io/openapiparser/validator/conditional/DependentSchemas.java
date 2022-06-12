@@ -37,7 +37,7 @@ public class DependentSchemas {
     }
 
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
-        PropertiesStep step = new PropertiesStep ("dependentSchemas");
+        DependentSchemasStep step = new DependentSchemasStep ("dependentSchemas");
 
         Map<String, JsonSchema> schemas = schema.getDependentSchemas ();
         if (schemas.isEmpty ()) {
