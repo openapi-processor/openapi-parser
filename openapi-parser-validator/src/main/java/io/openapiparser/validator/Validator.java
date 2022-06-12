@@ -69,7 +69,7 @@ public class Validator {
         step.add (validateType (schema, instance));
         step.add (validateBoolean (schema, instance));
         step.add (validateArray (schema, instance));
-        step.add (validateObject (schema, instance));
+        validateObject (schema, instance, step);
         step.add (validateNumber (schema, instance));
         step.add (validateString (schema, instance));
 
@@ -258,19 +258,17 @@ public class Validator {
         return step;
     }
 
-    private ValidationStep validateObject (JsonSchema schema, JsonInstance instance) {
+    private void validateObject (JsonSchema schema, JsonInstance instance, CompositeStep step) {
         if (!instance.isObject ()) {
-            return new NullStep ();
+            return;
         }
 
-        CompositeStep step = new FlatStep ();
         step.add (new MaxProperties ().validate (schema, instance));
         step.add (new MinProperties ().validate (schema, instance));
         step.add (new Required ().validate (schema, instance));
-        step.add (new Properties (this).validate(schema, instance));
+        new Properties (this).validate(schema, instance, step);
         step.add (new Dependencies (this).validate (schema, instance));
         step.add (new PropertyNames (this).validate (schema, instance));
-        return step;
     }
 
     private ValidationStep validateNumber (JsonSchema schema, JsonInstance instance) {

@@ -5,21 +5,51 @@
 
 package io.openapiparser.validator.object;
 
-import io.openapiparser.schema.JsonInstance;
-import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.validator.Annotation;
 import io.openapiparser.validator.ValidationMessage;
-import io.openapiparser.validator.steps.SimpleStep;
+import io.openapiparser.validator.steps.*;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
-public class PropertyStep extends SimpleStep {
+import java.util.Collection;
+
+public class PropertyStep implements ValidationStep {
     private final String propertyName;
 
-    public PropertyStep (JsonSchema schema, JsonInstance instance, String propertyName) {
-        super(schema, instance);
+    private final ValidationStep step;
+    private @Nullable Annotation annotation;
+
+    public PropertyStep (String propertyName, ValidationStep step) {
         this.propertyName = propertyName;
+        this.step = step;
     }
 
     @Override
-    protected ValidationMessage getError () {
-        return new PropertiesError (schema, instance, propertyName);
+    public boolean isValid () {
+        return step.isValid ();
+    }
+
+    @Override
+    public Collection<ValidationStep> getSteps () {
+        return step.getSteps ();
+    }
+
+    @Override
+    public Collection<ValidationMessage> getMessages () {
+        return step.getMessages ();
+    }
+
+    public void addAnnotation (Object value) {
+        annotation = new Annotation (propertyName, value);
+    }
+
+    public @Nullable Annotation getAnnotation () {
+        return annotation;
+    }
+
+    @Override
+    public String toString () {
+        return String.format ("%s (property: %s)",
+            isValid () ? "valid" : "invalid",
+            propertyName);
     }
 }
