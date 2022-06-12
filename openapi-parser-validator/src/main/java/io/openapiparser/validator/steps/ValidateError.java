@@ -12,8 +12,9 @@ import io.openapiparser.validator.ValidationMessage;
 import java.util.Collection;
 
 /**
- * Created by {@link ValidateStep}.
+ * Created by {@link SchemaStep}.
  */
+// todo what is the purpose of this class?
 public class ValidateError extends ValidationMessage {
 
     public ValidateError (

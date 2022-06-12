@@ -12,11 +12,11 @@ import io.openapiparser.validator.ValidationMessage;
 import java.util.Collection;
 import java.util.Collections;
 
-public class ValidateStep extends CompositeStep {
+public class SchemaStep extends CompositeStep {
     private final JsonSchema schema;
     private final JsonInstance instance;
 
-    public ValidateStep (JsonSchema schema, JsonInstance instance) {
+    public SchemaStep (JsonSchema schema, JsonInstance instance) {
         this.schema = schema;
         this.instance = instance;
     }

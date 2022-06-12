@@ -36,7 +36,8 @@ public class Validator {
     }
 
     public ValidationStep validate(JsonSchema schema, JsonInstance instance) {
-        ValidateStep step = new ValidateStep (schema, instance);
+        CompositeStep schemaStep = new SchemaStep (schema, instance);
+        CompositeStep step = schemaStep;
 
         while (schema.isRef()) {
             schema = schema.getRefSchema ();
@@ -67,7 +68,7 @@ public class Validator {
         step.add (validateNumber (schema, instance));
         step.add (validateString (schema, instance));
 
-        return step;
+        return schemaStep;
     }
 
     // Draft 7: https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-validation-01#section-6.6
