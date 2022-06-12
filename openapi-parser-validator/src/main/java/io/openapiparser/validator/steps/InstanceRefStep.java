@@ -6,31 +6,12 @@
 package io.openapiparser.validator.steps;
 
 import io.openapiparser.schema.JsonInstance;
-import io.openapiparser.validator.ValidationMessage;
 
-import java.util.Collection;
-import java.util.Collections;
-
-public class InstanceRefStep implements ValidationStep {
+public class InstanceRefStep extends CompositeStep {
     private final JsonInstance instance;
 
     public InstanceRefStep (JsonInstance instance) {
         this.instance = instance;
-    }
-
-    @Override
-    public Collection<ValidationStep> getSteps () {
-        return Collections.singletonList (this);
-    }
-
-    @Override
-    public Collection<ValidationMessage> getMessages () {
-        return Collections.emptyList ();
-    }
-
-    @Override
-    public boolean isValid () {
-        return true;
     }
 
     @Override

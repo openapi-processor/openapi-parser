@@ -39,9 +39,12 @@ public class Validator {
         CompositeStep schemaStep = new SchemaStep (schema, instance);
         CompositeStep step = schemaStep;
 
-        while (schema.isRef()) {
-            schema = schema.getRefSchema ();
-            step.add (new SchemaRefStep (schema));
+        if (schema.isRef ()) {
+            JsonSchema refSchema = schema.getRefSchema ();
+            SchemaRefStep refStep = new SchemaRefStep (refSchema);
+            refStep.add (validate (refSchema, instance));
+            step.add (refStep);
+            step = refStep;
         }
 
         while (instance.isRef()) {
@@ -51,7 +54,9 @@ public class Validator {
 
             visited.add (refKey);
             instance = instance.getRefInstance ();
-            step.add (new InstanceRefStep (instance));
+            InstanceRefStep refStep = new InstanceRefStep (instance);
+            step.add (refStep);
+            step = refStep;
         }
 
         step.add (validateIf (schema, instance));
