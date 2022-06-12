@@ -83,7 +83,7 @@ public class Validator {
         JsonSchema jsElse = schema.getElse ();
 
         if (jsIf == null || (jsThen == null && jsElse == null)) {
-            return new NullStep ();
+            return new NullStep ("if");
         }
 
         IfStep step = new IfStep (schema, instance);
@@ -109,7 +109,7 @@ public class Validator {
     private ValidationStep validateAllOf (JsonSchema schema, JsonInstance instance) {
         Collection<JsonSchema> allOf = schema.getAllOf ();
         if (allOf.isEmpty ())
-            return new NullStep ();
+            return new NullStep ("allOf");
 
         AllOfStep step = new AllOfStep (schema, instance);
 
@@ -145,7 +145,8 @@ public class Validator {
 
             if (aos.isValid ()) {
                 anyOfValidCount++;
-                break;
+                // should collect annotations of all valid schemas
+                //break;
             }
         }
 
