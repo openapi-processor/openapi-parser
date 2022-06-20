@@ -24,8 +24,6 @@ public class Reference {
     private final Ref ref;
     private final RefValue value;
 
-    public int visitCnt = 0;
-
     public Reference (Ref ref, RefValue value) {
         this.ref = ref;
         this.value = value;
