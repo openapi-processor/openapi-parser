@@ -5,6 +5,7 @@
 
 package io.openapiparser.schema;
 
+import io.openapiparser.converter.BooleanConverter;
 import io.openapiparser.converter.StringNotNullConverter;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -17,6 +18,7 @@ import static io.openapiparser.converter.Types.asMap;
  * walks the object tree of the given {@code Bucket}, skipping "unknown" properties and inserts the
  * collected scopes (i.e. $ids) into the document store.
  */
+// IdCollector
 public class IdDetector {
     private final SchemaVersion version;
     private final DocumentStore documents;
@@ -31,8 +33,17 @@ public class IdDetector {
         URI currentScope = getScope (scope, bucket);
         registerScope (currentScope, bucket);
 
+        // since 2019-09
         URI currentAnchor = getAnchor (currentScope, bucket);
         registerAnchor (currentAnchor, bucket);
+
+        // only 2019-09
+        URI recursiveAnchor = getRecursiveAnchor (currentScope, bucket);
+        registerDynamicAnchor (recursiveAnchor, bucket);
+
+        // since 2020-12
+        URI dynamicAnchor = getDynamicAnchor (currentScope, bucket);
+        registerDynamicAnchor (dynamicAnchor, bucket);
 
         bucket.forEach ((name, value) -> {
             JsonPointer keywordLocation = location.append (name);
@@ -91,6 +102,7 @@ public class IdDetector {
         return ref.getFullRefUri ();
     }
 
+    // registerId
     private void registerScope (URI scope, Bucket bucket) {
         if (!documents.contains (scope)) {
             documents.add (scope, bucket.getRawValues ());
@@ -119,7 +131,9 @@ public class IdDetector {
         if (anchor == null)
             return;
 
-        registerScope (anchor, bucket);
+        if (!documents.contains (anchor)) {
+            documents.addAnchor (anchor, bucket.getRawValues ());
+        }
     }
 
     private @Nullable String getAnchor (Bucket bucket) {
@@ -127,6 +141,48 @@ public class IdDetector {
             return null;
 
         return bucket.convert ("$anchor", new StringNotNullConverter ());
+    }
+
+
+    private @Nullable URI getRecursiveAnchor (URI scope, Bucket bucket) {
+        boolean anchor = getRecursiveAnchor (bucket);
+        if (!anchor)
+            return null;
+
+        return scope.resolve ("#");
+    }
+
+    private boolean getRecursiveAnchor (Bucket bucket) {
+        Boolean anchor = bucket.convert ("$recursiveAnchor", new BooleanConverter ());
+        if (anchor == null)
+            return false;
+
+        return anchor;
+    }
+
+
+    private @Nullable URI getDynamicAnchor (URI scope, Bucket bucket) {
+        String anchor = getDynamicAnchor (bucket);
+        if (anchor == null)
+            return null;
+
+        return scope.resolve ("#" + anchor);
+    }
+
+    private void registerDynamicAnchor (@Nullable URI anchor, Bucket bucket) {
+        if (anchor == null)
+            return;
+
+        if (!documents.contains (anchor)) {
+            documents.addDynamicAnchor (anchor, bucket.getRawValues ());
+        }
+    }
+
+    private @Nullable String getDynamicAnchor (Bucket bucket) {
+        if (!bucket.hasProperty ("$dynamicAnchor"))
+            return null;
+
+        return bucket.convert ("$dynamicAnchor", new StringNotNullConverter ());
     }
 
     @SuppressWarnings ("unchecked")

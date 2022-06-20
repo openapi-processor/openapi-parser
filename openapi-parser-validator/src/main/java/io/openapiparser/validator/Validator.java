@@ -52,6 +52,14 @@ public class Validator {
             }
         }
 
+        if (schema.isDynamicRef ()) {
+            JsonSchema refSchema = schema.getRefSchema (null); // need scope from outermost $recursiveAnchor
+            SchemaRefStep refStep = new SchemaRefStep (refSchema);
+            refStep.add (validate (refSchema, instance));
+            step.add (refStep);
+            step = refStep;
+        }
+
         while (instance.isRef()) {
             URI refKey = instance.getRefKey ();
             if (visited.contains (refKey))

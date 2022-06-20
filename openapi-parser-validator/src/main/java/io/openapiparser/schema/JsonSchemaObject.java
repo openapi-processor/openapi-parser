@@ -12,8 +12,7 @@ import java.net.URI;
 import java.util.*;
 
 import static io.openapiparser.converter.Types.*;
-import static io.openapiparser.schema.Keywords.REF;
-import static io.openapiparser.schema.Keywords.SCHEMA;
+import static io.openapiparser.schema.Keywords.*;
 import static io.openapiparser.support.Nullness.nonNull;
 
 public class JsonSchemaObject implements JsonSchema {
@@ -57,6 +56,42 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     @Override
+    public @Nullable String getAnchor () {
+        return schemaObject.convert ("$anchor", new StringNullableConverter ());
+    }
+
+    @Override
+    public boolean isDynamicRef () {
+        if (context.getVersion () == SchemaVersion.Draft201909) {
+            return schemaObject.hasProperty (RECURSIVE_REF);
+        }
+
+        return schemaObject.hasProperty (DYNAMIC_REF);
+    }
+
+    @Override
+    public @Nullable URI getDynamicRef () {
+        if (context.getVersion () == SchemaVersion.Draft201909) {
+            return schemaObject.convert (RECURSIVE_REF, new UriConverter ());
+        }
+
+        return schemaObject.convert (DYNAMIC_REF, new UriConverter ());
+    }
+
+    @Override
+    public @Nullable String getDynamicAnchor () {
+        if (context.getVersion () == SchemaVersion.Draft201909) {
+            Boolean anchor = schemaObject.convert (RECURSIVE_ANCHOR, new BooleanConverter ());
+            if (anchor == null || !anchor)
+                return null;
+
+            return HASH;
+        }
+
+        return schemaObject.convert ("$dynamicAnchor", new StringNullableConverter ());
+    }
+
+    @Override
     public JsonSchema getRefSchema () {
         Reference reference = context.getReference (nonNull(getRef()));
         JsonSchemaContext refContext = context.withScope (reference.getValueScope ());
@@ -67,6 +102,26 @@ public class JsonSchemaObject implements JsonSchema {
             throw new NoValueException (getLocation ().append (REF));
 
         return schema;
+    }
+
+    // recursiveRef/ref
+    public JsonSchema getRefSchema (@Nullable URI dynamicScope) {
+        if (dynamicScope == null) {
+            // like $ref
+            // no ref in registry with scope
+            Reference reference = context.getReference (nonNull (getDynamicRef ()));
+            JsonSchemaContext refContext = context.withScope (reference.getValueScope ());
+            JsonSchema schema = new JsonSchemaConverter (refContext)
+                .convert (DYNAMIC_REF, reference.getValue (), reference.getPointer ());
+
+            if (schema == null)
+                throw new NoValueException (getLocation ().append (DYNAMIC_REF));
+
+            return schema;
+        } else {
+            // not implemented
+            throw new RuntimeException ();
+        }
     }
 
     @Override

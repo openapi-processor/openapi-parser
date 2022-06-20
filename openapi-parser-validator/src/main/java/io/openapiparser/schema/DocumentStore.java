@@ -11,6 +11,8 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+import static io.openapiparser.schema.Document.Source.*;
+
 /**
  * repository for "downloaded" documents. Used to cache documents and avoid downloading the same
  * document multiple times.
@@ -18,22 +20,34 @@ import java.util.Map;
  * a document may be a single value or a whole object tree.
  */
 public class DocumentStore {
-    private final Map<URI, Object> documents = new HashMap<> ();
-
-    private static class LazyDocument { }
-
-    private static final LazyDocument PENDING = new LazyDocument ();
-
-    public void add (URI uri) {
-        documents.put (uri, PENDING);
-    }
+    private final Map<URI, Document> documents = new HashMap<> ();
 
     public void add (URI uri, Object document) {
-        documents.put (uri, document);
+        addId (uri, document);
+    }
+
+    public void addId (URI uri, Object document) {
+        documents.put (uri, new Document (document, ID));
+    }
+
+    public void addAnchor (URI uri, Object document) {
+        documents.put (uri, new Document (document, ANCHOR));
+    }
+
+    public void addDynamicAnchor (URI uri, Object document) {
+        documents.put (uri, new Document (document, DYNAMIC_ANCHOR));
+    }
+
+    public @Nullable Document getDocument (URI uri) {
+        return documents.get (uri);
     }
 
     public @Nullable Object get (URI uri) {
-        return documents.get (uri);
+        Document document = documents.get (uri);
+        if (document == null)
+            return null;
+
+        return document.getDocument ();
     }
 
     public boolean isEmpty () {
@@ -41,10 +55,6 @@ public class DocumentStore {
     }
 
     public boolean contains (URI uri) {
-        Object d = documents.get (uri);
-        if (d == null)
-            return false;
-
-        return d != PENDING;
+        return documents.containsKey (uri);
     }
 }

@@ -67,8 +67,7 @@ public class Resolver {
         ReferenceRegistry registry = new ReferenceRegistry ();
 
         URI currentScope = getScope (scope, document);
-        documents.add (currentScope, document);
-
+        collectId (currentScope, document);
         collectIds (currentScope, document);
         collectReferences (currentScope, document, registry);
         resolveReferences (registry);
@@ -107,6 +106,15 @@ public class Resolver {
         return scopeDocument;
     }
 
+    private void collectId (URI currentScope, Object document) {
+        documents.add (currentScope, document);
+
+        // add with empty fragment to handle $recursiveRef
+        if (currentScope.getFragment () == null) {
+            documents.add (currentScope.resolve ("#"), document);
+        }
+    }
+
     private void collectIds (URI scope, Object document) {
         Bucket bucket = toBucket (scope, document);
         if (bucket == null)
@@ -132,6 +140,19 @@ public class Resolver {
 
         bucket.forEach((name, value) -> {
             if (name.equals (Keywords.REF) && value instanceof String) {
+                Ref ref = createRef (currentScope, name, value);
+                URI documentUri = ref.getDocumentUri ();
+
+                if (!hasDocument (documentUri)) {
+                    Object document = addDocument (currentScope, documentUri, ref);
+                    if (document != null) {
+                        collectReferences (documentUri, document, references);
+                    }
+                }
+
+                addReference (ref, references);
+
+            } else if (name.equals (Keywords.RECURSIVE_REF) && value instanceof String) {
                 Ref ref = createRef (currentScope, name, value);
                 URI documentUri = ref.getDocumentUri ();
 

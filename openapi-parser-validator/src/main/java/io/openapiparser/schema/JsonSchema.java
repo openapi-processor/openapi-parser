@@ -43,7 +43,27 @@ public interface JsonSchema {
         throw new NotImplementedException ();
     }
 
+    default @Nullable String getAnchor () {
+        throw new NotImplementedException ();
+    }
+
+    default boolean isDynamicRef () {
+        return false;
+    }
+
+    default @Nullable URI getDynamicRef () {
+        throw new NotImplementedException ();
+    }
+
+    default @Nullable String getDynamicAnchor () {
+        throw new NotImplementedException ();
+    }
+
     default JsonSchema getRefSchema () {
+        throw new NotImplementedException ();
+    }
+
+    default JsonSchema getRefSchema (URI scope) {
         throw new NotImplementedException ();
     }
 
