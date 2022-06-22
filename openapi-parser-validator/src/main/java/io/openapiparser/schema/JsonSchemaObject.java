@@ -131,7 +131,11 @@ public class JsonSchemaObject implements JsonSchema {
 
     @Override
     public @Nullable URI getId () {
-        return schemaObject.convert ("id", new UriConverter ());
+        if (context.getVersion () == SchemaVersion.Draft4) {
+            return schemaObject.convert (ID4, new UriConverter ());
+        }
+
+        return schemaObject.convert (ID, new UriConverter ());
     }
 
     @Override
