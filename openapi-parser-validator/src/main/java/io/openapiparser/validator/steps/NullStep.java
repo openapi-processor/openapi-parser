@@ -11,6 +11,16 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class NullStep implements ValidationStep {
+    private final String keyword;
+
+    @Deprecated
+    public NullStep () {
+        this.keyword = "unknown";
+    }
+
+    public NullStep (String keyword) {
+        this.keyword = keyword;
+    }
 
     @Override
     public Collection<ValidationStep> getSteps () {
@@ -25,5 +35,10 @@ public class NullStep implements ValidationStep {
     @Override
     public boolean isValid () {
         return true;
+    }
+
+    @Override
+    public String toString () {
+        return String.format ("no value (%s)", keyword);
     }
 }
