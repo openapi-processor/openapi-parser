@@ -5,8 +5,7 @@
 
 package io.openapiparser.validator.object;
 
-import io.openapiparser.schema.JsonInstance;
-import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.schema.*;
 import io.openapiparser.validator.Validator;
 import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
@@ -34,7 +33,7 @@ public class PropertyNames {
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         JsonSchema propertyNames = schema.getPropertyNames ();
         if (propertyNames == null || !instance.isObject ())
-            return new NullStep();
+            return new NullStep("propertyNames");
 
         PropertyNamesStep step = new PropertyNamesStep (schema, instance);
 

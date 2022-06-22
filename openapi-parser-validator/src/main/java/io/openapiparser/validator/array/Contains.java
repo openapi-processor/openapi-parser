@@ -5,8 +5,7 @@
 
 package io.openapiparser.validator.array;
 
-import io.openapiparser.schema.JsonInstance;
-import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.schema.*;
 import io.openapiparser.validator.Validator;
 import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
@@ -34,7 +33,7 @@ public class Contains {
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         JsonSchema contains = schema.getContains ();
         if (contains == null)
-            return new NullStep ();
+            return new NullStep ("contains");
 
         ContainsStep step = new ContainsStep (schema, instance);
 

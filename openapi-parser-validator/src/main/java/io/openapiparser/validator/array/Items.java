@@ -43,7 +43,7 @@ public class Items {
 
         JsonSchemas items = schema.getItems ();
         if (items.isEmpty ()) {
-            return new NullStep ();
+            return new NullStep ("items");
 
         } /*else if (items.isNull ()) {
             int i = 0; // todo
