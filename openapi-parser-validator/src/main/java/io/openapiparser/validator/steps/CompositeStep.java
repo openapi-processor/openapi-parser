@@ -31,7 +31,14 @@ public class CompositeStep implements ValidationStep {
     }
 
     public void add (ValidationStep step) {
-        steps.add (step);
+        if (step instanceof NullStep)
+            return;
+
+        if (step instanceof FlatStep) {
+            steps.addAll (step.getSteps ());
+        } else {
+            steps.add (step);
+        }
     }
 
     public Collection<ValidationStep> getSteps () {
