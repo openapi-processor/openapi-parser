@@ -311,16 +311,13 @@ public class Validator {
             return new NullStep ("no object");
 
         CompositeStep step = new FlatStep ();
-
-        AnnotationsComposite currentAnnotations = new AnnotationsComposite ();
-        currentAnnotations.add (annotations);
-        currentAnnotations.add (step);
+        AnnotationsComposite current = step.mergeAnnotations (annotations);
 
         step.add (new MaxProperties ().validate (schema, instance));
         step.add (new MinProperties ().validate (schema, instance));
         step.add (new Required ().validate (schema, instance));
         step.add (new DependentSchemas (this).validate (schema, instance, dynamicScope));
-        step.add (new Properties (this).validate(schema, instance, currentAnnotations, dynamicScope));
+        step.add (new Properties (this).validate(schema, instance, current, dynamicScope));
         step.add (new Dependencies (this).validate (schema, instance, dynamicScope));
         step.add (new PropertyNames (this).validate (schema, instance, dynamicScope));
         return step;

@@ -5,9 +5,7 @@
 
 package io.openapiparser.validator.steps;
 
-import io.openapiparser.validator.Annotation;
-import io.openapiparser.validator.Annotations;
-import io.openapiparser.validator.ValidationMessage;
+import io.openapiparser.validator.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -60,6 +58,13 @@ public class CompositeStep implements ValidationStep, Annotations {
             .map (s -> s.getAnnotations (keyword))
             .flatMap (Collection::stream)
             .collect(Collectors.toList ());
+    }
+
+    public AnnotationsComposite mergeAnnotations (Annotations annotations) {
+        AnnotationsComposite merge = new AnnotationsComposite ();
+        merge.add (annotations);
+        merge.add (this);
+        return merge;
     }
 
     @Override

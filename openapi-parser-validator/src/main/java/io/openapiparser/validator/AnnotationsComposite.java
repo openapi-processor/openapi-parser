@@ -10,9 +10,9 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class AnnotationsComposite implements Annotations {
-    Collection<Annotations> annotations = new ArrayList<> ();
+    private Collection<Annotations> annotations = new ArrayList<> ();
 
-    void add (Annotations annotations) {
+    public void add (Annotations annotations) {
         this.annotations.add (annotations);
     }
 
