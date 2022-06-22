@@ -17,6 +17,7 @@ import io.openapiparser.validator.object.*;
 import io.openapiparser.validator.object.Properties;
 import io.openapiparser.validator.steps.*;
 import io.openapiparser.validator.string.*;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
 import java.util.*;
@@ -26,7 +27,7 @@ import java.util.*;
  */
 public class Validator {
     private final ValidatorSettings settings;
-    private final Set<URI> visited = new HashSet<> ();
+    private final Set<URI> visited = new HashSet<> ();    // visited instance refs
 
     public Validator () {
         settings = new ValidatorSettings ();
@@ -37,29 +38,22 @@ public class Validator {
     }
 
     public ValidationStep validate(JsonSchema schema, JsonInstance instance) {
-        CompositeStep schemaStep = new SchemaStep (schema, instance);
-        CompositeStep step = schemaStep;
+        return validate (schema, instance, null);
+    }
 
-        if (schema.isRef ()) {
-            JsonSchema refSchema = schema.getRefSchema ();
-            SchemaRefStep refStep = new SchemaRefStep (refSchema);
-            refStep.add (validate (refSchema, instance));
-            step.add (refStep);
-            step = refStep;
+    public ValidationStep validate(JsonSchema schema, JsonInstance instance, @Nullable DynamicScope parentScope) {
+        DynamicScope dynamicScope = calcDynamicScope (schema, parentScope);
+        SchemaStep step = new SchemaStep (schema, instance);
 
-            if (!settings.getVersion ().allowsRefSiblings ()) {
-                return schemaStep;
-            }
+        ValidationStep refStep = validateRef (schema, instance, dynamicScope);
+        step.add (refStep);
+        if (refStep instanceof SchemaRefStep && !allowsSiblings ()) {
+            return step;
         }
 
-        if (schema.isDynamicRef ()) {
-            JsonSchema refSchema = schema.getRefSchema (null); // need scope from outermost $recursiveAnchor
-            SchemaRefStep refStep = new SchemaRefStep (refSchema);
-            refStep.add (validate (refSchema, instance));
-            step.add (refStep);
-            step = refStep;
-        }
+        step.add (validateDynamicRef (schema, instance, dynamicScope));
 
+        /* todo
         while (instance.isRef()) {
             URI refKey = instance.getRefKey ();
             if (visited.contains (refKey))
@@ -70,27 +64,57 @@ public class Validator {
             InstanceRefStep refStep = new InstanceRefStep (instance);
             step.add (refStep);
             step = refStep;
-        }
+        }*/
 
-        step.add (validateIf (schema, instance));
-        step.add (validateAllOf (schema, instance));
-        step.add (validateAnyOf (schema, instance));
-        step.add (validateOneOf (schema, instance));
-        step.add (validateNot (schema, instance));
+        step.add (validateIf (schema, instance, dynamicScope));
+        step.add (validateAllOf (schema, instance, dynamicScope));
+        step.add (validateAnyOf (schema, instance, dynamicScope));
+        step.add (validateOneOf (schema, instance, dynamicScope));
+        step.add (validateNot (schema, instance, dynamicScope));
         step.add (validateEnum (schema, instance));
         step.add (validateConst (schema, instance));
         step.add (validateType (schema, instance));
         step.add (validateBoolean (schema, instance));
-        step.add (validateArray (schema, instance));
-        validateObject (schema, instance, step);
         step.add (validateNumber (schema, instance));
         step.add (validateString (schema, instance));
+        step.add (validateObject (schema, instance, step, dynamicScope));
+        step.add (validateArray (schema, instance, dynamicScope));
 
-        return schemaStep;
+        return step;
     }
 
+    // Draft 2019-09: todo
+    // Draft 7: todo
+    // Draft 6: todo
+    // Draft 4: todo
+    private ValidationStep validateRef (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope) {
+        if (!schema.isRef ()) {
+            return new NullStep(Keywords.REF);
+        }
+
+        JsonSchema refSchema = schema.getRefSchema ();
+        SchemaRefStep step = new SchemaRefStep (refSchema);
+        step.add (validate (refSchema, instance, dynamicScope));
+        return step;
+    }
+
+    // Draft 2020-12: todo
+    // Draft 2019-09: todo
+    private ValidationStep validateDynamicRef (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope) {
+        if (!schema.isDynamicRef ()) {
+            return new NullStep(Keywords.DYNAMIC_REF);
+        }
+
+        JsonSchema refSchema = schema.getRefSchema (dynamicScope.findScope (schema.getDynamicRef ()));
+        SchemaRefStep step = new SchemaRefStep (refSchema);
+        step.add (validate (refSchema, instance, dynamicScope));
+        return step;
+    }
+
+
+    // Draft 2019-09: https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-02#section-9.2.2.1
     // Draft 7: https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-validation-01#section-6.6
-    private ValidationStep validateIf (JsonSchema schema, JsonInstance instance) {
+    private ValidationStep validateIf (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope) {
         JsonSchema jsIf = schema.getIf ();
         JsonSchema jsThen = schema.getThen ();
         JsonSchema jsElse = schema.getElse ();
@@ -101,25 +125,27 @@ public class Validator {
 
         IfStep step = new IfStep (schema, instance);
 
-        ValidationStep vsIf = validate (jsIf, instance);
+        ValidationStep vsIf = validate (jsIf, instance, dynamicScope);
         step.setIf (vsIf);
 
         if (vsIf.isValid ()) {
             if (jsThen != null) {
-                step.setThen (validate (jsThen, instance));
+                step.setThen (validate (jsThen, instance, dynamicScope));
             }
         } else {
             if (jsElse != null) {
-                step.setElse (validate (jsElse, instance));
+                step.setElse (validate (jsElse, instance, dynamicScope));
             }
         }
 
         return step;
     }
 
+    // Draft 2019-09: todo
+    // Draft 7: todo
     // Draft 6: https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.26
     // Draft 4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.3
-    private ValidationStep validateAllOf (JsonSchema schema, JsonInstance instance) {
+    private ValidationStep validateAllOf (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope) {
         Collection<JsonSchema> allOf = schema.getAllOf ();
         if (allOf.isEmpty ())
             return new NullStep ("allOf");
@@ -128,7 +154,7 @@ public class Validator {
 
         int allOfValidCount = 0;
         for (JsonSchema allOfSchema : allOf) {
-            ValidationStep aos = validate (allOfSchema, instance);
+            ValidationStep aos = validate (allOfSchema, instance, dynamicScope);
             step.add (aos);
 
             if (aos.isValid ())
@@ -144,16 +170,16 @@ public class Validator {
 
     // Draft 6: https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.27
     // Draft 4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.4
-    private ValidationStep validateAnyOf (JsonSchema schema, JsonInstance instance) {
+    private ValidationStep validateAnyOf (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope) {
         Collection<JsonSchema> anyOf = schema.getAnyOf ();
         if (anyOf.isEmpty ())
-            return new NullStep ();
+            return new NullStep ("anyOf");
 
         AnyOfStep step = new AnyOfStep (schema, instance);
 
         int anyOfValidCount = 0;
         for (JsonSchema anyOfSchema : anyOf) {
-            ValidationStep aos = validate (anyOfSchema, instance);
+            ValidationStep aos = validate (anyOfSchema, instance, dynamicScope);
             step.add (aos);
 
             if (aos.isValid ()) {
@@ -172,16 +198,16 @@ public class Validator {
 
     // Draft 6: https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.28
     // Draft 4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.5
-    private ValidationStep validateOneOf (JsonSchema schema, JsonInstance instance) {
+    private ValidationStep validateOneOf (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope) {
         Collection<JsonSchema> oneOf = schema.getOneOf ();
         if (oneOf.isEmpty ())
-            return new NullStep ();
+            return new NullStep ("oneOf");
 
         OneOfStep step = new OneOfStep (schema, instance);
 
         int oneOfValidCount = 0;
         for (JsonSchema oneOfSchema : oneOf) {
-            ValidationStep oos = validate (oneOfSchema, instance);
+            ValidationStep oos = validate (oneOfSchema, instance, dynamicScope);
             step.add (oos);
 
             if (oos.isValid ()) {
@@ -196,23 +222,27 @@ public class Validator {
         return step;
     }
 
+    // Draft: 2019-09: todo
+    // Draft: 7: todo
     // Draft 6: https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.29
     // Draft 4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.6
-    private ValidationStep validateNot (JsonSchema schema, JsonInstance instance) {
+    private ValidationStep validateNot (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope) {
         JsonSchema not = schema.getNot ();
         if (not == null)
-            return new NullStep ();
+            return new NullStep ("not");
 
-        ValidationStep step = validate (not, instance);
+        ValidationStep step = validate (not, instance, dynamicScope);
         return new NotStep (schema, instance, step);
     }
 
+    // Draft: 2019-09: todo
+    // Draft 7: https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-validation-01#section-6.1.2
     // Draft 6: https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.23
     // Draft 4: https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.1
     private ValidationStep validateEnum (JsonSchema schema, JsonInstance instance) {
         Collection<JsonInstance> enums = schema.getEnum ();
         if (enums.isEmpty ())
-            return new NullStep ();
+            return new NullStep ("enum");
 
         EnumStep step = new EnumStep (schema, instance);
 
@@ -231,11 +261,13 @@ public class Validator {
         return step;
     }
 
+    // Draft: 2019-09: todo
+    // Draft 7: https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-validation-01#section-6.1.3
     // Draft 6: https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.24
     private ValidationStep validateConst (JsonSchema schema, JsonInstance instance) {
         JsonInstance constValue = schema.getConst ();
         if (constValue == null)
-            return new NullStep ();
+            return new NullStep ("const");
 
         ConstStep step = new ConstStep (schema, instance);
 
@@ -251,39 +283,46 @@ public class Validator {
     }
 
     private ValidationStep validateBoolean (JsonSchema schema, JsonInstance instance) {
+        // todo move to validate()
         if (! isBooleanSchema (schema)) {
-            return new NullStep ();
+            return new NullStep ("boolean");
         }
 
         return new Boolean ().validate (schema, instance);
     }
 
-    private ValidationStep validateArray (JsonSchema schema, JsonInstance instance) {
+    private ValidationStep validateArray (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope) {
+        // drop null step ??? return empty FlatStep to shortcut??
         if (!instance.isArray ()) {
-            return new NullStep ();
+            return new NullStep ("array");
         }
 
         CompositeStep step = new FlatStep ();
         step.add (new MaxItems ().validate (schema, instance));
         step.add (new MinItems ().validate (schema, instance));
         step.add (new UniqueItems ().validate (schema, instance));
-        step.add (new Contains (this).validate (schema, instance));
-        step.add (new Items (this).validate (schema, instance));
+        step.add (new Contains (this).validate (schema, instance, dynamicScope));
+        step.add (new Items (this).validate (schema, instance, dynamicScope));
         return step;
     }
 
-    private void validateObject (JsonSchema schema, JsonInstance instance, CompositeStep step) {
-        if (!instance.isObject ()) {
-            return;
-        }
+    private ValidationStep validateObject (JsonSchema schema, JsonInstance instance, Annotations annotations, DynamicScope dynamicScope) {
+        if (!instance.isObject ())
+            return new NullStep (); // or NullStep() ???
 
+//        if (!instance.isObject ()) {
+//            return;
+//        }
+
+        CompositeStep step = new FlatStep ();
         step.add (new MaxProperties ().validate (schema, instance));
         step.add (new MinProperties ().validate (schema, instance));
         step.add (new Required ().validate (schema, instance));
-        step.add (new DependentSchemas (this).validate (schema, instance));
-        new Properties (this).validate(schema, instance, step);
-        step.add (new Dependencies (this).validate (schema, instance));
-        step.add (new PropertyNames (this).validate (schema, instance));
+        step.add (new DependentSchemas (this).validate (schema, instance, dynamicScope));
+        step.add (new Properties (this).validate(schema, instance, annotations, dynamicScope));
+        step.add (new Dependencies (this).validate (schema, instance, dynamicScope));
+        step.add (new PropertyNames (this).validate (schema, instance, dynamicScope));
+        return step;
     }
 
     private ValidationStep validateNumber (JsonSchema schema, JsonInstance instance) {
@@ -325,6 +364,21 @@ public class Validator {
         step.add (new UriReference (settings).validate (schema, instance));
         step.add (new Regex ().validate (schema, instance));
         return step;
+    }
+
+    // Draft 2020-12: todo
+    // Draft 2019-09: todo
+    private DynamicScope calcDynamicScope (JsonSchema schema, @Nullable DynamicScope parentScope) {
+        if (parentScope == null) {
+            return new DynamicScope (schema);
+        }
+
+        return parentScope.add (schema);
+        // .resolve ("#" + dynamicAnchor);
+    }
+
+    private boolean allowsSiblings () {
+        return settings.getVersion ().isLaterOrEqualTo201909 ();
     }
 
     private boolean isBooleanSchema (JsonSchema schema) {

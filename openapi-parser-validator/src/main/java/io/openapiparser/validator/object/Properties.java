@@ -6,8 +6,7 @@
 package io.openapiparser.validator.object;
 
 import io.openapiparser.schema.*;
-import io.openapiparser.validator.Annotation;
-import io.openapiparser.validator.Validator;
+import io.openapiparser.validator.*;
 import io.openapiparser.validator.steps.*;
 
 import java.util.*;
@@ -60,7 +59,9 @@ public class Properties {
         this.validator = validator;
     }
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance, CompositeStep parentStep) {
+    public ValidationStep validate (JsonSchema schema, JsonInstance instance, Annotations annotations, DynamicScope dynamicScope) {
+        CompositeStep step = new FlatStep ();
+
         PropertiesStep propertiesStep = new PropertiesStep ("properties");
         PropertiesStep patternPropertiesStep = new PropertiesStep ("patternProperties");
         PropertiesStep additionalPropertiesStep = new PropertiesStep ("additionalProperties");
@@ -112,7 +113,7 @@ public class Properties {
             JsonInstance propInstance = instance.getValue (propName);
 
             if (propSchema != null) {
-                ValidationStep propStep = validator.validate (propSchema, propInstance);
+                ValidationStep propStep = validator.validate (propSchema, propInstance, dynamicScope);
                 if (propStep.isValid ()) {
                     propertiesAnnotation.add (propName);
                 }
@@ -128,7 +129,7 @@ public class Properties {
                     JsonSchema patternSchema = patternProperties.get (pattern);
                     JsonInstance value = instance.getValue (propName);
 
-                    ValidationStep propStep = validator.validate (patternSchema, value);
+                    ValidationStep propStep = validator.validate (patternSchema, value, dynamicScope);
                     if (propStep.isValid ()) {
                         patternPropertiesAnnotation.add (propName);
                     }
@@ -141,7 +142,7 @@ public class Properties {
             if (checkAdditionalProperty && additionalProperties != null) {
                 JsonInstance value = instance.getValue (propName);
 
-                ValidationStep propStep = validator.validate (additionalProperties, value);
+                ValidationStep propStep = validator.validate (additionalProperties, value, dynamicScope);
                 if (propStep.isValid ()) {
                     additionalPropertiesAnnotation.add (propName);
                 }
@@ -151,7 +152,7 @@ public class Properties {
         });
 
 
-        Collection<Annotation> properties = parentStep.getAnnotations ("properties");
+        Collection<Annotation> properties = annotations.getAnnotations ("properties");
         Collection<String> propertiesAnn = Collections.emptyList ();
         if (properties != null)
             propertiesAnn = properties.stream ()
@@ -183,17 +184,17 @@ public class Properties {
         unevaluatedPropertiesStep.addAnnotation(unevaluatedPropertiesAnnotation);
 
         if (propertiesStep.isNotEmpty ())
-            parentStep.add (propertiesStep);
+            step.add (propertiesStep);
 
         if (patternPropertiesStep.isNotEmpty ())
-            parentStep.add (patternPropertiesStep);
+            step.add (patternPropertiesStep);
 
         if (additionalPropertiesStep.isNotEmpty ())
-            parentStep.add (additionalPropertiesStep);
+            step.add (additionalPropertiesStep);
 
         if (unevaluatedPropertiesStep.isNotEmpty ())
-            parentStep.add (unevaluatedPropertiesStep);
+            step.add (unevaluatedPropertiesStep);
 
-        return parentStep;
+        return step;
     }
 }

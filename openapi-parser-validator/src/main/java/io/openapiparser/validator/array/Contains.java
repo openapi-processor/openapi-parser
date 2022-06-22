@@ -30,7 +30,7 @@ public class Contains {
         this.validator = validator;
     }
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
+    public ValidationStep validate (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope) {
         JsonSchema contains = schema.getContains ();
         if (contains == null)
             return new NullStep ("contains");
@@ -42,7 +42,7 @@ public class Contains {
 
         for (int idx = 0; idx < instanceSize; idx++) {
             JsonInstance value = instance.getValue (idx);
-            ValidationStep validate = validator.validate (contains, value);
+            ValidationStep validate = validator.validate (contains, value, dynamicScope);
             if (validate.isValid ()) {
                 return step;
             }

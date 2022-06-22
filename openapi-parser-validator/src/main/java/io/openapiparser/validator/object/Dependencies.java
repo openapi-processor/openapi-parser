@@ -37,7 +37,7 @@ public class Dependencies {
         this.validator = validator;
     }
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
+    public ValidationStep validate (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope) {
         DependenciesStep step = new DependenciesStep (schema, instance);
 
         Map<String, JsonDependency> dependencies = schema.getDependencies ();
@@ -47,7 +47,7 @@ public class Dependencies {
             JsonDependency propDependency = dependencies.get (propName);
             if (propDependency != null) {
                 if (propDependency.isSchema ()) {
-                    step.add (validator.validate (propDependency.getSchema (), instance));
+                    step.add (validator.validate (propDependency.getSchema (), instance, dynamicScope));
                 } else {
                     Set<String> instanceProperties = new HashSet<> (instanceObject.keySet ());
 

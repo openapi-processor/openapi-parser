@@ -38,7 +38,7 @@ public class Items {
         this.validator = validator;
     }
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
+    public ValidationStep validate (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope) {
         int instanceSize = instance.getArraySize ();
 
         JsonSchemas items = schema.getItems ();
@@ -55,7 +55,7 @@ public class Items {
             IntStream.range (0, instanceSize)
                 .forEach (idx -> {
                     JsonInstance value = instance.getValue (idx);
-                    step.add (validator.validate (itemsSchema, value));
+                    step.add (validator.validate (itemsSchema, value, dynamicScope));
                 });
 
             return step;
@@ -75,7 +75,7 @@ public class Items {
                     .forEach (idx -> {
                         JsonInstance value = instance.getValue (idx);
                         if (idx < items.size ()) {
-                            step.add (validator.validate (itemSchemas.next (), value));
+                            step.add (validator.validate (itemSchemas.next (), value, dynamicScope));
                         }
                     });
             }
@@ -94,10 +94,10 @@ public class Items {
                         JsonInstance value = instance.getValue (idx);
 
                         if (idx < items.size ()) {
-                            step.add (validator.validate (itemSchemas.next (), value));
+                            step.add (validator.validate (itemSchemas.next (), value, dynamicScope));
 
                         } else {
-                            step.add (validator.validate (additionalSchema, value));
+                            step.add (validator.validate (additionalSchema, value, dynamicScope));
                         }
                     });
             }

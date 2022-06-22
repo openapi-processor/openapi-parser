@@ -119,8 +119,16 @@ public class JsonSchemaObject implements JsonSchema {
 
             return schema;
         } else {
-            // not implemented
-            throw new RuntimeException ();
+            Reference reference = context.getReference (nonNull (getDynamicRef ()), dynamicScope);
+
+            JsonSchemaContext refContext = context.withScope (reference.getValueScope ());
+            JsonSchema schema = new JsonSchemaConverter (refContext)
+                .convert (DYNAMIC_REF, reference.getValue (), reference.getPointer ());
+
+            if (schema == null)
+                throw new NoValueException (getLocation ().append (DYNAMIC_REF));
+
+            return schema;
         }
     }
 

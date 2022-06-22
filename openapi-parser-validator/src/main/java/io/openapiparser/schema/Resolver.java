@@ -69,6 +69,14 @@ public class Resolver {
         URI currentScope = getScope (scope, document);
         collectId (currentScope, document);
         collectIds (currentScope, document);
+
+        // todo clean up
+        Map<URI, Document> documents1 = documents.getDocuments ();
+        documents1.forEach ((key, value) -> {
+            Ref ref = new Ref (key.toString ());
+            registry.add (ref);
+        });
+
         collectReferences (currentScope, document, registry);
         resolveReferences (registry);
 

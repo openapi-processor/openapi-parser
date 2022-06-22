@@ -30,7 +30,7 @@ public class PropertyNames {
         this.validator = validator;
     }
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
+    public ValidationStep validate (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope) {
         JsonSchema propertyNames = schema.getPropertyNames ();
         if (propertyNames == null || !instance.isObject ())
             return new NullStep("propertyNames");
@@ -41,7 +41,7 @@ public class PropertyNames {
         Set<String> instanceProperties = new HashSet<>(instanceObject.keySet ());
         for (String instanceProperty : instanceProperties) {
             JsonInstance propertyName = instance.getPropertyName (instanceProperty);
-            step.add (validator.validate (propertyNames, propertyName));
+            step.add (validator.validate (propertyNames, propertyName, dynamicScope));
         }
 
         return step;

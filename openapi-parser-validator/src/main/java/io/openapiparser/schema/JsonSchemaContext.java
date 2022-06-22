@@ -34,6 +34,11 @@ public class JsonSchemaContext {
         return references.getRef (resolved);
     }
 
+    public Reference getReference (URI ref, URI dynamicScope) {
+        URI resolved = dynamicScope.resolve (ref);
+        return references.getRef (resolved);
+    }
+
     @Deprecated
     public JsonSchemaContext withSource (URI source) {
         if (scope.equals (source)) {

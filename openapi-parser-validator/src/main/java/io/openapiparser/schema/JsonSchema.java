@@ -56,7 +56,7 @@ public interface JsonSchema {
     }
 
     default @Nullable String getDynamicAnchor () {
-        throw new NotImplementedException ();
+        return null;
     }
 
     default JsonSchema getRefSchema () {

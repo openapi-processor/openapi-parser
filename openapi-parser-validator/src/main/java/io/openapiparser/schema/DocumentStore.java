@@ -57,4 +57,8 @@ public class DocumentStore {
     public boolean contains (URI uri) {
         return documents.containsKey (uri);
     }
+
+    public Map<URI, Document> getDocuments() {
+        return documents;
+    }
 }

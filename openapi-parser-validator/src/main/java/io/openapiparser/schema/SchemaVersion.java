@@ -53,4 +53,11 @@ public enum SchemaVersion {
     public boolean allowsRefSiblings () {
         return allowsRefSiblings;
     }
+
+    public boolean isLaterOrEqualTo201909 () {
+        return compareTo (Draft201909) <= 0;
+    }
+    public boolean isBefore201909 () {
+        return compareTo (Draft201909) < 0;
+    }
 }
