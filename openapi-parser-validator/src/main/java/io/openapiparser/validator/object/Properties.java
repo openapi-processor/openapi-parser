@@ -169,7 +169,7 @@ public class Properties {
             instanceProperties.forEach (propName -> {
                 JsonInstance propInstance = instance.getValue (propName);
 
-                ValidationStep propStep = validator.validate (unevaluatedProperties, propInstance);
+                ValidationStep propStep = validator.validate (unevaluatedProperties, propInstance, dynamicScope);
                 if (propStep.isValid ()) {
                     unevaluatedPropertiesAnnotation.add (propName);
                 }
