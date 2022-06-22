@@ -308,11 +308,7 @@ public class Validator {
 
     private ValidationStep validateObject (JsonSchema schema, JsonInstance instance, Annotations annotations, DynamicScope dynamicScope) {
         if (!instance.isObject ())
-            return new NullStep (); // or NullStep() ???
-
-//        if (!instance.isObject ()) {
-//            return;
-//        }
+            return new NullStep ("no object");
 
         CompositeStep step = new FlatStep ();
         step.add (new MaxProperties ().validate (schema, instance));
@@ -327,7 +323,7 @@ public class Validator {
 
     private ValidationStep validateNumber (JsonSchema schema, JsonInstance instance) {
         if (!instance.isNumber ()) {
-            return new NullStep ();
+            return new NullStep ("no number");
         }
 
         CompositeStep step = new FlatStep ();
@@ -348,7 +344,7 @@ public class Validator {
 
     private ValidationStep validateString (JsonSchema schema, JsonInstance instance) {
         if (!instance.isString ()) {
-            return new NullStep ();
+            return new NullStep ("no string");
         }
 
         CompositeStep step = new FlatStep ();
