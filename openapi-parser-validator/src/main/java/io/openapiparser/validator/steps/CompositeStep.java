@@ -6,12 +6,13 @@
 package io.openapiparser.validator.steps;
 
 import io.openapiparser.validator.Annotation;
+import io.openapiparser.validator.Annotations;
 import io.openapiparser.validator.ValidationMessage;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class CompositeStep implements ValidationStep {
+public class CompositeStep implements ValidationStep, Annotations {
     protected final Collection<ValidationStep> steps;
 
     public CompositeStep () {
