@@ -20,10 +20,15 @@ import static java.util.Collections.unmodifiableCollection;
  *     rfc6901</a>.
  */
 public class JsonPointer {
+    // todo use empty()
     public final static JsonPointer EMPTY = new JsonPointer();
 
     final private @Nullable String pointer;
     final private List<String> tokens;
+
+    static public JsonPointer empty () {
+        return EMPTY;
+    }
 
     /**
      * creates a json pointer from a uri fragment string. Throws if the fragment is not a valid json
