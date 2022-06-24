@@ -7,15 +7,14 @@ package io.openapiparser.validator.array;
 
 import io.openapiparser.schema.*;
 import io.openapiparser.validator.Validator;
-import io.openapiparser.validator.steps.NullStep;
-import io.openapiparser.validator.steps.ValidationStep;
+import io.openapiparser.validator.steps.*;
 
 import java.util.Collection;
 
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
- * validates contains.
+ * validates contains, minContains & maxContains.
  *
  * <p>See specification:
  *
@@ -35,20 +34,54 @@ public class Contains {
         if (contains == null)
             return new NullStep ("contains");
 
-        ContainsStep step = new ContainsStep (schema, instance);
+        CompositeStep step = new FlatStep ();
 
         Collection<Object> instanceValue = getInstanceValue (instance);
         int instanceSize = instanceValue.size ();
 
+        ContainsStep containsStep = new ContainsStep (schema, instance);
+        step.add (containsStep);
+
+        int validCount = 0;
         for (int idx = 0; idx < instanceSize; idx++) {
             JsonInstance value = instance.getValue (idx);
             ValidationStep validate = validator.validate (contains, value, dynamicScope);
+            containsStep.add (validate);
+
             if (validate.isValid ()) {
-                return step;
+                validCount++;
             }
         }
 
-        step.setInvalid ();
+        boolean containsIsValid = validCount > 0;
+        Integer minContains = schema.getMinContains ();
+        Integer maxContains = schema.getMaxContains ();
+
+        if (minContains != null) {
+            ValidatedStep minStep = new ValidatedStep (schema, instance, "minContains");
+            minStep.setValid (validCount >= minContains);
+            step.add (minStep);
+
+            if (minContains == 0 && maxContains == null) {
+                containsIsValid = true;
+            }
+        }
+
+        if (maxContains != null) {
+            ValidatedStep minStep = new ValidatedStep (schema, instance, "maxContains");
+            boolean valid = validCount <= maxContains;
+            minStep.setValid (valid);
+            step.add (minStep);
+
+            if (valid && minContains != null && minContains == 0) {
+                containsIsValid = true;
+            }
+        }
+
+        if (!containsIsValid) {
+            containsStep.setInvalid ();
+        }
+
         return step;
     }
 

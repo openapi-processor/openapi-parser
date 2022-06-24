@@ -269,6 +269,18 @@ public class JsonSchemaObject implements JsonSchema {
         return getJsonSchemaOf ("contains");
     }
 
+    public Integer getMinContains () {
+        Integer minContains = schemaObject.convert ("minContains", new IntegerConverter ());
+        if (minContains == null)
+            return 1;
+
+        return minContains;
+    }
+
+    public @Nullable Integer getMaxContains () {
+        return schemaObject.convert ("maxContains", new IntegerConverter ());
+    }
+
     @Override
     public @Nullable Integer getMaxProperties () {
         return schemaObject.convert ("maxProperties", new IntegerConverter ());

@@ -139,6 +139,14 @@ public interface JsonSchema {
         return null;
     }
 
+    default @Nullable Integer getMinContains () {
+        return null;
+    }
+
+    default @Nullable Integer getMaxContains () {
+        return null;
+    }
+
     default @Nullable Integer getMaxProperties () {
         return null;
     }

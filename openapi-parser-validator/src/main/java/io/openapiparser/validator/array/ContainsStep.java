@@ -8,16 +8,40 @@ package io.openapiparser.validator.array;
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
-import io.openapiparser.validator.steps.SimpleStep;
+import io.openapiparser.validator.steps.CompositeStep;
 
-public class ContainsStep extends SimpleStep {
+import java.util.Collection;
+import java.util.Collections;
+
+public class ContainsStep extends CompositeStep {
+    private final JsonSchema schema;
+    private final JsonInstance instance;
+
+    private boolean valid = true;
 
     public ContainsStep (JsonSchema schema, JsonInstance instance) {
-        super(schema, instance);
+        this.schema = schema;
+        this.instance = instance;
     }
 
     @Override
-    protected ValidationMessage getError () {
-        return new ContainsError (schema, instance);
+    public boolean isValid () {
+        return valid;
+    }
+
+    public void setInvalid () {
+        valid = false;
+    }
+
+    @Override
+    public Collection<ValidationMessage> getMessages () {
+        if (valid)
+            return Collections.emptyList ();
+
+        return Collections.singletonList (getError());
+    }
+
+    private ValidationMessage getError () {
+        return new ContainsError (schema, instance, super.getMessages ());
     }
 }
