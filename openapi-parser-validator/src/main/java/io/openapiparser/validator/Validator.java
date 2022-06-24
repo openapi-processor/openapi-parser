@@ -316,6 +316,7 @@ public class Validator {
         step.add (new MaxProperties ().validate (schema, instance));
         step.add (new MinProperties ().validate (schema, instance));
         step.add (new Required ().validate (schema, instance));
+        step.add (new DependentRequired ().validate (schema, instance));
         step.add (new DependentSchemas (this).validate (schema, instance, dynamicScope));
         step.add (new Properties (this).validate(schema, instance, current, dynamicScope));
         step.add (new Dependencies (this).validate (schema, instance, dynamicScope));

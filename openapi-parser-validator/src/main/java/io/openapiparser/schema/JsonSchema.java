@@ -173,6 +173,10 @@ public interface JsonSchema {
         return Collections.emptyMap ();
     }
 
+    default Map<String, Set<String>> getDependentRequired () {
+        return Collections.emptyMap ();
+    }
+
     default @Nullable JsonSchema getPropertyNames () {
         return null;
     }
