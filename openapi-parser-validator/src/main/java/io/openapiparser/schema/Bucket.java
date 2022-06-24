@@ -14,6 +14,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static io.openapiparser.converter.Types.*;
+import static io.openapiparser.schema.ScopeSupport.updateScope;
 import static io.openapiparser.support.Nullness.nonNull;
 import static java.util.Collections.unmodifiableMap;
 
@@ -74,11 +75,16 @@ public class Bucket {
     }
 
     /**
-     * the document uri of this bucket.
+     * the scope of this bucket.
      *
      * @return the document {@link URI}
      */
+    @Deprecated // use getScope()
     public URI getSource () {
+        return source;
+    }
+
+    public URI getScope () {
         return source;
     }
 
@@ -190,29 +196,36 @@ public class Bucket {
      *
      * @param pointer property location
      * @param idProvider id provider of the schema version
-     * @return property value or null if the property does not exist
+     * @return raw value or null if the property does not exist
      */
     public @Nullable RawValue getRawValue (JsonPointer pointer, IdProvider idProvider) {
-        JsonPointer current = JsonPointer.EMPTY;
+        boolean root = true;
+        JsonPointer current = JsonPointer.empty ();
         Object value = properties;
         URI scope = source;
 
         for (String token: pointer.getTokens ()) {
             current = current.append (token);
 
-            if (value instanceof Map) {
+            if (value instanceof Map && root) {
+                // do not touch the scope on the bucket root
                 Map<String, Object> props = asMap (value);
+                value = getObjectValue (props, current);
+                root = false;
 
-                String id = idProvider.getId (props);
-                if (id != null) {
-                    scope = scope.resolve (id);
-                }
-
+            } else if (value instanceof Map) {
+                Map<String, Object> props = asMap (value);
+                scope = updateScope (props, scope, idProvider);
                 value = getObjectValue (props, current);
 
             } else if (value instanceof Collection) {
                 value = getArrayValue (asCol (value), current);
             }
+        }
+
+        if (value instanceof Map && !root) {
+            Map<String, Object> props = asMap (value);
+            scope = updateScope (props, scope, idProvider);
         }
 
         return new RawValue (scope, value);

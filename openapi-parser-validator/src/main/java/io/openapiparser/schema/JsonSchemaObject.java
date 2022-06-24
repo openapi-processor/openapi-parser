@@ -96,7 +96,7 @@ public class JsonSchemaObject implements JsonSchema {
         Reference reference = context.getReference (nonNull(getRef()));
         JsonSchemaContext refContext = context.withScope (reference.getValueScope ());
 
-        JsonSchema schema = new JsonSchemaConverter (refContext)
+        JsonSchema schema = new JsonSchemaRefConverter (refContext)
             .convert (REF, reference.getValue (), reference.getPointer ());
         if (schema == null)
             throw new NoValueException (getLocation ().append (REF));
@@ -111,7 +111,7 @@ public class JsonSchemaObject implements JsonSchema {
             // no ref in registry with scope
             Reference reference = context.getReference (nonNull (getDynamicRef ()));
             JsonSchemaContext refContext = context.withScope (reference.getValueScope ());
-            JsonSchema schema = new JsonSchemaConverter (refContext)
+            JsonSchema schema = new JsonSchemaRefConverter (refContext)
                 .convert (DYNAMIC_REF, reference.getValue (), reference.getPointer ());
 
             if (schema == null)
@@ -122,7 +122,7 @@ public class JsonSchemaObject implements JsonSchema {
             Reference reference = context.getReference (nonNull (getDynamicRef ()), dynamicScope);
 
             JsonSchemaContext refContext = context.withScope (reference.getValueScope ());
-            JsonSchema schema = new JsonSchemaConverter (refContext)
+            JsonSchema schema = new JsonSchemaRefConverter (refContext)
                 .convert (DYNAMIC_REF, reference.getValue (), reference.getPointer ());
 
             if (schema == null)
@@ -483,7 +483,7 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     private Bucket getBucketProperties (Bucket schemaBucket) {
-        Bucket bucket = schemaBucket.convert ("properties", new BucketConverter (schemaBucket));
+        Bucket bucket = schemaBucket.convert ("properties", new BucketConverter (schemaBucket, context.getVersion ()));
         if (bucket == null)
             return Bucket.empty ();
 

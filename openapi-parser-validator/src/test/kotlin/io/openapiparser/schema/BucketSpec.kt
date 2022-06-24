@@ -168,7 +168,7 @@ class BucketSpec: StringSpec({
         }
     }
 
-    "get raw value with scope" {
+    "get raw value without scope with scope of parent" {
         val bucket = Bucket(URI("https://host/document"), "/me", mapOf(
             "definitions" to mapOf<String, Any>(
                 "foo" to mapOf<String, Any>(
@@ -186,5 +186,48 @@ class BucketSpec: StringSpec({
         val rawValue = bucket.getRawValue(pointer, SchemaVersion.Draft4.idProvider)
 
         rawValue?.scope.toString() shouldBe "https://host/fooId"
+    }
+
+    "get raw value with scope" {
+        val bucket = Bucket(URI("https://host/document"), "/me", mapOf(
+            "definitions" to mapOf<String, Any>(
+                "foo" to mapOf<String, Any>(
+                    "id" to "fooId",
+                    "definitions" to mapOf<String, Any>(
+                        "bar" to mapOf<String, Any>(
+                            "id" to "barId",
+                            "type" to "string"
+                        )
+                    )
+                )
+            )
+        ))
+
+        val pointer = JsonPointer.from("/definitions/foo/definitions/bar")
+        val rawValue = bucket.getRawValue(pointer, SchemaVersion.Draft4.idProvider)
+
+        rawValue?.scope.toString() shouldBe "https://host/barId"
+    }
+
+    "get raw value with scope does not duplicate self scope" {
+        val bucket = Bucket(URI("https://host/document/self"), "/", mapOf(
+            "id" to "self"
+        ))
+
+        val pointer = JsonPointer.EMPTY
+        val rawValue = bucket.getRawValue(pointer, SchemaVersion.Draft4.idProvider)
+
+        rawValue?.scope.toString() shouldBe "https://host/document/self"
+    }
+
+    "get raw value with scope does not duplicate self scope with /" {
+        val bucket = Bucket(URI("https://host/document/self/"), "/", mapOf(
+            "id" to "self/"
+        ))
+
+        val pointer = JsonPointer.empty()
+        val rawValue = bucket.getRawValue(pointer, SchemaVersion.Draft4.idProvider)
+
+        rawValue?.scope.toString() shouldBe "https://host/document/self/"
     }
 })
