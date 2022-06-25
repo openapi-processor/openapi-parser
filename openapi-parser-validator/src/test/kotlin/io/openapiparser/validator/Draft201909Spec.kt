@@ -24,6 +24,8 @@ class Draft201909Spec: FreeSpec ({
 
 val draft201909Extras = listOf(
     // (optional format) not implemented
+    Exclude("duration.json"),
+    // (optional format) not implemented
     Exclude("idn-email.json"),
     // (optional format) not implemented
     Exclude("idn-hostname.json"),
@@ -51,52 +53,52 @@ val draft201909Extras = listOf(
     Exclude("valid leap second, large negative time-offset"),
 
     // remote documents
-//    Remote(
-//        "remote ref", Document(
-//            "http://localhost:1234/integer.json",
-//            "/suites/JSON-Schema-Test-Suite/remotes/integer.json"
-//        )
-//    ),
-//    Remote(
-//        "fragment within remote ref", Document(
-//            "http://localhost:1234/subSchemas.json",
-//            "/suites/JSON-Schema-Test-Suite/remotes/subSchemas.json"
-//        )
-//    ),
-//    Remote(
-//        "ref within remote ref", Document(
-//            "http://localhost:1234/subSchemas.json",
-//            "/suites/JSON-Schema-Test-Suite/remotes/subSchemas.json"
-//        )
-//    ),
-//    Remote(
-//        "base URI change", Document(
-//            "http://localhost:1234/baseUriChange/folderInteger.json",
-//            "/suites/JSON-Schema-Test-Suite/remotes/baseUriChange/folderInteger.json"
-//        )
-//    ),
-//    Remote(
-//        "base URI change - change folder", Document(
-//            "http://localhost:1234/baseUriChangeFolder/folderInteger.json",
-//            "/suites/JSON-Schema-Test-Suite/remotes/baseUriChangeFolder/folderInteger.json"
-//        )
-//    ),
-//    Remote(
-//        "base URI change - change folder in subschema", Document(
-//            "http://localhost:1234/baseUriChangeFolderInSubschema/folderInteger.json",
-//            "/suites/JSON-Schema-Test-Suite/remotes/baseUriChangeFolderInSubschema/folderInteger.json"
-//        )
-//    ),
-//    Remote(
-//        "root ref in remote ref", Document(
-//            "http://localhost:1234/name.json",
-//            "/suites/JSON-Schema-Test-Suite/remotes/name.json"
-//        )
-//    ),
-//    Remote(
-//        "remote ref with ref to definitions", Document(
-//            "http://localhost:1234/ref-and-definitions.json",
-//            "/suites/JSON-Schema-Test-Suite/remotes/ref-and-definitions.json"
-//        )
-//    )
+    Remote(
+        "remote ref", Document(
+            "http://localhost:1234/integer.json",
+            "/suites/JSON-Schema-Test-Suite/remotes/integer.json"
+        )
+    ),
+    Remote(
+        "fragment within remote ref", Document(
+            "http://localhost:1234/subSchemas-defs.json",
+            "/suites/JSON-Schema-Test-Suite/remotes/subSchemas-defs.json"
+        )
+    ),
+    Remote(
+        "ref within remote ref", Document(
+            "http://localhost:1234/subSchemas-defs.json",
+            "/suites/JSON-Schema-Test-Suite/remotes/subSchemas-defs.json"
+        )
+    ),
+    Remote(
+        "base URI change", Document(
+            "http://localhost:1234/baseUriChange/folderInteger.json",
+            "/suites/JSON-Schema-Test-Suite/remotes/baseUriChange/folderInteger.json"
+        )
+    ),
+    Remote(
+        "base URI change - change folder", Document(
+            "http://localhost:1234/baseUriChangeFolder/folderInteger.json",
+            "/suites/JSON-Schema-Test-Suite/remotes/baseUriChangeFolder/folderInteger.json"
+        )
+    ),
+    Remote(
+        "base URI change - change folder in subschema", Document(
+            "http://localhost:1234/baseUriChangeFolderInSubschema/folderInteger.json",
+            "/suites/JSON-Schema-Test-Suite/remotes/baseUriChangeFolderInSubschema/folderInteger.json"
+        )
+    ),
+    Remote(
+        "root ref in remote ref", Document(
+            "http://localhost:1234/name-defs.json",
+            "/suites/JSON-Schema-Test-Suite/remotes/name-defs.json"
+        )
+    ),
+    Remote(
+        "remote ref with ref to defs", Document(
+            "http://localhost:1234/ref-and-defs.json",
+            "/suites/JSON-Schema-Test-Suite/remotes/ref-and-defs.json"
+        )
+    )
 )
