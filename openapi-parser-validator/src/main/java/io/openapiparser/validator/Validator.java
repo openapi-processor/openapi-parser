@@ -354,6 +354,7 @@ public class Validator {
         step.add (new MaxLength ().validate (schema, instance));
         step.add (new MinLength ().validate (schema, instance));
         step.add (new Pattern ().validate (schema, instance));
+        step.add (new Uuid (settings).validate (schema, instance));
         step.add (new DateTime (settings).validate (schema, instance));
         step.add (new Email (settings).validate (schema, instance));
         step.add (new Hostname (settings).validate (schema, instance));
