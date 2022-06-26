@@ -10,10 +10,16 @@ import io.kotest.core.spec.style.FreeSpec
 import io.openapiparser.schema.SchemaVersion
 import io.openapiparser.validator.support.draftSpec
 
-@Ignored
+//@Ignored
 class PendingSpec : FreeSpec({
     val settings = ValidatorSettings()
-    settings.version = SchemaVersion.Draft7
+//    settings.version = SchemaVersion.Draft4
+    settings.version = SchemaVersion.Draft201909
 
-    include(draftSpec("/suites/pending", settings, draft7Extras))
+    include(draftSpec(
+        "/suites/pending",
+        settings,
+//        draft4Extras
+        draft201909Extras
+    ))
 })

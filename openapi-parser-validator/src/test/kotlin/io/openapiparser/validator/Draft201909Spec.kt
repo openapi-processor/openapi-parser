@@ -10,7 +10,7 @@ import io.kotest.core.spec.style.FreeSpec
 import io.openapiparser.schema.Format
 import io.openapiparser.validator.support.*
 
-@Ignored
+//@Ignored
 class Draft201909Spec: FreeSpec ({
     val settings = ValidatorSettingsDefaults.draft201909()
     settings.enableFormats(*Format.values())

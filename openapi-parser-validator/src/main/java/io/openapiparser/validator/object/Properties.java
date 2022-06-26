@@ -101,7 +101,7 @@ public class Properties {
             }
         }
 
-        Collection<String> propertiesAnnotation = new ArrayList<> ();
+        Set<String> propertiesAnnotations = new HashSet<> ();
         Collection<String> patternPropertiesAnnotation = new ArrayList<> ();
         Collection<String> additionalPropertiesAnnotation = new ArrayList<> ();
         Collection<String> unevaluatedPropertiesAnnotation = new ArrayList<> ();
@@ -115,7 +115,7 @@ public class Properties {
             if (propSchema != null) {
                 ValidationStep propStep = validator.validate (propSchema, propInstance, dynamicScope);
                 if (propStep.isValid ()) {
-                    propertiesAnnotation.add (propName);
+                    propertiesAnnotations.add (propName);
                 }
 
                 propertiesStep.add (new PropertyStep (propName, propStep));
@@ -151,19 +151,21 @@ public class Properties {
             }
         });
 
+        Set<String> tmpAnnotations = collectAnnotations (annotations, "properties");
+        tmpAnnotations.addAll (propertiesAnnotations);
+        tmpAnnotations.forEach (instanceProperties::remove);
 
-        Collection<Annotation> properties = annotations.getAnnotations ("properties");
-        Collection<String> propertiesAnn = Collections.emptyList ();
-        if (properties != null)
-            propertiesAnn = properties.stream ()
-                .map (Annotation::asStrings)
-                .flatMap (Collection::stream)
-                .collect (Collectors.toList ());
+        tmpAnnotations = collectAnnotations (annotations, "patternProperties");
+        tmpAnnotations.addAll (patternPropertiesAnnotation);
+        tmpAnnotations.forEach (instanceProperties::remove);
 
-        propertiesAnnotation.forEach (instanceProperties::remove);
-        patternPropertiesAnnotation.forEach (instanceProperties::remove);
-        additionalPropertiesAnnotation.forEach (instanceProperties::remove);
-        propertiesAnn.forEach (instanceProperties::remove);
+        tmpAnnotations = collectAnnotations (annotations, "additionalProperties");
+        tmpAnnotations.addAll (additionalPropertiesAnnotation);
+        tmpAnnotations.forEach (instanceProperties::remove);
+
+        tmpAnnotations = collectAnnotations (annotations, "unevaluatedProperties");
+        tmpAnnotations.addAll (unevaluatedPropertiesAnnotation);
+        tmpAnnotations.forEach (instanceProperties::remove);
 
         if (unevaluatedProperties != null) {
             instanceProperties.forEach (propName -> {
@@ -178,7 +180,7 @@ public class Properties {
             });
         }
 
-        propertiesStep.addAnnotation(propertiesAnnotation);
+        propertiesStep.addAnnotation(propertiesAnnotations);
         patternPropertiesStep.addAnnotation(patternPropertiesAnnotation);
         additionalPropertiesStep.addAnnotation(additionalPropertiesAnnotation);
         unevaluatedPropertiesStep.addAnnotation(unevaluatedPropertiesAnnotation);
@@ -196,5 +198,13 @@ public class Properties {
             step.add (unevaluatedPropertiesStep);
 
         return step;
+    }
+
+    private Set<String> collectAnnotations (Annotations annotations, String property) {
+        return annotations.getAnnotations (property)
+            .stream ()
+            .map (Annotation::asStrings)
+            .flatMap (Collection::stream)
+            .collect (Collectors.toSet ());
     }
 }
