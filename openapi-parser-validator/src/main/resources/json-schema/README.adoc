@@ -5,6 +5,12 @@
 
 this folder contains copies of link:{json-schema}[JSON Schema] files.
 
+* `2019-09/schema.json`:
+** https://json-schema.org/draft/2019-09/schema
+** https://github.com/json-schema-org/json-schema-spec/blob/2019-09/schema.json
+** and all the vocabularies in the `meta` sub folder
+*** https://github.com/json-schema-org/json-schema-spec/tree/2019-09/meta
+
 * `draft-07/schema.json`:
 ** http://json-schema.org/draft-07/schema#
 ** https://github.com/json-schema-org/json-schema-spec/blob/draft-07/schema.json
