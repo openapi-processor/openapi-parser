@@ -78,7 +78,7 @@ public class Validator {
         step.add (validateNumber (schema, instance));
         step.add (validateString (schema, instance));
         step.add (validateObject (schema, instance, step, dynamicScope));
-        step.add (validateArray (schema, instance, dynamicScope));
+        step.add (validateArray (schema, instance, step, dynamicScope));
 
         return step;
     }
@@ -291,7 +291,7 @@ public class Validator {
         return new Boolean ().validate (schema, instance);
     }
 
-    private ValidationStep validateArray (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope) {
+    private ValidationStep validateArray (JsonSchema schema, JsonInstance instance, Annotations annotations, DynamicScope dynamicScope) {
         // drop null step ??? return empty FlatStep to shortcut??
         if (!instance.isArray ()) {
             return new NullStep ("array");
@@ -302,7 +302,7 @@ public class Validator {
         step.add (new MinItems ().validate (schema, instance));
         step.add (new UniqueItems ().validate (schema, instance));
         step.add (new Contains (this).validate (schema, instance, dynamicScope));
-        step.add (new Items (this).validate (schema, instance, dynamicScope));
+        step.add (new Items (this).validate (schema, instance, annotations, dynamicScope));
         return step;
     }
 

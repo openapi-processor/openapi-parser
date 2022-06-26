@@ -242,6 +242,10 @@ public class JsonSchemaObject implements JsonSchema {
             return new JsonSchemas (getJsonSchemaOf ("additionalItems"));
     }
 
+    public @Nullable JsonSchema getUnevaluatedItems () {
+        return getJsonSchemaOf ("unevaluatedItems");
+    }
+
     @Override
     public @Nullable Integer getMaxItems () {
         return schemaObject.convert ("maxItems", new IntegerConverter ());

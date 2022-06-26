@@ -24,8 +24,20 @@ public class Annotation {
         return value;
     }
 
+    public <T> boolean is (Class<T> type) {
+        return type.isInstance (value);
+    }
+
+    public Boolean asBoolean () {
+        return (Boolean) value;
+    }
+
+    public Integer asInteger () {
+        return (Integer) value;
+    }
+
     @SuppressWarnings ("unchecked")
-    public Collection<String> asStrings() {
+    public Collection<String> asStrings () {
         return (Collection<String>) value;
     }
 }

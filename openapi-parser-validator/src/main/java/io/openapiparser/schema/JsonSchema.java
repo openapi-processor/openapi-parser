@@ -123,6 +123,10 @@ public interface JsonSchema {
         return new JsonSchemas (); // default empty schema (draft 4)
     }
 
+    default @Nullable JsonSchema getUnevaluatedItems () {
+        return null; // default empty schema (draft 2019-09)
+    }
+
     default @Nullable Integer getMaxItems () {
         return null;
     }
