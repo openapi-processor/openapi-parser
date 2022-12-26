@@ -18,7 +18,7 @@ public class IfStep implements ValidationStep {
     private final JsonSchema schema;
     private final JsonInstance instance;
 
-    private ValidationStep stepIf;
+    private ValidationStep stepIf = new NullStep ();
     private ValidationStep stepThen = new NullStep ();
     private ValidationStep stepElse = new NullStep ();
 
