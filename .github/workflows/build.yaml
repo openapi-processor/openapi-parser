@@ -29,7 +29,8 @@ jobs:
         run: |
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           brew install dasel
-          echo "DASEL=$(brew --prefix dasel)" >> $GITHUB_ENV
+          echo "dasel=$(brew --prefix dasel)" >> $GITHUB_ENV
+          cat $GITHUB_ENV
 
       - name: extract version
         run: |
