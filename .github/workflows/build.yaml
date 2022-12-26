@@ -34,7 +34,7 @@ jobs:
 
       - name: extract version
         run: |
-          version=`${{ env.dasel }}/dasel select -f gradle/libs.versions.toml versions.openapiparser`
+          version=`${{ env.dasel }}/bin/dasel select -f gradle/libs.versions.toml versions.openapiparser`
           echo "BUILD_VERSION=${version#projectVersion=}" >> $GITHUB_ENV
           cat $GITHUB_ENV
 
