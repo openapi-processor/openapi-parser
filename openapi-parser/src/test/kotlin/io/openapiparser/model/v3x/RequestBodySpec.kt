@@ -19,6 +19,41 @@ import io.openapiparser.model.v31.requestBody as requestBody31
 
 class RequestBodySpec: StringSpec ({
 
+    "get request body \$ref" {
+        val source = """
+            ${'$'}ref: '#/body'
+            body: {}
+        """
+
+        val body30 = requestBody30(source)
+        body30.isRef.shouldBeTrue()
+        body30.ref shouldBe "#/body"
+
+        val body31 = requestBody30(source)
+        body31.isRef.shouldBeTrue()
+        body31.ref shouldBe "#/body"
+    }
+
+    "get request body from \$ref" {
+        val source = """
+            ${'$'}ref: '#/requestBody'
+                    
+            requestBody:
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    properties:
+                        foo: bar
+        """
+
+        val body30 = requestBody30(source)
+        body30.refObject.content["application/json"].shouldBeInstanceOf<MediaType30>()
+
+        val body31 = requestBody31(source)
+        body31.refObject.content["application/json"].shouldBeInstanceOf<MediaType31>()
+    }
+
     include(testDescription("requestBody 30", ::requestBody30) { it.description })
     include(testDescription("requestBody 31", ::requestBody31) { it.description })
 

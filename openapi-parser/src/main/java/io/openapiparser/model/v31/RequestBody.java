@@ -19,10 +19,31 @@ import static io.openapiparser.Keywords.*;
  * <p>See specification:
  * <a href="https://spec.openapis.org/oas/v3.1.0.html#request-body-object">4.8.13 Request Body Object</a>
  */
-public class RequestBody extends Properties implements Extensions {
+public class RequestBody extends Properties implements Reference, Extensions {
 
     public RequestBody (Context context, Bucket bucket) {
         super (context, bucket);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isRef () {
+        return hasProperty (REF);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String getRef () {
+        return getStringOrThrow (REF);
+    }
+
+    @Override
+    public @Nullable String getSummary () {
+        return getStringOrNull (SUMMARY);
+    }
+
+    public RequestBody getRefObject () {
+        return getRefObjectOrThrow (RequestBody.class);
     }
 
     public @Nullable String getDescription () {
