@@ -29,6 +29,7 @@ jobs:
         run: |
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           brew install dasel
+          brew info dasel
 
       - name: extract version
         run: |
