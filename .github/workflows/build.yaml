@@ -22,11 +22,12 @@ jobs:
       BUILD_VERSION: ${{ env.BUILD_VERSION }}
 
     steps:
+      - name: Set up Homebrew
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
       - name: checkout
         uses: actions/checkout@v3
-
-      - name: set up homebrew
-        uses: Homebrew/actions/setup-homebrew@master
 
       - name: install dasel
         run: |
