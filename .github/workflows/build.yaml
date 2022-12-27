@@ -24,21 +24,22 @@ jobs:
     steps:
       - name: Set up Homebrew
         id: set-up-homebrew
-        uses: Homebrew/actions/setup-homebrew@master
+        uses: Homebrew/actions/setup-homebrew@659165717b1fd1b535840baa14e399a305d20561
 
       - name: checkout
         uses: actions/checkout@v3
 
       - name: install dasel
         run: |
-#          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           brew install dasel
-#          echo "dasel=$(brew --prefix dasel)" >> $GITHUB_ENV
           cat $GITHUB_ENV
+
+#          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+#          echo "dasel=$(brew --prefix dasel)" >> $GITHUB_ENV
+#          version=`${{ env.dasel }}/bin/dasel -r toml -f gradle/libs.versions.toml versions.openapiparser`
 
       - name: extract version
         run: |
-#          version=`${{ env.dasel }}/bin/dasel -r toml -f gradle/libs.versions.toml versions.openapiparser`
           version=`dasel -r toml -f gradle/libs.versions.toml versions.openapiparser`
           echo "BUILD_VERSION=${version#projectVersion=}" >> $GITHUB_ENV
           cat $GITHUB_ENV
