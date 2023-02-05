@@ -14,7 +14,7 @@ import java.util.Collection;
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
- * validates contains, minContains & maxContains.
+ * validates contains, minContains &amp; maxContains.
  *
  * <p>See specification:
  *
