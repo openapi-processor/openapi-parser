@@ -7,51 +7,51 @@ package io.openapiparser.schema
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.booleans.shouldBeTrue
+import io.openapiparser.schema.UriSupport.emptyUri
 import java.net.URI
 
-class IdDetectorSpec : StringSpec({
+class IdCollectorSpec : StringSpec({
+
+    val scope = Scope(emptyUri(), emptyUri(), SchemaVersion.Draft4)
 
     "walks empty bucket" {
-        val version = SchemaVersion.Draft4
         val documents = DocumentStore()
-        val walker = IdDetector(version, documents)
+        val walker = IdCollector(documents)
 
-        val bucket = Bucket(emptyMap())
+        val bucket = Bucket(scope, emptyMap())
 
-        walker.walk(URI(""), bucket)
+        walker.walk(bucket)
 
-        documents.contains(URI("")).shouldBeTrue()
+        documents.contains(emptyUri()).shouldBeTrue()
     }
 
     "walks schema keyword in bucket" {
-        val version = SchemaVersion.Draft4
         val documents = DocumentStore()
-        val walker = IdDetector(version, documents)
+        val walker = IdCollector(documents)
 
-        val bucket = Bucket(mapOf(
+        val bucket = Bucket(scope, mapOf(
             "not" to mapOf(
                 "id" to "/id"
             )
         ))
 
-        walker.walk(URI(""), bucket)
+        walker.walk(bucket)
 
-        documents.contains(URI(""))
+        documents.contains(emptyUri())
         documents.contains(URI("/id")).shouldBeTrue()
     }
 
     "walks schema array keyword in bucket" {
-        val version = SchemaVersion.Draft4
         val documents = DocumentStore()
-        val walker = IdDetector(version, documents)
+        val walker = IdCollector(documents)
 
-        val bucket = Bucket(mapOf(
+        val bucket = Bucket(scope, mapOf(
             "oneOf" to listOf(
                 mapOf("id" to "/oneA"),
                 mapOf("id" to "/oneB"),
             )))
 
-        walker.walk(URI(""), bucket)
+        walker.walk(bucket)
 
         documents.contains(URI(""))
         documents.contains(URI("/oneA")).shouldBeTrue()
@@ -59,17 +59,16 @@ class IdDetectorSpec : StringSpec({
     }
 
     "walks schema map keyword in bucket" {
-        val version = SchemaVersion.Draft4
         val documents = DocumentStore()
-        val walker = IdDetector(version, documents)
+        val walker = IdCollector(documents)
 
-        val bucket = Bucket(mapOf(
+        val bucket = Bucket(scope, mapOf(
             "definitions" to mapOf(
                 "schemaA" to mapOf("id" to "/schemaA"),
                 "schemaB" to mapOf("id" to "/schemaB"),
             )))
 
-        walker.walk(URI(""), bucket)
+        walker.walk(bucket)
 
         documents.contains(URI(""))
         documents.contains(URI("/schemaA")).shouldBeTrue()
