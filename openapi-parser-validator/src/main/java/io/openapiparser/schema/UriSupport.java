@@ -5,14 +5,65 @@
 
 package io.openapiparser.schema;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Uri support functions.
+ *
+ * todo move to support package
+ */
 public class UriSupport {
+    // should be private, must not be modified
+    @Deprecated // use emptyUri() method
+    public static final URI EMPTY_URI = URI.create ("");
+    public static final String EMPTY_FRAGMENT = "#";
+
+    public static URI emptyUri () {
+        return URI.create ("");
+    }
 
     public static URI createUri (String source) {
         return URI.create (encodePath (source));
+    }
+
+    public static boolean isEmpty(@Nullable URI uri) {
+        return uri == null || uri.equals (emptyUri ());
+    }
+
+    /**
+     * check if the {@code uri} has an empty fragment, i.e a single "#".
+     *
+     * @return true if fragment is a single hash, otherwise false
+     */
+    public static boolean hasEmptyFragment (URI uri) {
+        return uri.toString ().endsWith (EMPTY_FRAGMENT);
+    }
+
+    public static URI stripFragment(URI uri) {
+        try {
+            return new URI (
+                uri.getScheme (),
+                uri.getUserInfo (),
+                uri.getHost (),
+                uri.getPort (),
+                uri.getPath (),
+                uri.getQuery (),
+                null
+            );
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException(e.getMessage(), e);
+        }
+    }
+
+    public static URI stripEmptyFragment(URI uri) {
+        if (hasEmptyFragment (uri)) {
+            return stripFragment (uri);
+        }
+        return uri;
     }
 
     public static String encodePath (String source) {
