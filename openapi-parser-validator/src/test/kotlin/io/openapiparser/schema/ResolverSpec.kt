@@ -32,33 +32,44 @@ class ResolverSpec: StringSpec({
 
     "resolves schema" {
         val store = DocumentStore()
-        val resolver = Resolver(StringReader(""), JacksonConverter(), store)
+        val loader = DocumentLoader(StringReader(""), JacksonConverter())
+        val settings = Resolver.Settings (SchemaVersion.Draft4)
+        val resolver = Resolver(store, loader, settings)
 
         val uri = URI.create("https://document")
         val doc = emptyMap<String, Any>()
         val result = resolver.resolve(uri, doc)
 
-        result.uri shouldBe uri
+        result.scope.documentUri shouldBe uri
+        result.scope.baseUri shouldBe uri
+        result.scope.version shouldBe settings.version
         result.document shouldBe doc
         result.registry.shouldNotBeNull()
     }
 
     "resolves schema with internal ref" {
-        val store = DocumentStore()
         val content = """
             ${'$'}ref: '#/definitions/foo'
             definitions:
               foo: {}
         """.trimIndent()
-        val resolver = Resolver(StringReader(content), JacksonConverter(), store)
+
+        val store = DocumentStore()
+        val loader = DocumentLoader(StringReader(content), JacksonConverter())
+        val settings = Resolver.Settings (SchemaVersion.Draft4)
+        val resolver = Resolver(store, loader, settings)
 
         val uri = URI.create("https://document")
         val result = resolver.resolve(uri)
 
-        result.uri shouldBe uri
+        result.scope.documentUri shouldBe uri
+        result.scope.baseUri shouldBe uri
+        result.scope.version shouldBe settings.version
+
         val doc = asMap(result.document)
         doc.shouldHaveSize(2)
-        val ref = result.registry.getRef(URI.create("https://document#/definitions/foo"))
+
+        val ref = result.registry.getReference(URI.create("https://document#/definitions/foo"))
         ref.rawValue.shouldNotBeNull()
     }
 
@@ -66,8 +77,12 @@ class ResolverSpec: StringSpec({
         val reader = mockk<Reader>()
         every { reader.read(any()) } throws IOException()
 
+        val store = DocumentStore()
+        val loader = DocumentLoader(reader, mockk())
+        val settings = Resolver.Settings (SchemaVersion.Draft4)
+        val resolver = Resolver(store, loader, settings)
+
         shouldThrow<ResolverException> {
-            val resolver = Resolver(UriReader(), mockk(), mockk())
             resolver.resolve(URI("https:/fails/to/load/openapi.yaml"))
         }
     }
@@ -76,8 +91,12 @@ class ResolverSpec: StringSpec({
         val converter = mockk<Converter>()
         every { converter.convert(any()) } throws ConverterException("failed", Exception())
 
+        val store = DocumentStore()
+        val loader = DocumentLoader(StringReader("broken"), mockk())
+        val settings = Resolver.Settings (SchemaVersion.Draft4)
+        val resolver = Resolver(store, loader, settings)
+
         shouldThrow<ResolverException> {
-            val resolver = Resolver(StringReader("broken"), converter, mockk())
             resolver.resolve(URI("https:/fails/to/convert/openapi.yaml"))
         }
     }
@@ -95,16 +114,20 @@ class ResolverSpec: StringSpec({
         Memory.add("/foo.yaml", foo)
 
         val store = DocumentStore()
-        val resolver = Resolver(UriReader(), JacksonConverter(), store)
+        val loader = DocumentLoader(UriReader(), JacksonConverter())
+        val settings = Resolver.Settings (SchemaVersion.Draft4)
+        val resolver = Resolver(store, loader, settings)
 
         val uri = URI("memory:/instant.yaml")
         val result = resolver.resolve(uri)
 
         val doc = asMap(result.document)
         doc.shouldContainExactly(mapOf("${'$'}ref" to "foo.yaml#/foo"))
-        result.uri shouldBe uri
+        result.scope.documentUri shouldBe uri
+        result.scope.baseUri shouldBe uri
+        result.scope.version shouldBe settings.version
 
-        val ref = result.registry.getRef(URI.create("memory:/foo.yaml#/foo"))
+        val ref = result.registry.getReference(URI.create("memory:/foo.yaml#/foo"))
         ref.rawValue.shouldNotBeNull()
     }
 
@@ -116,12 +139,12 @@ class ResolverSpec: StringSpec({
         Memory.add("/instant.yaml", instant)
 
         val store = DocumentStore()
-        val resolver = Resolver(UriReader(), JacksonConverter(), store)
+        val loader = DocumentLoader(UriReader(), JacksonConverter())
+        val settings = Resolver.Settings (SchemaVersion.Draft4)
+        val resolver = Resolver(store, loader, settings)
 
-        val uri = URI("memory:/instant.yaml")
         shouldThrow<ResolverException> {
-            resolver.resolve(uri)
+            resolver.resolve(URI("memory:/instant.yaml"))
         }
     }
-
 })
