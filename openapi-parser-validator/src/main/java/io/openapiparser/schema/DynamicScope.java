@@ -82,6 +82,9 @@ public class DynamicScope {
             }
         }
 
+        if (match == null)
+            return null;
+
         return match.id;
     }
 
