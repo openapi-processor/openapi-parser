@@ -40,8 +40,18 @@ public class DocumentStore {
 
     public @Nullable Object get (URI uri) {
         Document document = documents.get (uri);
-        if (document == null)
+
+        if (document == null) {
+            // check if registered with empty fragment
+            if (uri.getFragment () == null) {
+                URI resolved = uri.resolve ("#");
+                document = documents.get (resolved);
+            }
+        }
+
+        if (document == null) {
             return null;
+        }
 
         return document.getDocument ();
     }
