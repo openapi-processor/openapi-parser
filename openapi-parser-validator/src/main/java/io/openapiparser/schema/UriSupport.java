@@ -26,6 +26,10 @@ public class UriSupport {
         return URI.create ("");
     }
 
+    public static URI emptyFragment () {
+        return URI.create ("#");
+    }
+
     public static URI createUri (String source) {
         return URI.create (encodePath (source));
     }
