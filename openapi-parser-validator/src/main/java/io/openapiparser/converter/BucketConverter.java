@@ -8,22 +8,18 @@ package io.openapiparser.converter;
 import io.openapiparser.schema.*;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.net.URI;
 import java.util.Map;
 
 import static io.openapiparser.converter.Types.asMap;
-import static io.openapiparser.schema.ScopeSupport.updateScope;
 
 /**
  * converts the property {@link Map} {@code value} to a {@link Bucket}.
  */
 public class BucketConverter implements PropertyConverter<Bucket> {
     private final Bucket parent;
-    private final SchemaVersion version;
 
-    public BucketConverter (Bucket parent, SchemaVersion version) {
+    public BucketConverter (Bucket parent) {
         this.parent = parent;
-        this.version = version;
     }
 
     @Override
@@ -35,7 +31,7 @@ public class BucketConverter implements PropertyConverter<Bucket> {
             throw new TypeMismatchException (location, Map.class);
 
         Map<String, Object> props = asMap (value);
-        URI scope = updateScope (props, parent.getScope (), version.getIdProvider ());
+        Scope scope = parent.getScope ().move (props);
         return new Bucket (scope, location, props);
     }
 }

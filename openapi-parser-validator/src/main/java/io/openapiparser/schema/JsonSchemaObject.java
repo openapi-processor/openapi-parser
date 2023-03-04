@@ -389,12 +389,12 @@ public class JsonSchemaObject implements JsonSchema {
             return  Collections.emptyList ();
 
         else if (raw instanceof Collection) {
-            JsonPointer location = schemaObject.getLocation ();
             List<JsonInstance> instances = new ArrayList<> ();
 
             for (Object o : asCol (raw)) {
-                JsonInstance instance = new JsonInstance (o, new JsonInstanceContext (
-                    location.toUri (), new ReferenceRegistry ())
+                Scope scope = context.getScope ().move (o);
+                JsonInstance instance = new JsonInstance (
+                    o, new JsonInstanceContext (scope, new ReferenceRegistry ())
                 );
 
                 instances.add (instance);
@@ -414,9 +414,8 @@ public class JsonSchemaObject implements JsonSchema {
         }
 
         Object raw = schemaObject.getRawValue ("const");
-        return new JsonInstance (raw, new JsonInstanceContext (
-            getLocation ().toUri (), new ReferenceRegistry ())
-        );
+        Scope scope = context.getScope ().move (raw);
+        return new JsonInstance (raw, new JsonInstanceContext (scope, new ReferenceRegistry ()));
     }
 
     @Override
@@ -509,7 +508,7 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     private Bucket getBucketProperties (Bucket schemaBucket) {
-        Bucket bucket = schemaBucket.convert ("properties", new BucketConverter (schemaBucket, context.getVersion ()));
+        Bucket bucket = schemaBucket.convert ("properties", new BucketConverter (schemaBucket));
         if (bucket == null)
             return Bucket.empty ();
 
