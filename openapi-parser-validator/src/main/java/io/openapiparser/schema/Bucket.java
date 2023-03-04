@@ -160,10 +160,10 @@ public class Bucket {
         if (value == null)
             return null;
 
-        if (!(value instanceof Map))
+        if (!isMap (value))
             throw new TypeMismatchException (getLocation (property), Map.class);
 
-        return new Bucket (source, getLocation (property), asMap (value));
+        return new Bucket (scope, getLocation (property), asMap (value));
     }
 
     /**
@@ -213,10 +213,10 @@ public class Bucket {
         for (String token: pointer.getTokens ()) {
             current = current.append (token);
 
-            if (value instanceof Map) {
+            if (isObject (value)) {
                 value = getObjectValue (asMap (value), current);
 
-            } else if (value instanceof Collection) {
+            } else if (isArray (value)) {
                 value = getArrayValue (asCol (value), current);
             }
         }
