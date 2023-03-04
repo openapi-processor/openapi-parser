@@ -11,69 +11,40 @@ import java.net.URI;
 import java.util.Map;
 
 public class JsonInstanceContext {
-    private final SchemaVersion version;
-    private final URI scope;
+
+    private final Scope scope;
     private final ReferenceRegistry references;
 
-    public JsonInstanceContext (URI scope, ReferenceRegistry references) {
-        this(scope, references, SchemaVersion.Default);
-    }
-
-    public JsonInstanceContext (URI scope, ReferenceRegistry references, SchemaVersion version) {
+    public JsonInstanceContext (Scope scope, ReferenceRegistry references) {
         this.scope = scope;
         this.references = references;
-        this.version = version;
     }
 
-    public URI getScope () {
+    public Scope getScope () {
         return scope;
     }
 
-    public boolean hasReference (URI ref) {
-        URI resolved = scope.resolve (ref);
-        return references.hasRef (resolved);
-    }
-
     public Reference getReference (URI ref) {
-        URI resolved = scope.resolve (ref);
-        return references.getRef (resolved);
-    }
-    public URI getReferenceKey (URI ref) {
-        return scope.resolve (ref);
+        if (ref.isAbsolute ()) {
+            return references.getReference (ref);
+        }
+
+        // is id reference?
+        URI refId = scope.getBaseUri ().resolve (ref);
+        if (references.hasReference (refId)) {
+            return references.getReference (refId);
+        }
+
+        // is local reference..
+        URI refLocal = scope.getBaseUri ().resolve (ref);
+        return references.getReference (refLocal);
     }
 
-    public JsonInstanceContext withScope (@Nullable URI targetScope) {
-        // todo possible??
-        if (targetScope == null) {
-            return this;
-        }
-        return new JsonInstanceContext (scope.resolve (targetScope), references);
+    public JsonInstanceContext withScope (Scope targetScope) {
+        return new JsonInstanceContext (targetScope, references);
     }
 
     public JsonInstanceContext withId (@Nullable Map<String, Object> properties) {
-        if (properties == null)
-            return this;
-
-        String id = version.getIdProvider ().getId (properties);
-        if (id == null) {
-            return this;
-        }
-
-        return withId (id);
-    }
-
-    public JsonInstanceContext withId (@Nullable String id) {
-        if (id == null) {
-            return this;
-        }
-        return new JsonInstanceContext (scope.resolve (id), references);
-    }
-
-    public boolean isRef(URI ref) {
-        if (!hasReference (ref))
-            return false;
-
-        Reference reference = getReference (ref);
-        return reference != null;
+        return new JsonInstanceContext (scope.move (properties), references);
     }
 }

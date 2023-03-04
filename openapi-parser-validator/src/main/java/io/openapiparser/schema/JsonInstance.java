@@ -34,7 +34,7 @@ public class JsonInstance {
         this.location = location;
     }
 
-    public URI getScope () {
+    public Scope getScope () {
         return context.getScope ();
     }
 
@@ -73,21 +73,6 @@ public class JsonInstance {
 
     public int getArraySize () {
         return getArraySizeX ();
-    }
-
-    public boolean isRef () {
-        if (!isObject ())
-            return false;
-
-        URI ref = getRef ();
-        if (ref == null)
-            return false;
-
-        return context.isRef (ref);
-    }
-
-    public URI getRefKey () {
-        return context.getReferenceKey (nonNull(getRef ()));
     }
 
     public JsonInstance getRefInstance () {
