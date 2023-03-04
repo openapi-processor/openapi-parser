@@ -15,9 +15,7 @@ import static io.openapiparser.schema.Document.Source.*;
 
 /**
  * repository for "downloaded" documents. Used to cache documents and avoid downloading the same
- * document multiple times.
- *
- * a document may be a single value or a whole object tree.
+ * document multiple times. A document may be a single value or a whole object tree.
  */
 public class DocumentStore {
     private final Map<URI, Document> documents = new HashMap<> ();
