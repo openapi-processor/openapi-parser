@@ -7,59 +7,80 @@ package io.openapiparser.schema
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
+import io.openapiparser.schema.UriSupport.emptyUri
 import java.net.URI
 
 class RefSpec: StringSpec({
-    data class Data(val ref: Ref, val document: URI, val absoluteRef: URI)
 
-    val refs = listOf(
-        Data(Ref("#"),
-            URI(""),
-            URI("#")
-        ),
-        Data(Ref("#/foo"),
-            URI(""),
-            URI("#/foo")
-        ),
-        Data(Ref("path#/foo"),
-            URI("path"),
-            URI("path#/foo")
-        ),
-        Data(Ref("#foo"), // not a json pointer !
-            URI("#foo"),
-            URI("#foo")
-        ),
-        Data(Ref("http://json-schema.org/draft-04/schema#"),
-            URI("http://json-schema.org/draft-04/schema"),
-            URI("http://json-schema.org/draft-04/schema#"),
-        ),
-        Data(Ref(
-            "http://json-schema.org/draft-04/schema#",
-            "http://json-schema.org/draft-04/schema#"),
-            URI("http://json-schema.org/draft-04/schema"),
-            URI("http://json-schema.org/draft-04/schema#"),
-        ),
-        Data(Ref("http://json-schema.org/draft-04/schema#", "#"),
-            URI("http://json-schema.org/draft-04/schema"),
-            URI("http://json-schema.org/draft-04/schema#")
-        ),
-        Data(Ref("http://json-schema.org/draft-04/schema#", "#/definitions/stringArray"),
-            URI("http://json-schema.org/draft-04/schema"),
-            URI("http://json-schema.org/draft-04/schema#/definitions/stringArray"),
-        )
-    )
+    "absolute uri of empty ref is an empty uri" {
+        val scope = Scope(emptyUri(), emptyUri(), SchemaVersion.Draft4)
+        val ref = Ref (scope)
 
-    refs.forEachIndexed { idx, it ->
-        "document uri of '${it.ref.ref}' should be '${it.document}' ($idx)" {
-            it.ref.documentUri shouldBe it.document
-        }
+        ref.absoluteUri shouldBe emptyUri()
     }
 
-    refs.forEachIndexed { idx, it ->
-        "absolute ref uri of '${it.ref.ref}' should be '${it.absoluteRef}' ($idx)" {
-            it.ref.fullRefUri shouldBe it.absoluteRef
-        }
+    "absolute uri of empty ref is the base uri" {
+        val scope = Scope(URI.create("https://foo/bar"), emptyUri(), SchemaVersion.Draft4)
+
+        val emptyRef = Ref (scope)
+        emptyRef.absoluteUri shouldBe URI.create("https://foo/bar")
+
+        val hashRef = Ref (scope, "#")
+        hashRef.absoluteUri shouldBe URI.create("https://foo/bar#")
     }
 
+    "absolute uri of pointer ref is base uri with ref" {
+        val scope = Scope(URI.create("https://foo/bar"), emptyUri(), SchemaVersion.Draft4)
+        val ref = Ref (scope, "#/pointer")
+
+        ref.absoluteUri shouldBe URI.create("https://foo/bar#/pointer")
+    }
+
+    "absolute uri of path/pointer ref is base uri with ref" {
+        val scope = Scope(URI.create("https://foo/bar"), emptyUri(), SchemaVersion.Draft4)
+        val ref = Ref (scope, "foo#/pointer")
+
+        ref.absoluteUri shouldBe URI.create("https://foo/foo#/pointer")
+    }
+
+    "absolute uri of path/no pointer ref is base uri with ref" {
+        val scope = Scope(URI.create("https://foo/bar"), emptyUri(), SchemaVersion.Draft4)
+        val ref = Ref (scope, "foo#no-pointer")
+
+        ref.absoluteUri shouldBe URI.create("https://foo/foo#no-pointer")
+    }
+
+    "document uri of empty ref with empty base uri is absolute ref without fragment" {
+        val scope = Scope(emptyUri(), emptyUri(), SchemaVersion.Draft4)
+
+        val emptyRef = Ref (scope)
+        emptyRef.documentUri shouldBe emptyUri()
+
+        val hashRef = Ref (scope, "#")
+        hashRef.documentUri shouldBe emptyUri()
+    }
+
+    "document uri of empty ref with base uri is absolute ref without fragment" {
+        val scope = Scope(URI.create("https://foo/bar.json"), emptyUri(), SchemaVersion.Draft4)
+
+        val emptyRef = Ref (scope)
+        emptyRef.documentUri shouldBe URI.create("https://foo/bar.json")
+
+        val hashRef = Ref (scope, "#")
+        hashRef.documentUri shouldBe URI.create("https://foo/bar.json")
+    }
+
+    "document uri of path/pointer ref with base uri is absolute ref without fragment" {
+        val scope = Scope(URI.create("https://foo/bar"), emptyUri(), SchemaVersion.Draft4)
+        val ref = Ref (scope, "foo#/pointer")
+
+        ref.documentUri shouldBe URI.create("https://foo/foo")
+    }
+
+    "document uri of path/no pointer ref with base uri is absolute ref without fragment" {
+        val scope = Scope(URI.create("https://foo/bar"), emptyUri(), SchemaVersion.Draft4)
+        val ref = Ref (scope, "foo#no-pointer")
+
+        ref.documentUri shouldBe URI.create("https://foo/foo")
+    }
 })
-

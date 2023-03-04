@@ -43,8 +43,8 @@ public class Reference {
      *
      * @return the full ref uri
      */
-    public URI getFullRefUri () {
-        return ref.getFullRefUri ();
+    public URI getAbsoluteRefUri () {
+        return ref.getAbsoluteUri ();
     }
 
     /**
@@ -61,7 +61,7 @@ public class Reference {
      *
      * @return scope of $ref
      */
-    public URI getValueScope () {
+    public Scope getValueScope () {
         return value.getScope ();
     }
 
