@@ -22,10 +22,6 @@ import static io.openapiparser.schema.Document.Source.*;
 public class DocumentStore {
     private final Map<URI, Document> documents = new HashMap<> ();
 
-    public void add (URI uri, Object document) {
-        addId (uri, document);
-    }
-
     public void addId (URI uri, Object document) {
         documents.put (uri, new Document (document, ID));
     }
