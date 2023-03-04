@@ -9,18 +9,22 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeSameInstanceAs
 import io.kotest.matchers.types.shouldNotBeSameInstanceAs
+import io.openapiparser.schema.UriSupport.*
 import java.net.URI
 
 class DynamicScopeSpec : StringSpec({
 
     fun createCtx(id: String?): JsonSchemaContext {
         val uri = if (id == null) {
-            URI.create("")
+            emptyUri()
         } else {
             URI.create(id)
         }
 
-        return JsonSchemaContext(uri, ReferenceRegistry(), SchemaVersion.Draft201909)
+        return JsonSchemaContext(
+            Scope(emptyUri(), uri, SchemaVersion.Draft201909),
+            ReferenceRegistry()
+        )
     }
 
     fun createSchema (id: String? = null, recursiveAnchor: Boolean? = null): JsonSchema {
@@ -42,7 +46,7 @@ class DynamicScopeSpec : StringSpec({
 
     "create scope from schema without id" {
         val found = dynamicScope.findScope(URI.create("#"))
-        found.shouldBe(rootCtx.scope)
+        found.shouldBe(rootCtx.scope.baseUri)
     }
 
     "adding schema without id should not change dynamic scope" {

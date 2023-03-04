@@ -35,7 +35,7 @@ public class DynamicScope {
     public DynamicScope (JsonSchema schema) {
         Scope scope = createScope (schema);
         if (scope == null) {
-            scope = new Scope (schema.getContext ().getScope ());
+            scope = new Scope (getBaseUri (schema));
         }
 
         scopes = new ArrayList<> ();
@@ -63,7 +63,7 @@ public class DynamicScope {
             return null;
         }
 
-        return new Scope (schema.getContext ().getScope (), schema.getDynamicAnchor ());
+        return new Scope (getBaseUri (schema), schema.getDynamicAnchor ());
     }
 
     public @Nullable URI findScope (URI fragment) {
@@ -86,6 +86,10 @@ public class DynamicScope {
             return null;
 
         return match.id;
+    }
+
+    private URI getBaseUri(JsonSchema schema) {
+        return schema.getContext ().getScope ().getBaseUri ();
     }
 
     @Override
