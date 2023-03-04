@@ -95,6 +95,10 @@ public class Types {
         return o instanceof String;
     }
 
+    public static boolean isMap (@Nullable Object o) {
+        return o instanceof Map;
+    }
+
     public static boolean isObject (@Nullable Object o) {
         return o instanceof Map;
     }
