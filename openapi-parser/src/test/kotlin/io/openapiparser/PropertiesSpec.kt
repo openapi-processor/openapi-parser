@@ -16,11 +16,14 @@ import io.mockk.mockk
 import io.openapiparser.converter.NoValueException
 import io.openapiparser.converter.TypeMismatchException
 import io.openapiparser.schema.Bucket
+import io.openapiparser.schema.SchemaVersion
+import io.openapiparser.schema.Scope
 import java.net.URI
 
 class PropertiesSpec: StringSpec({
     @Suppress("UNUSED_PARAMETER")
     class DummyObject(context: Context?, bucket: Bucket?)
+    val anyVersion = SchemaVersion.Draft4
 
     // raw value
 
@@ -42,14 +45,18 @@ class PropertiesSpec: StringSpec({
 
     "gets object" {
         val bucket = Bucket(linkedMapOf<String, Any>("foo" to mapOf<String, Any>()))
-        val props = Properties(Context(URI.create("https://foo"), mockk()), bucket)
+
+        val scope = Scope.createScope(URI.create("https://foo"), bucket.rawValues, anyVersion)
+        val props = Properties(Context(scope, mockk()), bucket)
 
         props.getObjectOrNull("foo", DummyObject::class.java).shouldBeInstanceOf<DummyObject>()
     }
 
     "gets object throws if value is not an object" {
         val bucket = Bucket(linkedMapOf<String, Any>("foo" to "no object"))
-        val props = Properties(Context(URI.create("https://foo"), mockk()), bucket)
+
+        val scope = Scope.createScope(URI.create("https://foo"), bucket.rawValues, anyVersion)
+        val props = Properties(Context(scope, mockk()), bucket)
 
         shouldThrow<TypeMismatchException> {
             props.getObjectOrNull("foo", DummyObject::class.java)
@@ -77,7 +84,9 @@ class PropertiesSpec: StringSpec({
             mapOf<String, Any>("foo" to "bar"),
             mapOf<String, Any>("foos" to "bars")
         )))
-        val props = Properties(Context(URI.create("https://foo"), mockk()), bucket)
+
+        val scope = Scope.createScope(URI.create("https://foo"), bucket.rawValues, anyVersion)
+        val props = Properties(Context(scope, mockk()), bucket)
 
         props.getObjectsOrEmpty("property", DummyObject::class.java).size shouldBe 2
     }
@@ -87,7 +96,9 @@ class PropertiesSpec: StringSpec({
             mapOf<String, Any>("foo" to "bar"),
             "not an object"
         )))
-        val props = Properties(Context(URI.create("https://foo"), mockk()), bucket)
+
+        val scope = Scope.createScope(URI.create("https://foo"), bucket.rawValues, anyVersion)
+        val props = Properties(Context(scope, mockk()), bucket)
 
         shouldThrow<TypeMismatchException> {
             props.getObjectsOrEmpty("property", DummyObject::class.java)
