@@ -27,17 +27,17 @@ public class References {
                 return false;
 
             RefEntry pending = (RefEntry) o;
-            return ref.getFullRefUri ().equals (pending.ref.getFullRefUri ());
+            return ref.getAbsoluteUri ().equals (pending.ref.getAbsoluteUri ());
         }
 
         @Override
         public int hashCode () {
-            return Objects.hash (ref.getFullRef ());
+            return Objects.hash (ref.getAbsoluteUri ());
         }
 
         @Override
         public String toString () {
-            return ref.getFullRef ();
+            return ref.getAbsoluteRef ();
         }
     }
 
