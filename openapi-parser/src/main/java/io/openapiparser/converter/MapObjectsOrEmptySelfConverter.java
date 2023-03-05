@@ -7,6 +7,7 @@ package io.openapiparser.converter;
 
 import io.openapiparser.Factory;
 import io.openapiparser.schema.JsonPointer;
+import io.openapiparser.schema.Scope;
 
 import java.net.URI;
 import java.util.*;
@@ -19,8 +20,12 @@ import static io.openapiparser.support.Nullness.nonNull;
 public class MapObjectsOrEmptySelfConverter<T> implements PropertiesConverter<Map<String, T>> {
     private final ObjectNotNullConverter<T> converter;
 
-    public MapObjectsOrEmptySelfConverter (URI uri, Factory<T> factory) {
-        this.converter = new ObjectNotNullConverter<> (uri, factory);
+//    public MapObjectsOrEmptySelfConverter (URI uri, Factory<T> factory) {
+//        this.converter = new ObjectNotNullConverter<> (uri, factory);
+//    }
+
+    public MapObjectsOrEmptySelfConverter (Scope scope, Factory<T> factory) {
+        this.converter = new ObjectNotNullConverter<> (scope, factory);
     }
 
     @Override

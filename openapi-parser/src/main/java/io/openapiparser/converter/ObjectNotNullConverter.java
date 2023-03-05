@@ -6,17 +6,16 @@
 package io.openapiparser.converter;
 
 import io.openapiparser.Factory;
+import io.openapiparser.schema.Scope;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
-import java.net.URI;
 
 /**
  *  get a {@link T} object from the property or throw if the property has no value.
  */
 public class ObjectNotNullConverter<T> extends ObjectNullableConverter<T> {
 
-    public ObjectNotNullConverter (URI uri, Factory<T> factory) {
-        super (uri, factory);
+    public ObjectNotNullConverter (Scope scope, Factory<T> factory) {
+        super (scope, factory);
     }
 
     @Override
