@@ -8,6 +8,7 @@ package io.openapiparser.schema;
 import java.net.URI;
 
 import static io.openapiparser.schema.Keywords.HASH;
+import static io.openapiparser.schema.UriSupport.*;
 
 /**
  * $ref support.
@@ -24,35 +25,13 @@ public class Ref {
     /**
      * create ref with scope.
      *
-     * @param id uri
-     * @param ref a ref
-     */
-    @Deprecated
-    public Ref (URI id, String ref) {
-        this(new Scope (null, id, null), ref);
-    }
-
-    /**
-     * create ref with scope.
-     *
-     * @param scope scope
-     * @param ref the ref
-     */
-    @Deprecated
-    public Ref (String scope, String ref) {
-        this(new Scope (null, URI.create (scope), null), ref);
-    }
-
-    /**
-     * create ref with scope.
-     *
      * @param scope scope
      * @param ref the ref
      */
     public Ref (Scope scope, String ref) {
         this.scope = scope;
         this.ref = ref;
-        this.refUri = URI.create (ref);
+        this.refUri = createUri (ref);
     }
 
     /**
@@ -113,7 +92,7 @@ public class Ref {
      * @return the document uri of this ref
      */
     public URI getDocumentUri () {
-        return UriSupport.stripFragment (getAbsoluteUri ());
+        return stripFragment (getAbsoluteUri ());
     }
 
     /**
@@ -147,24 +126,8 @@ public class Ref {
         return refUri;
     }
 
-    /**
-     * get full ref uri with scope and json pointer.
-     *
-     * @return the full ref uri
-     */
-    @Deprecated // use getAbsoluteUri()
-    public String getFullRef () {
-        return getFullRefUri ().toString ();
-    }
-
-    /**
-     * get full ref uri with scope and json pointer.
-     *
-     * @return the full ref uri
-     */
-    @Deprecated // use getAbsoluteUri()
-    public URI getFullRefUri () {
-        return getAbsoluteUri ();
+    public String getAbsoluteRef () {
+        return getAbsoluteUri ().toString ();
     }
 
     public URI getAbsoluteUri () {
@@ -172,7 +135,6 @@ public class Ref {
             return scope.getBaseUri ();
         }
 
-        // UriSupport.encodePath (ref)
         return scope.getBaseUri ().resolve (refUri);
     }
 
