@@ -115,7 +115,7 @@ public enum SchemaVersion {
      * @return the detected schema version or the latest version
      */
     public static SchemaVersion getVersion (URI scope) {
-        if (SchemaVersion.Draft4.getSchema ().equals (scope)) {
+        if (SchemaVersion.Draft4.getSchemaUri ().equals (scope)) {
             return Draft4;
         }
 
@@ -131,7 +131,7 @@ public enum SchemaVersion {
      * @return the detected schema version or the latest version
      */
     public static SchemaVersion getVersion (URI scope, SchemaVersion fallback) {
-        if (SchemaVersion.Draft4.getSchema ().equals (scope)) {
+        if (SchemaVersion.Draft4.getSchemaUri ().equals (scope)) {
             return Draft4;
         }
 
