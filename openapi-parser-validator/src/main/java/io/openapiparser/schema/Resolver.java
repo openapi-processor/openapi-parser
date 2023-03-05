@@ -51,40 +51,20 @@ public class Resolver {
         }
     }
 
-
-    @Deprecated
-    private final Reader reader;
-    @Deprecated
-    private final Converter converter;
-
     private final DocumentStore documents;
     private final DocumentLoader loader;
     private final Settings settings;
+
+    public Resolver (DocumentStore documents, DocumentLoader loader) {
+        this.documents = documents;
+        this.loader = loader;
+        this.settings = new Settings (SchemaVersion.getLatest ());
+    }
 
     public Resolver (DocumentStore documents, DocumentLoader loader, Settings settings) {
         this.documents = documents;
         this.loader = loader;
         this.settings = settings;
-        this.reader = null;
-        this.converter = null;
-    }
-
-    @Deprecated
-    public Resolver (Reader reader, Converter converter, DocumentStore documents) {
-        this.documents = documents;
-        this.loader = null;
-        this.settings = new Settings (SchemaVersion.Draft4);
-        this.reader = reader;
-        this.converter = converter;
-    }
-
-    @Deprecated
-    public Resolver (Reader reader, Converter converter, DocumentStore documents, Settings settings) {
-        this.documents = documents;
-        this.loader = null;
-        this.settings = settings;
-        this.reader = reader;
-        this.converter = converter;
     }
 
     public ResolverResult resolve (URI uri) {
@@ -95,9 +75,13 @@ public class Resolver {
         }
     }
 
-    @Deprecated
+    @Deprecated // ?
     public ResolverResult resolve (String resourcePath) {
-        return resolve (URI.create (resourcePath), loadDocument (resourcePath));
+        try {
+            return resolve (URI.create (resourcePath), loader.loadDocument (resourcePath));
+        } catch (Exception e) {
+            throw new ResolverException (String.format ("failed to resolve '%s'.", resourcePath), e);
+        }
     }
 
     /**
@@ -393,20 +377,14 @@ public class Resolver {
         return documents.get (documentUri);
     }
 
+    @Deprecated
     private boolean isMap (Object value) {
         return value instanceof Map;
     }
 
+    @Deprecated
     private boolean isString (Object value) {
         return value instanceof String;
-    }
-
-    private Ref createRef (URI scope, String name, Object value) {
-        String ref = convertOrNull (name, value, String.class);
-        if (ref == null) {
-            throw new ResolverException (String.format ("failed to resolve empty $ref in '%s'.", scope));
-        }
-        return new Ref (scope, ref);
     }
 
     private Ref createRef (Scope scope, String name, Object value) {
@@ -417,21 +395,21 @@ public class Resolver {
         return new Ref (scope, ref);
     }
 
-    private Object loadDocument (URI documentUri) throws ResolverException {
-        try {
-            return loader.loadDocument (documentUri);
-        } catch (Exception e) {
-            throw new ResolverException (String.format ("failed to resolve '%s'.", documentUri), e);
-        }
-    }
+//    private Object loadDocument (URI documentUri) throws ResolverException {
+//        try {
+//            return loader.loadDocument (documentUri);
+//        } catch (Exception e) {
+//            throw new ResolverException (String.format ("failed to resolve '%s'.", documentUri), e);
+//        }
+//    }
 
-    @Deprecated
-    private Object loadDocument (String resourcePath) throws SchemaStoreException {
-        try {
-            InputStream source = nonNull (getClass ().getResourceAsStream (resourcePath));
-            return converter.convert (Strings.of (source));
-        } catch (Exception e) {
-            throw new ResolverException (String.format ("failed to resolve '%s'.", resourcePath), e);
-        }
-    }
+//    @Deprecated
+//    private Object loadDocument (String resourcePath) throws SchemaStoreException {
+//        try {
+//            InputStream source = nonNull (getClass ().getResourceAsStream (resourcePath));
+//            return converter.convert (Strings.of (source));
+//        } catch (Exception e) {
+//            throw new ResolverException (String.format ("failed to resolve '%s'.", resourcePath), e);
+//        }
+//    }
 }
