@@ -178,7 +178,7 @@ public class Items {
         return step;
     }
 
-    private Integer reduceItemsAnnotations (
+    private @Nullable Integer reduceItemsAnnotations (
         @Nullable Integer currentItemsAnnotation, Annotations annotations, int instanceSize
     ) {
         Collection<Annotation> otherAnnotations = annotations.getAnnotations ("items");
@@ -222,7 +222,7 @@ public class Items {
         return reducedAnnotation;
     }
 
-    private Boolean reduceAdditionalItemsAnnotations (
+    private @Nullable Boolean reduceAdditionalItemsAnnotations (
         @Nullable Boolean currentAdditionalItemsAnnotation, Annotations annotations
     ) {
         Collection<Annotation> otherAnnotations = annotations.getAnnotations ("additionalItems");
@@ -247,7 +247,7 @@ public class Items {
         return reducedAnnotation;
     }
 
-    private Boolean reduceUnevaluatedItemsAnnotations (
+    private @Nullable Boolean reduceUnevaluatedItemsAnnotations (
         @Nullable Boolean currentUnevaluatedItemsAnnotation, Annotations annotations
     ) {
         Collection<Annotation> otherAnnotations = annotations.getAnnotations ("unevaluatedItems");
