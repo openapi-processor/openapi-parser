@@ -11,6 +11,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 
+import static io.openapiparser.support.Nullness.nullable;
+
 /**
  * Uri support functions.
  *
@@ -56,10 +58,10 @@ public class UriSupport {
                 uri.getPort (),
                 uri.getPath (),
                 uri.getQuery (),
-                null
+                nullable (null)
             );
         } catch (URISyntaxException e) {
-            throw new IllegalArgumentException(e.getMessage(), e);
+            throw new RuntimeException (e.getMessage(), e);
         }
     }
 
