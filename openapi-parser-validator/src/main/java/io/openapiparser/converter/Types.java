@@ -5,8 +5,7 @@
 
 package io.openapiparser.converter;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.checker.nullness.qual.PolyNull;
+import org.checkerframework.checker.nullness.qual.*;
 
 import java.util.Collection;
 import java.util.Map;
@@ -83,26 +82,32 @@ public class Types {
         return (Number) o;
     }
 
+    @EnsuresNonNullIf(expression = "#1", result = true)
     public static boolean isBoolean (@Nullable Object o) {
         return o instanceof Boolean;
     }
 
+    @EnsuresNonNullIf(expression = "#1", result = true)
     public static boolean isString (@Nullable Object o) {
         return o instanceof String;
     }
 
+    @EnsuresNonNullIf(expression = "#1", result = true)
     public static boolean isMap (@Nullable Object o) {
         return o instanceof Map;
     }
 
+    @EnsuresNonNullIf(expression = "#1", result = true)
     public static boolean isObject (@Nullable Object o) {
         return o instanceof Map;
     }
 
+    @EnsuresNonNullIf(expression = "#1", result = true)
     public static boolean isArray (@Nullable Object o) {
         return o instanceof Collection;
     }
 
+    @EnsuresNonNullIf(expression = "#1", result = true)
     public static boolean isSchema (@Nullable Object o) {
         return isObject (o) || isBoolean (o);
     }
