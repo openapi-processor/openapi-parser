@@ -5,6 +5,8 @@
 
 package io.openapiparser.schema;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 import java.net.URI;
 import java.util.*;
 
@@ -84,7 +86,7 @@ public class ReferenceRegistry {
         return references.containsKey (uri.toString ());
     }
 
-    private Reference getReferenceX (URI uri) {
+    private @Nullable Reference getReferenceX (URI uri) {
         return references.get (uri.toString ());
     }
 }
