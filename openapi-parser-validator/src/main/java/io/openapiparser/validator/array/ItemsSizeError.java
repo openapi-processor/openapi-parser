@@ -14,7 +14,9 @@ import io.openapiparser.validator.ValidationMessage;
  */
 public class ItemsSizeError extends ValidationMessage {
     public ItemsSizeError (JsonSchema schema, JsonInstance instance) {
-        super (schema, instance, String.format ("the size should be less or equal to %d",
-            schema.getItems ().size ()));
+        super (schema, instance,
+            "items",
+            String.format ("the number of items should be less or equal to %d",
+                schema.getItems ().size ()));
     }
 }

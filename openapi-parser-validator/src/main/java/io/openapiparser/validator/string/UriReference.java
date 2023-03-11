@@ -34,7 +34,7 @@ public class UriReference {
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         String format = schema.getFormat ();
         if (!shouldValidate (format))
-            return new NullStep ();
+            return new NullStep ("uri-reference");
 
         UriStep step = new UriStep (schema, instance);
 

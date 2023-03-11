@@ -15,6 +15,6 @@ import io.openapiparser.validator.ValidationMessage;
 public class RegexError extends ValidationMessage {
 
     public RegexError (JsonSchema schema, JsonInstance instance) {
-        super (schema, instance, "should be a regular expression");
+        super (schema, instance, "regex", "should be a regular expression");
     }
 }

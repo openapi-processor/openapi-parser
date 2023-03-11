@@ -15,7 +15,8 @@ import io.openapiparser.validator.ValidationMessage;
 public class ExclusiveMaximumError extends ValidationMessage {
 
     public ExclusiveMaximumError (JsonSchema schema, JsonInstance instance) {
-        super (schema, instance, String.format ("the value should be less than %s",
-            schema.getExclusiveMaximum ()));
+        super (schema, instance,
+            "exclusiveMaximum",
+            String.format ("the value should be less than %s", schema.getExclusiveMaximum ()));
     }
 }

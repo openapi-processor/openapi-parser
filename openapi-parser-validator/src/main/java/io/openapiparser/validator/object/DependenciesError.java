@@ -15,6 +15,8 @@ import io.openapiparser.validator.ValidationMessage;
 public class DependenciesError extends ValidationMessage {
 
     public DependenciesError (JsonSchema schema, JsonInstance instance, String propertyName) {
-        super (schema, instance, String.format ("should have dependency property '%s'", propertyName));
+        super (schema, instance,
+            "dependencies",
+            String.format ("should have dependency property '%s'", propertyName));
     }
 }

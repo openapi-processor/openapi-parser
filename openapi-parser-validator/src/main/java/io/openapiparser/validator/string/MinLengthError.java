@@ -15,8 +15,10 @@ import io.openapiparser.validator.ValidationMessage;
 public class MinLengthError extends ValidationMessage {
 
     public MinLengthError (JsonSchema schema, JsonInstance instance) {
-        super (schema, instance, String.format ("the length should be greater or equal to %s",
-            schema.getMinLength ()
-        ));
+        super (schema, instance,
+            "minLength",
+            String.format ("the length should be greater or equal to %s",
+                schema.getMinLength ()
+            ));
     }
 }

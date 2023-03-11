@@ -23,6 +23,7 @@ public class IfError extends ValidationMessage {
         Collection<ValidationMessage> messages
     ) {
         super(schema, instance,
+            "if",
             String.format ("should validate against '%s' schema", condition), messages);
     }
 }

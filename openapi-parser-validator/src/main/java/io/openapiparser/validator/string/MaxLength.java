@@ -28,7 +28,7 @@ public class MaxLength {
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         Integer maxLength = schema.getMaxLength ();
         if (maxLength == null)
-            return new NullStep ();
+            return new NullStep ("maxLength");
 
         MaxLengthStep step = new MaxLengthStep (schema, instance);
 

@@ -14,7 +14,9 @@ import io.openapiparser.validator.ValidationMessage;
  */
 public class MaxLengthError extends ValidationMessage {
     public MaxLengthError (JsonSchema schema, JsonInstance instance) {
-        super (schema, instance, String.format ("the length should be less or equal to %s",
-            schema.getMaxLength ()));
+        super (schema, instance,
+            "maxLength",
+            String.format ("the length should be less or equal to %s",
+                schema.getMaxLength ()));
     }
 }

@@ -27,7 +27,7 @@ public class ExclusiveMaximum {
         Number maximum = schema.getExclusiveMaximum ();
 
         if (maximum == null)
-            return new NullStep ();
+            return new NullStep ("exclusiveMaximum");
 
         ExclusiveMaximumStep step = new ExclusiveMaximumStep (schema, instance);
 

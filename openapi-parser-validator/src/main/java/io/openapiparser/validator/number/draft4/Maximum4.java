@@ -27,7 +27,7 @@ public class Maximum4 {
         Boolean exclusive = schema.getExclusiveMaximumB ();
 
         if (maximum == null)
-            return new NullStep ();
+            return new NullStep ("maximum");
 
         Maximum4Step step = new Maximum4Step (schema, instance);
 

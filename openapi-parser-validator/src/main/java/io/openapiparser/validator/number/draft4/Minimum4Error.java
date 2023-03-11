@@ -14,8 +14,10 @@ import io.openapiparser.validator.ValidationMessage;
  */
 public class Minimum4Error extends ValidationMessage {
     public Minimum4Error (JsonSchema schema, JsonInstance instance) {
-        super (schema, instance, String.format ("the value should be %s than %s",
-            schema.getExclusiveMinimumB () ? "greater" : "greater or equal",
-            schema.getMinimum ()));
+        super (schema, instance,
+            "minimum",
+            String.format ("the value should be %s than %s",
+                schema.getExclusiveMinimumB () ? "greater" : "greater or equal",
+                schema.getMinimum ()));
     }
 }

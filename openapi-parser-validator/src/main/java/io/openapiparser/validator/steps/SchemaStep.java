@@ -29,7 +29,8 @@ public class SchemaStep extends CompositeStep {
             return Collections.emptyList ();
 
         return Collections.singletonList (
-            new ValidateError (schema, instance, super.getMessages ()));
+            new ValidationMessage (schema, instance,
+                "schema", "the schema is invalid", super.getMessages ()));
     }
 
     @Override

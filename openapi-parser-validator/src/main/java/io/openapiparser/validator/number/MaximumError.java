@@ -15,7 +15,8 @@ import io.openapiparser.validator.ValidationMessage;
 public class MaximumError extends ValidationMessage {
 
     public MaximumError (JsonSchema schema, JsonInstance instance) {
-        super (schema, instance, String.format ("the value should be less or equal than %s",
-            schema.getMaximum ()));
+        super (schema, instance,
+            "maximum",
+            String.format ("the value should be less or equal than %s", schema.getMaximum ()));
     }
 }

@@ -15,6 +15,6 @@ import io.openapiparser.validator.ValidationMessage;
 public class ConstError extends ValidationMessage {
 
     public ConstError (JsonSchema schema, JsonInstance instance) {
-        super (schema, instance, "should be equal to constant");
+        super (schema, instance, "const", "should be equal to constant");
     }
 }

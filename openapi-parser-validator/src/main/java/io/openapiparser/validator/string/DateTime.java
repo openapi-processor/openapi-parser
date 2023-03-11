@@ -44,7 +44,7 @@ public class DateTime {
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         Format format = Format.of (schema.getFormat ());
         if (!shouldValidate (format))
-            return new NullStep ();
+            return new NullStep ("datetime");
 
         DateTimeStep step = new DateTimeStep (schema, instance);
 

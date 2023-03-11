@@ -7,7 +7,6 @@ package io.openapiparser.validator.number;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.number.draft4.Minimum4Step;
 import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 
@@ -29,7 +28,7 @@ public class Minimum {
         Number minimum = schema.getMinimum ();
 
         if (minimum == null)
-            return new NullStep ();
+            return new NullStep ("minimum");
 
         MinimumStep step = new MinimumStep (schema, instance);
 

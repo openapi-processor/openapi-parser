@@ -30,7 +30,7 @@ public class MultipleOf {
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         Number multipleOf = schema.getMultipleOf ();
         if (multipleOf == null)
-            return new NullStep ();
+            return new NullStep ("multipleOf");
 
         MultipleOfStep step = new MultipleOfStep (schema, instance);
 

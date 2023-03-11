@@ -14,6 +14,6 @@ import io.openapiparser.validator.ValidationMessage;
  */
 public class UriError extends ValidationMessage {
     public UriError (JsonSchema schema, JsonInstance instance) {
-        super (schema, instance, "should conform to rfc3968");
+        super (schema, instance, "uri", "should conform to rfc3968");
     }
 }

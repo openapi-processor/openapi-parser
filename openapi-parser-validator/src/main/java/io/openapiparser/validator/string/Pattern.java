@@ -30,7 +30,7 @@ public class Pattern {
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         String pattern = schema.getPattern ();
         if (pattern == null)
-            return new NullStep ();
+            return new NullStep ("pattern");
 
         PatternStep step = new PatternStep (schema, instance);
 

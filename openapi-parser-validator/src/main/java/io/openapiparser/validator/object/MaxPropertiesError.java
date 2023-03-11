@@ -15,6 +15,8 @@ import io.openapiparser.validator.ValidationMessage;
 public class MaxPropertiesError extends ValidationMessage {
 
     public MaxPropertiesError (JsonSchema schema, JsonInstance instance, int size) {
-        super (schema, instance, String.format ("the size should be less or equal to %d", size));
+        super (schema, instance,
+            "maxProperties",
+            String.format ("the size should be less or equal to %d", size));
     }
 }

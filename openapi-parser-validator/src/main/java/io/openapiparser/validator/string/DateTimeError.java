@@ -14,6 +14,6 @@ import io.openapiparser.validator.ValidationMessage;
  */
 public class DateTimeError extends ValidationMessage {
     public DateTimeError (JsonSchema schema, JsonInstance instance) {
-        super (schema, instance, "should conform to ISO 8601");
+        super (schema, instance, "datetime", "should conform to ISO 8601");
     }
 }

@@ -15,7 +15,7 @@ import io.openapiparser.validator.ValidationMessage;
 public class PatternError extends ValidationMessage {
 
     public PatternError (JsonSchema schema, JsonInstance instance) {
-        super (schema, instance, String.format ("should match the regular expression '%s'",
-            schema.getPattern ()));
+        super (schema, instance, "pattern",
+            String.format ("should match the regular expression '%s'", schema.getPattern ()));
     }
 }
