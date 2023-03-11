@@ -29,6 +29,7 @@ public class Bucket {
         return new Bucket (Collections.emptyMap ());
     }
 
+    @Deprecated
     public Bucket (Map<String, Object> properties) {
         this.scope = new Scope (URI.create (""), URI.create (""), null);
         this.location = JsonPointer.EMPTY;
@@ -55,19 +56,12 @@ public class Bucket {
     }
 
     /**
-     * create an object bucket with the object location in the source document and its properties.
+     * create an object bucket with scope &amp; location in the source document and its properties.
      *
      * @param source the document URI
      * @param location the location (json pointer) inside {@code source}
      * @param properties the document properties
      */
-    @Deprecated
-    public Bucket (URI source, JsonPointer location, Map<String, Object> properties) {
-        this.scope = new Scope (source, URI.create (""), null);
-        this.location = location;
-        this.properties = properties;
-    }
-
     public Bucket (Scope scope, JsonPointer location, Map<String, Object> properties) {
         this.scope = scope;
         this.location = location;
@@ -106,10 +100,6 @@ public class Bucket {
 
     public URI getBaseUri () {
         return scope.getBaseUri ();
-    }
-
-    public @Nullable URI getId () {
-        return scope.getId ();
     }
 
     public boolean hasId () {

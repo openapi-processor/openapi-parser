@@ -201,7 +201,7 @@ public class Resolver {
                 JsonPointer location = bucket.getLocation ().append (name);
 
                 int index = 0;
-                for (Object item : (Collection<?>) value) {
+                for (Object item : asArray (value)) {
                     if (!isObject (item))
                         continue;
 
@@ -222,8 +222,9 @@ public class Resolver {
             URI id = ref.getAbsoluteUri ();
             Object idDocument = getDocument (id);
             if (idDocument != null) {
+                Scope docScope = ref.getScope ().move (id, idDocument);
                 // if ref references an id, it should not resolve the scope????
-                Scope docScope = Scope.createScope (id, idDocument, ref.getScope ());
+//                Scope docScope = Scope.createScope (id, idDocument, ref.getScope ());
 //                Scope docScope = getScope (ref.getScope (), idDocument);  // $id ???
 //                Scope docScope2 = getScope (id, idDocument, settings.version);
                 registry.add (ref, docScope, idDocument);
@@ -233,9 +234,7 @@ public class Resolver {
             // no, try to resolve by document and pointer
             URI documentUri = ref.getDocumentUri ();
             Object document = getDocument (documentUri);
-            Scope scope = Scope.createScope (documentUri, document, ref.getScope ());  // ref.getScope().move()
-//            Scope scope = getScope (ref.getScope (), document); // if to id???
-            //Scope scope2 = getScope (documentUri, document, settings.version);
+            Scope scope = ref.getScope ().move (documentUri, document);
             Bucket bucket = toBucket (scope, document);
 
             // no object -> to (simple) value
@@ -271,19 +270,11 @@ public class Resolver {
         });
     }
 
-    @Deprecated
-    private @Nullable Bucket toBucket (URI uri, @Nullable Object source) {
-        if (!(source instanceof Map)) {
-            return null;
-        }
-        return new Bucket (uri, asMap (source));
-    }
-
-    private @PolyNull Bucket toBucket (Scope scope, @PolyNull Object source) {
+    private @Nullable Bucket toBucket (Scope scope, @PolyNull Object source) {
         if (!isObject (source)) {
             return null;
         }
-        return new Bucket (scope, asMap (source));
+        return new Bucket (scope, asObject (source));
     }
 
     private @PolyNull Bucket toBucket (Scope scope, @Nullable Object source, JsonPointer location) {
@@ -341,7 +332,7 @@ public class Resolver {
                 String.format (
                     "failed to resolve '%s' $referenced from '%s'",
                     ref.getRef (),
-                    sourceScope.getId ()),
+                    sourceScope.getBaseUri ()),
                 ex);
         }
     }

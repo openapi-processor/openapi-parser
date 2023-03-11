@@ -40,11 +40,12 @@ public class JsonInstanceContext {
         return references.getReference (refLocal);
     }
 
-    public JsonInstanceContext withScope (Scope targetScope) {
-        return new JsonInstanceContext (targetScope, references);
-    }
+//    public JsonInstanceContext withScope (Scope targetScope) {
+//        return new JsonInstanceContext (targetScope, references);
+//    }
 
-    public JsonInstanceContext withId (@Nullable Map<String, Object> properties) {
-        return new JsonInstanceContext (scope.move (properties), references);
-    }
+    // todo cf warning
+//    public JsonInstanceContext withId (@Nullable Map<String, Object> properties) {
+//        return new JsonInstanceContext (scope.move (properties), references);
+//    }
 }

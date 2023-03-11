@@ -75,13 +75,14 @@ public class JsonInstance {
         return getArraySizeX ();
     }
 
-    public JsonInstance getRefInstance () {
-        Reference reference = context.getReference (nonNull (getRef ()));
-        JsonInstanceContext refContext = context.withScope (reference.getValueScope ());
-        Object rawValue = reference.getRawValue ();
-        Map<String, Object> props = asMap(rawValue);
-        return new JsonInstance (props, refContext.withId (props));
-    }
+    // todo probably not needed...
+//    public JsonInstance getRefInstance () {
+//        Reference reference = context.getReference (nonNull (getRef ()));
+//        JsonInstanceContext refContext = context.withScope (reference.getValueScope ());
+//        Object rawValue = reference.getRawValue ();
+//        Map<String, Object> props = asMap(rawValue);
+//        return new JsonInstance (props, refContext.withId (props));
+//    }
 
     public @Nullable Map<String, Object> asObject () {
         return asMap (value);
