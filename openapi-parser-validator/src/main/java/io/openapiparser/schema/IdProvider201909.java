@@ -10,7 +10,6 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.Map;
 
 import static io.openapiparser.converter.Types.asString;
-import static io.openapiparser.converter.Types.isString;
 
 /**
  * draft-2019-09 IdProvider
@@ -18,11 +17,9 @@ import static io.openapiparser.converter.Types.isString;
 public class IdProvider201909 implements IdProvider {
     @Override
     public @Nullable String getId (Map<String, Object> properties) {
-        Object rawId = properties.get (Keywords.ID);
-        if (!isString (rawId))
+        String id = asString (properties.get (Keywords.ID));
+        if (id == null)
             return null;
-
-        String id = asString (rawId);
 
         // id must not contain fragment, except an empty fragment
         if (id.contains (Keywords.HASH) && !id.endsWith (Keywords.HASH)) {
