@@ -101,11 +101,15 @@ public class Validator {
     // Draft 2020-12: todo
     // Draft 2019-09: todo
     private ValidationStep validateDynamicRef (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope) {
-        if (!schema.isDynamicRef ()) {
+        if (!schema.isDynamicRef ())
+            return new NullStep(Keywords.DYNAMIC_REF);
+
+        URI dynamicRef = schema.getDynamicRef ();
+        if (dynamicRef == null) {
             return new NullStep(Keywords.DYNAMIC_REF);
         }
 
-        JsonSchema refSchema = schema.getRefSchema (dynamicScope.findScope (schema.getDynamicRef ()));
+        JsonSchema refSchema = schema.getRefSchema (dynamicScope.findScope (dynamicRef));
         SchemaRefStep step = new SchemaRefStep (refSchema);
         step.add (validate (refSchema, instance, dynamicScope));
         return step;
