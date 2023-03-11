@@ -63,7 +63,7 @@ public interface JsonSchema {
         throw new NotImplementedException ();
     }
 
-    default JsonSchema getRefSchema (URI scope) {
+    default JsonSchema getRefSchema (@Nullable URI scope) {
         throw new NotImplementedException ();
     }
 
