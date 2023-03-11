@@ -83,10 +83,6 @@ public class Types {
         return (Number) o;
     }
 
-    public static boolean isNull (@Nullable Object o) {
-        return o == null;
-    }
-
     public static boolean isBoolean (@Nullable Object o) {
         return o instanceof Boolean;
     }

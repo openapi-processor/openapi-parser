@@ -5,7 +5,8 @@
 
 package io.openapiparser.schema;
 
-import io.openapiparser.converter.*;
+import io.openapiparser.converter.BooleanConverter;
+import io.openapiparser.converter.StringNullableConverter;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
@@ -89,10 +90,10 @@ public class IdCollector {
 
     private @Nullable URI getAnchor (Bucket bucket) {
         String anchor = bucket.convert ("$anchor", new StringNullableConverter ());
-        if (isNull (anchor))
+        if (anchor == null)
             return null;
 
-        return bucket.getScope ().resolveAnchor (asString (anchor));
+        return bucket.getScope ().resolveAnchor (anchor);
     }
 
     private void registerAnchor (@Nullable URI anchor, Bucket bucket) {
@@ -106,7 +107,7 @@ public class IdCollector {
 
     private @Nullable URI getRecursiveAnchor (Bucket bucket) {
         Boolean anchor = bucket.convert ("$recursiveAnchor", new BooleanConverter ());
-        if (isNull (anchor))
+        if (anchor == null)
             return null;
 
         return bucket.getScope ().resolveAnchor ("");
@@ -114,10 +115,10 @@ public class IdCollector {
 
     private @Nullable URI getDynamicAnchor (Bucket bucket) {
         String anchor = bucket.convert ("$dynamicAnchor", new StringNullableConverter ());
-        if (isNull (anchor))
+        if (anchor == null)
             return null;
 
-        return bucket.getScope ().resolveAnchor (asString (anchor));
+        return bucket.getScope ().resolveAnchor (anchor);
     }
 
     private void registerDynamicAnchor (@Nullable URI anchor, Bucket bucket) {
