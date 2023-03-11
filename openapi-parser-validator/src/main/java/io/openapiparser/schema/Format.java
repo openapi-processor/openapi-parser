@@ -46,7 +46,7 @@ public enum Format {
         return format;
     }
 
-    public static @Nullable Format of (String format) {
+    public static @Nullable Format of (@Nullable String format) {
         return Arrays.stream (values ())
             .filter (v -> v.format.equals (format))
             .findFirst ()
