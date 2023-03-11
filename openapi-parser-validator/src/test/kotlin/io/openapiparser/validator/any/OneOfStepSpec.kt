@@ -12,17 +12,18 @@ import io.kotest.matchers.shouldBe
 import io.openapiparser.schema.*
 import io.openapiparser.validator.ValidationMessage
 import io.openapiparser.validator.support.TestStep
-import java.net.URI
 
 class OneOfStepSpec : StringSpec({
 
-    val sctx = JsonSchemaContext(URI(""), ReferenceRegistry(), SchemaVersion.Default)
-    val schema = JsonSchemaObject(mapOf(), sctx)
+    val schemaContext = JsonSchemaContext(
+        Scope(UriSupport.emptyUri(), null, SchemaVersion.getLatest()), ReferenceRegistry())
+    val schema = JsonSchemaObject(mapOf(), schemaContext)
 
-    val ictx = JsonInstanceContext(URI(""), ReferenceRegistry())
-    val instance = JsonInstance("value", ictx)
+    val instanceContext = JsonInstanceContext(
+        Scope(UriSupport.emptyUri(), null, SchemaVersion.getLatest()), ReferenceRegistry())
+    val instance = JsonInstance("value", instanceContext)
 
-    val error = ValidationMessage(schema, instance, "error")
+    val error = ValidationMessage(schema, instance, "oneOf", "error")
 
     "step is valid without error" {
         val step = OneOfStep(schema, instance)
