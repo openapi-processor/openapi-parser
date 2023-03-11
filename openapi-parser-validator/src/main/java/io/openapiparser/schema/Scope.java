@@ -11,6 +11,7 @@ import java.net.URI;
 
 import static io.openapiparser.converter.Types.asMap;
 import static io.openapiparser.converter.Types.isObject;
+import static io.openapiparser.support.Nullness.nonNull;
 
 
 // base uri:
@@ -25,7 +26,7 @@ public class Scope {
 
     public Scope (URI documentUri, @Nullable URI id, SchemaVersion version) {
         this.documentUri = documentUri;
-        baseUri = UriSupport.isEmpty (id) ? documentUri : id;
+        baseUri = UriSupport.isEmpty (id) ? documentUri : nonNull(id);
         this.version = version;
     }
 
