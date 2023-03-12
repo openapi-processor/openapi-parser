@@ -52,7 +52,7 @@ val draft201909Extras = listOf(
     Exclude("valid leap second, negative time-offset"),
     Exclude("valid leap second, large negative time-offset"),
 
-    // remote documents
+    // "remote" documents
     Remote(
         "remote ref", Document(
             "http://localhost:1234/integer.json",
@@ -99,6 +99,12 @@ val draft201909Extras = listOf(
         "remote ref with ref to defs", Document(
             "http://localhost:1234/ref-and-defs.json",
             "/suites/JSON-Schema-Test-Suite/remotes/ref-and-defs.json"
+        )
+    ),
+    Remote(
+        "schema that uses custom metaschema with with no validation vocabulary", Document(
+            "http://localhost:1234/draft2019-09/metaschema-no-validation.json",
+            "/suites/JSON-Schema-Test-Suite/remotes/draft2019-09/metaschema-no-validation.json"
         )
     )
 )
