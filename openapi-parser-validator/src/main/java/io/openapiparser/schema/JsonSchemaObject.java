@@ -414,7 +414,7 @@ public class JsonSchemaObject implements JsonSchema {
         }
 
         Object raw = schemaObject.getRawValue ("const");
-        Scope scope = context.getScope ().move (raw);
+        Scope scope = raw != null ? context.getScope ().move (raw) : context.getScope ();
         return new JsonInstance (raw, new JsonInstanceContext (scope, new ReferenceRegistry ()));
     }
 
