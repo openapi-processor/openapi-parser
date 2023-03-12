@@ -163,8 +163,8 @@ public enum SchemaVersion {
         return idProvider;
     }
 
-    public boolean allowsRefSiblings () {
-        return allowsRefSiblings;
+    public boolean validatesRefSiblings () {
+        return isLaterOrEqualTo201909 ();
     }
 
     public boolean isLaterOrEqualTo201909 () {

@@ -382,7 +382,7 @@ public class Validator {
     }
 
     private boolean allowsSiblings () {
-        return settings.getVersion ().isLaterOrEqualTo201909 ();
+        return settings.getVersion ().validatesRefSiblings ();
     }
 
     private boolean isBooleanSchema (JsonSchema schema) {
