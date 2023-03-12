@@ -137,6 +137,18 @@ public class JsonSchemaObject implements JsonSchema {
         return schemaObject.convert (SCHEMA, new UriConverter ());
     }
 
+    public @Nullable JsonSchema getMetaSchemaSchema () {
+        URI metaSchemaUri = getMetaSchema ();
+        if (metaSchemaUri == null) {
+            return null;
+        }
+
+        Reference reference = context.getReference (metaSchemaUri);
+
+        return new JsonSchemaConverter (context)
+            .convert (SCHEMA, reference.getValue (), reference.getPointer ());
+    }
+
     @Override
     public @Nullable URI getId () {
         if (context.getVersion () == SchemaVersion.Draft4) {

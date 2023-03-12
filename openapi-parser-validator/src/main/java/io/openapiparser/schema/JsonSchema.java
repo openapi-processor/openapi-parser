@@ -71,6 +71,10 @@ public interface JsonSchema {
         return null;
     }
 
+    default @Nullable JsonSchema getMetaSchemaSchema() {
+        return null;
+    }
+
     default @Nullable URI getId () {
         return null;
     }
