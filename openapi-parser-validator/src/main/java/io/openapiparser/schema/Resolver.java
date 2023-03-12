@@ -164,6 +164,8 @@ public class Resolver {
                     }
                 }
 
+                addReference (ref, references);
+
             } else if (name.equals (Keywords.REF) && isString (value)) {
                 Ref ref = createRef (scope, name, value);
                 URI documentUri = ref.getDocumentUri ();
