@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.kotest.core.spec.style.freeSpec
 import io.kotest.matchers.shouldBe
-import io.openapiparser.converter.Types.asMap
 import io.openapiparser.jackson.JacksonConverter
 import io.openapiparser.schema.*
 import io.openapiparser.schema.UriSupport.emptyUri
@@ -69,25 +68,10 @@ fun draftSpec(
     }
 
     fun createSchema(schema: Any, documents: List<Document>): JsonSchema {
-        val resolver = Resolver(
-            DocumentStore(),
-            DocumentLoader(TestUriReader(documents), JacksonConverter()),
-            Resolver.Settings(settings.version)
-        )
-
-        val result = resolver.resolve(emptyUri(), schema)
-
-        return if (schema is Boolean) {
-            JsonSchemaBoolean(
-                schema,
-                JsonSchemaContext(result.scope, result.registry)
-            )
-        } else {
-            JsonSchemaObject(
-                asMap(schema)!!,
-                JsonSchemaContext(result.scope, result.registry)
-            )
-        }
+        val loader = DocumentLoader(TestUriReader(documents), JacksonConverter())
+        val store = SchemaStore(loader)
+        val uri = store.register(schema)
+        return store.getSchema(uri, settings.version)
     }
 
     fun createInstance(instance: Any?): JsonInstance {
