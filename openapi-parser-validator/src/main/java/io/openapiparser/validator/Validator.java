@@ -334,16 +334,20 @@ public class Validator {
         }
 
         CompositeStep step = new FlatStep ();
-        step.add (new MultipleOf ().validate (schema, instance));
 
         if (isDraft4 (schema)) {
             step.add (new Minimum4 ().validate (schema, instance));
             step.add (new Maximum4 ().validate (schema, instance));
+            step.add (new MultipleOf ().validate (schema, instance));
         } else {
+            if (!shouldValidate (schema))
+                return new NullStep ("no validation");
+
             step.add (new Minimum ().validate (schema, instance));
             step.add (new Maximum ().validate (schema, instance));
             step.add (new ExclusiveMinimum ().validate (schema, instance));
             step.add (new ExclusiveMaximum ().validate (schema, instance));
+            step.add (new MultipleOf ().validate (schema, instance));
         }
 
         return step;
@@ -379,6 +383,10 @@ public class Validator {
 
         return parentScope.add (schema);
         // .resolve ("#" + dynamicAnchor);
+    }
+
+    private boolean shouldValidate (JsonSchema schema) {
+        return schema.getContext ().getVocabularies ().requiresValidation ();
     }
 
     private boolean allowsSiblings () {

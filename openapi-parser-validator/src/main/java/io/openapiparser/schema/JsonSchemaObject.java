@@ -150,6 +150,11 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     @Override
+    public @Nullable Vocabularies getVocabulary () {
+        return schemaObject.convert (VOCABULARY, new VocabularyConverter (context));
+    }
+
+    @Override
     public @Nullable URI getId () {
         if (context.getVersion () == SchemaVersion.Draft4) {
             return schemaObject.convert (ID4, new UriConverter ());

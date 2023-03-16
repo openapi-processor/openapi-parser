@@ -75,6 +75,10 @@ public interface JsonSchema {
         return null;
     }
 
+    default @Nullable Vocabularies getVocabulary () {
+        return null;
+    }
+
     default @Nullable URI getId () {
         return null;
     }

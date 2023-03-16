@@ -108,18 +108,30 @@ public enum SchemaVersion {
     }
 
     /**
-     * try to detect schema version. If {@code scope} does not represent a known json schema draft
-     * it returns the latest supported schema version.
+     * try to detect schema version. If {@code schemaUri} does not represent a known json schema
+     * draft it returns null.
      *
-     * @param scope current scope
-     * @return the detected schema version or the latest version
+     * @param schemaUri a meta schema uri
+     * @return the detected schema version or null
      */
-    public static SchemaVersion getVersion (URI scope) {
-        if (SchemaVersion.Draft4.getSchemaUri ().equals (scope)) {
+    public static @Nullable SchemaVersion getVersion (URI schemaUri) {
+        if (SchemaVersion.Draft201909.getSchemaUri ().equals (schemaUri)) {
+            return Draft201909;
+        }
+
+        if (SchemaVersion.Draft7.getSchemaUri ().equals (schemaUri)) {
+            return Draft7;
+        }
+
+        if (SchemaVersion.Draft6.getSchemaUri ().equals (schemaUri)) {
+            return Draft6;
+        }
+
+        if (SchemaVersion.Draft4.getSchemaUri ().equals (schemaUri)) {
             return Draft4;
         }
 
-        return getLatest ();
+        return null;
     }
 
     /**
@@ -136,11 +148,6 @@ public enum SchemaVersion {
         }
 
         return fallback;
-    }
-
-    @Deprecated // use getSchemaUri()
-    public URI getSchema () {
-        return schema.getUri ();
     }
 
     public URI getSchemaUri () {
@@ -173,5 +180,42 @@ public enum SchemaVersion {
 
     public boolean isBefore201909 () {
         return compareTo (Draft201909) < 0;
+    }
+
+    public boolean isApplicatorVocabulary (URI candidate) {
+        return isVocabulary (candidate, "/vocab/applicator");
+    }
+
+    public boolean isContentVocabulary (URI candidate) {
+        return isVocabulary (candidate, "/vocab/content");
+    }
+
+    public boolean isCoreVocabulary (URI candidate) {
+        return isVocabulary (candidate, "/vocab/core");
+    }
+
+    public boolean isFormatVocabulary (URI candidate) {
+        return isVocabulary (candidate, "/vocab/format");
+    }
+
+    public boolean isMetaDataVocabulary (URI candidate) {
+        return isVocabulary (candidate, "/vocab/meta-data");
+    }
+
+    public boolean isValidationVocabulary (URI candidate) {
+        return isVocabulary (candidate, "/vocab/validation");
+    }
+
+    private boolean isVocabulary (URI candidate, String vocabulary) {
+        String parentUri = getSchemaParentUri ();
+        String candidateUri = candidate.toString ();
+        boolean matchParent = candidateUri.startsWith (parentUri);
+        boolean matchCore = candidateUri.endsWith (vocabulary);
+        return matchParent && matchCore;
+    }
+
+    private String getSchemaParentUri () {
+        String uri = getSchemaUri ().toString ();
+        return uri.substring (0, uri.lastIndexOf ("/"));
     }
 }

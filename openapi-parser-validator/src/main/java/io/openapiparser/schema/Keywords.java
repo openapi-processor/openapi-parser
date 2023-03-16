@@ -15,4 +15,5 @@ public interface Keywords {
     String RECURSIVE_REF = "$recursiveRef";
     String REF = "$ref";
     String SCHEMA = "$schema";
+    String VOCABULARY = "$vocabulary";
 }

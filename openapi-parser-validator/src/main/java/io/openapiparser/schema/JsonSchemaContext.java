@@ -11,18 +11,30 @@ import java.util.Map;
 public class JsonSchemaContext {
     private final Scope scope;
     private final ReferenceRegistry references;
+    private final Vocabularies vocabularies;
 
     public JsonSchemaContext (Scope scope, ReferenceRegistry references) {
         this.scope = scope;
         this.references = references;
+        this.vocabularies = Vocabularies.ALL;
+    }
+
+    public JsonSchemaContext (Scope scope, ReferenceRegistry references, Vocabularies vocabularies) {
+        this.scope = scope;
+        this.references = references;
+        this.vocabularies = vocabularies;
+    }
+
+    public Scope getScope () {
+        return scope;
     }
 
     public SchemaVersion getVersion () {
         return scope.getVersion ();
     }
 
-    public Scope getScope () {
-        return scope;
+    public Vocabularies getVocabularies () {
+        return vocabularies;
     }
 
     public Reference getReference (URI ref) {
@@ -47,10 +59,10 @@ public class JsonSchemaContext {
     }
 
     public JsonSchemaContext withScope (Scope targetScope) {
-        return new JsonSchemaContext (targetScope, references);
+        return new JsonSchemaContext (targetScope, references, vocabularies);
     }
 
     public JsonSchemaContext withId (Map<String, Object> properties) {
-        return new JsonSchemaContext (scope.move (properties), references);
+        return new JsonSchemaContext (scope.move (properties), references, vocabularies);
     }
 }
