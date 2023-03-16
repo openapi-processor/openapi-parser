@@ -5,167 +5,232 @@
 
 package io.openapiparser.schema;
 
-import io.openapiparser.validator.Validator;
-import io.openapiparser.validator.ValidationMessage;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
-import static io.openapiparser.converter.Types.asMap;
+import static io.openapiparser.converter.Types.*;
+import static io.openapiparser.schema.UriSupport.createUri;
 
 /**
- * todo this class doesn't really know what it should do...
+ * Schema factory. This is used to register the schemas required to validate a json instant.
  */
 public class SchemaStore {
-    private static final AtomicInteger schemaUriId = new AtomicInteger ();
+    private static final Logger log = LoggerFactory.getLogger (SchemaStore.class);
 
-    private final Map<URI, JsonSchema> schemas = new HashMap<> ();
-    Resolver resolver;
+    private final Map<URI, JsonSchema> schemaCache = new HashMap<> ();
 
-    public SchemaStore (Resolver resolver) {
-        this.resolver = resolver;
+    private final DocumentStore documents;
+    private final DocumentLoader loader;
+
+    public SchemaStore (DocumentLoader loader) {
+        this.documents = new DocumentStore ();
+        this.loader = loader;
     }
 
     /**
-     * loads a json schema from the given {@code uri} and validates it.
+     * download & register a schema document. {@code schemaUri} should be a json schema document
+     * downloadable under the given uri.
      *
-     * @param schemaUri uri of the json schema
-     * @return a json schema
+     * @param schemaUri schema uri/id
      */
-    public JsonSchema addSchema (URI schemaUri) {
-        return registerSchema (resolver.resolve (schemaUri));
-    }
+    public void register (URI schemaUri) {
+        // check absolute?
 
-    /**
-     * loads a json schema from the classpath {@code resources} and validates it.
-     *
-     * @param resourcePath path of the json schema in the resources
-     * @return a json schema
-     */
-    public JsonSchema addSchema (String resourcePath) {
-        return registerSchema (resolver.resolve (resourcePath));
-    }
-
-    /**
-     * loads a json schema from the classpath {@code resources} and registers it with the given
-     * {@code id}. It does *not* validate the schema.
-     *
-     * @param id id of the schema
-     * @param resourcePath path of the json schema in the resources
-     * @return a json schema
-     */
-    public JsonSchema addSchema (URI id, String resourcePath) {
-        ResolverResult result = resolver.resolve (resourcePath);
-        JsonSchema schema = createSchema (result);
-        schemas.put (id, schema);
-        return schema;
-    }
-
-    /**
-     * registers and validates the given schema.
-     *
-     * @param schema the raw schema
-     * @return a json schema
-     */
-    public JsonSchema addSchemaDocument (Object schema) {
-        ResolverResult result = resolver.resolve (URI.create (""), schema);
-        return registerSchema (result);
-    }
-
-    /**
-     * check if a json schema with the given id is registered.
-     *
-     * @param id id of the json schema
-     * @return true if registered, else false
-     */
-    public boolean hasSchema (URI id) {
-        return schemas.containsKey (id);
-    }
-
-    public @Nullable JsonSchema getSchema (URI id) {
-        return schemas.get (id);
-    }
-
-    public void loadDraft7 () {
-        addSchema(SchemaVersion.Draft7.getSchema (), "/json-schema/draft-07/schema.json");
-    }
-
-    public void loadDraft6 () {
-        addSchema(SchemaVersion.Draft6.getSchema (), "/json-schema/draft-06/schema.json");
-    }
-
-    public void loadDraft4 () {
-        addSchema(SchemaVersion.Draft4.getSchema (), "/json-schema/draft-04/schema.json");
-    }
-
-    private JsonSchema registerSchema (ResolverResult schemaResult) {
-        JsonSchema schema = createSchema (schemaResult);
-
-        final URI metaSchemaUri = schema.getMetaSchema ();
-        if (metaSchemaUri != null) {
-            JsonSchema metaSchema = schemas.get (metaSchemaUri);
-            if (metaSchema == null) {
-                ResolverResult metaResult = resolver.resolve (metaSchemaUri);
-                metaSchema = createSchema (metaResult);
-                schemas.put (metaSchemaUri, metaSchema);
-            }
-
-            validate (schemaResult, metaSchema);
+        if (documents.contains (schemaUri)) {
+            log.warn ("id is already registered: {}", schemaUri.toString ());
+            return;
         }
 
-        // todo no meta schema ?
-        // todo use IdProvider
-        URI key = schema.getId ();
-        if (key == null) {
-            key = generateUri ();
-        }
-        schemas.put (key, schema);
-        return schema;
+        Object document = loader.loadDocument (schemaUri);
+        documents.addId (schemaUri, document);
     }
 
-    private void validate (ResolverResult schemaResult, JsonSchema metaSchema) {
-        Validator validator = new Validator ();
+    /**
+     * register a schema document. {@code schemaUri} is schema id of the given {@code document}.
+     * The {@code document} must be a {@code Boolean} or a {@code Map<String, Object>}.
+     *
+     * @param schemaUri schema uri/id
+     * @param document the document,
+     */
+    public void register (URI schemaUri, Object document) {
+        // check absolute?
 
-        JsonInstance instance = new JsonInstance (
-            schemaResult.getDocument (),
-            createContext (schemaResult));
+        if (documents.contains (schemaUri)) {
+            log.warn ("id is already registered: {}", schemaUri.toString ());
+            return;
+        }
 
-        Collection<ValidationMessage> messages = validator.validate (metaSchema, instance).getMessages ();
-        if (!messages.isEmpty ()) {
-            // todo
+        documents.addId (schemaUri, document);
+    }
+
+    /**
+     * register a schema document. Similar to {@code register()} with {@code schemaUri}, except
+     * that the {@code schemaUri} gets generated. The {@code document} must be a {@code Boolean} or
+     * a {@code Map<String, Object>}.
+     *
+     * @param document the document
+     * @return the generated schema uri
+     */
+    public URI register (Object document) {
+        URI schemaUri = generateUri ();
+        documents.addId (schemaUri, document);
+        return schemaUri;
+    }
+
+    /**
+     * register a schema document. {@code resourcePath} should be a json schema document available
+     * on the classpath (resource).
+     *
+     * @param schemaUri schema uri/id
+     * @param resourcePath resource path
+     */
+    public void register (URI schemaUri, String resourcePath) {
+        if (documents.contains (schemaUri)) {
+            log.warn ("id is already registered: {}", schemaUri.toString ());
+            return;
+        }
+
+        Object document = loader.loadDocument (resourcePath);
+        documents.addId (schemaUri, document);
+    }
+
+    /**
+     * register draft-201909 json schema.
+     */
+    public void registerDraft201909 () {
+        register (SchemaVersion.Draft201909.getSchemaResource ());
+        SchemaVersion.Draft201909.getVocabularyResources ().forEach (this::register);
+    }
+
+    /**
+     * register draft-7 json schema.
+     */
+    public void registerDraft7 () {
+        register (SchemaVersion.Draft7.getSchemaResource ());
+    }
+
+    /**
+     * register draft-6 json schema.
+     */
+    public void registerDraft6 () {
+        register (SchemaVersion.Draft6.getSchemaResource ());
+    }
+
+    /**
+     * register draft-4 json schema.
+     */
+    public void registerDraft4 () {
+        register (SchemaVersion.Draft4.getSchemaResource ());
+    }
+
+    private void register (SchemaResource schema) {
+        register (schema.getUri (), schema.getResource ());
+    }
+
+    /**
+     * get a registered json schema. If the schema has no given meta schema it assumes the latest
+     * (implemented) json schema draft.
+     *
+     * @param schemaUri schema id
+     * @return the json schema
+     */
+    public JsonSchema getSchema (URI schemaUri) {
+        return getSchema (schemaUri, SchemaVersion.getLatest ());
+    }
+
+    /**
+     * get a registered json schema. If the schema has no given meta schema it is using the given
+     * json schema draft {@code version} as meta schema.
+     *
+     * @param schemaUri schema id
+     * @param version fallback json schema version.
+     * @return the json schema
+     */
+    public JsonSchema getSchema (URI schemaUri, SchemaVersion version) {
+        JsonSchema schema = schemaCache.get (schemaUri);
+        if (schema != null) {
+            return schema;
+        }
+
+        Object document = documents.get (schemaUri);
+        if (document == null) {
+            // todo NotRegisteredException
             throw new RuntimeException ();
         }
+
+        // create schema
+        Resolver resolver = new Resolver (documents, loader, new Resolver.Settings (version));
+        ResolverResult resolve = resolver.resolve (schemaUri, document);
+        schema = createSchema (resolve);
+
+        schemaCache.put (schemaUri, schema);
+        return schema;
     }
 
-    private JsonInstanceContext createContext (ResolverResult schemaResult) {
-        return new JsonInstanceContext (schemaResult.getUri (), schemaResult.getRegistry ());
-    }
-
-    private URI generateUri () {
-        return URI.create (String.format ("schema-%d", schemaUriId.getAndIncrement ()));
-    }
-
-    // todo try to auto detect schema version (known uris, known $schema)
     private JsonSchema createSchema (ResolverResult result) {
+        Scope scope = result.getScope ();
         Object document = result.getDocument ();
 
-        if (document instanceof Boolean) {
-            return new JsonSchemaBoolean (
-                (Boolean) document,
-                new JsonSchemaContext (result.getUri (), new ReferenceRegistry (), SchemaVersion.Default));
+        if (isBoolean (document)) {
+            Vocabularies vocabularies = Vocabularies.ALL;
 
-        } else if (document instanceof Map) {
+            return new JsonSchemaBoolean (
+                asBoolean (document),
+                new JsonSchemaContext (scope, new ReferenceRegistry (), vocabularies));
+
+        } else if (isObject (document)) {
+            URI metaSchema = getMetaSchema (document);
+            Vocabularies vocabularies = getVocabularies (metaSchema);
 
             return new JsonSchemaObject (
-                asMap (document),
-                new JsonSchemaContext (result.getUri (), result.getRegistry (), SchemaVersion.Default));
-
+                asObject (document),
+                new JsonSchemaContext (scope, result.getRegistry (), vocabularies));
         } else {
             // todo
             throw new RuntimeException ();
         }
     }
 
+    private Vocabularies getVocabularies (@Nullable URI metaSchema) {
+        if (metaSchema == null) {
+            return Vocabularies.ALL;
+        }
+
+        SchemaVersion version = SchemaVersion.getVersion (metaSchema);
+        if (version != null) {
+            return Vocabularies.ALL;
+        }
+
+        JsonSchema metaSchemaSchema = getSchema (metaSchema);
+        if (metaSchemaSchema == null) {
+            // todo throw
+            throw new RuntimeException ();
+        }
+
+       return metaSchemaSchema.getVocabulary ();
+    }
+
+    private @Nullable URI getMetaSchema (Object document) {
+        if (!isObject (document))
+            return null;
+
+        Map<String, Object> object = asObject (document);
+        Object schema = object.get (Keywords.SCHEMA);
+        if (!isString (schema))
+            return null;
+
+        return createUri (asString(schema));
+    }
+
+    private URI generateUri () {
+        return URI.create (String.format ("https://%s/", UUID.randomUUID ()));
+    }
+
+    public DocumentStore getDocuments () {
+        return documents;
+    }
 }
