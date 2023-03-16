@@ -82,6 +82,10 @@ public class Types {
         return (Number) o;
     }
 
+    public static @PolyNull Boolean asBoolean (@PolyNull Object o) {
+        return (Boolean) o;
+    }
+
     @EnsuresNonNullIf(expression = "#1", result = true)
     public static boolean isBoolean (@Nullable Object o) {
         return o instanceof Boolean;
