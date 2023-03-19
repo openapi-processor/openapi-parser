@@ -15,34 +15,34 @@ public enum SchemaVersion {
     Draft201909 (
         new SchemaResource (
             "https://json-schema.org/draft/2019-09/schema",
-            "/json-schema/draft-2019-09/schema.json"
+            "/json-schema.org/draft/2019-09/schema"
         ),
         SchemaKeywords.draft201909,
         IdProvider.DRAFT201909,
         Arrays.asList (
             new SchemaResource (
-                "https://json-schema.org/draft/2019-09/vocab/applicator",
-                "/json-schema/draft-2019-09/meta/applicator.json"
+                "https://json-schema.org/draft/2019-09/meta/applicator",
+                "/json-schema.org/draft/2019-09/meta/applicator"
             ),
             new SchemaResource (
-                "https://json-schema.org/draft/2019-09/vocab/content",
-                "/json-schema/draft-2019-09/meta/content.json"
+                "https://json-schema.org/draft/2019-09/meta/content",
+                "/json-schema.org/draft/2019-09/meta/content"
             ),
             new SchemaResource (
-                "https://json-schema.org/draft/2019-09/vocab/core",
-                "/json-schema/draft-2019-09/meta/core.json"
+                "https://json-schema.org/draft/2019-09/meta/core",
+                "/json-schema.org/draft/2019-09/meta/core"
             ),
             new SchemaResource (
-                "https://json-schema.org/draft/2019-09/vocab/format",
-                "/json-schema/draft-2019-09/meta/format.json"
+                "https://json-schema.org/draft/2019-09/meta/format",
+                "/json-schema.org/draft/2019-09/meta/format"
             ),
             new SchemaResource (
-                "https://json-schema.org/draft/2019-09/vocab/meta-data",
-                "/json-schema/draft-2019-09/meta/meta-data.json"
+                "https://json-schema.org/draft/2019-09/meta/meta-data",
+                "/json-schema.org/draft/2019-09/meta/meta-data"
             ),
             new SchemaResource (
-                "https://json-schema.org/draft/2019-09/vocab/validation",
-                "/json-schema/draft-2019-09/meta/validation.json"
+                "https://json-schema.org/draft/2019-09/meta/validation",
+                "/json-schema.org/draft/2019-09/meta/validation"
             )
         )
     ),
@@ -50,7 +50,7 @@ public enum SchemaVersion {
     Draft7 (
         new SchemaResource (
             "http://json-schema.org/draft-07/schema#",
-            "/json-schema/draft-07/schema.json"
+            "/json-schema.org/draft-07/schema"
         ),
         SchemaKeywords.draft7,
         IdProvider.DRAFT7
@@ -59,7 +59,7 @@ public enum SchemaVersion {
     Draft6 (
         new SchemaResource (
             "http://json-schema.org/draft-06/schema#",
-            "/json-schema/draft-06/schema.json"
+            "/json-schema.org/draft-06/schema"
         ),
         SchemaKeywords.draft6,
         IdProvider.DRAFT6
@@ -68,7 +68,7 @@ public enum SchemaVersion {
     Draft4 (
         new SchemaResource(
             "http://json-schema.org/draft-04/schema#",
-            "/json-schema/draft-04/schema.json"
+            "/json-schema.org/draft-04/schema"
         ),
         SchemaKeywords.draft4,
         IdProvider.DRAFT4
