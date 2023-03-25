@@ -47,6 +47,10 @@ public class References {
         references.add (new RefEntry (ref));
     }
 
+    public boolean contains (Ref ref) {
+        return references.contains (new RefEntry(ref));
+    }
+
     /**
      * loop the references.
      *

@@ -41,6 +41,10 @@ public class ReferenceRegistry {
         return false;
     }
 
+    public boolean contains (URI absoluteRef) {
+        return hasReference (absoluteRef);
+    }
+
     @Deprecated
     public boolean hasRef (URI absoluteRef) {
         return hasReference (absoluteRef);

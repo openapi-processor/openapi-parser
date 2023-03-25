@@ -122,6 +122,14 @@ public class Bucket {
         return scope.getVersion ().getIdProvider ().getId (properties) != null;
     }
 
+    public @Nullable URI getId () {
+        String id = scope.getVersion ().getIdProvider ().getId (properties);
+        if (id == null)
+            return null;
+
+        return UriSupport.createUri (id);
+    }
+
     /**
      * the location of this bucket in the {@code source} document.
      *

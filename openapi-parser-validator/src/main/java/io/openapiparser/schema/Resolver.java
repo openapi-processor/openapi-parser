@@ -5,21 +5,17 @@
 
 package io.openapiparser.schema;
 
-import io.openapiparser.Converter;
-import io.openapiparser.Reader;
-import io.openapiparser.support.Strings;
+import io.openapiparser.converter.*;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.InputStream;
 import java.net.URI;
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
 
 import static io.openapiparser.converter.Types.*;
-import static io.openapiparser.support.Nullness.nonNull;
+import static io.openapiparser.schema.Scope.createScope;
 
 /**
  * loads the base document and resolves all internal and external $ref's. In case of an external
@@ -84,6 +80,7 @@ public class Resolver {
         }
     }
 
+
     /**
      * resolves a given {@code document}. It will walk any referenced document. The result contains
      * a {@link ReferenceRegistry} that provides the instance of each ref.
@@ -95,6 +92,7 @@ public class Resolver {
      * todo try/catch
      */
     public ResolverResult resolve (URI documentUri, Object document) {
+        /*
         ReferenceRegistry registry = new ReferenceRegistry ();
 
         Scope currentScope = Scope.createScope (documentUri, document, settings.version);
@@ -111,46 +109,307 @@ public class Resolver {
         References pending = new References ();
         collectReferences (bucket, pending);
         resolveReferences (pending, registry);
+    */
 
-        return new ResolverResult (currentScope, document, registry);
+        ReferenceRegistry registry = new ReferenceRegistry ();
+
+        Scope scope = createScope (documentUri, document, settings.version);
+        Bucket bucket = toBucket (scope, document);
+
+        if (bucket == null) {
+            return new ResolverResult (scope, document, registry);
+        }
+
+        //References pending = new References ();
+        ResolverContext context = new ResolverContext (documents, loader, registry);
+
+        ResolverId resolverId = new ResolverId (context);
+        resolverId.resolve(bucket);
+
+        ResolverRef resolverRef = new ResolverRef (context);
+        resolverRef.resolve(bucket);
+
+//        walkBucketIds (bucket, context); // phase one
+//        walkBucket (bucket, context);    // phase two
+
+//        collectReferences (scope, documentUri, document, context);
+//        resolveReferences (pending, registry); // phase three
+
+        return new ResolverResult (scope, document, registry);
     }
 
-    private void resolveIds (Scope currentScope, ReferenceRegistry registry) {
-        Map<URI, Document> docs = documents.getDocuments ();
-        docs.forEach ((documentUri, document) -> {
-            Ref ref = new Ref (currentScope, documentUri.toString ());
-            Scope scope = currentScope.move (documentUri, document.getDocument ());
-            registry.add (ref, scope, document.getDocument ());
+
+
+    private void walkBucket (Bucket bucket, ResolverContext context) {
+//        URI currentId = getId (bucket);
+//        registerId (currentId, bucket);
+//        resolve (currentId, bucket, context);
+
+        // since 2019-09
+//        URI currentAnchor = getAnchor (bucket);
+//        registerAnchor (currentAnchor, bucket);
+//        resolve(currentAnchor, bucket, context);
+
+        // only 2019-09
+//        URI recursiveAnchor = getRecursiveAnchor (bucket);
+//        registerDynamicAnchor (recursiveAnchor, bucket);
+//        resolve(recursiveAnchor, bucket, context);
+
+        // since 2020-12
+//        URI dynamicAnchor = getDynamicAnchor (bucket);
+//        registerDynamicAnchor (dynamicAnchor, bucket);
+//        resolve(dynamicAnchor, bucket, context);
+
+
+        Scope scope = bucket.getScope ();
+        JsonPointer location = bucket.getLocation ();
+        SchemaVersion version = scope.getVersion ();
+
+        bucket.forEach ((name, value) -> {
+            JsonPointer keywordLocation = location.append (name);
+            Keyword keyword = version.getKeyword (name);
+
+            // check vocabulary?
+
+            if (name.equals (Keywords.SCHEMA) && isString (value)) {
+                Ref ref = createRef (scope, name, value);
+                walkRef (ref, keywordLocation, context);
+
+            } else if (name.equals (Keywords.REF) && isString (value)) {
+                Ref ref = createRef (scope, name, value);
+                walkRef (ref, keywordLocation, context);
+
+            } else if (name.equals (Keywords.RECURSIVE_REF) && isString (value)) {
+                Ref ref = createRef (scope, name, value);
+                walkRef (ref, keywordLocation, context);
+            }
+
+            if (keyword == null || !keyword.isNavigable ())
+                return;
+
+            if (keyword.isSchema () && isObject (value)) {
+                walkSchema (scope, value, keywordLocation, context);
+
+            } else if (keyword.isSchemaArray ()) {
+                walkSchemaArray (scope, value, keywordLocation, context);
+
+            } else if (keyword.isSchemaMap ()) {
+                walkSchemaMap (scope, value, keywordLocation, context);
+            }
         });
     }
 
-    private void collectReferences (URI documentUri, Object document, References registry)
+    private void walkRef (Ref ref, JsonPointer location, ResolverContext context) {
+//        Scope scope = ref.getScope ();
+//        URI uri = ref.getDocumentUri ();
+//
+//        Object document = getDocument (uri);
+//        if (document == null) {
+//            // todo no auto load -> throw
+//            document = addDocument (scope, uri, ref);
+//            if (document != null && !context.isProcessedDocument (uri)) {
+//                context.setProcessedDocument (uri);
+//                walkSchema (scope, document, location, context);
+//            }
+//        }
+//
+//        if (context.isProcessedReference(ref.getAbsoluteUri ())) {
+//            return;
+//        }
+//
+//        context.setProcessedReferences(ref.getAbsoluteUri ());
+//        addReference (ref, context.references);
+    }
+
+    private void walkSchema (
+        Scope currentScope, Object value, JsonPointer location, ResolverContext context
+    ) {
+        Scope scope = currentScope.move (value);
+        Bucket bucket = toBucket (scope, value, location);
+        if (bucket == null) {
+            return; // todo error
+        }
+
+        walkBucket (bucket, context);
+    }
+
+    private void walkSchemaArray (
+        Scope currentScope, Object value, JsonPointer location, ResolverContext context
+    ) {
+        Collection<Object> items = asArray (value);
+        if (items == null) {
+            return; // todo error
+        }
+
+        int index = 0;
+        for (Object item : items) {
+            JsonPointer itemLocation = location.append (index);
+            walkSchema (currentScope, item, itemLocation, context);
+            index++;
+        }
+    }
+
+    private void walkSchemaMap (
+        Scope currentScope, Object value, JsonPointer location, ResolverContext context
+    ) {
+        Scope targetScope = currentScope.move (value);
+        Bucket bucket = toBucket (targetScope, value, location);
+        if (bucket == null) {
+            return; // // todo error
+        }
+
+        bucket.forEach ((propName, propValue) -> {
+            JsonPointer propLocation = location.append (propName);
+            walkSchema (targetScope, propValue, propLocation, context);
+        });
+    }
+
+//    private void resolveIds (Scope currentScope, ReferenceRegistry registry) {
+//        Map<URI, Document> docs = documents.getDocuments ();
+//        docs.forEach ((documentUri, document) -> {
+//            Ref ref = new Ref (currentScope, documentUri.toString ());
+//            Scope scope = currentScope.move (documentUri, document.getDocument ());
+//            registry.add (ref, scope, document.getDocument ());
+//        });
+//    }
+
+    private void collectReferences (URI documentUri, Object document, References references)
         throws ResolverException {
 
-        Scope scope = Scope.createScope (documentUri, document, settings.version);
+        Scope scope = createScope (documentUri, document, settings.version);
         Bucket bucket = toBucket (scope, document);
         if (bucket == null)
             return;
 
-        collectReferences (bucket, registry);
+        collectReferences (bucket, references);
     }
 
-    private void collectReferences (Scope currentScope, URI documentUri, Object document, References registry)
+    // todo
+    private void collectReferences (Scope currentScope, URI documentUri, Object document, References references)
         throws ResolverException {
 
-        Scope documentScope = Scope.createScope (documentUri, document, currentScope);
+        Scope documentScope = createScope (documentUri, document, currentScope);
         Bucket bucket = toBucket (documentScope, document);
         if (bucket == null)
             return;
         // ids ????
-        collectReferences (bucket, registry);
+        collectReferences (bucket, references);
     }
 
+    private void collectId (Bucket bucket, ResolverContext context) {
+//        URI currentId = getId (bucket);
+//        registerId (currentId, bucket);
+//        resolve (currentId, bucket, context);
+//
+//        // since 2019-09
+//        URI currentAnchor = getAnchor (bucket);
+//        registerAnchor (currentAnchor, bucket);
+//        resolve(currentAnchor, bucket, context);
+//
+//        // only 2019-09
+//        URI recursiveAnchor = getRecursiveAnchor (bucket);
+//        registerDynamicAnchor (recursiveAnchor, bucket);
+//        resolve(recursiveAnchor, bucket, context);
+//
+//        // since 2020-12
+//        URI dynamicAnchor = getDynamicAnchor (bucket);
+//        registerDynamicAnchor (dynamicAnchor, bucket);
+//        resolve(dynamicAnchor, bucket, context);
+    }
+
+    private void resolve (@Nullable URI uri, Bucket bucket, ResolverContext context) {
+//        if (uri == null)
+//            return;
+//
+//        if (context.registry.hasReference (uri)) {
+//            return;
+//        }
+//
+//        Scope scope = bucket.getScope ();
+//        Ref ref = new Ref (scope, uri);
+//        context.registry.add (ref, scope, bucket.getRawValues ());
+//        context.setProcessedReferences (ref.getAbsoluteUri ()); // ????
+    }
+
+//    private @Nullable URI getId (Bucket bucket) {
+//        String id = bucket.getScope ().getVersion ().getIdProvider ().getId (bucket.getRawValues ());
+//        if (id == null)
+//            return null;
+//
+//        return bucket.getScope ().resolve(id).getBaseUri ();
+//    }
+
+//    private void registerId (@Nullable URI id, Bucket bucket) {
+//        if (id == null)
+//            return;
+//
+//        if (!documents.contains (id)) {
+//            documents.addId (id, bucket.getRawValues ());
+//        }
+//    }
+//
+//    private @Nullable URI getAnchor (Bucket bucket) {
+//        String anchor = bucket.convert ("$anchor", new StringNullableConverter ());
+//        if (anchor == null)
+//            return null;
+//
+//        return bucket.getScope ().resolveAnchor (anchor);
+//    }
+//
+//    private void registerAnchor (@Nullable URI anchor, Bucket bucket) {
+//        if (anchor == null)
+//            return;
+//
+//        if (!documents.contains (anchor)) {
+//            documents.addAnchor (anchor, bucket.getRawValues ());
+//        }
+//    }
+//
+//    private @Nullable URI getRecursiveAnchor (Bucket bucket) {
+//        Boolean anchor = bucket.convert ("$recursiveAnchor", new BooleanConverter ());
+//        if (anchor == null)
+//            return null;
+//
+//        return bucket.getScope ().resolveAnchor ("");
+//    }
+//
+//    private @Nullable URI getDynamicAnchor (Bucket bucket) {
+//        String anchor = bucket.convert ("$dynamicAnchor", new StringNullableConverter ());
+//        if (anchor == null)
+//            return null;
+//
+//        return bucket.getScope ().resolveAnchor (anchor);
+//    }
+//
+//    private void registerDynamicAnchor (@Nullable URI anchor, Bucket bucket) {
+//        if (anchor == null)
+//            return;
+//
+//        if (!documents.contains (anchor)) {
+//            documents.addDynamicAnchor (anchor, bucket.getRawValues ());
+//        }
+//    }
+
+    private void collectReferences (Scope currentScope, URI documentUri, Object document, ResolverContext context)
+        throws ResolverException {
+
+        Scope documentScope = createScope (documentUri, document, currentScope);
+        Bucket bucket = toBucket (documentScope, document);
+        if (bucket == null)
+            return;
+
+        //context.setHasReferences(documentUri);
+        collectReferences (bucket, context);
+    }
+
+    @Deprecated
     private void collectReferences (Bucket bucket, References references)
         throws ResolverException {
 
         Scope scope = bucket.getScope ();
+        SchemaVersion version = scope.getVersion ();
 
+        // DO NOT CALL!!!
         bucket.forEach ((name, value) -> {
             if (name.equals (Keywords.SCHEMA) && isString (value)) {
                 Ref ref = createRef (scope, name, value);
@@ -217,6 +476,159 @@ public class Resolver {
         });
     }
 
+    private void collectReferences (Bucket bucket, ResolverContext context)
+        throws ResolverException {
+
+        collectId (bucket, context);
+
+        Scope scope = bucket.getScope ();
+        SchemaVersion version = scope.getVersion ();
+
+        /*
+                JsonPointer location = bucket.getLocation ();
+        bucket.forEach ((name, value) -> {
+            JsonPointer keywordLocation = location.append (name);
+            Keyword keyword = version.getKeyword (name);
+
+            if (keyword == null || !keyword.isNavigable ())
+                return;
+
+            if (keyword.isSchema ()) {
+                walkSchema (keywordLocation, scope, value);
+
+            } else if (keyword.isSchemaArray ()) {
+                walkSchemaArray (keywordLocation, scope, value);
+
+            } else if (keyword.isSchemaMap ()) {
+                walkSchemaMap (keywordLocation, scope, value);
+            }
+        });
+         */
+
+
+        bucket.forEach ((name, value) -> {
+            Keyword keyword = version.getKeyword (name);
+            if (keyword == null) {
+                keyword = Keyword.NONE;
+            }
+
+            if (name.equals (Keywords.SCHEMA) && isString (value)) {
+                Ref ref = createRef (scope, name, value);
+                URI documentUri = ref.getDocumentUri ();
+
+                Object document = getDocument (documentUri);
+                if (document == null) {
+                    // todo no auto load -> throw
+                    document = addDocument (scope, documentUri, ref);
+                }
+
+//                if (context.hasReferences(documentUri)) {
+//                    return;
+//                }
+//
+//                context.setHasReferences(documentUri);
+                collectReferences (scope, documentUri, document, context);
+                addReference (ref, context.references);
+
+            } else if (name.equals (Keywords.REF) && isString (value)) {
+                Ref ref = createRef (scope, name, value);
+                URI documentUri = ref.getDocumentUri ();
+
+                Object document = getDocument (documentUri);
+                if (document == null) {
+                    // todo no auto load -> throw
+                    document = addDocument (scope, documentUri, ref);
+                }
+
+//                if (context.hasReferences(documentUri)) {
+//                    return;
+//                }
+//
+//                context.setHasReferences(documentUri);
+                collectReferences (scope, documentUri, document, context);
+                addReference (ref, context.references);
+
+            } else if (name.equals (Keywords.RECURSIVE_REF) && isString (value)) {
+                Ref ref = createRef (scope, name, value);
+                URI documentUri = ref.getDocumentUri ();
+
+                Object document = getDocument (documentUri);
+                if (document == null) {
+                    // todo no auto load -> throw
+                    document = addDocument (scope, documentUri, ref);
+                }
+
+//                if (context.hasReferences (documentUri)) {
+//                    return;
+//                }
+//
+//                context.setHasReferences (documentUri);
+                collectReferences (scope, documentUri, document, context);
+                addReference (ref, context.references);
+
+            } else if (keyword.isSchema ()) {
+
+            } else if (keyword.isSchemaArray ()) {
+
+            } else if (keyword.isSchemaMap ()) {
+
+
+
+                /*
+                    private void walkSchemaMap (JsonPointer location, Scope currentScope, Object value) {
+        Scope targetScope = currentScope.move (value);
+        Bucket keywordBucket = toBucket (targetScope, location, value);
+        if (keywordBucket != null) {
+            keywordBucket.forEach ((propName, propValue) -> {
+                JsonPointer propLocation = location.append (propName);
+                walkSchema (propLocation, targetScope, propValue);
+            });
+        }
+    }
+                 */
+
+
+            } else if (isObject (value)) {
+                // adjust location to bucket scope?
+                JsonPointer location = bucket.getLocation ().append (name);
+                Scope objectScope = scope.move(value);
+                Bucket objectBucket = toBucket (objectScope, value, location);
+                collectReferences (objectBucket, context);
+
+            } else if (isArray (value)) {
+                // adjust location to bucket scope?
+                JsonPointer location = bucket.getLocation ().append (name);
+
+                int index = 0;
+                for (Object item : asArray (value)) {
+                    if (!isObject (item))
+                        continue;
+
+                    Scope itemScope = scope.move (item);
+                    Bucket itemBucket = toBucket (itemScope, item, location.append (index));
+                    collectReferences (itemBucket, context);
+
+                    index++;
+                }
+            }
+        });
+
+
+        /*
+                    if (keyword == null || !keyword.isNavigable ())
+                return;
+
+            if (keyword.isSchema ()) {
+                walkSchema (keywordLocation, scope, value);
+
+            } else if (keyword.isSchemaArray ()) {
+                walkSchemaArray (keywordLocation, scope, value);
+
+            } else if (keyword.isSchemaMap ()) {
+                walkSchemaMap (keywordLocation, scope, value);
+            }
+         */
+    }
     // same file or not ???
     private void resolveReferences (References references, ReferenceRegistry registry) {
         references.each ((Ref ref) -> {
@@ -285,6 +697,13 @@ public class Resolver {
         }
         return new Bucket (scope, location, asMap (source));
     }
+
+//    private @Nullable Bucket toBucket(Scope scope, JsonPointer location, Object source) {
+//        if (!isObject (source)) {
+//            return null;
+//        }
+//        return new Bucket (scope, location, asMap (source));
+//    }
 
     private void addReference (Ref ref, References references) {
         references.add (ref);
