@@ -7,6 +7,7 @@ package io.openapiparser.schema;
 
 import io.openapiparser.converter.*;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
 
 import java.net.URI;
 import java.util.*;
@@ -27,6 +28,21 @@ public class Bucket {
 
     public static Bucket empty() {
         return new Bucket (Collections.emptyMap ());
+    }
+
+    static @Nullable Bucket toBucket (Scope scope, @PolyNull Object source) {
+        if (!isObject (source)) {
+            return null;
+        }
+
+        return new Bucket (scope, asObject (source));
+    }
+
+    static @PolyNull Bucket toBucket (Scope scope, @Nullable Object source, JsonPointer location) {
+        if (!isObject (source)) {
+            return null;
+        }
+        return new Bucket (scope, location, asObject (source));
     }
 
     @Deprecated
