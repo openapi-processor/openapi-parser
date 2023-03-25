@@ -74,7 +74,7 @@ public class Bucket {
     /**
      * create an object bucket with scope &amp; location in the source document and its properties.
      *
-     * @param source the document URI
+     * @param scope the scope of the bucket
      * @param location the location (json pointer) inside {@code source}
      * @param properties the document properties
      */
