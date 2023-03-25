@@ -36,7 +36,7 @@ public class SchemaKeywords {
         if (match == null)
             return false;
 
-        return match.isNavigatable ();
+        return match.isNavigable ();
     }
 
     private static Map<String, Keyword> initDraft201909 () {
@@ -78,6 +78,7 @@ public class SchemaKeywords {
 
         // core
         keywords.put ("$id", keyword (URI));
+        // delete id
 
         // validation: numbers
         keywords.put ("exclusiveMaximum", keyword(NUMBER));

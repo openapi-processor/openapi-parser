@@ -10,9 +10,11 @@ import java.util.EnumSet;
 import static io.openapiparser.schema.KeywordType.*;
 
 public class Keyword {
+    public static final Keyword NONE = new Keyword();
+
     private final EnumSet<KeywordType> types;
 
-    public Keyword () {
+    private Keyword () {
         types = EnumSet.of (KeywordType.NONE);
     }
 
@@ -32,7 +34,7 @@ public class Keyword {
         return types.contains (SCHEMA_MAP);
     }
 
-    public boolean isNavigatable () {
+    public boolean isNavigable () {
         return types.contains (SCHEMA)
             || types.contains (SCHEMA_MAP)
             || types.contains (SCHEMA_ARRAY);

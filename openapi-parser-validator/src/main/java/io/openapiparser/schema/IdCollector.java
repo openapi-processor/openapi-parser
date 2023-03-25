@@ -67,7 +67,7 @@ public class IdCollector {
             JsonPointer keywordLocation = location.append (name);
             Keyword keyword = version.getKeyword (name);
 
-            if (keyword == null || !keyword.isNavigatable ())
+            if (keyword == null || !keyword.isNavigable ())
                 return;
 
             if (keyword.isSchema ()) {
