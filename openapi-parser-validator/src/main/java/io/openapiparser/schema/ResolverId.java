@@ -57,8 +57,6 @@ public class ResolverId {
             Keyword keyword = version.getKeyword (name);
 
             boolean navigable = keyword != null && keyword.isNavigable ();
-//          if (keyword == null || !keyword.isNavigable ())
-//            return;
 
             if (navigable && keyword.isSchema () && isObject (value)) {
                 walkSchema (scope, value, propLocation);
@@ -115,21 +113,8 @@ public class ResolverId {
         });
     }
 
-    private void resolve () {
-//        context..each ((Ref ref) -> {
-//
-//        });
-    }
-
-
-    // documents ?????
-    private void register (Bucket bucket) {
-        resolve (bucket.getBaseUri (), bucket);
-    }
-
     private @Nullable URI getId (Bucket bucket) {
         return bucket.getId ();
-//        return bucket.getBaseUri ();
     }
 
     private void registerId (@Nullable URI id, Bucket bucket) {
