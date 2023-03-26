@@ -78,7 +78,7 @@ class ResolverContext {
         return documents.get (documentUri);
     }
 
-    public @Nullable Object addDocument (URI documentUri, String source, String ref) {
+    public Object addDocument (URI documentUri, String source, String ref) {
         try {
             Object document;
             if (documentUri.getScheme () == null) {
