@@ -9,7 +9,7 @@ import io.openapiparser.schema.*;
 import io.openapiparser.validator.ValidatorSettings;
 import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.*;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -43,8 +43,9 @@ public class DateTime {
 
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         Format format = Format.of (schema.getFormat ());
-        if (!shouldValidate (format))
+        if (!shouldValidate (format)) {
             return new NullStep ("datetime");
+        }
 
         DateTimeStep step = new DateTimeStep (schema, instance);
 
@@ -58,6 +59,8 @@ public class DateTime {
         return step;
     }
 
+
+    @EnsuresNonNullIf (expression = "#1", result = true)
     private boolean shouldValidate (@Nullable Format format) {
         return format != null
             && settings.validateFormat (format)
