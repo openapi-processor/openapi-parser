@@ -8,59 +8,45 @@ package io.openapiparser.validator
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.openapiparser.reader.UriReader
-import io.openapiparser.schema.*
+import io.openapiparser.schema.DocumentLoader
+import io.openapiparser.schema.JsonInstance
+import io.openapiparser.schema.SchemaStore
+import io.openapiparser.schema.SchemaVersion
 import io.openapiparser.snakeyaml.SnakeYamlConverter
+import io.openapiparser.validator.support.InstanceBuilder
+
 
 class ValidatorSchemaSpec : StringSpec({
 
-    "validates draft-04 with draft-04" {
-        val resolver = Resolver(UriReader(), SnakeYamlConverter(), DocumentStore())
-        val store = SchemaStore(resolver)
-        store.loadDraft4()
+    val loader = DocumentLoader(UriReader(), SnakeYamlConverter())
+    val store = SchemaStore(loader)
+    store.registerDraft4()
+    store.registerDraft6()
+    store.registerDraft7()
+    store.registerDraft201909()
 
-        val schema = store.getSchema(SchemaVersion.Draft4.schema)
-
-        val resolverResult = resolver.resolve("/json-schema/draft-04/schema.json")
-        val instanceContext = JsonInstanceContext(resolverResult.uri, ReferenceRegistry())
-        val instance = JsonInstance(resolverResult.document, instanceContext)
-
-        val validator = Validator()
-        val step = validator.validate(schema!!, instance)
-
-        step.isValid.shouldBeTrue()
+    fun getInstance (schema: SchemaVersion): JsonInstance {
+        return InstanceBuilder(loader, store.documents).getDraft(schema)
     }
 
-    "validates draft-06 with draft-06" {
-        val resolver = Resolver(UriReader(), SnakeYamlConverter(), DocumentStore())
-        val store = SchemaStore(resolver)
-        store.loadDraft6()
+    data class Fixture(val schema: SchemaVersion, val instance: SchemaVersion)
 
-        val schema = store.getSchema(SchemaVersion.Draft6.schema)
+    val fixtures = listOf(
+        Fixture(SchemaVersion.Draft4, SchemaVersion.Draft4),
+        Fixture(SchemaVersion.Draft6, SchemaVersion.Draft6),
+        Fixture(SchemaVersion.Draft7, SchemaVersion.Draft7),
+        Fixture(SchemaVersion.Draft201909, SchemaVersion.Draft201909)
+    )
 
-        val resolverResult = resolver.resolve("/json-schema/draft-06/schema.json")
-        val instanceContext = JsonInstanceContext(resolverResult.uri, ReferenceRegistry())
-        val instance = JsonInstance(resolverResult.document, instanceContext)
+    for (f in fixtures) {
+        "validate ${f.instance.name} schema with ${f.schema.name}" {
+            val schema = store.getSchema(f.schema.schemaUri, f.schema)
+            val instance = getInstance(f.instance)
 
-        val validator = Validator()
-        val step = validator.validate(schema!!, instance)
+            val validator = Validator()
+            val step = validator.validate(schema, instance)
 
-        step.isValid.shouldBeTrue()
-    }
-
-    "validates draft-07 with draft-07" {
-        val resolver = Resolver(UriReader(), SnakeYamlConverter(), DocumentStore())
-        val store = SchemaStore(resolver)
-        store.loadDraft7()
-
-        val schema = store.getSchema(SchemaVersion.Draft7.schema)
-
-        val resolverResult = resolver.resolve("/json-schema/draft-07/schema.json")
-        val instanceContext = JsonInstanceContext(resolverResult.uri, ReferenceRegistry())
-        val instance = JsonInstance(resolverResult.document, instanceContext)
-
-        val validator = Validator()
-        val step = validator.validate(schema!!, instance)
-
-        step.isValid.shouldBeTrue()
+            step.isValid.shouldBeTrue()
+        }
     }
 })
