@@ -10,7 +10,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.net.URI;
 import java.util.*;
 
-public class DynamicScope {
+public final class DynamicScope {
 
     private static class Scope {
         private final URI id;
@@ -30,7 +30,7 @@ public class DynamicScope {
         }
     }
 
-    private final List<Scope> scopes;
+    private final List<Scope> scopes = new ArrayList<> ();
 
     public DynamicScope (JsonSchema schema) {
         Scope scope = createScope (schema);
@@ -38,12 +38,11 @@ public class DynamicScope {
             scope = new Scope (getBaseUri (schema));
         }
 
-        scopes = new ArrayList<> ();
         scopes.add (scope);
     }
 
     private DynamicScope (DynamicScope source) {
-        scopes = new ArrayList<> (source.scopes);
+        scopes.addAll (source.scopes);
     }
 
     public DynamicScope add (JsonSchema schema) {
