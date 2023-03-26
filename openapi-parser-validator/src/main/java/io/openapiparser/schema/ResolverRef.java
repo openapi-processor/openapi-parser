@@ -37,8 +37,6 @@ public class ResolverRef {
 
             boolean navigable = keyword != null && keyword.isNavigable ();
 
-            // check vocabulary?  just core ???
-
             if (name.equals (Keywords.SCHEMA) && isString (value)) {
                 Ref ref = createRef (scope, name, value);
                 walkRef (ref, propLocation);
@@ -156,12 +154,7 @@ public class ResolverRef {
             Object idDocument = context.getDocument (id);
             if (idDocument != null) {
                 Scope docScope = ref.getScope ().move (id, idDocument);
-                // if ref references an id, it should not resolve the scope????
-//                Scope docScope = Scope.createScope (id, idDocument, ref.getScope ());
-//                Scope docScope = getScope (ref.getScope (), idDocument);  // $id ???
-//                Scope docScope2 = getScope (id, idDocument, settings.version);
                 context.addRef (ref, docScope, idDocument);
-//                registry.add (ref, docScope, idDocument);
                 return;
             }
 
@@ -175,14 +168,12 @@ public class ResolverRef {
             if (bucket == null) {
                 assert document != null;
                 context.addRef (ref, scope, idDocument);
-                //registry.add (ref, scope, document);
                 return;
             }
 
             // object, no pointer -> to document
             if (!ref.hasPointer ()) {
                 context.addRef (ref, scope, idDocument);
-//                registry.add (ref, scope, document);
                 return;
             }
 
@@ -192,18 +183,6 @@ public class ResolverRef {
             }
 
             context.addRef (ref, referenced.getScope (), referenced.getValue ());
-//            registry.add (ref, referenced.getScope (), referenced.getValue ());
-
-            // may reduce the bucket stuff by extracting getRawValue()
-//            RawValue property = bucket.getRawValue (
-//                JsonPointer.from (ref.getPointer ()),
-//                settings.version.getIdProvider ());
-//
-//            if (property == null) {
-//                throw new ResolverException (String.format ("failed to resolve ref <%s/%s>.", documentUri, ref));
-//            }
-
-//            return property;
         });
     }
 
