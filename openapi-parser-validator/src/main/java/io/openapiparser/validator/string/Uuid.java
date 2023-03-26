@@ -27,12 +27,12 @@ public class Uuid {
         if (!shouldValidate (format))
             return new NullStep ("format");
 
-        ValidatedStep step = new ValidatedStep (schema, instance, "format");
+        UuidStep step = new UuidStep (schema, instance);
 
         String instanceValue = getInstanceValue (instance);
-        boolean valid = isValid (instanceValue);
+        boolean valid = isUuid (instanceValue);
         if (!valid) {
-            step.setError (new UuidError (schema, instance));
+            step.setInvalid ();
         }
 
         return step;
@@ -49,7 +49,7 @@ public class Uuid {
     }
 
     @SuppressWarnings ("ResultOfMethodCallIgnored")
-    private boolean isValid(String uuid) {
+    private boolean isUuid (String uuid) {
         try {
             UUID.fromString (uuid);
 

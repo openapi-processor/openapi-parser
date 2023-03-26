@@ -58,7 +58,7 @@ public class Contains {
         Integer maxContains = schema.getMaxContains ();
 
         if (minContains != null) {
-            ValidatedStep minStep = new ValidatedStep (schema, instance, "minContains");
+            MinContainsStep minStep = new MinContainsStep (schema, instance);
             minStep.setValid (validCount >= minContains);
             step.add (minStep);
 
@@ -68,7 +68,7 @@ public class Contains {
         }
 
         if (maxContains != null) {
-            ValidatedStep minStep = new ValidatedStep (schema, instance, "maxContains");
+            MaxContainsStep minStep = new MaxContainsStep (schema, instance);
             boolean valid = validCount <= maxContains;
             minStep.setValid (valid);
             step.add (minStep);
