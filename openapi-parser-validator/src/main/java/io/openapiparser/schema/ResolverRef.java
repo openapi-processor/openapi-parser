@@ -168,13 +168,13 @@ public class ResolverRef {
             // no object -> to (simple) value
             if (bucket == null) {
                 assert document != null;
-                context.addRef (ref, scope, idDocument);
+                context.addRef (ref, scope, document);
                 return;
             }
 
             // object, no pointer -> to document
             if (!ref.hasPointer ()) {
-                context.addRef (ref, scope, idDocument);
+                context.addRef (ref, scope, document);
                 return;
             }
 
