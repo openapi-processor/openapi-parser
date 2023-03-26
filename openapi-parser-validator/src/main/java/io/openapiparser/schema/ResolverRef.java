@@ -26,6 +26,7 @@ public class ResolverRef {
         resolve ();
     }
 
+    @SuppressWarnings({"dereference.of.nullable"})
     private void walkBucket (Bucket bucket) {
         Scope scope = bucket.getScope ();
         JsonPointer location = bucket.getLocation ();

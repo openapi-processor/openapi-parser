@@ -27,6 +27,7 @@ public class ResolverId {
         walkBucket (bucket);
     }
 
+    @SuppressWarnings({"dereference.of.nullable"})
     private void walkBucket (Bucket bucket) {
         URI currentId = getId (bucket);
         registerId (currentId, bucket);
