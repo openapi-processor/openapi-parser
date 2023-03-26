@@ -21,6 +21,7 @@ public class ResolverRef {
 
 
     public void resolve (Bucket bucket) {
+        context.setProcessedDocument (bucket.getBaseUri ());
         walkBucket (bucket);
         resolve ();
     }
@@ -84,12 +85,21 @@ public class ResolverRef {
         if (document == null) {
             // todo no auto load -> throw
             document = addDocument (scope, uri, ref);
-            if (document != null) {
-                Scope docScope = scope.move (uri, document);
-                walkIds (docScope, document/*, location*/); // drop location???
-                walkSchema (docScope, document, JsonPointer.EMPTY);
-            }
         }
+
+        if (!context.isProcessedDocument (uri)) {
+            context.setProcessedDocument (uri);
+
+            Scope docScope = scope.move (uri, document);
+            Bucket bucket = Bucket.toBucket (docScope, document, JsonPointer.EMPTY);
+            if (bucket == null) {
+                return; // todo error
+            }
+
+            walkIds (bucket);
+            walkBucket (bucket);
+        }
+
         addReference (ref);
     }
 
@@ -97,8 +107,7 @@ public class ResolverRef {
         context.addRef (ref);
     }
 
-    private void walkIds (Scope scope, Object value/*, JsonPointer location*/) {
-        Bucket bucket = Bucket.toBucket (scope, value);
+    private void walkIds (Bucket bucket) {
         ResolverId resolverId = new ResolverId (context);
         resolverId.resolve(bucket);
     }

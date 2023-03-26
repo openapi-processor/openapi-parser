@@ -6,12 +6,12 @@ import java.net.URI;
 import java.util.*;
 
 class ResolverContext {
-//    Set<URI> processedDocuments = new HashSet<> ();
-//    Set<URI> processedReferences = new HashSet<> ();
-//
+
     private final DocumentStore documents;
     private final DocumentLoader loader;
 
+
+    Set<URI> processedDocuments = new HashSet<> ();
 
     public final References references = new References ();
     public final ReferenceRegistry registry;
@@ -95,21 +95,11 @@ class ResolverContext {
         }
     }
 
-//    boolean isProcessedDocument (URI uri) {
-//        return processedDocuments.contains (uri);
-//    }
-//
-//    public void setProcessedDocument (URI uri) {
-//        processedDocuments.add (uri);
-//        processedReferences.add (uri);
-//    }
-//
-//    boolean isProcessedReference (URI uri) {
-//        return processedDocuments.contains (uri)
-//            || processedReferences.contains (uri);
-//    }
-//
-//    public void setProcessedReferences (URI uri) {
-//        processedReferences.add (uri);  // add empty ref ???
-//    }
+    public void setProcessedDocument (URI documentUri) {
+        processedDocuments.add (documentUri);
+    }
+
+    public boolean isProcessedDocument (URI documentUri) {
+        return processedDocuments.contains (documentUri);
+    }
 }
