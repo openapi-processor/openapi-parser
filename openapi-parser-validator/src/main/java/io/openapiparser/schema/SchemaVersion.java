@@ -135,19 +135,19 @@ public enum SchemaVersion {
     }
 
     /**
-     * try to detect schema version. If {@code scope} does not represent a known json schema draft
+     * try to detect schema version. If {@code uri} does not represent a known json schema draft
      * it returns the fallback schema version.
      *
-     * @param scope current scope
+     * @param uri current scope
      * @param fallback fallback version
      * @return the detected schema version or the latest version
      */
-    public static SchemaVersion getVersion (URI scope, SchemaVersion fallback) {
-        if (SchemaVersion.Draft4.getSchemaUri ().equals (scope)) {
-            return Draft4;
+    public static SchemaVersion getVersion (URI uri, SchemaVersion fallback) {
+        SchemaVersion version = getVersion (uri);
+        if (version == null) {
+            return fallback;
         }
-
-        return fallback;
+        return version;
     }
 
     public URI getSchemaUri () {
