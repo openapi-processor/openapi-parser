@@ -38,7 +38,7 @@ public class Bucket {
         return new Bucket (scope, asObject (source));
     }
 
-    static @PolyNull Bucket toBucket (Scope scope, @Nullable Object source, JsonPointer location) {
+    static @Nullable Bucket toBucket (Scope scope, @Nullable Object source, JsonPointer location) {
         if (!isObject (source)) {
             return null;
         }
