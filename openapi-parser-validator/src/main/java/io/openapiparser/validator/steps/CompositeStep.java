@@ -30,10 +30,10 @@ public class CompositeStep implements ValidationStep, Annotations {
     }
 
     public void add (ValidationStep step) {
-        if (step instanceof NullStep)
+        if (isNullStep(step))
             return;
 
-        if (step instanceof FlatStep) {
+        if (isFlatStep(step)) {
             steps.addAll (step.getSteps ());
         } else {
             steps.add (step);
@@ -51,6 +51,7 @@ public class CompositeStep implements ValidationStep, Annotations {
             .flatMap (Collection::stream)
             .collect(Collectors.toList ());
     }
+
     @Override
     public Collection<Annotation> getAnnotations (String keyword) {
         return steps.stream ()
@@ -76,5 +77,13 @@ public class CompositeStep implements ValidationStep, Annotations {
     @Override
     public String toString () {
         return isValid () ? "valid" : "invalid";
+    }
+
+    private static boolean isNullStep(ValidationStep step) {
+        return step instanceof NullStep;
+    }
+
+    private static boolean isFlatStep(ValidationStep step) {
+        return step instanceof FlatStep;
     }
 }
