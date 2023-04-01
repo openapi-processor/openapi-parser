@@ -78,6 +78,11 @@ class ResolverContext {
         return documents.get (documentUri);
     }
 
+    public void addDocument (Scope scope, Object document) {
+        documents.addId(scope.getBaseUri(), document);
+        setProcessedDocument (scope.getBaseUri ());
+    }
+
     public Object addDocument (URI documentUri, String source, String ref) {
         try {
             Object document;

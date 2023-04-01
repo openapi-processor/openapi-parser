@@ -21,7 +21,7 @@ public class ResolverRef {
 
 
     public void resolve (Bucket bucket) {
-        context.setProcessedDocument (bucket.getBaseUri ());
+        context.addDocument(bucket.getScope(), bucket.getRawValues());
         walkBucket (bucket);
         resolve ();
     }
