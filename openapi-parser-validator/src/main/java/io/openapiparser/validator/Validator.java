@@ -27,7 +27,24 @@ import java.util.*;
  */
 public class Validator {
     private final ValidatorSettings settings;
-    private final Set<URI> visited = new HashSet<> ();    // visited instance refs
+
+    private static class RefResult {
+        ValidationStep step;
+        boolean stop;
+
+        public RefResult(ValidationStep step, boolean stop) {
+            this.step = step;
+            this.stop = stop;
+        }
+
+        public ValidationStep getStep() {
+            return step;
+        }
+
+        public boolean shouldStop() {
+            return stop;
+        }
+    }
 
     public Validator () {
         settings = new ValidatorSettings ();
@@ -43,29 +60,16 @@ public class Validator {
 
     public ValidationStep validate(JsonSchema schema, JsonInstance instance, @Nullable DynamicScope parentScope) {
         DynamicScope dynamicScope = calcDynamicScope (schema, parentScope);
+
         SchemaStep step = new SchemaStep (schema, instance);
 
-        ValidationStep refStep = validateRef (schema, instance, dynamicScope);
-        step.add (refStep);
-        if (refStep instanceof SchemaRefStep && !allowsSiblings ()) {
+        RefResult ref = validateRef (schema, instance, dynamicScope);
+        step.add(ref.getStep());
+        if (ref.shouldStop()) {
             return step;
         }
 
         step.add (validateDynamicRef (schema, instance, dynamicScope));
-
-        /* todo
-        while (instance.isRef()) {
-            URI refKey = instance.getRefKey ();
-            if (visited.contains (refKey))
-                break;
-
-            visited.add (refKey);
-            instance = instance.getRefInstance ();
-            InstanceRefStep refStep = new InstanceRefStep (instance);
-            step.add (refStep);
-            step = refStep;
-        }*/
-
         step.add (validateIf (schema, instance, dynamicScope));
         step.add (validateAllOf (schema, instance, dynamicScope));
         step.add (validateAnyOf (schema, instance, dynamicScope));
@@ -79,7 +83,6 @@ public class Validator {
         step.add (validateString (schema, instance));
         step.add (validateObject (schema, instance, step, dynamicScope));
         step.add (validateArray (schema, instance, step, dynamicScope));
-
         return step;
     }
 
@@ -87,15 +90,16 @@ public class Validator {
     // Draft 7: todo
     // Draft 6: todo
     // Draft 4: todo
-    private ValidationStep validateRef (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope) {
+    private RefResult validateRef (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope) {
         if (!schema.isRef ()) {
-            return new NullStep(Keywords.REF);
+            return new RefResult(new NullStep(Keywords.REF), false);
         }
 
         JsonSchema refSchema = schema.getRefSchema ();
         SchemaRefStep step = new SchemaRefStep (refSchema);
         step.add (validate (refSchema, instance, dynamicScope));
-        return step;
+
+        return new RefResult(step, !refAllowsSibling(step, schema));
     }
 
     // Draft 2020-12: todo
@@ -287,7 +291,6 @@ public class Validator {
     }
 
     private ValidationStep validateBoolean (JsonSchema schema, JsonInstance instance) {
-        // todo move to validate()
         if (! isBooleanSchema (schema)) {
             return new NullStep ("boolean");
         }
@@ -296,7 +299,6 @@ public class Validator {
     }
 
     private ValidationStep validateArray (JsonSchema schema, JsonInstance instance, Annotations annotations, DynamicScope dynamicScope) {
-        // drop null step ??? return empty FlatStep to shortcut??
         if (!instance.isArray ()) {
             return new NullStep ("array");
         }
@@ -389,8 +391,12 @@ public class Validator {
         return schema.getContext ().getVocabularies ().requiresValidation ();
     }
 
-    private boolean allowsSiblings () {
-        return settings.getVersion ().validatesRefSiblings ();
+    private boolean refAllowsSibling (ValidationStep step, JsonSchema schema) {
+        if (step instanceof SchemaRefStep) {
+            return schema.getContext().refAllowsSiblings();
+        }
+
+        return true;
     }
 
     private boolean isBooleanSchema (JsonSchema schema) {

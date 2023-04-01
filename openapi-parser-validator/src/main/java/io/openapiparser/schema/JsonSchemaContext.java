@@ -65,4 +65,8 @@ public class JsonSchemaContext {
     public JsonSchemaContext withId (Map<String, Object> properties) {
         return new JsonSchemaContext (scope.move (properties), references, vocabularies);
     }
+
+    public boolean refAllowsSiblings () {
+        return scope.getVersion().validatesRefSiblings();
+    }
 }
