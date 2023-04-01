@@ -75,5 +75,23 @@ val draft6Extras = listOf(
             "http://localhost:1234/ref-and-definitions.json",
             "/suites/JSON-Schema-Test-Suite/remotes/ref-and-definitions.json"
         )
+    ),
+    Remote(
+        "Location-independent identifier in remote ref", Document(
+            "http://localhost:1234/locationIndependentIdentifierPre2019.json",
+            "/suites/JSON-Schema-Test-Suite/remotes/locationIndependentIdentifierPre2019.json"
+        )
+    ),
+    Remote(
+        "retrieved nested refs resolve relative to their URI not \$id", Document(
+            "http://localhost:1234/nested/foo-ref-string.json",
+            "/suites/JSON-Schema-Test-Suite/remotes/nested/foo-ref-string.json"
+        )
+    ),
+    Remote(
+        "retrieved nested refs resolve relative to their URI not \$id", Document(
+            "http://localhost:1234/nested/string.json",
+            "/suites/JSON-Schema-Test-Suite/remotes/nested/string.json"
+        )
     )
 )
