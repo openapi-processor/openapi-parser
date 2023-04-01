@@ -64,5 +64,11 @@ val draft4Extras = listOf(
             "http://localhost:1234/name.json",
             "/suites/JSON-Schema-Test-Suite/remotes/name.json"
         )
+    ),
+    Remote(
+        "Location-independent identifier in remote ref", Document(
+            "http://localhost:1234/locationIndependentIdentifierDraft4.json",
+            "/suites/JSON-Schema-Test-Suite/remotes/locationIndependentIdentifierDraft4.json"
+        )
     )
 )
