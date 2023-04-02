@@ -51,6 +51,9 @@ val draft201909Extras = listOf(
     Exclude("valid leap second, large positive time-offset"),
     Exclude("valid leap second, negative time-offset"),
     Exclude("valid leap second, large negative time-offset"),
+    // (optional) cross-draft.json
+    // todo no 2020-12
+    Exclude("first item not a string is invalid"),
 
     // "remote" documents
     Remote(
