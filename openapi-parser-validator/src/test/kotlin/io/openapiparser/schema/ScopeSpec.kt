@@ -48,4 +48,17 @@ class ScopeSpec : StringSpec({
 
         scope.baseUri shouldBe URI.create("id")
     }
+
+    "create scope with version of meta-schema" {
+        val documentUri = URI.create("document")
+        val document = mapOf<String, Any?>(
+            "\$id" to "id",
+            "\$schema" to "http://json-schema.org/draft-07/schema#"
+        )
+
+        val scope = Scope.createScope(documentUri, document, SchemaVersion.Draft201909)
+
+        scope.baseUri shouldBe URI.create("id")
+        scope.version shouldBe SchemaVersion.Draft7
+    }
 })

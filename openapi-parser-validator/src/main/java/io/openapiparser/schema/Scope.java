@@ -8,9 +8,10 @@ package io.openapiparser.schema;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
+import java.util.Map;
 
-import static io.openapiparser.converter.Types.asMap;
-import static io.openapiparser.converter.Types.isObject;
+import static io.openapiparser.converter.Types.*;
+import static io.openapiparser.schema.UriSupport.createUri;
 import static io.openapiparser.support.Nullness.nonNull;
 
 
@@ -87,7 +88,7 @@ public class Scope {
      * @return the scope of the document
      */
     public static Scope createScope (URI documentUri, Object document, SchemaVersion fallback) {
-        SchemaVersion version = SchemaVersion.getVersion (documentUri, fallback);
+        SchemaVersion version = getSchemaVersion(documentUri, document, fallback);
 
         if (!isObject (document))
             return new Scope (documentUri, null, version);
@@ -113,7 +114,7 @@ public class Scope {
      * @return the scope of the document
      */
     public static Scope createScope(URI documentUri, Object document, Scope currentScope) {
-        SchemaVersion version = SchemaVersion.getVersion (documentUri, currentScope.getVersion ());
+        SchemaVersion version = getSchemaVersion (documentUri, document, currentScope.getVersion ());
 
         if (!isObject (document))
             return new Scope (documentUri, null, version);
@@ -136,5 +137,26 @@ public class Scope {
     @Override
     public String toString () {
         return String.format ("base: %s (%s) (doc: %s)", baseUri, version, documentUri);
+    }
+
+    private static SchemaVersion getSchemaVersion(URI documentUri, Object document, SchemaVersion fallback) {
+        URI metaSchema = getMetaSchema(document);
+        if (metaSchema != null) {
+            return SchemaVersion.getVersion(metaSchema, fallback);
+        }
+
+        return SchemaVersion.getVersion(documentUri, fallback);
+    }
+
+    private static @Nullable URI getMetaSchema(Object document) {
+        if (!isObject(document))
+            return null;
+
+        Map<String, Object> object = asObject(document);
+        Object schema = object.get(Keywords.SCHEMA);
+        if (!isString(schema))
+            return null;
+
+        return createUri(asString(schema));
     }
 }
