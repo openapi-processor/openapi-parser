@@ -160,5 +160,11 @@ val draft201909Extras = listOf(
             "http://localhost:1234/draft2019-09/metaschema-no-validation.json",
             "/suites/JSON-Schema-Test-Suite/remotes/draft2019-09/metaschema-no-validation.json"
         )
+    ),
+    Remote(
+        "ignore unrecognized optional vocabulary", Document(
+            "http://localhost:1234/draft2019-09/metaschema-optional-vocabulary.json",
+            "/suites/JSON-Schema-Test-Suite/remotes/draft2019-09/metaschema-optional-vocabulary.json"
+        )
     )
 )
