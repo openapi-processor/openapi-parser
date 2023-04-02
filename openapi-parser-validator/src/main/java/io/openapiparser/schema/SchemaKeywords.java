@@ -10,6 +10,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.*;
 
 import static io.openapiparser.schema.KeywordType.*;
+import static io.openapiparser.schema.Keywords.DEPENDENT_REQUIRED;
 
 public class SchemaKeywords {
     public static final SchemaKeywords draft201909 = new SchemaKeywords (initDraft201909 ());
@@ -47,6 +48,7 @@ public class SchemaKeywords {
         keywords.put ("$defs", keyword (SCHEMA_MAP));
 
         keywords.put ("dependentSchemas", keyword(SCHEMA_MAP));
+        keywords.put(DEPENDENT_REQUIRED, keyword(OBJECT));
 
         return Collections.unmodifiableMap (keywords);
     }

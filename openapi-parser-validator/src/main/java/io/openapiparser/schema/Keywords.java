@@ -7,6 +7,7 @@ package io.openapiparser.schema;
 
 // TODO move to Vocabulary Objects...
 public interface Keywords {
+    String DEPENDENT_REQUIRED = "dependentRequired";
     String DYNAMIC_REF = "$dynamicRef";
     String HASH = "#";
     String ID = "$id";

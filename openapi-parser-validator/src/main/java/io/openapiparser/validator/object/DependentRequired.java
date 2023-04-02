@@ -10,6 +10,7 @@ import io.openapiparser.validator.steps.ValidationStep;
 
 import java.util.*;
 
+import static io.openapiparser.schema.Keywords.DEPENDENT_REQUIRED;
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
@@ -25,6 +26,10 @@ public class DependentRequired {
 
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         DependenciesStep step = new DependenciesStep (schema, instance);
+
+        if (!shouldValidate(schema)) {
+            return step;
+        }
 
         Map<String, Set<String>> required = schema.getDependentRequired ();
         Map<String, Object> instanceObject = nonNull(instance.asObject ());
@@ -44,5 +49,11 @@ public class DependentRequired {
         });
 
         return step;
+    }
+
+    private boolean shouldValidate(JsonSchema schema) {
+        // schema.getVocabulary(keyword).enabled
+        // schema.getVocabularyValidation()
+        return schema.getContext().getVersion().getKeyword(DEPENDENT_REQUIRED) != null;
     }
 }
