@@ -135,7 +135,7 @@ public class Ref {
             return scope.getBaseUri ();
         }
 
-        return scope.getBaseUri ().resolve (refUri);
+        return UriSupport.resolve(scope.getBaseUri(), refUri);
     }
 
     @Override

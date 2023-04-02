@@ -48,7 +48,7 @@ public class Scope {
     }
 
     public Scope resolve (String id) {
-        URI resolved = this.baseUri.resolve (id);
+        URI resolved = UriSupport.resolve(baseUri, id);
         if (resolved.equals (this.baseUri))
             return this;
 
@@ -56,15 +56,15 @@ public class Scope {
     }
 
     public Scope resolve (URI id) {
-        URI resolved = this.baseUri.resolve (id);
-        if (resolved.equals (this.baseUri))
+        URI resolved = UriSupport.resolve(baseUri, id);
+        if (resolved.equals(this.baseUri))
             return this;
 
         return new Scope (documentUri, resolved, version);
     }
 
     public URI resolveAnchor (String anchor) {
-        return baseUri.resolve ("#" + anchor);
+        return UriSupport.resolve(baseUri, "#" + anchor);
     }
 
     public Scope move (URI documentUri, Object document) {
@@ -98,7 +98,7 @@ public class Scope {
             return new Scope (documentUri, null, version);
         }
 
-        return new Scope (documentUri, documentUri.resolve (id), version);
+        return new Scope (documentUri, UriSupport.resolve(documentUri, id), version);
     }
 
     /**
@@ -129,7 +129,7 @@ public class Scope {
         if (absolute) {
             return new Scope (documentUri, URI.create (id), version);
         } else {
-            return new Scope (documentUri, currentScope.getBaseUri ().resolve (id), version);
+            return new Scope (documentUri, UriSupport.resolve(currentScope.getBaseUri (), id), version);
         }
     }
 

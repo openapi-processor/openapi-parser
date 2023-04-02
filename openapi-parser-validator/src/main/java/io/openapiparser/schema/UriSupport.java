@@ -49,20 +49,61 @@ public class UriSupport {
         return uri.toString ().endsWith (EMPTY_FRAGMENT);
     }
 
+    public static URI resolve (URI uri, String child) {
+        return resolve(uri, createUri(child));
+    }
+
+    public static URI resolve (URI uri, URI child) {
+        if (uri.isOpaque()) {
+            return resolveOpaque (uri, child);
+        }
+
+        return uri.resolve(child);
+    }
+
+    private static URI resolveOpaque (URI uri, URI child) {
+        if (uri.equals(child)) {
+            return uri;
+        }
+
+        if (child.isAbsolute()) {
+            return child;
+        }
+
+        return createUri(uri.toString() + child.toString());
+    }
+
     public static URI stripFragment(URI uri) {
+        if (uri.isOpaque()) {
+            return stripFragmentFromOpaqueUri(uri);
+        }
+
+        return stripFragmentFromNonOpaqueUri(uri);
+    }
+
+    private static URI stripFragmentFromNonOpaqueUri(URI uri) {
         try {
-            return new URI (
-                uri.getScheme (),
-                uri.getUserInfo (),
-                uri.getHost (),
-                uri.getPort (),
-                uri.getPath (),
-                uri.getQuery (),
-                nullable (null)
+            return new URI(
+                    uri.getScheme(),
+                    uri.getUserInfo(),
+                    uri.getHost(),
+                    uri.getPort(),
+                    uri.getPath(),
+                    uri.getQuery(),
+                    nullable(null)
             );
         } catch (URISyntaxException e) {
             throw new RuntimeException (e.getMessage(), e);
         }
+    }
+
+    private static URI stripFragmentFromOpaqueUri(URI uri) {
+        String opaque = uri.toString();
+        int fragIndex = opaque.lastIndexOf("#");
+        if (fragIndex < 0) {
+            return uri;
+        }
+        return createUri(opaque.substring(0, fragIndex));
     }
 
     public static URI stripEmptyFragment(URI uri) {
@@ -82,6 +123,10 @@ public class UriSupport {
         return source
             .replace ("%7B", "{")
             .replace ("%7D", "}");
+    }
+
+    private static boolean hasFragment (URI uri) {
+        return uri.toString().contains("#");
     }
 
     private static String encode (String source) {

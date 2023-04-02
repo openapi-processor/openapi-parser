@@ -43,13 +43,13 @@ public class JsonSchemaContext {
         }
 
         // is id reference?  is absolute match?
-        URI refId = scope.getBaseUri ().resolve (ref);
+        URI refId = UriSupport.resolve(scope.getBaseUri(), ref);
         if (references.hasReference (refId)) {
             return references.getReference (refId);
         }
 
         // is local reference..
-        URI refLocal = scope.getBaseUri ().resolve (ref);
+        URI refLocal = UriSupport.resolve(scope.getBaseUri (), ref);
         return references.getReference (refLocal);
     }
 
