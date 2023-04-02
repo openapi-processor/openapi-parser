@@ -30,11 +30,6 @@ public class Scope {
         this.version = version;
     }
 
-    @Deprecated
-    public URI getSource () {
-        return documentUri;
-    }
-
     public URI getDocumentUri () {
         return documentUri;
     }
