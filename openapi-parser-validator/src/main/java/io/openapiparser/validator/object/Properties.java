@@ -94,7 +94,7 @@ public class Properties {
 
             if (!instanceProperties.isEmpty ()) {
                 instanceProperties.forEach (propName -> {
-                    ValidationStep invalidStep = new PropertyInvalidStep (schema, instance);
+                    ValidationStep invalidStep = new PropertyInvalidStep (schema, instance, propName);
                     ValidationStep namedStep = new PropertyStep (propName, invalidStep);
                     additionalPropertiesStep.add (namedStep);
                 });

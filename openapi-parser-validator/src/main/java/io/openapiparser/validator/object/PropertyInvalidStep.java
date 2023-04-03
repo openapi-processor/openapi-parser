@@ -11,13 +11,15 @@ import io.openapiparser.validator.ValidationMessage;
 import io.openapiparser.validator.steps.SimpleStep;
 
 public class PropertyInvalidStep extends SimpleStep {
-    public PropertyInvalidStep (JsonSchema schema, JsonInstance instance) {
+    private final String propName;
+
+    public PropertyInvalidStep (JsonSchema schema, JsonInstance instance, String propName) {
         super (schema, instance);
+        this.propName = propName;
     }
 
     @Override
     protected ValidationMessage getError () {
-        // todo InvalidPropertyError
-        return null;
+        return new PropertyInvalidError (schema, instance, propName);
     }
 }
