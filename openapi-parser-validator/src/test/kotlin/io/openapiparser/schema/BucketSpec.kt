@@ -118,14 +118,14 @@ class BucketSpec: StringSpec({
         ))
         val pointer = JsonPointer.from("/foo")
 
-        bucket.getRawValue(pointer) shouldBe "bar"
+        bucket.getRawValueValue(pointer) shouldBe "bar"
     }
 
     "get object value by null pointer" {
         val bucket = Bucket(URI("https://document"), "/me", mapOf("foo" to "bar"))
         val pointer = JsonPointer.from(null)
 
-        bucket.getRawValue(pointer) shouldBe bucket.rawValues
+        bucket.getRawValueValue(pointer) shouldBe bucket.rawValues
     }
 
     "throws if get object value is null" {
@@ -133,7 +133,7 @@ class BucketSpec: StringSpec({
         val pointer = JsonPointer.from("/object")
 
         shouldThrow<NoValueException> {
-            bucket.getRawValue(pointer)
+            bucket.getRawValueValue(pointer)
         }
     }
 
@@ -143,7 +143,7 @@ class BucketSpec: StringSpec({
         )
         val pointer = JsonPointer.from("/foo/0")
 
-        bucket.getRawValue(pointer) shouldBe "bar"
+        bucket.getRawValueValue(pointer) shouldBe "bar"
     }
 
     "throws if get array value by pointer index is null" {
@@ -154,7 +154,7 @@ class BucketSpec: StringSpec({
         val pointer = JsonPointer.from("/array/0")
 
         shouldThrow<NoValueException> {
-            bucket.getRawValue(pointer)
+            bucket.getRawValueValue(pointer)
         }
     }
 
@@ -166,7 +166,7 @@ class BucketSpec: StringSpec({
         val pointer = JsonPointer.from("/array/0")
 
         shouldThrow<ArrayIndexOutOfBoundsException> {
-            bucket.getRawValue(pointer)
+            bucket.getRawValueValue(pointer)
         }
     }
 
@@ -187,7 +187,7 @@ class BucketSpec: StringSpec({
         ))
 
         val pointer = JsonPointer.from("/definitions/foo/definitions/bar")
-        val rawValue = bucket.getRawValueX(pointer)
+        val rawValue = bucket.getRawValue(pointer)
 
         rawValue?.scope?.baseUri.toString() shouldBe "https://host/fooId"
     }
@@ -210,7 +210,7 @@ class BucketSpec: StringSpec({
         ))
 
         val pointer = JsonPointer.from("/definitions/foo/definitions/bar")
-        val rawValue = bucket.getRawValueX(pointer)
+        val rawValue = bucket.getRawValue(pointer)
 
         rawValue?.scope?.id.toString() shouldBe "https://host/barId"
     }
@@ -223,7 +223,7 @@ class BucketSpec: StringSpec({
         ))
 
         val pointer = JsonPointer.EMPTY
-        val rawValue = bucket.getRawValueX(pointer)
+        val rawValue = bucket.getRawValue(pointer)
 
         rawValue?.scope?.id.toString() shouldBe "https://host/document/self"
     }
@@ -236,7 +236,7 @@ class BucketSpec: StringSpec({
         ))
 
         val pointer = JsonPointer.empty()
-        val rawValue = bucket.getRawValueX(pointer)
+        val rawValue = bucket.getRawValue(pointer)
 
         rawValue?.scope?.id.toString() shouldBe "https://host/document/self/"
     }

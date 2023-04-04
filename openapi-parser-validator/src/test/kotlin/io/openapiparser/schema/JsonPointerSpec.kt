@@ -7,7 +7,6 @@ package io.openapiparser.schema
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 import io.openapiparser.converter.Types.asMap
 import io.openapiparser.jackson.JacksonConverter
@@ -50,7 +49,7 @@ class JsonPointerSpec : StringSpec({
             Pointer("/ ", 7),
             Pointer("/m~0n", 8),
         ).forEach {
-            Bucket(document).getRawValue(JsonPointer.from(it.pointer)) shouldBe it.expected
+            Bucket(document).getRawValueValue(JsonPointer.from(it.pointer)) shouldBe it.expected
         }
     }
 
@@ -90,7 +89,7 @@ class JsonPointerSpec : StringSpec({
             Pointer("#/m~0n", 8),
             Pointer(null, document)
         ).forEach {
-            Bucket(document).getRawValue(JsonPointer.from(it.pointer)) shouldBe it.expected
+            Bucket(document).getRawValueValue(JsonPointer.from(it.pointer)) shouldBe it.expected
         }
     }
 

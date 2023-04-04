@@ -219,24 +219,24 @@ public class Bucket {
      * @param pointer property location
      * @return property value or null if the property does not exist
      */
-    @Deprecated // replace with getRawValueX
-    public @Nullable Object getRawValue (JsonPointer pointer) {
-        JsonPointer current = JsonPointer.EMPTY;
-        Object value = properties;
-
-        for (String token: pointer.getTokens ()) {
-            current = current.append (token);
-
-            if (isObject (value)) {
-                value = getObjectValue (asMap (value), current);
-
-            } else if (isArray (value)) {
-                value = getArrayValue (asCol (value), current);
-            }
-        }
-
-        return value;
-    }
+//    @Deprecated // replace with getRawValueX
+//    public @Nullable Object getRawValue (JsonPointer pointer) {
+//        JsonPointer current = JsonPointer.EMPTY;
+//        Object value = properties;
+//
+//        for (String token: pointer.getTokens ()) {
+//            current = current.append (token);
+//
+//            if (isObject (value)) {
+//                value = getObjectValue (asMap (value), current);
+//
+//            } else if (isArray (value)) {
+//                value = getArrayValue (asCol (value), current);
+//            }
+//        }
+//
+//        return value;
+//    }
 
     /**
      * get the raw value with scope at the given property pointer position.
@@ -244,7 +244,7 @@ public class Bucket {
      * @param pointer property location
      * @return raw value or null if the property does not exist
      */
-    public @Nullable RawValue getRawValueX (JsonPointer pointer) {
+    public @Nullable RawValue getRawValue (JsonPointer pointer) {
         JsonPointer current = JsonPointer.empty ();
         Object value = properties;
         Scope scope = this.scope;
@@ -271,6 +271,14 @@ public class Bucket {
         }
 
         return new RawValue (scope, value);
+    }
+
+    public @Nullable Object getRawValueValue (JsonPointer pointer) {
+        RawValue value = getRawValue (pointer);
+        if (value == null)
+            return null;
+
+        return value.getValue ();
     }
 
     private Object getObjectValue (Map<String, Object> object, JsonPointer pointer) {

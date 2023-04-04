@@ -178,7 +178,7 @@ public class ResolverRef {
                 return;
             }
 
-            RawValue referenced = bucket.getRawValueX (JsonPointer.from (ref.getPointer ()));
+            RawValue referenced = bucket.getRawValue (JsonPointer.from (ref.getPointer ()));
             if (referenced == null) {
                 throw new ResolverException (String.format ("failed to resolve ref <%s/%s>.", documentUri, ref));
             }
