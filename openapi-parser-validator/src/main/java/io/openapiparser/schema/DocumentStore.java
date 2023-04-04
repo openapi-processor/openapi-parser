@@ -5,6 +5,7 @@
 
 package io.openapiparser.schema;
 
+import io.openapiparser.support.Copy;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
@@ -64,5 +65,13 @@ public class DocumentStore {
 
     public Map<URI, Document> getDocuments() {
         return documents;
+    }
+
+    public DocumentStore copy () {
+        DocumentStore store = new DocumentStore ();
+        documents.forEach ((key, value) -> {
+            store.documents.put (key, new Document (Copy.deep (value.getDocument ()), value.getSource ()));
+        });
+        return store;
     }
 }
