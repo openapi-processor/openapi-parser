@@ -5,7 +5,7 @@
 
 package io.openapiparser.support;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -22,7 +22,7 @@ import static io.openapiparser.converter.Types.asObject;
  */
 public class Copy {
 
-    public static @Nullable Object deep (@Nullable Object source) {
+    public static @PolyNull Object deep (@PolyNull Object source) {
         if (source == null)
             return null;
 
