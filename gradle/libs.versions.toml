@@ -4,7 +4,7 @@ openapiparser = "2022.2-SNAPSHOT"
 [libraries]
 plugin-kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.21"
 plugin-checker = "org.checkerframework:checkerframework-gradle-plugin:0.6.26"
-plugin-outdated = "com.github.ben-manes:gradle-versions-plugin:0.39.0"
+plugin-outdated = "com.github.ben-manes:gradle-versions-plugin:0.46.0"
 checker = "org.checkerframework:checker:3.33.0"
 slf4j = "org.slf4j:slf4j-api:2.0.5"
 logback = "ch.qos.logback:logback-classic:1.4.6"
