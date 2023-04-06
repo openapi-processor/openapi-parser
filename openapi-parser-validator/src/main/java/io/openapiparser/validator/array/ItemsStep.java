@@ -62,7 +62,7 @@ public class ItemsStep implements ValidationStep {
     }
 
     @Override
-    public Collection<Annotation> getAnnotations (@Nullable String keyword) {
+    public Collection<Annotation> getAnnotations (/*@Nullable*/ String keyword) {
         Annotation annotation = annotations.get (keyword);
         if (annotation == null)
             return Collections.emptyList ();

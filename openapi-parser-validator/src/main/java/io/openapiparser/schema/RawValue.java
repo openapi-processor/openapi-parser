@@ -20,6 +20,7 @@ public class RawValue {
         return scope;
     }
 
+    // todo why nullable ?
     public @Nullable Object getValue () {
         return value;
     }

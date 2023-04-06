@@ -48,7 +48,7 @@ public class JsonSchemaContext {
             return references.getReference (refId);
         }
 
-        // is local reference..
+        // is local reference.. // todo
         URI refLocal = UriSupport.resolve(scope.getBaseUri (), ref);
         return references.getReference (refLocal);
     }

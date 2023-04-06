@@ -89,7 +89,7 @@ public class ResolverRef {
         if (!context.isProcessedDocument (uri)) {
             context.setProcessedDocument (uri);
 
-            Scope docScope = scope.move (uri, document);
+            Scope docScope = scope.move (uri, document);  // todo document != null
             Bucket bucket = Bucket.toBucket (docScope, document, JsonPointer.EMPTY);
             if (bucket == null) {
                 return; // todo error
@@ -162,6 +162,7 @@ public class ResolverRef {
             // no, try to resolve by document and pointer
             URI documentUri = ref.getDocumentUri ();
             Object document = context.getDocument (documentUri);
+            // todo check null
             Scope scope = ref.getScope ().move (documentUri, document);
             Bucket bucket = Bucket.toBucket (scope, document);
 
@@ -183,7 +184,7 @@ public class ResolverRef {
                 throw new ResolverException (String.format ("failed to resolve ref <%s/%s>.", documentUri, ref));
             }
 
-            context.addRef (ref, referenced.getScope (), referenced.getValue ());
+            context.addRef (ref, referenced.getScope (), referenced.getValue ()); // todo value is null ?
         });
     }
 
