@@ -17,7 +17,7 @@ class DocumentStoreSpec : StringSpec({
         val uri = URI.create("https://any")
 
         val document = emptyMap<String, Any>()
-        ds.add(uri, document)
+        ds.addId(uri, document)
 
         ds.contains(uri).shouldBeTrue()
         ds.get(uri).shouldBe(document)

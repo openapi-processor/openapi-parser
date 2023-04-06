@@ -9,102 +9,88 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
 import java.util.*;
-import java.util.function.Function;
+
+import static io.openapiparser.schema.UriSupport.hasEmptyFragment;
+import static io.openapiparser.schema.UriSupport.stripFragment;
 
 /**
- * holds all references of a document.
+ * holds all resolved references of a document.
  */
 public class ReferenceRegistry {
-
-    private static class Pending {
-        Ref ref;
-
-        public Pending(Ref ref) {
-            this.ref = ref;
-        }
-
-        @Override
-        public boolean equals (@Nullable Object o) {
-            if (this == o)
-                return true;
-
-            if (o == null || getClass () != o.getClass ())
-                return false;
-
-            Pending pending = (Pending) o;
-            return ref.getFullRefUri ().equals (pending.ref.getFullRefUri ());
-        }
-
-        @Override
-        public int hashCode () {
-            return Objects.hash (ref.getFullRef ());
-        }
-    }
-
-    private final Set<Pending> pending = new HashSet<> ();
-    private final Map<String, Reference> references = new HashMap<> ();
-
-
-    public void add (Ref ref) {
-        pending.add (new Pending (ref));
-    }
-
-    /**
-     * resolves the references {@link #add(Ref)}ed to the registry.
-     *
-     * @param resolver resolver callback that resolves the ref
-     */
-    public void resolve (Function<Ref, RawValue> resolver) {
-        Iterator<Pending> iterator = pending.iterator ();
-        while (iterator.hasNext ()) {
-            Pending next = iterator.next ();
-            RawValue value = resolver.apply (next.ref);
-            addX (next, new RefValue (value.getScope (), value.getValue ()));
-            iterator.remove ();
-        }
-    }
+    private final Map<String, Reference> references = new HashMap<> ();  // URI key???
 
     public boolean isEmpty() {
         return references.isEmpty ();
     }
 
+    /**
+     * check if {@code absoluteRef} is resolved. If the ref has an empty fragment (#) it checks
+     * with and without the empty fragment.
+     *
+     * @param absoluteRef absolute ref uri
+     * @return true if the ref is resolved, otherwise false.
+     */
+    public boolean hasReference (URI absoluteRef) {
+        boolean hasRef = hasReferenceX (absoluteRef);
+        if (hasRef)
+            return true;
+
+        if (hasEmptyFragment (absoluteRef))
+            return hasReferenceX (stripFragment (absoluteRef));
+
+        return false;
+    }
+
+    public boolean contains (URI absoluteRef) {
+        return hasReference (absoluteRef);
+    }
+
+    @Deprecated
     public boolean hasRef (URI absoluteRef) {
-        return references.containsKey (absoluteRef.toString ());
+        return hasReference (absoluteRef);
     }
 
     /**
-     * get a reference from the registry.
+     * get a reference.
      *
-     * @param absoluteRef absolute uri of the ref
+     * @param absoluteRef absolute ref uri
      * @return the reference
      */
-    public Reference getRef (URI absoluteRef) {
-        return getRef (absoluteRef.toString ());
-    }
+    public Reference getReference (URI absoluteRef) {
+        Reference reference = getReferenceX (absoluteRef);
+        if (reference != null)
+            return reference;
 
-    private Reference getRef(String absoluteRef) {
-        Reference reference = references.get (absoluteRef);
+        if (hasEmptyFragment (absoluteRef))
+            reference = getReferenceX (stripFragment (absoluteRef));
+
         if (reference == null)
             throw new RuntimeException (); // todo
 
         return reference;
     }
 
-    private void add (Pending ref, Object value) {
-        Ref aRef = ref.ref;
-        references.put (aRef.getFullRef (), createReference (ref, value));
+    @Deprecated
+    public Reference getRef (URI absoluteRef) {
+        return getReference (absoluteRef);
     }
 
-    private void addX (Pending ref, RefValue value) {
-        Ref aRef = ref.ref;
-        references.put (aRef.getFullRef (), createReferenceX (aRef, value));
+    public void addReference (Ref ref, Scope valueScope, Object document) {
+        add (ref, valueScope, document);
     }
 
-    private Reference createReference (Pending pending, Object value) {
-        return new Reference (pending.ref, new RefValue (URI.create (""), value));
+    public void add (Ref ref, Scope valueScope, Object document) {
+        references.put (
+            ref.getAbsoluteUri ().toString (),
+            new Reference (ref, new RefValue(valueScope, document))
+        );
     }
 
-    private Reference createReferenceX (Ref ref, RefValue value) {
-        return new Reference (ref, value);
+    private boolean hasReferenceX (URI uri) {
+        return references.containsKey (uri.toString ());
+    }
+
+    private @Nullable Reference getReferenceX (URI uri) {
+        return references.get (uri.toString ());
     }
 }

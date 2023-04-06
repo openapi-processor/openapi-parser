@@ -7,7 +7,6 @@ package io.openapiparser.schema;
 
 public class JsonSchemaBoolean implements JsonSchema {
     private final JsonSchemaContext context;
-
     private final JsonPointer pointer;
     private final boolean value;
 

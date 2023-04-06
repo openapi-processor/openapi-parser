@@ -7,12 +7,12 @@ package io.openapiparser.validator;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.*;
 
 // todo interface
 public class ValidationMessage {
+    private final String property;
     private final String text;
 
     private final JsonSchema schema;
@@ -20,7 +20,8 @@ public class ValidationMessage {
 
     private Collection<ValidationMessage> nestedMessage = Collections.emptyList ();
 
-    public ValidationMessage (JsonSchema schema, JsonInstance instance, String text) {
+    public ValidationMessage (JsonSchema schema, JsonInstance instance, String property, String text) {
+        this.property = property;
         this.text = text;
         this.schema = schema;
         this.instance = instance;
@@ -29,9 +30,33 @@ public class ValidationMessage {
     public ValidationMessage (
         JsonSchema schema,
         JsonInstance instance,
+        String property,
         String text,
         Collection<ValidationMessage> nestedMessage
     ) {
+        this.property = property;
+        this.text = text;
+        this.schema = schema;
+        this.instance = instance;
+        this.nestedMessage = nestedMessage;
+    }
+
+    @Deprecated // use overload with property
+    public ValidationMessage (JsonSchema schema, JsonInstance instance, String text) {
+        this.property = "n/a";
+        this.text = text;
+        this.schema = schema;
+        this.instance = instance;
+    }
+
+    @Deprecated // use overload with property
+    public ValidationMessage (
+        JsonSchema schema,
+        JsonInstance instance,
+        String text,
+        Collection<ValidationMessage> nestedMessage
+    ) {
+        this.property = "n/a";
         this.text = text;
         this.schema = schema;
         this.instance = instance;
@@ -52,6 +77,10 @@ public class ValidationMessage {
 
     public String getInstancePath () {
         return instance.getPath ();
+    }
+
+    public String getProperty () {
+        return property;
     }
 
     public String getText () {

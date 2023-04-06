@@ -12,14 +12,14 @@ import io.kotest.matchers.types.shouldBeInstanceOf
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import io.openapiparser.OpenApiSchemas.*
+import io.openapiparser.OpenApiSchemas.OPENAPI_SCHEMA_30_ID
+import io.openapiparser.OpenApiSchemas.OPENAPI_SCHEMA_31_ID
 import io.openapiparser.schema.*
+import io.openapiparser.schema.UriSupport.emptyUri
 import io.openapiparser.validator.Validator
 import io.openapiparser.validator.steps.ValidationStep
 import io.openapiparser.model.v30.OpenApi as OpenApi30
 import io.openapiparser.model.v31.OpenApi as OpenApi31
-
-import java.net.URI
 
 class OpenApiResultSpec: StringSpec({
 
@@ -69,18 +69,20 @@ class OpenApiResultSpec: StringSpec({
         result.getModel(OpenApi31::class.java).shouldBeInstanceOf<OpenApi31>()
     }
 
+    // todo uhhh
     "should validate api 30" {
         val sctx = mockk<JsonSchemaContext>()
         val document = emptyMap<String, Any>()
-        val bucket = Bucket(URI.create(""), "/unused", document)
+        val scope = Scope(emptyUri(), emptyUri(), SchemaVersion.Draft4)
+        val bucket = Bucket(scope, "/unused", document)
         val schema = JsonSchemaBoolean(true, sctx)
 
         val jic = mockk<JsonInstanceContext>()
         val ctx = mockk<Context>()
         every { ctx.instanceContext } returns jic
 
-        val store = mockk<SchemaStore>()
-        every { store.addSchema(OPENAPI_SCHEMA_30_ID, OPENAPI_SCHEMA_30) } returns schema
+        val store = mockk<SchemaStore>(relaxed = true)
+        every { store.getSchema(OPENAPI_SCHEMA_30_ID, SchemaVersion.Draft4) } returns schema
 
         val validator = mockk<Validator>()
         val step = mockk<ValidationStep>()
@@ -95,19 +97,20 @@ class OpenApiResultSpec: StringSpec({
         verify { validator.validate(schema, any()) }
     }
 
+    // todo fix json schema version
     "should validate api 31".config(enabled = false) {
         val sctx = mockk<JsonSchemaContext>()
         val document = emptyMap<String, Any>()
-        val bucket = Bucket(URI.create(""), "/unused", document)
+        val scope = Scope(emptyUri(), emptyUri(), SchemaVersion.Draft201909)
+        val bucket = Bucket(scope, "/unused", document)
         val schema = JsonSchemaBoolean(true, sctx)
-
 
         val jic = mockk<JsonInstanceContext>()
         val ctx = mockk<Context>()
         every { ctx.instanceContext } returns jic
 
         val store = mockk<SchemaStore>()
-        every { store.addSchema(OPENAPI_SCHEMA_31_ID, OPENAPI_SCHEMA_31) } returns schema
+        every { store.getSchema(OPENAPI_SCHEMA_31_ID, SchemaVersion.Draft201909) } returns schema
 
         val validator = mockk<Validator>()
         val step = mockk<ValidationStep>()

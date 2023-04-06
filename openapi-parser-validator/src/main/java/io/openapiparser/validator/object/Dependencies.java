@@ -18,7 +18,11 @@ import static io.openapiparser.support.Nullness.nonNull;
  *
  * <p>See specification:
  *
- * <p>Draft 6:
+ * <p>Draft 7:
+ * <a href="https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-validation-01#section-6.5.7">
+ *     dependencies</a>
+ *
+ * <br>Draft 6:
  * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.21">
  *     dependencies</a>
  *
@@ -33,7 +37,7 @@ public class Dependencies {
         this.validator = validator;
     }
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
+    public ValidationStep validate (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope) {
         DependenciesStep step = new DependenciesStep (schema, instance);
 
         Map<String, JsonDependency> dependencies = schema.getDependencies ();
@@ -43,7 +47,7 @@ public class Dependencies {
             JsonDependency propDependency = dependencies.get (propName);
             if (propDependency != null) {
                 if (propDependency.isSchema ()) {
-                    step.add (validator.validate (propDependency.getSchema (), instance));
+                    step.add (validator.validate (propDependency.getSchema (), instance, dynamicScope));
                 } else {
                     Set<String> instanceProperties = new HashSet<> (instanceObject.keySet ());
 

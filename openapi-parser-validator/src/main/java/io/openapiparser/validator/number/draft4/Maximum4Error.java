@@ -17,8 +17,10 @@ import static io.openapiparser.support.Nullness.nonNull;
 public class Maximum4Error extends ValidationMessage {
 
     public Maximum4Error (JsonSchema schema, JsonInstance instance) {
-        super (schema, instance, String.format ("the value should be %s than %s",
-            schema.getExclusiveMaximumB () ? "less" : "less or equal",
-            nonNull(schema.getMaximum ())));
+        super (schema, instance,
+            "maximum",
+            String.format ("the value should be %s than %s",
+                schema.getExclusiveMaximumB () ? "less" : "less or equal",
+                nonNull (schema.getMaximum ())));
     }
 }

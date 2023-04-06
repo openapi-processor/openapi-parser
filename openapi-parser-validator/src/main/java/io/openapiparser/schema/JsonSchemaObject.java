@@ -12,8 +12,7 @@ import java.net.URI;
 import java.util.*;
 
 import static io.openapiparser.converter.Types.*;
-import static io.openapiparser.schema.Keywords.REF;
-import static io.openapiparser.schema.Keywords.SCHEMA;
+import static io.openapiparser.schema.Keywords.*;
 import static io.openapiparser.support.Nullness.nonNull;
 
 public class JsonSchemaObject implements JsonSchema {
@@ -57,11 +56,47 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     @Override
+    public @Nullable String getAnchor () {
+        return schemaObject.convert ("$anchor", new StringNullableConverter ());
+    }
+
+    @Override
+    public boolean isDynamicRef () {
+        if (context.getVersion () == SchemaVersion.Draft201909) {
+            return schemaObject.hasProperty (RECURSIVE_REF);
+        }
+
+        return schemaObject.hasProperty (DYNAMIC_REF);
+    }
+
+    @Override
+    public @Nullable URI getDynamicRef () {
+        if (context.getVersion () == SchemaVersion.Draft201909) {
+            return schemaObject.convert (RECURSIVE_REF, new UriConverter ());
+        }
+
+        return schemaObject.convert (DYNAMIC_REF, new UriConverter ());
+    }
+
+    @Override
+    public @Nullable String getDynamicAnchor () {
+        if (context.getVersion () == SchemaVersion.Draft201909) {
+            Boolean anchor = schemaObject.convert (RECURSIVE_ANCHOR, new BooleanConverter ());
+            if (anchor == null || !anchor)
+                return null;
+
+            return HASH;
+        }
+
+        return schemaObject.convert ("$dynamicAnchor", new StringNullableConverter ());
+    }
+
+    @Override
     public JsonSchema getRefSchema () {
         Reference reference = context.getReference (nonNull(getRef()));
         JsonSchemaContext refContext = context.withScope (reference.getValueScope ());
 
-        JsonSchema schema = new JsonSchemaConverter (refContext)
+        JsonSchema schema = new JsonSchemaRefConverter (refContext)
             .convert (REF, reference.getValue (), reference.getPointer ());
         if (schema == null)
             throw new NoValueException (getLocation ().append (REF));
@@ -69,14 +104,63 @@ public class JsonSchemaObject implements JsonSchema {
         return schema;
     }
 
+    // recursiveRef/ref
+    public JsonSchema getRefSchema (@Nullable URI dynamicScope) {
+        if (dynamicScope == null) {
+            // like $ref
+            // no ref in registry with scope
+            Reference reference = context.getReference (nonNull (getDynamicRef ()));
+            JsonSchemaContext refContext = context.withScope (reference.getValueScope ());
+            JsonSchema schema = new JsonSchemaRefConverter (refContext)
+                .convert (DYNAMIC_REF, reference.getValue (), reference.getPointer ());
+
+            if (schema == null)
+                throw new NoValueException (getLocation ().append (DYNAMIC_REF));
+
+            return schema;
+        } else {
+            Reference reference = context.getReference (nonNull (getDynamicRef ()), dynamicScope);
+
+            JsonSchemaContext refContext = context.withScope (reference.getValueScope ());
+            JsonSchema schema = new JsonSchemaRefConverter (refContext)
+                .convert (DYNAMIC_REF, reference.getValue (), reference.getPointer ());
+
+            if (schema == null)
+                throw new NoValueException (getLocation ().append (DYNAMIC_REF));
+
+            return schema;
+        }
+    }
+
     @Override
     public @Nullable URI getMetaSchema () {
         return schemaObject.convert (SCHEMA, new UriConverter ());
     }
 
+    public @Nullable JsonSchema getMetaSchemaSchema () {
+        URI metaSchemaUri = getMetaSchema ();
+        if (metaSchemaUri == null) {
+            return null;
+        }
+
+        Reference reference = context.getReference (metaSchemaUri);
+
+        return new JsonSchemaConverter (context)
+            .convert (SCHEMA, reference.getValue (), reference.getPointer ());
+    }
+
+    @Override
+    public @Nullable Vocabularies getVocabulary () {
+        return schemaObject.convert (VOCABULARY, new VocabularyConverter (context));
+    }
+
     @Override
     public @Nullable URI getId () {
-        return schemaObject.convert ("id", new UriConverter ());
+        if (context.getVersion () == SchemaVersion.Draft4) {
+            return schemaObject.convert (ID4, new UriConverter ());
+        }
+
+        return schemaObject.convert (ID, new UriConverter ());
     }
 
     @Override
@@ -175,6 +259,10 @@ public class JsonSchemaObject implements JsonSchema {
             return new JsonSchemas (getJsonSchemaOf ("additionalItems"));
     }
 
+    public @Nullable JsonSchema getUnevaluatedItems () {
+        return getJsonSchemaOf ("unevaluatedItems");
+    }
+
     @Override
     public @Nullable Integer getMaxItems () {
         return schemaObject.convert ("maxItems", new IntegerConverter ());
@@ -200,6 +288,18 @@ public class JsonSchemaObject implements JsonSchema {
 
     public @Nullable JsonSchema getContains () {
         return getJsonSchemaOf ("contains");
+    }
+
+    public Integer getMinContains () {
+        Integer minContains = schemaObject.convert ("minContains", new IntegerConverter ());
+        if (minContains == null)
+            return 1;
+
+        return minContains;
+    }
+
+    public @Nullable Integer getMaxContains () {
+        return schemaObject.convert ("maxContains", new IntegerConverter ());
     }
 
     @Override
@@ -252,6 +352,11 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     @Override
+    public @Nullable JsonSchema getUnevaluatedProperties () {
+        return getJsonSchemaOf ("unevaluatedProperties");
+    }
+
+    @Override
     public Map<String, JsonDependency> getDependencies () {
         Map<String, JsonDependency> dependencies = schemaObject.convert (
             "dependencies", new MapDependencyConverter (context));
@@ -261,6 +366,27 @@ public class JsonSchemaObject implements JsonSchema {
         }
 
         return dependencies;
+    }
+
+    @Override
+    public Map<String, JsonSchema> getDependentSchemas () {
+        Map<String, JsonSchema> dependentSchemas = schemaObject.convert (
+            "dependentSchemas", new MapJsonSchemasConverter (context));
+
+        if (dependentSchemas == null)
+            return Collections.emptyMap ();
+
+        return dependentSchemas;
+    }
+
+    public Map<String, Set<String>> getDependentRequired () {
+        Map<String, Set<String>> dependentRequired = schemaObject.convert (
+            "dependentRequired", new MapSetStringsOrEmptyConverter ());
+
+        if (dependentRequired == null)
+            return Collections.emptyMap ();
+
+        return dependentRequired;
     }
 
     @Override
@@ -280,12 +406,12 @@ public class JsonSchemaObject implements JsonSchema {
             return  Collections.emptyList ();
 
         else if (raw instanceof Collection) {
-            JsonPointer location = schemaObject.getLocation ();
             List<JsonInstance> instances = new ArrayList<> ();
 
             for (Object o : asCol (raw)) {
-                JsonInstance instance = new JsonInstance (o, new JsonInstanceContext (
-                    location.toUri (), new ReferenceRegistry ())
+                Scope scope = context.getScope ().move (o);
+                JsonInstance instance = new JsonInstance (
+                    o, new JsonInstanceContext (scope, new ReferenceRegistry ())
                 );
 
                 instances.add (instance);
@@ -305,9 +431,8 @@ public class JsonSchemaObject implements JsonSchema {
         }
 
         Object raw = schemaObject.getRawValue ("const");
-        return new JsonInstance (raw, new JsonInstanceContext (
-            getLocation ().toUri (), new ReferenceRegistry ())
-        );
+        Scope scope = raw != null ? context.getScope ().move (raw) : context.getScope ();
+        return new JsonInstance (raw, new JsonInstanceContext (scope, new ReferenceRegistry ()));
     }
 
     @Override

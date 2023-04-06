@@ -31,7 +31,7 @@ public class Properties {
 
     @Experimental
     public @Nullable Object getRawValueOf (String pointer) {
-        return bucket.getRawValue (JsonPointer.from (pointer));
+        return bucket.getRawValueValue (JsonPointer.from (pointer));
     }
 
     @Experimental
@@ -40,7 +40,7 @@ public class Properties {
         if (rawValue == null)
             throw new NoValueException (pointer);
 
-        return new ObjectNotNullConverter<> (bucket.getSource (), new Factory<> (context, target))
+        return new ObjectNotNullConverter<> (bucket.getScope (), new Factory<> (context, target))
             .convert ("unused", rawValue, pointer);
     }
 
@@ -122,7 +122,7 @@ public class Properties {
 
     protected <T> Collection<T> getObjectsOrEmpty (String property, Class<T> clazz) {
         return nonNull (bucket.convert (property, new ObjectsOrEmptyConverter<T> (
-            bucket.getSource (), new Factory<> (context, clazz))));
+            bucket.getScope (), new Factory<> (context, clazz))));
     }
 
     /* String Collections */
@@ -154,7 +154,7 @@ public class Properties {
     protected <T> Map<String, T> getMapObjectsOrEmpty (String property, Class<T> clazz) {
         return nonNull (bucket.convert (
             property,
-            new MapObjectsOrEmptyConverter<T> (bucket.getSource (),
+            new MapObjectsOrEmptyConverter<T> (bucket.getScope (),
             new Factory<T> (context, clazz))));
     }
 

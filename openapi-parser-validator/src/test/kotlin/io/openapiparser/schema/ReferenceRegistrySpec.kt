@@ -7,26 +7,21 @@ package io.openapiparser.schema
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
-import java.net.URI
+import io.kotest.matchers.shouldNotBe
+import io.openapiparser.schema.UriSupport.emptyFragment
+import io.openapiparser.schema.UriSupport.emptyUri
 
 class ReferenceRegistrySpec : StringSpec({
+    val dummyScope = Scope (emptyUri(), emptyUri(), SchemaVersion.Draft4)
 
-    "resolve reference" {
-        val document = mapOf(
-            "${'$'}ref" to "#/definitions/foo",
-            "definitions" to mapOf<String, Any>("foo" to emptyMap<String, Any>())
-        )
+    "find reference with empty fragment" {
+        val registry = ReferenceRegistry ()
 
-        val registry = ReferenceRegistry()
-        registry.add(Ref(URI("https://document"), "#/definitions/foo"))
+        val ref = Ref (dummyScope, "")
+        registry.addReference(ref, dummyScope, emptyMap<String, Any>())
 
-        registry.resolve {
-            return@resolve RawValue(it.scope, (document["definitions"] as Map<*, *>)["foo"]!!)
-        }
-
-        val ref = registry.getRef(URI("https://document#/definitions/foo"))
-        ref.documentUri shouldBe URI("https://document")
-        ref.rawValue shouldBe emptyMap<String, Any>()
+        registry.hasReference(emptyFragment()) shouldBe true
+        registry.getReference(emptyFragment()) shouldNotBe null
     }
 
 })

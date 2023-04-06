@@ -14,6 +14,6 @@ import io.openapiparser.validator.ValidationMessage;
  */
 public class IpV6Error extends ValidationMessage {
     public IpV6Error (JsonSchema schema, JsonInstance instance) {
-        super (schema, instance, "should conform to rfc2373");
+        super (schema, instance, "ipv6", "should conform to rfc2373");
     }
 }

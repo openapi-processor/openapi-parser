@@ -10,19 +10,23 @@ import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.shouldBe
 import io.openapiparser.schema.*
+import io.openapiparser.schema.UriSupport.emptyUri
 import io.openapiparser.validator.ValidationMessage
 import io.openapiparser.validator.support.TestStep
-import java.net.URI
 
 class AnyOfStepSpec : StringSpec({
 
-    val sctx = JsonSchemaContext(URI(""), ReferenceRegistry(), SchemaVersion.Default)
-    val schema = JsonSchemaObject(mapOf(), sctx)
+    val schemaContext = JsonSchemaContext(
+        Scope(emptyUri(), null, SchemaVersion.getLatest()),
+        ReferenceRegistry())
+    val schema = JsonSchemaObject(mapOf(), schemaContext)
 
-    val ictx = JsonInstanceContext(URI(""), ReferenceRegistry())
-    val instance = JsonInstance("value", ictx)
+    val instanceContext = JsonInstanceContext(
+        Scope(emptyUri(), null, SchemaVersion.getLatest()),
+        ReferenceRegistry())
+    val instance = JsonInstance("value", instanceContext)
 
-    val error = ValidationMessage(schema, instance, "error")
+    val error = ValidationMessage(schema, instance, "anyOf", "error")
 
     "step is valid without error" {
         val step = AnyOfStep(schema, instance)

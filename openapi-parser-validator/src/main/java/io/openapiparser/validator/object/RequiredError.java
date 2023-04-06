@@ -15,6 +15,8 @@ import io.openapiparser.validator.ValidationMessage;
 public class RequiredError extends ValidationMessage {
 
     public RequiredError (JsonSchema schema, JsonInstance instance, String propertyName) {
-        super (schema, instance, String.format ("should have a property '%s'", propertyName));
+        super (schema, instance,
+            "required",
+            String.format ("should have a property '%s'", propertyName));
     }
 }

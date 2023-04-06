@@ -10,11 +10,12 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
 
-import static io.openapiparser.converter.Types.asMap;
+import static io.openapiparser.converter.Types.*;
 import static io.openapiparser.schema.JsonPointer.from;
 
 /**
- * converts the property {@code value} to a {@link JsonSchema}.
+ * converts the property {@code value} to a {@link JsonSchema}. The context is the {@code
+ * parentContext} or a new context if the schema has an {@code id}.
  */
 public class JsonSchemaConverter implements PropertyConverter<JsonSchema> {
     private final JsonSchemaContext parentContext;
@@ -28,11 +29,11 @@ public class JsonSchemaConverter implements PropertyConverter<JsonSchema> {
         if (value == null)
             return null;
 
-        if (value instanceof Boolean) {
+        if (isBoolean (value)) {
             return new JsonSchemaBoolean (from (location), (Boolean) value, parentContext);
 
-        } else if (value instanceof Map) {
-            Map<String, Object> props = asMap (value);
+        } else if (isObject (value)) {
+            Map<String, Object> props = asObject (value);
             return new JsonSchemaObject (from (location), props, parentContext.withId (props));
         } else {
             throw new TypeMismatchException (location, JsonSchema.class);

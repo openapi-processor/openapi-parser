@@ -39,13 +39,15 @@ public class OpenApiParser {
 
     private OpenApiResult createResult (ResolverResult result) {
         Object document = result.getDocument ();
-        Bucket api = new Bucket (result.getUri (), asMap (document));
+        Bucket api = new Bucket (result.getScope (), asMap (document));
         String version = getVersion (api);
 
         if (isVersion30 (version)) {
-            return new OpenApiResult30 (new Context (result.getUri (), result.getRegistry ()), api);
+            return new OpenApiResult30 (
+                new Context (result.getScope (), result.getRegistry ()), api, result.getDocuments ());
         } else if (isVersion31 (version)) {
-            return new OpenApiResult31 (new Context (result.getUri (), result.getRegistry ()), api);
+            return new OpenApiResult31 (
+                new Context (result.getScope (), result.getRegistry ()), api, result.getDocuments ());
         } else {
             throw new UnknownVersionException (version);
         }

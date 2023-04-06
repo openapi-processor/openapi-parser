@@ -38,7 +38,7 @@ public class IpV4 {
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         String format = schema.getFormat ();
         if (!shouldValidate (format))
-            return new NullStep ();
+            return new NullStep ("ipv4");
 
         IpV4Step step = new IpV4Step (schema, instance);
 

@@ -5,19 +5,15 @@
 
 package io.openapiparser.validator;
 
-import io.openapiparser.schema.Format;
-import io.openapiparser.schema.SchemaVersion;
+import io.openapiparser.schema.*;
 
 import java.util.*;
 
 public class ValidatorSettings {
-    private SchemaVersion version = SchemaVersion.Draft6;
-    private final EnumSet<Format> formats = EnumSet.noneOf(Format.class);
+    private SchemaVersion version = SchemaVersion.getLatest ();
+    private Output output = Output.BASIC;
 
-    @Deprecated
-    public boolean isDraft4 () {
-        return SchemaVersion.Draft4.equals (version);
-    }
+    private final EnumSet<Format> formats = EnumSet.noneOf(Format.class);
 
     /**
      * get the JSON schema version that should be used if a schema doesn't provide a $schema. The
@@ -37,6 +33,11 @@ public class ValidatorSettings {
      */
     public void setVersion (SchemaVersion version) {
         this.version = version;
+    }
+
+    public ValidatorSettings setOutput (Output output) {
+        this.output = output;
+        return this;
     }
 
     /**

@@ -14,6 +14,6 @@ import io.openapiparser.validator.ValidationMessage;
  */
 public class EmailError extends ValidationMessage {
     public EmailError (JsonSchema schema, JsonInstance instance) {
-        super (schema, instance, "should conform to rfc5322");
+        super (schema, instance, "email","should conform to rfc5322");
     }
 }

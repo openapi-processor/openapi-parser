@@ -15,6 +15,6 @@ import io.openapiparser.validator.ValidationMessage;
 public class EnumError extends ValidationMessage {
 
     public EnumError (JsonSchema schema, JsonInstance instance) {
-        super (schema, instance, "should be a value of enum");
+        super (schema, instance, "enum", "should be a value of the enum");
     }
 }

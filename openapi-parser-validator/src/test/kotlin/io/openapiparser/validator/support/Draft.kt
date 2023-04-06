@@ -9,12 +9,11 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.kotest.core.spec.style.freeSpec
 import io.kotest.matchers.shouldBe
-import io.openapiparser.converter.Types.asMap
 import io.openapiparser.jackson.JacksonConverter
 import io.openapiparser.schema.*
+import io.openapiparser.schema.UriSupport.emptyUri
 import io.openapiparser.validator.Validator
 import io.openapiparser.validator.ValidatorSettings
-import java.net.URI
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.name
@@ -36,11 +35,11 @@ fun draftSpec(
     val root = Path.of(draft!!.toURI())
 
     val excludes = extras
-        .filterIsInstance(Exclude::class.java)
+        .filterIsInstance<Exclude>()
         .map { e -> e.test }
 
     val remotes = extras
-        .filterIsInstance(Remote::class.java)
+        .filterIsInstance<Remote>()
 
     fun toPath(path: String): Path {
         val resource = Validator::class.java.getResource(path)
@@ -50,38 +49,34 @@ fun draftSpec(
     fun loadSuites(path: Path): Collection<Suite> {
         return json.readValue(
             Files.readAllBytes(path),
-            json.typeFactory.constructCollectionType(List::class.java, Suite::class.java))
+            json.typeFactory.constructCollectionType(
+                List::class.java,
+                Suite::class.java
+            )
+        )
     }
 
     fun loadDocument(path: String): Any {
         return json.readValue(
             Files.readAllBytes(toPath(path)),
-            json.typeFactory.constructMapType(HashMap::class.java, String::class.java, Object::class.java)
+            json.typeFactory.constructMapType(
+                HashMap::class.java,
+                String::class.java,
+                Object::class.java
+            )
         )
     }
 
     fun createSchema(schema: Any, documents: List<Document>): JsonSchema {
-        val resolver = Resolver(
-            TestUriReader(documents),
-            JacksonConverter(),
-            DocumentStore(),
-            settings.version
-        )
-        val result = resolver.resolve(URI.create(""), schema)
-
-        return if (schema is Boolean) {
-            JsonSchemaBoolean(
-                schema,
-                JsonSchemaContext(result.uri, result.registry, settings.version))
-        } else {
-            JsonSchemaObject(
-                asMap(schema)!!,
-                JsonSchemaContext(result.uri, result.registry, settings.version))
-        }
+        val loader = DocumentLoader(TestUriReader(documents), JacksonConverter())
+        val store = SchemaStore(loader)
+        val uri = store.register(schema)
+        return store.getSchema(uri, settings.version)
     }
 
     fun createInstance(instance: Any?): JsonInstance {
-        return JsonInstance(instance, JsonInstanceContext(URI.create(""), ReferenceRegistry()))
+        val scope = Scope (emptyUri(), emptyUri(), settings.version)
+        return JsonInstance(instance, JsonInstanceContext(scope, ReferenceRegistry()))
     }
 
     Files.walk(root)

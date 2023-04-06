@@ -15,15 +15,19 @@ import java.util.Collections;
 public abstract class SimpleStep implements ValidationStep {
     protected final JsonSchema schema;
     protected final JsonInstance instance;
+    protected final String property;
     private boolean valid = true;
 
     public SimpleStep (JsonSchema schema, JsonInstance instance) {
         this.schema = schema;
         this.instance = instance;
+        this.property = "n/a";
     }
 
-    public void setInvalid () {
-        valid = false;
+    public SimpleStep (JsonSchema schema, JsonInstance instance, String property) {
+        this.schema = schema;
+        this.instance = instance;
+        this.property = property;
     }
 
     protected abstract ValidationMessage getError ();
@@ -44,6 +48,14 @@ public abstract class SimpleStep implements ValidationStep {
     @Override
     public boolean isValid () {
         return valid;
+    }
+
+    public void setInvalid () {
+        valid = false;
+    }
+
+    public void setValid (boolean valid) {
+        this.valid = valid;
     }
 
     @Override

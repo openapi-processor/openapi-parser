@@ -34,7 +34,7 @@ public class MaxProperties {
         Set<String> instanceProperties = new HashSet<>(instanceObject.keySet ());
         Integer maxProperties = schema.getMaxProperties ();
         if (maxProperties == null)
-            return new NullStep ();
+            return new NullStep ("maxProperties");
 
         MaxPropertiesStep step = new MaxPropertiesStep (schema, instance);
 

@@ -16,6 +16,10 @@ public class IntegerConverter implements PropertyConverter<Integer> {
 
     @Override
     public @Nullable Integer convert (String name, @Nullable Object value, String location) {
-        return convertOrNull (location, value, Integer.class);
+        Number number = convertOrNull(location, value, Number.class);
+        if (number == null)
+            return null;
+
+        return number.intValue();
     }
 }

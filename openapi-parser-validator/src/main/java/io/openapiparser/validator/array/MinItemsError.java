@@ -15,6 +15,8 @@ import io.openapiparser.validator.ValidationMessage;
 public class MinItemsError extends ValidationMessage {
 
     public MinItemsError (JsonSchema schema, JsonInstance instance, int size) {
-        super (schema, instance, String.format ("the size should be greater or equal to %d", size));
+        super (schema, instance,
+            "minItems",
+            String.format ("should be greater or equal to %d", size));
     }
 }

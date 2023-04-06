@@ -5,18 +5,16 @@
 
 package io.openapiparser.validator.array;
 
-import io.openapiparser.schema.JsonInstance;
-import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.schema.*;
 import io.openapiparser.validator.Validator;
-import io.openapiparser.validator.steps.NullStep;
-import io.openapiparser.validator.steps.ValidationStep;
+import io.openapiparser.validator.steps.*;
 
 import java.util.Collection;
 
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
- * validates contains.
+ * validates contains, minContains &amp; maxContains.
  *
  * <p>See specification:
  *
@@ -31,25 +29,59 @@ public class Contains {
         this.validator = validator;
     }
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
+    public ValidationStep validate (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope) {
         JsonSchema contains = schema.getContains ();
         if (contains == null)
-            return new NullStep ();
+            return new NullStep ("contains");
 
-        ContainsStep step = new ContainsStep (schema, instance);
+        CompositeStep step = new FlatStep ();
 
         Collection<Object> instanceValue = getInstanceValue (instance);
         int instanceSize = instanceValue.size ();
 
+        ContainsStep containsStep = new ContainsStep (schema, instance);
+        step.add (containsStep);
+
+        int validCount = 0;
         for (int idx = 0; idx < instanceSize; idx++) {
             JsonInstance value = instance.getValue (idx);
-            ValidationStep validate = validator.validate (contains, value);
+            ValidationStep validate = validator.validate (contains, value, dynamicScope);
+            containsStep.add (validate);
+
             if (validate.isValid ()) {
-                return step;
+                validCount++;
             }
         }
 
-        step.setInvalid ();
+        boolean containsIsValid = validCount > 0;
+        Integer minContains = schema.getMinContains ();
+        Integer maxContains = schema.getMaxContains ();
+
+        if (minContains != null) {
+            MinContainsStep minStep = new MinContainsStep (schema, instance);
+            minStep.setValid (validCount >= minContains);
+            step.add (minStep);
+
+            if (minContains == 0 && maxContains == null) {
+                containsIsValid = true;
+            }
+        }
+
+        if (maxContains != null) {
+            MaxContainsStep minStep = new MaxContainsStep (schema, instance);
+            boolean valid = validCount <= maxContains;
+            minStep.setValid (valid);
+            step.add (minStep);
+
+            if (valid && minContains != null && minContains == 0) {
+                containsIsValid = true;
+            }
+        }
+
+        if (!containsIsValid) {
+            containsStep.setInvalid ();
+        }
+
         return step;
     }
 

@@ -9,14 +9,20 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.openapiparser.converter.Types.asMap
+import io.openapiparser.converter.Types.asString
 
 class TypesSpec: StringSpec({
 
-    "casting null to map" {
+    "casts null to string" {
+        asString(null).shouldBeNull()
+    }
+
+    "casts null to map" {
         asMap(null).shouldBeNull()
     }
 
-    "casting object to map" {
+    "casts object to map" {
         asMap(emptyMap<String, String>() as Any).shouldNotBeNull()
     }
+
 })

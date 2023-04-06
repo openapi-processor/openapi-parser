@@ -1,0 +1,17 @@
+openapi: 3.0.2
+info:
+  title: test link $ref bundling
+  version: 1.0.0
+
+paths:
+
+  /foo:
+    get:
+      operationId: foo
+      responses:
+        '204':
+          description: none
+          links:
+            foo:
+              $ref: 'foo.yaml#/Foo'
+

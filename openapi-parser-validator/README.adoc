@@ -10,7 +10,11 @@ Used by openapi-parser but also usable as standalone JSON Schema validator.
 
 It is tested against the official link:{json-schema-testsuite}[JSON Schema Test Suite]. It passes all required tests of the test suite & most *optional* tests. It implements the `format`s as listed. See the limitations below.
 
-* *draft-07* (http://json-schema.org/draft-07/schema#)
+* *2019-09* (https://json-schema.org/draft/2019-09/schema)
+** format: *duration* (not implemented)
+** format: *uuid* (`jav.util.UUID`)
+
+* *draft-07* (https://json-schema.org/draft-07/schema#)
 ** `contentMediaType`: not validated
 ** `contentEncoding`: not validated
 ** format: *date* (`java.time.LocalDate`)
@@ -24,7 +28,7 @@ It is tested against the official link:{json-schema-testsuite}[JSON Schema Test 
 ** format: *uri-template.json* (not implemented)
 ** format: see Draft 6 formats
 
-* *draft-06* (http://json-schema.org/draft-06/schema#)
+* *draft-06* (https://json-schema.org/draft-06/schema#)
 ** format: *uri-reference* (code)
 ** format: *json-pointer* (not implemented)
 ** format: *uri-template* (not implemented)

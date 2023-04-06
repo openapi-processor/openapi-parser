@@ -28,7 +28,7 @@ public class ExclusiveMinimum {
         Number minimum = schema.getExclusiveMinimum ();
 
         if (minimum == null)
-            return new NullStep ();
+            return new NullStep ("exclusiveMinimum");
 
         ExclusiveMinimumStep step = new ExclusiveMinimumStep (schema, instance);
 

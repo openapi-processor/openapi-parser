@@ -5,21 +5,21 @@
 
 package io.openapiparser.schema;
 
-import java.net.URI;
-
 public class ResolverResult {
-    private final URI uri;
+    private final Scope scope;
     private final Object document;
     private final ReferenceRegistry registry;
+    private final DocumentStore documents;
 
-    public ResolverResult (URI uri, Object document, ReferenceRegistry registry) {
-        this.uri = uri;
+    public ResolverResult (Scope scope, Object document, ReferenceRegistry registry, DocumentStore documents) {
+        this.scope = scope;
         this.document = document;
         this.registry = registry;
+        this.documents = documents;
     }
 
-    public URI getUri () {
-        return uri;
+    public Scope getScope () {
+        return scope;
     }
 
     public Object getDocument () {
@@ -28,5 +28,9 @@ public class ResolverResult {
 
     public ReferenceRegistry getRegistry () {
         return registry;
+    }
+
+    public DocumentStore getDocuments () {
+        return documents;
     }
 }

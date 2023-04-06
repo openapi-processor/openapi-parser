@@ -21,6 +21,9 @@ public class AnyOfError extends ValidationMessage {
         JsonInstance instance,
         Collection<ValidationMessage> messages
     ) {
-        super (schema, instance, "should validate against any schema", messages);
+        super (schema, instance,
+            "anyOf",
+            "should validate against any schema",
+            messages);
     }
 }

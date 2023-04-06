@@ -8,13 +8,14 @@ package io.openapiparser.schema;
 import io.openapiparser.converter.TypeMismatchException;
 import io.openapiparser.converter.Types;
 import io.openapiparser.validator.support.Equals;
-import org.checkerframework.checker.nullness.qual.*;
+import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.net.URI;
-import java.util.*;
+import java.util.Collection;
+import java.util.Map;
 
-import static io.openapiparser.converter.Types.*;
-import static io.openapiparser.support.Nullness.nonNull;
+import static io.openapiparser.converter.Types.asCol;
+import static io.openapiparser.converter.Types.asMap;
 
 public class JsonInstance {
     private final JsonInstanceContext context;
@@ -34,7 +35,7 @@ public class JsonInstance {
         this.location = location;
     }
 
-    public URI getScope () {
+    public Scope getScope () {
         return context.getScope ();
     }
 
@@ -73,29 +74,6 @@ public class JsonInstance {
 
     public int getArraySize () {
         return getArraySizeX ();
-    }
-
-    public boolean isRef () {
-        if (!isObject ())
-            return false;
-
-        URI ref = getRef ();
-        if (ref == null)
-            return false;
-
-        return context.isRef (ref);
-    }
-
-    public URI getRefKey () {
-        return context.getReferenceKey (nonNull(getRef ()));
-    }
-
-    public JsonInstance getRefInstance () {
-        Reference reference = context.getReference (nonNull (getRef ()));
-        JsonInstanceContext refContext = context.withScope (reference.getValueScope ());
-        Object rawValue = reference.getRawValue ();
-        Map<String, Object> props = asMap(rawValue);
-        return new JsonInstance (props, refContext.withId (props));
     }
 
     public @Nullable Map<String, Object> asObject () {
@@ -149,15 +127,6 @@ public class JsonInstance {
             return String.format ("%s", context.getScope ());
         }
         return String.format ("%s", this.location);
-    }
-
-    private @Nullable URI getRef () {
-        Map<String, Object> object = nonNull(asObject ());
-        Object ref = object.get (Keywords.REF);
-        if (!Types.isString (ref))
-            return null;
-
-        return UriSupport.createUri ((String)nonNull(ref));
     }
 
     private @Nullable String getPropertyKey (String property) {

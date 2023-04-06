@@ -20,10 +20,13 @@ public class SetupExample {
 
     void parseAndValidate () {
         Reader reader = new UriReader ();
-        DocumentStore documents = new DocumentStore ();
         Converter converter = new SnakeYamlConverter ();
         // Converter converter = new JacksonConverter ();
-        Resolver resolver = new Resolver (reader, converter, documents);
+        DocumentLoader loader = new DocumentLoader (reader, converter);
+
+        DocumentStore documents = new DocumentStore ();
+        Resolver.Settings resolverSettings = new Resolver.Settings (SchemaVersion.Draft4);
+        Resolver resolver = new Resolver (documents, loader, resolverSettings);
 
         // parser OpenAPI file or url
         OpenApiParser parser = new OpenApiParser (resolver);
@@ -32,7 +35,7 @@ public class SetupExample {
         OpenApi model = result.getModel (OpenApi.class);
 
         // validate OpenAPI
-        SchemaStore store = new SchemaStore (resolver);
+        SchemaStore store = new SchemaStore (loader);
         ValidatorSettings settings = new ValidatorSettings ();
         Validator validator = new Validator (settings);
         boolean valid = result.validate (validator, store);

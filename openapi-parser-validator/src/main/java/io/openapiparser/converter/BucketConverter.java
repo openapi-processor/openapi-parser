@@ -5,7 +5,7 @@
 
 package io.openapiparser.converter;
 
-import io.openapiparser.schema.Bucket;
+import io.openapiparser.schema.*;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
@@ -30,6 +30,8 @@ public class BucketConverter implements PropertyConverter<Bucket> {
         if (!(value instanceof Map))
             throw new TypeMismatchException (location, Map.class);
 
-        return new Bucket (parent.getSource (), location, asMap (value));
+        Map<String, Object> props = asMap (value);
+        Scope scope = parent.getScope ().move (props);
+        return new Bucket (scope, location, props);
     }
 }

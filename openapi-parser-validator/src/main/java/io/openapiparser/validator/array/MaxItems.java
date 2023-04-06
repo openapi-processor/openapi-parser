@@ -33,7 +33,7 @@ public class MaxItems {
         Collection<Object> instanceValue = getInstanceValue (instance);
         Integer maxItems = schema.getMaxItems ();
         if (maxItems == null)
-            return new NullStep ();
+            return new NullStep ("maxItems");
 
         MaxItemsStep step = new MaxItemsStep (schema, instance);
 

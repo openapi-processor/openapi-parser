@@ -1,0 +1,28 @@
+:json-schema: http://json-schema.org/
+:license: https://github.com/json-schema-org/json-schema-spec
+
+= JSON Schema
+
+this folder contains copies of link:{json-schema}[JSON Schema] files.
+
+* `draft/2019-09/schema`:
+** https://json-schema.org/draft/2019-09/schema
+** https://github.com/json-schema-org/json-schema-spec/blob/2019-09/schema.json
+** the vocabularies in the `meta` sub folder
+** the output schema in the `output` sub folder
+
+* `draft-07/schema`:
+** http://json-schema.org/draft-07/schema#
+** https://github.com/json-schema-org/json-schema-spec/blob/draft-07/schema.json
+
+* `draft-06/schema`:
+** http://json-schema.org/draft-06/schema#
+** https://github.com/json-schema-org/json-schema-spec/blob/draft-06/schema.json
+
+* `draft-04/schema`:
+** https://json-schema.org/draft-04/schema#
+** https://github.com/json-schema-org/json-schema-spec/blob/draft-04/schema.json
+
+== License
+
+link:{license}[JSON Schema License]

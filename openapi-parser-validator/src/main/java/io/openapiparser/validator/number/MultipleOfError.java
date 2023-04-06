@@ -16,7 +16,9 @@ import static io.openapiparser.support.Nullness.nonNull;
  */
 public class MultipleOfError extends ValidationMessage {
     public MultipleOfError (JsonSchema schema, JsonInstance instance) {
-        super (schema, instance, String.format ("the value should be a multiple of %s",
-            nonNull(schema.getMultipleOf ())));
+        super (schema, instance,
+            "multipleOf",
+            String.format ("the value should be a multiple of %s",
+                nonNull(schema.getMultipleOf ())));
     }
 }

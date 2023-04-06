@@ -14,7 +14,8 @@ import io.openapiparser.validator.ValidationMessage;
  */
 public class ExclusiveMinimumError extends ValidationMessage {
     public ExclusiveMinimumError (JsonSchema schema, JsonInstance instance) {
-        super (schema, instance, String.format ("the value should be greater than %s",
-            schema.getExclusiveMinimum ()));
+        super (schema, instance,
+            "exclusiveMinimum",
+            String.format ("the value should be greater than %s", schema.getExclusiveMinimum ()));
     }
 }

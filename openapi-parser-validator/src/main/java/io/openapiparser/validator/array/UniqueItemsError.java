@@ -15,6 +15,8 @@ import io.openapiparser.validator.ValidationMessage;
 public class UniqueItemsError extends ValidationMessage {
 
     public UniqueItemsError (JsonSchema schema, JsonInstance instance) {
-        super (schema, instance, "the items should be unique");
+        super (schema, instance,
+            "items",
+            "the items should be unique");
     }
 }

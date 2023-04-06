@@ -21,6 +21,8 @@ public class OneOfError extends ValidationMessage {
         JsonInstance instance,
         Collection<ValidationMessage> messages
     ) {
-        super (schema, instance, "should validate against exactly one schema", messages);
+        super (schema, instance,
+            "oneOf",
+            "should validate against exactly one schema", messages);
     }
 }

@@ -18,6 +18,6 @@ public class AllOfError extends ValidationMessage {
         JsonInstance instance,
         Collection<ValidationMessage> messages
     ) {
-        super (schema, instance, "should validate against all schemas", messages);
+        super (schema, instance, "allOf", "should validate against all schemas", messages);
     }
 }

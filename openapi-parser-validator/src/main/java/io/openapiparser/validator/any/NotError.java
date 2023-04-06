@@ -20,6 +20,6 @@ public class NotError extends ValidationMessage {
         JsonInstance instance,
         Collection<ValidationMessage> messages
     ) {
-        super(schema, instance, "should not validate against schema", messages);
+        super(schema, instance, "not", "should not validate against schema", messages);
     }
 }

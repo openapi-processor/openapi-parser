@@ -14,6 +14,6 @@ import io.openapiparser.validator.ValidationMessage;
  */
 public class HostnameError extends ValidationMessage {
     public HostnameError (JsonSchema schema, JsonInstance instance) {
-        super (schema, instance, "should conform to rfc1034");
+        super (schema, instance, "hostname", "should conform to rfc1034");
     }
 }

@@ -43,11 +43,39 @@ public interface JsonSchema {
         throw new NotImplementedException ();
     }
 
+    default @Nullable String getAnchor () {
+        throw new NotImplementedException ();
+    }
+
+    default boolean isDynamicRef () {
+        return false;
+    }
+
+    default @Nullable URI getDynamicRef () {
+        throw new NotImplementedException ();
+    }
+
+    default @Nullable String getDynamicAnchor () {
+        return null;
+    }
+
     default JsonSchema getRefSchema () {
         throw new NotImplementedException ();
     }
 
+    default JsonSchema getRefSchema (@Nullable URI scope) {
+        throw new NotImplementedException ();
+    }
+
     default @Nullable URI getMetaSchema () {
+        return null;
+    }
+
+    default @Nullable JsonSchema getMetaSchemaSchema() {
+        return null;
+    }
+
+    default @Nullable Vocabularies getVocabulary () {
         return null;
     }
 
@@ -103,6 +131,10 @@ public interface JsonSchema {
         return new JsonSchemas (); // default empty schema (draft 4)
     }
 
+    default @Nullable JsonSchema getUnevaluatedItems () {
+        return null; // default empty schema (draft 2019-09)
+    }
+
     default @Nullable Integer getMaxItems () {
         return null;
     }
@@ -116,6 +148,14 @@ public interface JsonSchema {
     }
 
     default @Nullable JsonSchema getContains () {
+        return null;
+    }
+
+    default @Nullable Integer getMinContains () {
+        return null;
+    }
+
+    default @Nullable Integer getMaxContains () {
         return null;
     }
 
@@ -143,7 +183,17 @@ public interface JsonSchema {
         return null;
     }
 
+    default @Nullable JsonSchema getUnevaluatedProperties () { return null; }
+
     default Map<String, JsonDependency> getDependencies () {
+        return Collections.emptyMap ();
+    }
+
+    default Map<String, JsonSchema> getDependentSchemas () {
+        return Collections.emptyMap ();
+    }
+
+    default Map<String, Set<String>> getDependentRequired () {
         return Collections.emptyMap ();
     }
 

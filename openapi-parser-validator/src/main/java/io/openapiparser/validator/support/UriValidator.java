@@ -14,11 +14,11 @@ public class UriValidator {
     private static class ValidatorException extends RuntimeException { }
 
     private static class Components {
-        private String scheme;
-        private String authority;
-        private String path;
-        private String query;
-        private String fragment;
+        private final String scheme;
+        private final String authority;
+        private final String path;
+        private final String query;
+        private final String fragment;
 
         public Components (String scheme, String authority, String path, String query, String fragment) {
             this.scheme = scheme;

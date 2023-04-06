@@ -5,64 +5,68 @@
 
 package io.openapiparser.schema;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
-
 import java.net.URI;
 import java.util.Map;
 
 public class JsonSchemaContext {
-    private final SchemaVersion version;
-    private final URI scope;
+    private final Scope scope;
     private final ReferenceRegistry references;
+    private final Vocabularies vocabularies;
 
-    public JsonSchemaContext (URI scope, ReferenceRegistry references, SchemaVersion version) {
-        this.version = version;
+    public JsonSchemaContext (Scope scope, ReferenceRegistry references) {
         this.scope = scope;
         this.references = references;
+        this.vocabularies = Vocabularies.ALL;
     }
 
-    public SchemaVersion getVersion () {
-        return version;
+    public JsonSchemaContext (Scope scope, ReferenceRegistry references, Vocabularies vocabularies) {
+        this.scope = scope;
+        this.references = references;
+        this.vocabularies = vocabularies;
     }
 
-    public URI getScope () {
+    public Scope getScope () {
         return scope;
     }
 
+    public SchemaVersion getVersion () {
+        return scope.getVersion ();
+    }
+
+    public Vocabularies getVocabularies () {
+        return vocabularies;
+    }
+
     public Reference getReference (URI ref) {
-        URI resolved = scope.resolve (ref);
-        return references.getRef (resolved);
+        if (ref.isAbsolute ()) {
+            return references.getReference (ref);
+        }
+
+        // is id reference?  is absolute match?
+        URI refId = UriSupport.resolve(scope.getBaseUri(), ref);
+        if (references.hasReference (refId)) {
+            return references.getReference (refId);
+        }
+
+        // is local reference.. // todo
+        URI refLocal = UriSupport.resolve(scope.getBaseUri (), ref);
+        return references.getReference (refLocal);
     }
 
-    @Deprecated
-    public JsonSchemaContext withSource (URI source) {
-        if (scope.equals (source)) {
-            return this;
-        }
-        return new JsonSchemaContext (source, references, version);
+    public Reference getReference (URI ref, URI dynamicScope) {
+        URI resolved = dynamicScope.resolve (ref);
+        return references.getReference (resolved);
     }
 
-    public JsonSchemaContext withScope (@Nullable URI targetScope) {
-        // todo possible??
-        if (targetScope == null) {
-            return this;
-        }
-        return new JsonSchemaContext (scope.resolve (targetScope), references, version);
+    public JsonSchemaContext withScope (Scope targetScope) {
+        return new JsonSchemaContext (targetScope, references, vocabularies);
     }
 
     public JsonSchemaContext withId (Map<String, Object> properties) {
-        String id = version.getIdProvider ().getId (properties);
-        if (id == null) {
-            return this;
-        }
-
-        return withId (id);
+        return new JsonSchemaContext (scope.move (properties), references, vocabularies);
     }
 
-    public JsonSchemaContext withId (@Nullable String id) {
-        if (id == null) {
-            return this;
-        }
-        return new JsonSchemaContext (scope.resolve (id), references, version);
+    public boolean refAllowsSiblings () {
+        return scope.getVersion().validatesRefSiblings();
     }
 }

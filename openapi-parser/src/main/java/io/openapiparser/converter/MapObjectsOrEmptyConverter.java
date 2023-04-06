@@ -6,9 +6,9 @@
 package io.openapiparser.converter;
 
 import io.openapiparser.Factory;
+import io.openapiparser.schema.Scope;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.net.URI;
 import java.util.Collections;
 import java.util.Map;
 
@@ -20,8 +20,8 @@ import static io.openapiparser.converter.Types.convertMapOrNull;
 public class MapObjectsOrEmptyConverter<T> implements PropertyConverter<Map<String, T>> {
     private final MapObjectsOrEmptySelfConverter<T> converter;
 
-    public MapObjectsOrEmptyConverter (URI uri, Factory<T> factory) {
-        this.converter = new MapObjectsOrEmptySelfConverter<> (uri, factory);
+    public MapObjectsOrEmptyConverter (Scope scope, Factory<T> factory) {
+        this.converter = new MapObjectsOrEmptySelfConverter<> (scope, factory);
     }
 
     @Override

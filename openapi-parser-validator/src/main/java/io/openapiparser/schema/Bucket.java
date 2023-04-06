@@ -7,6 +7,7 @@ package io.openapiparser.schema;
 
 import io.openapiparser.converter.*;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
 
 import java.net.URI;
 import java.util.*;
@@ -15,24 +16,39 @@ import java.util.function.Consumer;
 
 import static io.openapiparser.converter.Types.*;
 import static io.openapiparser.support.Nullness.nonNull;
-import static java.util.Collections.unmodifiableMap;
 
 /**
  * wraps the properties {@link Map} of a json/yaml object and its location in the source document.
  */
 public class Bucket {
-    private final URI source; // scope
-    private final JsonPointer location;
+    private final Scope scope;
+    private final JsonPointer location;  // from document
     private final Map<String, Object> properties;
 
     public static Bucket empty() {
         return new Bucket (Collections.emptyMap ());
     }
 
+    public static @Nullable Bucket toBucket (Scope scope, @PolyNull Object source) {
+        if (!isObject (source)) {
+            return null;
+        }
+
+        return new Bucket (scope, asObject (source));
+    }
+
+    public static @Nullable Bucket toBucket (Scope scope, @Nullable Object source, JsonPointer location) {
+        if (!isObject (source)) {
+            return null;
+        }
+        return new Bucket (scope, location, asObject (source));
+    }
+
+    @Deprecated
     public Bucket (Map<String, Object> properties) {
-        this.source = URI.create ("");
+        this.scope = new Scope (URI.create (""), URI.create (""), null);
         this.location = JsonPointer.EMPTY;
-        this.properties = properties;
+        this.properties = properties; // unmodifiable?
     }
 
     /**
@@ -41,21 +57,28 @@ public class Bucket {
      * @param source the document URI
      * @param properties the document properties
      */
+    @Deprecated
     public Bucket (URI source, Map<String, Object> properties) {
-        this.source = source;
+        this.scope = new Scope (source, URI.create (""), null);
+        this.location = JsonPointer.EMPTY;
+        this.properties = properties;
+    }
+
+    public Bucket (Scope scope, Map<String, Object> properties) {
+        this.scope = scope;
         this.location = JsonPointer.EMPTY;
         this.properties = properties;
     }
 
     /**
-     * create an object bucket with the object location in the source document and its properties.
+     * create an object bucket with scope &amp; location in the source document and its properties.
      *
-     * @param source the document URI
+     * @param scope the scope of the bucket
      * @param location the location (json pointer) inside {@code source}
      * @param properties the document properties
      */
-    public Bucket (URI source, JsonPointer location, Map<String, Object> properties) {
-        this.source = source;
+    public Bucket (Scope scope, JsonPointer location, Map<String, Object> properties) {
+        this.scope = scope;
         this.location = location;
         this.properties = properties;
     }
@@ -67,19 +90,43 @@ public class Bucket {
      * @param location the location (json pointer) inside {@code source}
      * @param properties the document properties
      */
+    @Deprecated
     public Bucket (URI source, String location, Map<String, Object> properties) {
-        this.source = source;
+        this.scope = new Scope (source, URI.create (""), null);
+        this.location = JsonPointer.from (location);
+        this.properties = properties;
+    }
+
+    public Bucket (Scope scope, String location, Map<String, Object> properties) {
+        this.scope = scope;
         this.location = JsonPointer.from (location);
         this.properties = properties;
     }
 
     /**
-     * the document uri of this bucket.
+     * the scope of this bucket.
      *
      * @return the document {@link URI}
      */
-    public URI getSource () {
-        return source;
+
+    public Scope getScope () {
+        return scope;
+    }
+
+    public URI getBaseUri () {
+        return scope.getBaseUri ();
+    }
+
+    public boolean hasId () {
+        return scope.getVersion ().getIdProvider ().getId (properties) != null;
+    }
+
+    public @Nullable URI getId () {
+        String id = scope.getVersion ().getIdProvider ().getId (properties);
+        if (id == null)
+            return null;
+
+        return UriSupport.createUri (id);
     }
 
     /**
@@ -126,10 +173,10 @@ public class Bucket {
         if (value == null)
             return null;
 
-        if (!(value instanceof Map))
+        if (!isMap (value))
             throw new TypeMismatchException (getLocation (property), Map.class);
 
-        return new Bucket (source, getLocation (property), asMap (value));
+        return new Bucket (scope, getLocation (property), asMap (value));
     }
 
     /**
@@ -148,7 +195,7 @@ public class Bucket {
      * @return the property map
      */
     public Map<String, Object> getRawValues () {
-        return unmodifiableMap (properties);
+        return properties;
     }
 
     /**
@@ -161,61 +208,76 @@ public class Bucket {
         return properties.containsKey (property);
     }
 
+    public @Nullable Object getProperty (String property) {
+        return properties.get (property);
+    }
+
     /**
      * get the raw value at the given property pointer position.
      *
      * @param pointer property location
      * @return property value or null if the property does not exist
      */
-    public @Nullable Object getRawValue (JsonPointer pointer) {
-        JsonPointer current = JsonPointer.EMPTY;
-        Object value = properties;
-
-        for (String token: pointer.getTokens ()) {
-            current = current.append (token);
-
-            if (value instanceof Map) {
-                value = getObjectValue (asMap (value), current);
-
-            } else if (value instanceof Collection) {
-                value = getArrayValue (asCol (value), current);
-            }
-        }
-
-        return value;
-    }
+//    @Deprecated // replace with getRawValueX
+//    public @Nullable Object getRawValue (JsonPointer pointer) {
+//        JsonPointer current = JsonPointer.EMPTY;
+//        Object value = properties;
+//
+//        for (String token: pointer.getTokens ()) {
+//            current = current.append (token);
+//
+//            if (isObject (value)) {
+//                value = getObjectValue (asMap (value), current);
+//
+//            } else if (isArray (value)) {
+//                value = getArrayValue (asCol (value), current);
+//            }
+//        }
+//
+//        return value;
+//    }
 
     /**
      * get the raw value with scope at the given property pointer position.
      *
      * @param pointer property location
-     * @param idProvider id provider of the schema version
-     * @return property value or null if the property does not exist
+     * @return raw value or null if the property does not exist
      */
-    public @Nullable RawValue getRawValue (JsonPointer pointer, IdProvider idProvider) {
-        JsonPointer current = JsonPointer.EMPTY;
+    public @Nullable RawValue getRawValue (JsonPointer pointer) {
+        JsonPointer current = JsonPointer.empty ();
         Object value = properties;
-        URI scope = source;
+        Scope scope = this.scope;
 
         for (String token: pointer.getTokens ()) {
             current = current.append (token);
 
-            if (value instanceof Map) {
-                Map<String, Object> props = asMap (value);
+            if (value == properties) {
+                Map<String, Object> self = asObject (value);
+                value = getObjectValue (self, current);
 
-                String id = idProvider.getId (props);
-                if (id != null) {
-                    scope = scope.resolve (id);
-                }
+            } else if (isObject (value)) {
+                Map<String, Object> object = asObject (value);
 
-                value = getObjectValue (props, current);
+                value = getObjectValue (object, current);
+                scope = scope.move (value);
 
-            } else if (value instanceof Collection) {
-                value = getArrayValue (asCol (value), current);
+            } else if (isArray (value)) {
+                Collection<Object> array = asCol (value);
+
+                value = getArrayValue (array, current);
+                scope = scope.move (value);
             }
         }
 
         return new RawValue (scope, value);
+    }
+
+    public @Nullable Object getRawValueValue (JsonPointer pointer) {
+        RawValue value = getRawValue (pointer);
+        if (value == null)
+            return null;
+
+        return value.getValue ();
     }
 
     private Object getObjectValue (Map<String, Object> object, JsonPointer pointer) {
@@ -241,11 +303,23 @@ public class Bucket {
      * @param property property name
      * @param handler node handler
      */
+    @Deprecated // ?
     public void walkPropertyTree (String property, BucketVisitor handler) {
         Object value = getRawValue (property);
         JsonPointer propertyLocation = location.append (property);
 
-        if (value instanceof Map) {
+//        Scope currentScope = getScope (scope, document);
+//        Bucket bucket = toBucket (currentScope, document);
+//        private @Nullable Bucket toBucket (Scope scope, @Nullable Object source) {
+//            if (!(source instanceof Map)) {
+//                return null;
+//            }
+//            return new Bucket (scope, asMap (source));
+//        }
+
+        if (isObject (value)) {
+//            Scope currentScope = ScopeCalculator.getScope (scope.getUri (), asMap (value));
+
             handler.visit (nonNull(getBucket (property)));
 
         } else if (value instanceof Collection) {
@@ -255,7 +329,7 @@ public class Bucket {
                     continue;
 
                 handler.visit (new Bucket (
-                    source,
+                    scope,
                     propertyLocation.append (index).toString (),
                     asMap (o)));
 

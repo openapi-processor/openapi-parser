@@ -1,0 +1,15 @@
+openapi: 3.1.0
+info:
+  title: test callback $ref bundling
+  version: 1.0.0
+
+paths:
+
+  /foo:
+    get:
+      responses:
+        '204':
+          description: none
+      callbacks:
+        '$url':
+          $ref: 'foo.yaml#/Foo'

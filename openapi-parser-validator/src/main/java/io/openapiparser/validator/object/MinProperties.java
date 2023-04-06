@@ -35,7 +35,7 @@ public class MinProperties {
         Integer minProperties = schema.getMinProperties ();
 
         if (minProperties == null)
-            return new NullStep ();
+            return new NullStep ("minProperties");
 
         MinPropertiesStep step = new MinPropertiesStep (schema, instance);
         if (instanceProperties.size () < minProperties) {

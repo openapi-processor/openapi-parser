@@ -1,0 +1,12 @@
+openapi: 3.0.2
+info:
+  title: test response $ref bundling
+  version: 1.0.0
+
+paths:
+
+  /foo:
+    get:
+      responses:
+        '200':
+          $ref: 'foo.yaml#/Foo'

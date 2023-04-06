@@ -29,7 +29,7 @@ public class Minimum4 {
         Boolean exclusive = schema.getExclusiveMinimumB ();
 
         if (minimum == null)
-            return new NullStep ();
+            return new NullStep ("minimum");
 
         Minimum4Step step = new Minimum4Step (schema, instance);
 

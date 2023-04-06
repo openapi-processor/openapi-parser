@@ -38,7 +38,7 @@ public class IpV6 {
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         String format = schema.getFormat ();
         if (!shouldValidate (format))
-            return new NullStep ();
+            return new NullStep ("ipv6");
 
         IpV6Step step = new IpV6Step (schema, instance);
 

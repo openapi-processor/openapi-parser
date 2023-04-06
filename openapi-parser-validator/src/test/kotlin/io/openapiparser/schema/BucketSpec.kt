@@ -15,13 +15,15 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 import io.openapiparser.converter.NoValueException
 import io.openapiparser.converter.TypeMismatchException
+import io.openapiparser.schema.UriSupport.*
 import java.net.URI
 
 class BucketSpec: StringSpec({
 
     "get document uri" {
-        Bucket.empty().source.shouldBe(URI(""))
-        Bucket(URI("https://foo"), mapOf()).source.shouldBe(URI("https://foo"))
+        Bucket.empty().baseUri.shouldBe(emptyUri())
+
+        Bucket(URI("https://foo"), mapOf()).baseUri.shouldBe(URI("https://foo"))
     }
 
     "get raw property value" {
@@ -90,7 +92,7 @@ class BucketSpec: StringSpec({
 
         val foo = bucket.getBucket("foo")
         foo?.rawValues?.shouldContainExactly(mapOf("key" to "value"))
-        foo?.source shouldBe URI("https://document")
+        foo?.baseUri shouldBe URI("https://document")
         foo?.location.toString() shouldBe "/me/foo"
     }
 
@@ -116,14 +118,14 @@ class BucketSpec: StringSpec({
         ))
         val pointer = JsonPointer.from("/foo")
 
-        bucket.getRawValue(pointer) shouldBe "bar"
+        bucket.getRawValueValue(pointer) shouldBe "bar"
     }
 
     "get object value by null pointer" {
         val bucket = Bucket(URI("https://document"), "/me", mapOf("foo" to "bar"))
         val pointer = JsonPointer.from(null)
 
-        bucket.getRawValue(pointer) shouldBe bucket.rawValues
+        bucket.getRawValueValue(pointer) shouldBe bucket.rawValues
     }
 
     "throws if get object value is null" {
@@ -131,7 +133,7 @@ class BucketSpec: StringSpec({
         val pointer = JsonPointer.from("/object")
 
         shouldThrow<NoValueException> {
-            bucket.getRawValue(pointer)
+            bucket.getRawValueValue(pointer)
         }
     }
 
@@ -141,7 +143,7 @@ class BucketSpec: StringSpec({
         )
         val pointer = JsonPointer.from("/foo/0")
 
-        bucket.getRawValue(pointer) shouldBe "bar"
+        bucket.getRawValueValue(pointer) shouldBe "bar"
     }
 
     "throws if get array value by pointer index is null" {
@@ -152,7 +154,7 @@ class BucketSpec: StringSpec({
         val pointer = JsonPointer.from("/array/0")
 
         shouldThrow<NoValueException> {
-            bucket.getRawValue(pointer)
+            bucket.getRawValueValue(pointer)
         }
     }
 
@@ -164,12 +166,14 @@ class BucketSpec: StringSpec({
         val pointer = JsonPointer.from("/array/0")
 
         shouldThrow<ArrayIndexOutOfBoundsException> {
-            bucket.getRawValue(pointer)
+            bucket.getRawValueValue(pointer)
         }
     }
 
-    "get raw value with scope" {
-        val bucket = Bucket(URI("https://host/document"), "/me", mapOf(
+    "get raw value, without own scope is scope of parent" {
+        val scope = Scope(URI("https://host/document"), null, SchemaVersion.Draft4)
+
+        val bucket = Bucket(scope, "/any", mapOf(
             "definitions" to mapOf<String, Any>(
                 "foo" to mapOf<String, Any>(
                     "id" to "fooId",
@@ -183,8 +187,57 @@ class BucketSpec: StringSpec({
         ))
 
         val pointer = JsonPointer.from("/definitions/foo/definitions/bar")
-        val rawValue = bucket.getRawValue(pointer, SchemaVersion.Draft4.idProvider)
+        val rawValue = bucket.getRawValue(pointer)
 
-        rawValue?.scope.toString() shouldBe "https://host/fooId"
+        rawValue?.scope?.baseUri.toString() shouldBe "https://host/fooId"
+    }
+
+    "get raw value, with scope is value scope" {
+        val scope = Scope(URI("https://host/document"), null, SchemaVersion.Draft4)
+
+        val bucket = Bucket(scope, "/any", mapOf(
+            "definitions" to mapOf<String, Any>(
+                "foo" to mapOf<String, Any>(
+                    "id" to "fooId",
+                    "definitions" to mapOf<String, Any>(
+                        "bar" to mapOf<String, Any>(
+                            "id" to "barId",
+                            "type" to "string"
+                        )
+                    )
+                )
+            )
+        ))
+
+        val pointer = JsonPointer.from("/definitions/foo/definitions/bar")
+        val rawValue = bucket.getRawValue(pointer)
+
+        rawValue?.scope?.id.toString() shouldBe "https://host/barId"
+    }
+
+    "get raw value, does not duplicate parent scope" {
+        val scope = Scope(URI("https://host/document/self"), null, SchemaVersion.Draft4)
+
+        val bucket = Bucket(scope, "/any", mapOf(
+            "id" to "self"
+        ))
+
+        val pointer = JsonPointer.EMPTY
+        val rawValue = bucket.getRawValue(pointer)
+
+        rawValue?.scope?.id.toString() shouldBe "https://host/document/self"
+    }
+
+    "get raw value, does not duplicate parent scope with /" {
+        val scope = Scope(URI("https://host/document/self/"), null, SchemaVersion.Draft4)
+
+        val bucket = Bucket(scope, "/", mapOf(
+            "id" to "self/"
+        ))
+
+        val pointer = JsonPointer.empty()
+        val rawValue = bucket.getRawValue(pointer)
+
+        rawValue?.scope?.id.toString() shouldBe "https://host/document/self/"
     }
 })

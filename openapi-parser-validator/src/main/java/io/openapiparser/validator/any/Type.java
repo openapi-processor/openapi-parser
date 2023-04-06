@@ -31,7 +31,7 @@ public class Type {
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         final Collection<String> types = schema.getType ();
         if (types.isEmpty ())
-            return new NullStep ();
+            return new NullStep ("type");
 
         TypeStep step = new TypeStep (schema, instance);
 

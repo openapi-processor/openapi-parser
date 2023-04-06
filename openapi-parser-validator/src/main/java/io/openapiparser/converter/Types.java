@@ -5,8 +5,7 @@
 
 package io.openapiparser.converter;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.checker.nullness.qual.PolyNull;
+import org.checkerframework.checker.nullness.qual.*;
 
 import java.util.Collection;
 import java.util.Map;
@@ -61,7 +60,17 @@ public class Types {
     }
 
     @SuppressWarnings ("unchecked")
+    public static @PolyNull Map<String, Object> asObject (@PolyNull Object o) {
+        return (Map<String, Object>) o;
+    }
+
+    @SuppressWarnings ("unchecked")
     public static <T> @PolyNull Collection<T> asCol (@PolyNull Object o) {
+        return (Collection<T>) o;
+    }
+
+    @SuppressWarnings ("unchecked")
+    public static <T> @PolyNull Collection<T> asArray (@PolyNull Object o) {
         return (Collection<T>) o;
     }
 
@@ -73,22 +82,36 @@ public class Types {
         return (Number) o;
     }
 
+    public static @PolyNull Boolean asBoolean (@PolyNull Object o) {
+        return (Boolean) o;
+    }
+
+    @EnsuresNonNullIf(expression = "#1", result = true)
     public static boolean isBoolean (@Nullable Object o) {
         return o instanceof Boolean;
     }
 
+    @EnsuresNonNullIf(expression = "#1", result = true)
     public static boolean isString (@Nullable Object o) {
         return o instanceof String;
     }
 
+    @EnsuresNonNullIf(expression = "#1", result = true)
+    public static boolean isMap (@Nullable Object o) {
+        return o instanceof Map;
+    }
+
+    @EnsuresNonNullIf(expression = "#1", result = true)
     public static boolean isObject (@Nullable Object o) {
         return o instanceof Map;
     }
 
+    @EnsuresNonNullIf(expression = "#1", result = true)
     public static boolean isArray (@Nullable Object o) {
         return o instanceof Collection;
     }
 
+    @EnsuresNonNullIf(expression = "#1", result = true)
     public static boolean isSchema (@Nullable Object o) {
         return isObject (o) || isBoolean (o);
     }

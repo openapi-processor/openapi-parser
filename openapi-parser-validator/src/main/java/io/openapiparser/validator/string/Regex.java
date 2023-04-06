@@ -25,7 +25,7 @@ public class Regex {
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         String pattern = schema.getFormat ();
         if (pattern == null)
-            return new NullStep ();
+            return new NullStep ("regex");
 
         RegexStep step = new RegexStep (schema, instance);
 

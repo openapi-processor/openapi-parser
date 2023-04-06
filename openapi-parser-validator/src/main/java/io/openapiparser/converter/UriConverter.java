@@ -9,6 +9,9 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
 
+import static io.openapiparser.converter.Types.isString;
+import static io.openapiparser.schema.UriSupport.createUri;
+
 /**
  * converts the property {@code value} to an {@link URI}.
  */
@@ -19,9 +22,9 @@ public class UriConverter implements PropertyConverter<URI> {
         if (value == null)
             return null;
 
-        if (!(value instanceof String))
+        if (!isString (value))
             throw new TypeMismatchException (location, String.class);
 
-        return URI.create ((String)value);
+        return createUri ((String)value);
     }
 }

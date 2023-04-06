@@ -5,12 +5,12 @@
 
 package io.openapiparser.validator.steps;
 
-import io.openapiparser.validator.ValidationMessage;
+import io.openapiparser.validator.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class CompositeStep implements ValidationStep {
+public class CompositeStep implements ValidationStep, Annotations {
     protected final Collection<ValidationStep> steps;
 
     public CompositeStep () {
@@ -30,10 +30,14 @@ public class CompositeStep implements ValidationStep {
     }
 
     public void add (ValidationStep step) {
-        if (step.isValid ())
+        if (isNullStep(step))
             return;
 
-        steps.addAll (step.getSteps ());
+        if (isFlatStep(step)) {
+            steps.addAll (step.getSteps ());
+        } else {
+            steps.add (step);
+        }
     }
 
     public Collection<ValidationStep> getSteps () {
@@ -49,6 +53,22 @@ public class CompositeStep implements ValidationStep {
     }
 
     @Override
+    public Collection<Annotation> getAnnotations (String keyword) {
+        return steps.stream ()
+            .filter (ValidationStep::isValid)
+            .map (s -> s.getAnnotations (keyword))
+            .flatMap (Collection::stream)
+            .collect(Collectors.toList ());
+    }
+
+    public AnnotationsComposite mergeAnnotations (Annotations annotations) {
+        AnnotationsComposite merge = new AnnotationsComposite ();
+        merge.add (annotations);
+        merge.add (this);
+        return merge;
+    }
+
+    @Override
     public boolean isValid () {
         return steps.stream ()
             .allMatch (ValidationStep::isValid);
@@ -57,5 +77,13 @@ public class CompositeStep implements ValidationStep {
     @Override
     public String toString () {
         return isValid () ? "valid" : "invalid";
+    }
+
+    private static boolean isNullStep(ValidationStep step) {
+        return step instanceof NullStep;
+    }
+
+    private static boolean isFlatStep(ValidationStep step) {
+        return step instanceof FlatStep;
     }
 }

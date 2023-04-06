@@ -17,4 +17,17 @@ public class Nullness {
         assert value != null : "must not be null!";
         return value;
     }
+
+    /**
+     * suppress nullable warning for values that may be null.
+     *
+     * @param value the value that may be null
+     * @return {@code value}
+     * @param <T> the type of {@code value}
+     */
+    @SuppressWarnings({"nullness"})
+    @EnsuresNonNull (value = "#1")
+    public static <T> @NonNull T nullable (@Nullable T value) {
+        return value;
+    }
 }

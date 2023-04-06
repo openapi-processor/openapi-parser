@@ -46,7 +46,7 @@ public class Email {
     public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
         String format = schema.getFormat ();
         if (!shouldValidate (format))
-            return new NullStep ();
+            return new NullStep ("email");
 
         EmailStep step = new EmailStep (schema, instance);
 

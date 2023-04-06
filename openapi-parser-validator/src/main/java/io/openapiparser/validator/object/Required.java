@@ -34,7 +34,7 @@ public class Required {
         Collection<String> requiredProperties = schema.getRequired ();
 
         if (requiredProperties == null)
-            return new NullStep ();
+            return new NullStep ("required");
 
         RequiredStep step = new RequiredStep (schema, instance);
         requiredProperties.forEach (p -> {

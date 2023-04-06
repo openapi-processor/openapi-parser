@@ -13,7 +13,17 @@ import io.openapiparser.validator.support.draftSpec
 @Ignored
 class PendingSpec : FreeSpec({
     val settings = ValidatorSettings()
-    settings.version = SchemaVersion.Draft7
+//    settings.version = SchemaVersion.Draft4
+//    settings.version = SchemaVersion.Draft6
+//    settings.version = SchemaVersion.Draft7
+    settings.version = SchemaVersion.Draft201909
 
-    include(draftSpec("/suites/pending", settings, draft7Extras))
+    include(draftSpec(
+        "/suites/pending",
+        settings,
+//        draft4Extras
+//        draft6Extras
+//        draft7Extras
+        draft201909Extras
+    ))
 })

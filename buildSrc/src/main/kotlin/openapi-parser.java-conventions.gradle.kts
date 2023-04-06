@@ -36,7 +36,8 @@ java {
     withSourcesJar()
 
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
+        // 8
+        languageVersion.set(JavaLanguageVersion.of(11))
     }
 }
 

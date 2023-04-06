@@ -27,7 +27,7 @@ public class Maximum {
         Number maximum = schema.getMaximum ();
 
         if (maximum == null)
-            return new NullStep ();
+            return new NullStep ("maximum");
 
         MaximumStep step = new MaximumStep (schema, instance);
 

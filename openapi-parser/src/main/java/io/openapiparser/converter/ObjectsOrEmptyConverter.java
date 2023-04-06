@@ -7,6 +7,7 @@ package io.openapiparser.converter;
 
 import io.openapiparser.Factory;
 import io.openapiparser.schema.JsonPointer;
+import io.openapiparser.schema.Scope;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -22,8 +23,8 @@ import static io.openapiparser.support.Nullness.nonNull;
 public class ObjectsOrEmptyConverter<T> implements PropertyConverter<Collection<T>> {
     private final ObjectNotNullConverter<T> converter;
 
-    public ObjectsOrEmptyConverter (URI uri, Factory<T> factory) {
-        this.converter = new ObjectNotNullConverter<T> (uri, factory);
+    public ObjectsOrEmptyConverter (Scope scope, Factory<T> factory) {
+        this.converter = new ObjectNotNullConverter<T> (scope, factory);
     }
 
     @Override

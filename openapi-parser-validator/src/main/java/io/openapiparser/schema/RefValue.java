@@ -7,18 +7,17 @@ package io.openapiparser.schema;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.net.URI;
-
 public class RefValue {
-    private final URI scope;
+    private final Scope scope; // value scope
+
     private final @Nullable Object value;
 
-    public RefValue (URI scope, @Nullable Object value) {
+    public RefValue (Scope scope, @Nullable Object value) {
         this.scope = scope;
         this.value = value;
     }
 
-    public URI getScope () {
+    public Scope getScope () {
         return scope;
     }
 

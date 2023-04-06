@@ -8,36 +8,19 @@ package io.openapiparser.schema;
 import java.net.URI;
 
 import static io.openapiparser.schema.Keywords.HASH;
+import static io.openapiparser.schema.UriSupport.*;
 
 /**
  * $ref support.
  */
 public class Ref {
     public static final String START_OF_POINTER = "#/";
+    private static final String EMPTY_REF = "";
+    private static final URI EMPTY_REF_URI = URI.create (EMPTY_REF);
 
-    private final URI scope;
-    private final String ref;
-
-    /**
-     * create a ref with empty scope.
-     *
-     * @param ref a ref
-     */
-    public Ref (String ref) {
-        this.scope = URI.create ("");
-        this.ref = ref;
-    }
-
-    /**
-     * create ref with scope.
-     *
-     * @param scope scope uri
-     * @param ref a ref
-     */
-    public Ref (URI scope, String ref) {
-        this.scope = scope;
-        this.ref = ref;
-    }
+    private final Scope scope;  // scope in which the ref was found
+    private final String ref;   // do not use
+    private final URI refUri;
 
     /**
      * create ref with scope.
@@ -45,9 +28,31 @@ public class Ref {
      * @param scope scope
      * @param ref the ref
      */
-    public Ref (String scope, String ref) {
-        this.scope = URI.create (scope);
+    public Ref (Scope scope, String ref) {
+        this.scope = scope;
         this.ref = ref;
+        this.refUri = createUri (ref);
+    }
+
+    /**
+     * create ref with scope.
+     *
+     * @param scope scope
+     * @param ref the ref uri
+     */
+    public Ref (Scope scope, URI ref) {
+        this.scope = scope;
+        this.ref = ref.toString ();
+        this.refUri = ref;
+    }
+
+    /**
+     * create empty ref with scope.
+     *
+     * @param scope scope
+     */
+    public Ref (Scope scope) {
+        this (scope, EMPTY_REF);
     }
 
     /**
@@ -87,27 +92,25 @@ public class Ref {
      * @return the document uri of this ref
      */
     public URI getDocumentUri () {
-        String absoluteRef = getFullRef ();
-
-        if (absoluteRef.equals (HASH)) {
-            return URI.create ("");
-        }
-
-        // starts with # but not #/
-        if (absoluteRef.indexOf (HASH) == 0 && !hasPointer ()) {
-            return getFullRefUri ();
-        }
-
-        return withoutFragment ();
+        return stripFragment (getAbsoluteUri ());
     }
 
     /**
      * get the scope of the ref.
      *
-     * @return scope uti
+     * @return scope
      */
-    public URI getScope () {
+    public Scope getScope () {
         return scope;
+    }
+
+    /**
+     * get the base uri of the ref.
+     *
+     * @return base uri
+     */
+    public URI getBaseUri () {
+        return scope.getBaseUri ();
     }
 
     /**
@@ -119,36 +122,24 @@ public class Ref {
         return ref;
     }
 
-    /**
-     * get full ref uri with scope and json pointer.
-     *
-     * @return the full ref uri
-     */
-    public String getFullRef () {
-        return getFullRefUri ().toString ();
+    public URI getRefUri () {
+        return refUri;
     }
 
-    /**
-     * get full ref uri with scope and json pointer.
-     *
-     * @return the full ref uri
-     */
-    public URI getFullRefUri () {
-        return scope.resolve (UriSupport.encodePath (ref));
+    public String getAbsoluteRef () {
+        return getAbsoluteUri ().toString ();
+    }
+
+    public URI getAbsoluteUri () {
+        if (ref.isEmpty ()) {
+            return scope.getBaseUri ();
+        }
+
+        return UriSupport.resolve(scope.getBaseUri(), refUri);
     }
 
     @Override
     public String toString () {
-        return getFullRef ();
-    }
-
-    private URI withoutFragment () {
-        String absoluteRef = getFullRef ();
-        int index = absoluteRef.indexOf (HASH);
-        if (index < 0) {
-            return getFullRefUri ();
-        }
-
-        return URI.create (absoluteRef.substring (0, index));
+        return getAbsoluteUri ().toString ();
     }
 }

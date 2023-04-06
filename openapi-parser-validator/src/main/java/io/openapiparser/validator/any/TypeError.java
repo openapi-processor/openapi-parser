@@ -17,7 +17,8 @@ import java.util.Collection;
 public class TypeError extends ValidationMessage {
 
     public TypeError (JsonSchema schema, JsonInstance instance, Collection<String> types) {
-        super (schema, instance, String.format ("the type should be any of [%s]",
-            String.join (", ", types)));
+        super (schema, instance,
+            "type",
+            String.format ("the value should be any of [%s]", String.join (", ", types)));
     }
 }
