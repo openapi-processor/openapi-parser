@@ -12,10 +12,11 @@ import java.net.URI
 
 class ValidationMessagePrinterSpec : StringSpec({
 
-    val sctx = JsonSchemaContext(URI(""), ReferenceRegistry(), SchemaVersion.Default)
+    val scope = Scope(URI(""), URI(""), SchemaVersion.getLatest())
+    val sctx = JsonSchemaContext(scope, ReferenceRegistry())
     val schema = JsonSchemaObject(mapOf(), sctx)
 
-    val ictx = JsonInstanceContext(URI(""), ReferenceRegistry())
+    val ictx = JsonInstanceContext(scope, ReferenceRegistry())
     val instance = JsonInstance("value", ictx)
 
 
