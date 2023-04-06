@@ -46,7 +46,7 @@ public class OpenApiBundler {
 
         Bucket bundled = Bucket.toBucket (root.getScope (), document, root.getLocation ());
         if (bundled == null)
-            return null;
+            return null;  // nullable: throw??
 
         walkBucket (bundled);
 
