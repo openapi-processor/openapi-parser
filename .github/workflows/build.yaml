@@ -24,7 +24,7 @@ jobs:
     steps:
       - name: Set up Homebrew
         id: set-up-homebrew
-        uses: Homebrew/actions/setup-homebrew@659165717b1fd1b535840baa14e399a305d20561
+        uses: Homebrew/actions/setup-homebrew@3599d8b96621e7e741ec2ae1cee1185acd651aed
 
       - name: checkout
         uses: actions/checkout@v3
