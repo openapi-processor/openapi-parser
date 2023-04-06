@@ -1,0 +1,21 @@
+openapi: 3.0.2
+info:
+  title: test examples $ref bundling
+  version: 1.0.0
+
+paths:
+
+  /foo:
+    get:
+      parameters:
+        - description: parameter
+          name: foo
+          in: query
+          schema:
+            type: string
+          examples:
+            foo:
+              $ref: 'foo.yaml#/Foo'
+      responses:
+        '204':
+          description: none

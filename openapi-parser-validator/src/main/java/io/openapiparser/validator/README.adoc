@@ -6,3 +6,20 @@
 * https://tools.ietf.org/html/draft-fge-json-schema-validation-00
 * https://tools.ietf.org/html/draft-luff-json-hyper-schema-00
 * https://tools.ietf.org/html/draft-pbryan-zyp-json-ref-03
+
+
+
+        while (instance.isRef()) {
+        }
+        /*
+        while (instance.isRef()) {
+            URI refKey = instance.getRefKey ();
+            if (visited.contains (refKey))
+                break;
+
+            visited.add (refKey);
+            instance = instance.getRefInstance ();
+            InstanceRefStep refStep = new InstanceRefStep (instance);
+            step.add (refStep);
+            step = refStep;
+        }*/

@@ -1,0 +1,26 @@
+openapi: 3.0.2
+info:
+  title: test merge of existing and bundled components
+  version: 1.0.0
+
+paths:
+  /foo:
+    get:
+      responses:
+        '200':
+          description: none
+          content:
+            application/json:
+                schema:
+                  $ref: 'foo.yaml#/Foo'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Bar'
+
+components:
+  schemas:
+    Bar:
+      type: object
+      properties:
+        bar:
+          type: string

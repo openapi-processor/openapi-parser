@@ -1,0 +1,10 @@
+Foo:
+  description: request body
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          bar:
+            type: string
+

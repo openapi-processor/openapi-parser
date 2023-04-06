@@ -1,0 +1,4 @@
+Foo:
+  description: parameter
+  schema:
+    type: string

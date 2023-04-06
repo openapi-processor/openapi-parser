@@ -21,11 +21,22 @@ public class OpenApiResult30 implements OpenApiResult {
     private final Context context;
     private final Bucket root;
 
+    private DocumentStore documents;
+
     private Collection<ValidationMessage> validationMessages;
 
+    @Deprecated
     public OpenApiResult30 (Context context, Bucket root) {
         this.context = context;
         this.root = root;
+        this.documents = new DocumentStore ();
+        this.validationMessages = Collections.emptyList ();
+    }
+
+    public OpenApiResult30 (Context context, Bucket root, DocumentStore documents) {
+        this.context = context;
+        this.root = root;
+        this.documents = documents;
         this.validationMessages = Collections.emptyList ();
     }
 
@@ -52,9 +63,20 @@ public class OpenApiResult30 implements OpenApiResult {
     public boolean validate (Validator validator, SchemaStore schemaStore) {
         schemaStore.register (OPENAPI_SCHEMA_30_ID, OPENAPI_SCHEMA_30);
         JsonSchema schema = schemaStore.getSchema (OPENAPI_SCHEMA_30_ID, SchemaVersion.Draft4);
-        JsonInstance instance = new JsonInstance (root.getRawValues (), context.getInstanceContext ());
+
+        Object bundle = bundle ();
+        JsonInstanceContext instanceContext = new JsonInstanceContext (root.getScope (), new ReferenceRegistry ());
+
+        JsonInstance instance = new JsonInstance (bundle, instanceContext);
+//        JsonInstance instance = new JsonInstance (root.getRawValues (), context.getInstanceContext ());
         ValidationStep result = validator.validate (schema, instance);
         validationMessages = result.getMessages ();
         return validationMessages.isEmpty ();
+    }
+
+    Object bundle () {
+        OpenApiBundler bundler = new OpenApiBundler (context, documents, root);
+        Object bundle = bundler.bundle ();
+        return bundle;
     }
 }

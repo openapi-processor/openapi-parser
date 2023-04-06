@@ -69,6 +69,7 @@ class OpenApiResultSpec: StringSpec({
         result.getModel(OpenApi31::class.java).shouldBeInstanceOf<OpenApi31>()
     }
 
+    // todo uhhh
     "should validate api 30" {
         val sctx = mockk<JsonSchemaContext>()
         val document = emptyMap<String, Any>()

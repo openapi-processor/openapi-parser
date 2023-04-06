@@ -1,0 +1,9 @@
+Foo:
+  description: response
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          bar:
+            type: string

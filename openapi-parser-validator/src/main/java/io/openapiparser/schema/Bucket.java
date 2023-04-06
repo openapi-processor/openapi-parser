@@ -16,7 +16,6 @@ import java.util.function.Consumer;
 
 import static io.openapiparser.converter.Types.*;
 import static io.openapiparser.support.Nullness.nonNull;
-import static java.util.Collections.unmodifiableMap;
 
 /**
  * wraps the properties {@link Map} of a json/yaml object and its location in the source document.
@@ -30,7 +29,7 @@ public class Bucket {
         return new Bucket (Collections.emptyMap ());
     }
 
-    static @Nullable Bucket toBucket (Scope scope, @PolyNull Object source) {
+    public static @Nullable Bucket toBucket (Scope scope, @PolyNull Object source) {
         if (!isObject (source)) {
             return null;
         }
@@ -38,7 +37,7 @@ public class Bucket {
         return new Bucket (scope, asObject (source));
     }
 
-    static @Nullable Bucket toBucket (Scope scope, @Nullable Object source, JsonPointer location) {
+    public static @Nullable Bucket toBucket (Scope scope, @Nullable Object source, JsonPointer location) {
         if (!isObject (source)) {
             return null;
         }
@@ -196,7 +195,7 @@ public class Bucket {
      * @return the property map
      */
     public Map<String, Object> getRawValues () {
-        return unmodifiableMap (properties);
+        return properties;
     }
 
     /**

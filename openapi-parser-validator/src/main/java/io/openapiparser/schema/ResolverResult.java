@@ -9,11 +9,13 @@ public class ResolverResult {
     private final Scope scope;
     private final Object document;
     private final ReferenceRegistry registry;
+    private final DocumentStore documents;
 
-    public ResolverResult (Scope scope, Object document, ReferenceRegistry registry) {
+    public ResolverResult (Scope scope, Object document, ReferenceRegistry registry, DocumentStore documents) {
         this.scope = scope;
         this.document = document;
         this.registry = registry;
+        this.documents = documents;
     }
 
     public Scope getScope () {
@@ -26,5 +28,9 @@ public class ResolverResult {
 
     public ReferenceRegistry getRegistry () {
         return registry;
+    }
+
+    public DocumentStore getDocuments () {
+        return documents;
     }
 }

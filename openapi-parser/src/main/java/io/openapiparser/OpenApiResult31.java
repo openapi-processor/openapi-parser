@@ -20,12 +20,22 @@ public class OpenApiResult31 implements OpenApiResult {
     private final Context context;
     private final Bucket root;
 
+    private DocumentStore documents;
+
     private Collection<ValidationMessage> validationMessages;
 
+    @Deprecated
     public OpenApiResult31 (Context context, Bucket root) {
         this.context = context;
         this.root = root;
         validationMessages = Collections.emptyList ();
+    }
+
+    public OpenApiResult31 (Context context, Bucket root, DocumentStore documents) {
+        this.context = context;
+        this.root = root;
+        this.documents = documents;
+        this.validationMessages = Collections.emptyList ();
     }
 
     @Override

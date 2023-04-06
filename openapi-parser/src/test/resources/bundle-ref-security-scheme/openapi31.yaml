@@ -1,0 +1,20 @@
+openapi: 3.1.0
+info:
+  title: test schema $ref bundling
+  version: 1.0.0
+
+security:
+  - jwt: []
+
+paths:
+
+  /foo:
+    get:
+      responses:
+        '204':
+          description: none
+
+components:
+  securitySchemes:
+    jwt:
+      $ref: 'foo.yaml#/Foo'

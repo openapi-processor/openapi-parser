@@ -8,12 +8,16 @@ package io.openapiparser.schema;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.io.UnsupportedEncodingException;
-import java.net.*;
+import java.net.URI;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.unmodifiableCollection;
+import static java.util.Collections.unmodifiableList;
 
 /**
  * JSON pointer abstraction based on <a href="https://datatracker.ietf.org/doc/html/rfc6901">
@@ -160,8 +164,8 @@ public class JsonPointer {
      *
      * @return tokens.
      */
-    public Iterable<String> getTokens () {
-        return unmodifiableCollection (tokens);
+    public List<String> getTokens () {
+        return unmodifiableList (tokens);
     }
 
     @Override

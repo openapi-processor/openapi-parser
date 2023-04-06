@@ -43,8 +43,13 @@ public class Context {
         return new Bucket (reference.getValueScope (), reference.getValue ());
     }
 
-    private @Nullable URI getRef (Bucket bucket) {
+    public @Nullable URI getRef (Bucket bucket) {
         return bucket.convert (REF, new UriConverter ());
+    }
+
+    public Reference getReference (Bucket bucket) {
+        JsonSchemaContext ctx = new JsonSchemaContext (scope, references);
+        return ctx.getReference (nonNull (getRef (bucket)));
     }
 
     public JsonInstanceContext getInstanceContext () {

@@ -43,9 +43,11 @@ public class OpenApiParser {
         String version = getVersion (api);
 
         if (isVersion30 (version)) {
-            return new OpenApiResult30 (new Context (result.getScope (), result.getRegistry ()), api);
+            return new OpenApiResult30 (
+                new Context (result.getScope (), result.getRegistry ()), api, result.getDocuments ());
         } else if (isVersion31 (version)) {
-            return new OpenApiResult31 (new Context (result.getScope (), result.getRegistry ()), api);
+            return new OpenApiResult31 (
+                new Context (result.getScope (), result.getRegistry ()), api, result.getDocuments ());
         } else {
             throw new UnknownVersionException (version);
         }

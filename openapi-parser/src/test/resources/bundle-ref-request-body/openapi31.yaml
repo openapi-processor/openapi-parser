@@ -1,0 +1,14 @@
+openapi: 3.1.0
+info:
+  title: test requestBody $ref bundling
+  version: 1.0.0
+
+paths:
+
+  /foo:
+    get:
+      requestBody:
+        $ref: 'foo.yaml#/Foo'
+      responses:
+        '204':
+          description: none

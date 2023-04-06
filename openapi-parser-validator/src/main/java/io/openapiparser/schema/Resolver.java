@@ -64,7 +64,6 @@ public class Resolver {
         }
     }
 
-    @Deprecated // ?
     public ResolverResult resolve (String resourcePath) {
         try {
             return resolve (URI.create (resourcePath), loader.loadDocument (resourcePath));
@@ -87,11 +86,12 @@ public class Resolver {
     public ResolverResult resolve (URI documentUri, Object document) {
         ReferenceRegistry registry = new ReferenceRegistry ();
 
+        documents.addId (documentUri, document);
         Scope scope = createScope (documentUri, document, settings.version);
         Bucket bucket = toBucket (scope, document);
 
         if (bucket == null) {
-            return new ResolverResult (scope, document, registry);
+            return new ResolverResult (scope, document, registry, documents);
         }
 
         ResolverContext context = new ResolverContext (documents, loader, registry);
@@ -102,7 +102,7 @@ public class Resolver {
         ResolverRef resolverRef = new ResolverRef (context);
         resolverRef.resolve(bucket);
 
-        return new ResolverResult (scope, document, registry);
+        return new ResolverResult (scope, document, registry, documents);
     }
 
     private @Nullable Bucket toBucket (Scope scope, @PolyNull Object source) {

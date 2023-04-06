@@ -1,0 +1,3 @@
+== bundle
+
+ npx @redocly/cli bundle openapi.yaml > openapi_bundled.yaml
