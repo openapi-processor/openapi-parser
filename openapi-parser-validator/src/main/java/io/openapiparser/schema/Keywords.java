@@ -30,6 +30,7 @@ public interface Keywords {
     String TITLE = "title";
     String DEFAULT = "default";
     String DESCRIPTION = "description";
+    String EXAMPLES = "examples";
 
     // format
     String FORMAT = "format";
@@ -48,6 +49,7 @@ public interface Keywords {
 
     // validation: arrays
     String ADDITIONAL_ITEMS = "additionalItems";
+    String CONTAINS = "contains";
     String ITEMS = "items";
     String MAX_ITEMS = "maxItems";
     String MIN_ITEMS = "minItems";
@@ -60,9 +62,11 @@ public interface Keywords {
     String MIN_PROPERTIES = "minProperties";
     String PATTERN_PROPERTIES = "patternProperties";
     String PROPERTIES = "properties";
+    String PROPERTY_NAMES = "propertyNames";
     String REQUIRED = "required";
 
     // validation: any
+    String CONST = "const";
     String DEFINITIONS = "definitions";
     String ENUM = "enum";
     String TYPE = "type";

@@ -15,9 +15,10 @@ import static io.openapiparser.schema.Keywords.*;
 public class SchemaKeywords {
     public static final SchemaKeywords draft201909 = new SchemaKeywords (initDraft201909 ());
     public static final SchemaKeywords draft7 = new SchemaKeywords (initDraft7 ());
-    public static final SchemaKeywords draft6 = new SchemaKeywords (initDraft6 ());
+    public static final SchemaKeywords draft6 = new SchemaKeywords (initDraft6Old ());
     public static final SchemaKeywords draft4 = new SchemaKeywords (initDraft4Old ());
 
+    public static final Vocabulary draft6V = new Vocabulary(initDraft6 ());
     public static final Vocabulary draft4V = new Vocabulary(initDraft4 ());
 
     private final Map<String, Keyword> keywords;
@@ -56,7 +57,7 @@ public class SchemaKeywords {
     }
 
     private static Map<String, Keyword> initDraft7 () {
-        Map<String, Keyword> keywords = new HashMap<> (initDraft6 ());
+        Map<String, Keyword> keywords = new HashMap<> (initDraft6Old ());
 
         // core
         keywords.put ("$comment", keyword (KeywordType.STRING));
@@ -81,24 +82,24 @@ public class SchemaKeywords {
         Map<String, Keyword> keywords = new HashMap<> (initDraft4 ());
 
         // core
-        keywords.put ("$id", keyword (KeywordType.URI));
-        // delete id
+        keywords.remove (ID4);
+        keywords.put (ID, keyword (KeywordType.URI));
+
+        // meta-data
+        keywords.put (EXAMPLES, keyword (KeywordType.ARRAY));
 
         // validation: numbers
-        keywords.put ("exclusiveMaximum", keyword(KeywordType.NUMBER));
-        keywords.put ("exclusiveMinimum", keyword(KeywordType.NUMBER));
+        keywords.put (EXCLUSIVE_MAXIMUM, keyword(KeywordType.NUMBER));
+        keywords.put (EXCLUSIVE_MINIMUM, keyword(KeywordType.NUMBER));
 
         // validation: arrays
-        keywords.put ("contains", keyword (KeywordType.SCHEMA));
+        keywords.put (CONTAINS, keyword (KeywordType.SCHEMA));
 
         // validation: objects
-        keywords.put ("propertyNames", keyword (KeywordType.SCHEMA));
+        keywords.put (PROPERTY_NAMES, keyword (KeywordType.SCHEMA));
 
         // validation: any
-        keywords.put ("const", keyword (KeywordType.ANY));
-
-        // validation: meta data
-        keywords.put ("examples", keyword (KeywordType.ARRAY));
+        keywords.put (CONST, keyword (KeywordType.ANY));
 
         return Collections.unmodifiableMap (keywords);
     }
@@ -117,7 +118,7 @@ public class SchemaKeywords {
         keywords.put (ONE_OF, keyword (KeywordType.SCHEMA_ARRAY));
         keywords.put (NOT, keyword (KeywordType.SCHEMA));
 
-        // meta
+        // meta-data
         keywords.put (TITLE, keyword (KeywordType.STRING));
         keywords.put (DESCRIPTION, keyword (KeywordType.STRING));
         keywords.put (DEFAULT, keyword (KeywordType.ANY));
@@ -161,6 +162,34 @@ public class SchemaKeywords {
         return Collections.unmodifiableMap (keywords);
     }
 
+    @Deprecated
+    private static Map<String, Keyword> initDraft6Old () {
+        Map<String, Keyword> keywords = new HashMap<> (initDraft4 ());
+
+        // core
+        keywords.put ("$id", keyword (KeywordType.URI));
+        // delete id
+
+        // validation: numbers
+        keywords.put ("exclusiveMaximum", keyword(KeywordType.NUMBER));
+        keywords.put ("exclusiveMinimum", keyword(KeywordType.NUMBER));
+
+        // validation: arrays
+        keywords.put ("contains", keyword (KeywordType.SCHEMA));
+
+        // validation: objects
+        keywords.put ("propertyNames", keyword (KeywordType.SCHEMA));
+
+        // validation: any
+        keywords.put ("const", keyword (KeywordType.ANY));
+
+        // validation: meta data
+        keywords.put ("examples", keyword (KeywordType.ARRAY));
+
+        return Collections.unmodifiableMap (keywords);
+    }
+
+    @Deprecated
     private static Map<String, Keyword> initDraft4Old () {
         Map<String, Keyword> keywords = new HashMap<> ();
 
