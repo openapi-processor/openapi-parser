@@ -9,6 +9,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.*;
 
+import static io.openapiparser.schema.Keyword.*;
 import static io.openapiparser.schema.Keywords.*;
 
 // VocabularyFactory
@@ -64,8 +65,8 @@ public class SchemaKeywords {
         keywords.put ("$anchor", keyword (KeywordType.STRING));
         keywords.put ("$defs", keyword (KeywordType.SCHEMA_MAP));
 
-        keywords.put ("dependentSchemas", keyword(KeywordType.SCHEMA_MAP));
-        keywords.put(DEPENDENT_REQUIRED, keyword(KeywordType.OBJECT));
+        keywords.put ("dependentSchemas", keyword (KeywordType.SCHEMA_MAP));
+        keywords.put(DEPENDENT_REQUIRED, keyword (KeywordType.OBJECT));
 
         return Collections.unmodifiableMap (keywords);
     }
@@ -100,7 +101,7 @@ public class SchemaKeywords {
         keywords.put (IF, keyword (KeywordType.SCHEMA));
         keywords.put (THEN, keyword (KeywordType.SCHEMA));
         keywords.put (ELSE, keyword (KeywordType.SCHEMA));
-        keywords.put (DEPENDENT_SCHEMAS, keyword(KeywordType.SCHEMA_MAP));
+        keywords.put (DEPENDENT_SCHEMAS, keyword (KeywordType.SCHEMA_MAP));
 
         // applicator sub-schema array
         keywords.put (ITEMS, keyword (KeywordType.SCHEMA, KeywordType.SCHEMA_ARRAY));
@@ -129,9 +130,9 @@ public class SchemaKeywords {
         // validation: numbers
         keywords.put (MULTIPLE_OF, keyword (KeywordType.INTEGER));
         keywords.put (MAXIMUM, keyword (KeywordType.INTEGER));
-        keywords.put (EXCLUSIVE_MAXIMUM, keyword(KeywordType.NUMBER));
+        keywords.put (EXCLUSIVE_MAXIMUM, keyword (KeywordType.NUMBER));
         keywords.put (MINIMUM, keyword (KeywordType.INTEGER));
-        keywords.put (EXCLUSIVE_MINIMUM, keyword(KeywordType.NUMBER));
+        keywords.put (EXCLUSIVE_MINIMUM, keyword (KeywordType.NUMBER));
 
         // validation: strings
         keywords.put (MAX_LENGTH, keyword (KeywordType.NUMBER));
@@ -220,8 +221,8 @@ public class SchemaKeywords {
         keywords.put (FORMAT, keyword (KeywordType.STRING));
 
         // validation: numbers
-        keywords.put (EXCLUSIVE_MAXIMUM, keyword(KeywordType.NUMBER));
-        keywords.put (EXCLUSIVE_MINIMUM, keyword(KeywordType.NUMBER));
+        keywords.put (EXCLUSIVE_MAXIMUM, keyword (KeywordType.NUMBER));
+        keywords.put (EXCLUSIVE_MINIMUM, keyword (KeywordType.NUMBER));
         keywords.put (MAXIMUM, keyword (KeywordType.INTEGER));
         keywords.put (MINIMUM, keyword (KeywordType.INTEGER));
         keywords.put (MULTIPLE_OF, keyword (KeywordType.INTEGER));
@@ -286,8 +287,8 @@ public class SchemaKeywords {
         keywords.put (FORMAT, keyword (KeywordType.STRING));
 
         // validation: numbers
-        keywords.put (EXCLUSIVE_MAXIMUM, keyword(KeywordType.NUMBER));  // modified
-        keywords.put (EXCLUSIVE_MINIMUM, keyword(KeywordType.NUMBER));  // modified
+        keywords.put (EXCLUSIVE_MAXIMUM, keyword (KeywordType.NUMBER));  // modified
+        keywords.put (EXCLUSIVE_MINIMUM, keyword (KeywordType.NUMBER));  // modified
         keywords.put (MAXIMUM, keyword (KeywordType.INTEGER));
         keywords.put (MINIMUM, keyword (KeywordType.INTEGER));
         keywords.put (MULTIPLE_OF, keyword (KeywordType.INTEGER));
@@ -412,8 +413,8 @@ public class SchemaKeywords {
         // delete id
 
         // validation: numbers
-        keywords.put ("exclusiveMaximum", keyword(KeywordType.NUMBER));
-        keywords.put ("exclusiveMinimum", keyword(KeywordType.NUMBER));
+        keywords.put ("exclusiveMaximum", keyword (KeywordType.NUMBER));
+        keywords.put ("exclusiveMinimum", keyword (KeywordType.NUMBER));
 
         // validation: arrays
         keywords.put ("contains", keyword (KeywordType.SCHEMA));
@@ -440,11 +441,11 @@ public class SchemaKeywords {
         keywords.put ("id", keyword (KeywordType.URI));
 
         // validation: numbers
-        keywords.put ("multipleOf", keyword(KeywordType.NUMBER));
-        keywords.put ("maximum", keyword(KeywordType.NUMBER));
+        keywords.put ("multipleOf", keyword (KeywordType.NUMBER));
+        keywords.put ("maximum", keyword (KeywordType.NUMBER));
         keywords.put ("minimum", keyword (KeywordType.NUMBER));
-        keywords.put ("exclusiveMaximum", keyword(KeywordType.BOOLEAN));
-        keywords.put ("exclusiveMinimum", keyword(KeywordType.BOOLEAN));
+        keywords.put ("exclusiveMaximum", keyword (KeywordType.BOOLEAN));
+        keywords.put ("exclusiveMinimum", keyword (KeywordType.BOOLEAN));
 
         // validation: strings
         keywords.put ("maxLength", keyword (KeywordType.INTEGER));
@@ -485,9 +486,5 @@ public class SchemaKeywords {
         keywords.put ("format", keyword (KeywordType.STRING));
 
         return Collections.unmodifiableMap (keywords);
-    }
-
-    private static Keyword keyword (KeywordType value, KeywordType... values) {
-        return new Keyword (EnumSet.of (value, values));
     }
 }

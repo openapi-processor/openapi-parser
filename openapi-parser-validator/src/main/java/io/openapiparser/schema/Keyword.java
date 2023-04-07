@@ -14,6 +14,10 @@ public class Keyword {
 
     private final EnumSet<KeywordType> types;
 
+    public static Keyword keyword (KeywordType value, KeywordType... values) {
+        return new Keyword (EnumSet.of (value, values));
+    }
+
     private Keyword () {
         types = EnumSet.of (KeywordType.NONE);
     }
