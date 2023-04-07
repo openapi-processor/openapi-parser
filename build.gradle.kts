@@ -11,9 +11,9 @@ repositories {
 }
 
 // check
-//tasks.named("build") {
-//    dependsOn ("jacocoLogAggregatedCoverage")
-//}
+tasks.named("build") {
+    dependsOn ("jacocoLogAggregatedCoverage")
+}
 
 group = "io.openapiprocessor"
 version = libs.versions.openapiparser.get()
