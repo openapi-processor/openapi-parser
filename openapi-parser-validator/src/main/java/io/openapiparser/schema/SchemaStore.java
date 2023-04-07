@@ -32,8 +32,8 @@ public class SchemaStore {
     }
 
     /**
-     * download & register a schema document. {@code schemaUri} should be a json schema document
-     * downloadable under the given uri.
+     * download and register a schema document. {@code schemaUri} should be a json schema document downloadable from
+     * the given uri.
      *
      * @param schemaUri schema uri/id
      */

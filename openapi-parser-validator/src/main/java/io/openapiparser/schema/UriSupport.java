@@ -43,6 +43,8 @@ public class UriSupport {
     /**
      * check if the {@code uri} has an empty fragment, i.e a single "#".
      *
+     * @param uri uri to check
+     *
      * @return true if fragment is a single hash, otherwise false
      */
     public static boolean hasEmptyFragment (URI uri) {

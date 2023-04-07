@@ -17,7 +17,7 @@ import static io.openapiparser.converter.Types.asArray;
 import static io.openapiparser.converter.Types.asObject;
 
 /**
- * "deep" copy an object tree. It only handles the types to represent a json document. Map & Collection are cloned,
+ * "deep" copy an object tree. It only handles the types to represent a json document. Map and Collection are cloned,
  * all other immutable "primitive" types are not cloned.
  */
 public class Copy {

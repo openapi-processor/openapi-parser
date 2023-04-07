@@ -10,9 +10,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.net.*;
 
 /**
- * Simple in-memory protocol for "loading" content from memory via URL.
- *
- * JDK-8
+ * Simple in-memory protocol for "loading" content from memory via URL. JDK-8 version.
  */
 public class MemoryUrlStreamHandlerFactory implements URLStreamHandlerFactory {
 
