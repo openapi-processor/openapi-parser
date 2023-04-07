@@ -9,10 +9,18 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
 
+// todo interface VocabularySingle, VocabularyComposite ???
 public class Vocabulary {
+    private final String uri;
     private final Map<String, Keyword> keywords;
 
     public Vocabulary(Map<String, Keyword> keywords) {
+        this.uri = "";
+        this.keywords = keywords;
+    }
+
+    public Vocabulary(String uri, Map<String, Keyword> keywords) {
+        this.uri = uri;
         this.keywords = keywords;
     }
 

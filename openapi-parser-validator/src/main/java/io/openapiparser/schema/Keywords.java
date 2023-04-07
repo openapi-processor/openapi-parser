@@ -9,7 +9,11 @@ public interface Keywords {
     // misc
     String HASH = "#";
 
-    // core
+    // vocabulary: core
+    String ANCHOR = "$anchor";
+    String COMMENT = "$comment";
+    String DEFS = "$defs";
+    String DEFINITIONS = "definitions";
     String ID = "$id";
     String ID4 = "id";
     String SCHEMA = "$schema";
@@ -20,57 +24,78 @@ public interface Keywords {
     String RECURSIVE_REF = "$recursiveRef";
     String VOCABULARY = "$vocabulary";
 
-    // applicators
+    // vocabulary: applicators - boolean
     String ALL_OF = "allOf";
     String ANY_OF = "anyOf";
     String ONE_OF = "oneOf";
     String NOT = "not";
 
-    // meta data
-    String TITLE = "title";
-    String DEFAULT = "default";
-    String DESCRIPTION = "description";
-    String EXAMPLES = "examples";
+    // vocabulary: applicators - conditionally
+    String IF = "if";
+    String THEN = "then";
+    String ELSE = "else";
+    String DEPENDENT_SCHEMAS = "dependentSchemas";
 
-    // format
-    String FORMAT = "format";
+    // vocabulary: applicators - sub-schema array
+    String ITEMS = "items";
+    String ADDITIONAL_ITEMS = "additionalItems";
+    String UNEVALUATED_ITEMS = "unevaluatedItems";
+    String CONTAINS = "contains";
 
-    // validation: number
+    // vocabulary: applicators sub-schema object
+    String PROPERTIES = "properties";
+    String PATTERN_PROPERTIES = "patternProperties";
+    String ADDITIONAL_PROPERTIES = "additionalProperties";
+    String UNEVALUATED_PROPERTIES = "unevaluatedProperties";
+    String PROPERTY_NAMES = "propertyNames";
+
+    // vocabulary: validation - any
+    String CONST = "const";
+    String ENUM = "enum";
+    String TYPE = "type";
+
+    // vocabulary: validation - numeric (number & integer)
     String MULTIPLE_OF = "multipleOf";
     String MAXIMUM = "maximum";
-    String MINIMUM = "minimum";
     String EXCLUSIVE_MAXIMUM = "exclusiveMaximum";
+    String MINIMUM = "minimum";
     String EXCLUSIVE_MINIMUM = "exclusiveMinimum";
 
-    // validation: strings
+    // vocabulary: validation - strings
     String MAX_LENGTH = "maxLength";
     String MIN_LENGTH = "minLength";
     String PATTERN = "pattern";
 
-    // validation: arrays
-    String ADDITIONAL_ITEMS = "additionalItems";
-    String CONTAINS = "contains";
-    String ITEMS = "items";
+    // vocabulary: validation - arrays
     String MAX_ITEMS = "maxItems";
     String MIN_ITEMS = "minItems";
     String UNIQUE_ITEMS = "uniqueItems";
+    String MAX_CONTAINS = "maxContains";
+    String MIN_CONTAINS = "minContains";
 
-    // validation: objects
-    String ADDITIONAL_PROPERTIES = "additionalProperties";
-    String DEPENDENCIES = "dependencies";
+    // vocabulary: validation - objects
     String MAX_PROPERTIES = "maxProperties";
     String MIN_PROPERTIES = "minProperties";
-    String PATTERN_PROPERTIES = "patternProperties";
-    String PROPERTIES = "properties";
-    String PROPERTY_NAMES = "propertyNames";
     String REQUIRED = "required";
-
-    // validation: any
-    String CONST = "const";
-    String DEFINITIONS = "definitions";
-    String ENUM = "enum";
-    String TYPE = "type";
-
-    // todo
     String DEPENDENT_REQUIRED = "dependentRequired";
+
+    // vocabulary: format
+    String FORMAT = "format";
+
+    // vocabulary: content
+    String CONTENT_MEDIA_TYPE = "contentMediaType";
+    String CONTENT_ENCODING = "contentEncoding";
+    String CONTENT_SCHEMA = "contentSchema";
+
+    // vocabulary: meta data
+    String TITLE = "title";
+    String DESCRIPTION = "description";
+    String DEFAULT = "default";
+    String DEPRECATED = "deprecated";
+    String READ_ONLY = "readOnly";
+    String WRITE_ONLY = "writeOnly";
+    String EXAMPLES = "examples";
+
+    // other
+    String DEPENDENCIES = "dependencies";
 }
