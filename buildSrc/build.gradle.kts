@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     `kotlin-dsl`
 }
@@ -18,8 +16,4 @@ dependencies {
     implementation(libs.plugin.kotlin)
     implementation(libs.plugin.checker)
     implementation(libs.plugin.outdated)
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "11"
 }
