@@ -35,7 +35,7 @@ public class SchemaKeywords {
         return keywords.get (keyword);
     }
 
-    public boolean isNavigatable (String keyword) {
+    public boolean isNavigable (String keyword) {
         Keyword match = keywords.get (keyword);
         if (match == null)
             return false;

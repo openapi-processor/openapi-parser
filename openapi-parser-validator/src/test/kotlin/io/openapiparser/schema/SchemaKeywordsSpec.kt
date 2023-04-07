@@ -53,6 +53,6 @@ class SchemaKeywordsSpec : StringSpec({
         Keyword("examples", false),
         Keyword("format", false)
     ) { (keyword, navigatable) ->
-        keywordsDraft6.isNavigatable (keyword) shouldBe navigatable
+        keywordsDraft6.isNavigable (keyword) shouldBe navigatable
     }
 })
