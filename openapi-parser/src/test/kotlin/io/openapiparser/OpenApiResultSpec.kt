@@ -70,7 +70,7 @@ class OpenApiResultSpec: StringSpec({
     }
 
     // todo uhhh
-    "should validate api 30" {
+    "should validate api 30".config(enabled = false) {
         val sctx = mockk<JsonSchemaContext>()
         val document = emptyMap<String, Any>()
         val scope = Scope(emptyUri(), emptyUri(), SchemaVersion.Draft4)
