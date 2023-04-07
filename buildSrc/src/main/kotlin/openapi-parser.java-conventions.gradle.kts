@@ -36,14 +36,13 @@ java {
     withSourcesJar()
 
     toolchain {
-        // 8
-        languageVersion.set(JavaLanguageVersion.of(11))
+        languageVersion.set(JavaLanguageVersion.of(8))
     }
 }
 
 kotlin {
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
+        languageVersion.set(JavaLanguageVersion.of(8))
     }
 }
 
@@ -52,7 +51,6 @@ tasks.getByName<Test>("test") {
 }
 
 tasks.withType<JavaCompile>().configureEach {
-    //options.release.set(8)
     options.compilerArgs.add("-Xlint:deprecation")
 }
 
