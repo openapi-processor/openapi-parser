@@ -16,6 +16,7 @@ import io.openapiparser.validator.Validator
 import io.openapiparser.validator.ValidatorSettings
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 import kotlin.io.path.name
 
 /**
@@ -32,7 +33,7 @@ fun draftSpec(
     json.registerModule(KotlinModule.Builder().build())
 
     val draft = Validator::class.java.getResource(draftPath)
-    val root = Path.of(draft!!.toURI())
+    val root = Paths.get(draft!!.toURI())
 
     val excludes = extras
         .filterIsInstance<Exclude>()
@@ -43,7 +44,7 @@ fun draftSpec(
 
     fun toPath(path: String): Path {
         val resource = Validator::class.java.getResource(path)
-        return Path.of(resource!!.toURI())
+        return Paths.get(resource!!.toURI())
     }
 
     fun loadSuites(path: Path): Collection<Suite> {
