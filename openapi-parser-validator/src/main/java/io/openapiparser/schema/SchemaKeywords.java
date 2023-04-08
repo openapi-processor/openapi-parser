@@ -11,8 +11,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-// VocabularyFactory
 public class SchemaKeywords {
+    public static final SchemaKeywords draft202012 = new SchemaKeywords (initDraft202012 ());
     public static final SchemaKeywords draft201909 = new SchemaKeywords (initDraft201909 ());
     public static final SchemaKeywords draft7 = new SchemaKeywords (Vocabularies7.getKeywords ());
     public static final SchemaKeywords draft6 = new SchemaKeywords (Vocabularies6.getKeywords ());
@@ -40,6 +40,22 @@ public class SchemaKeywords {
         return match.isNavigable ();
     }
 
+    private static Map<String, Keyword> initDraft202012 () {
+        Map<String, Keyword> keywords = new HashMap<> ();
+
+        keywords.putAll (Vocabularies202012.getKeywordsApplicator ());
+        keywords.putAll (Vocabularies202012.getKeywordsContent ());
+        keywords.putAll (Vocabularies202012.getKeywordsCore ());
+        keywords.putAll (Vocabularies202012.getKeywordsFormatAnnotation ());
+        keywords.putAll (Vocabularies202012.getKeywordsFormatAssertion ());
+        keywords.putAll (Vocabularies202012.getKeywordsHyperSchema ());
+        keywords.putAll (Vocabularies202012.getKeywordsMetaData ());
+        keywords.putAll (Vocabularies202012.getKeywordsUnevaluated ());
+        keywords.putAll (Vocabularies202012.getKeywordsValidation ());
+
+        return Collections.unmodifiableMap (keywords);
+    }
+
     private static Map<String, Keyword> initDraft201909 () {
         Map<String, Keyword> keywords = new HashMap<> ();
 
@@ -49,12 +65,6 @@ public class SchemaKeywords {
         keywords.putAll (Vocabularies201909.getKeywordsFormat ());
         keywords.putAll (Vocabularies201909.getKeywordsMetaData ());
         keywords.putAll (Vocabularies201909.getKeywordsValidation ());
-
-        // core
-//        keywords.put ("$anchor", keyword (KeywordType.STRING));
-//        keywords.put ("$defs", keyword (KeywordType.SCHEMA_MAP));
-//        keywords.put ("dependentSchemas", keyword (KeywordType.SCHEMA_MAP));
-//        keywords.put(DEPENDENT_REQUIRED, keyword (KeywordType.OBJECT));
 
         return Collections.unmodifiableMap (keywords);
     }

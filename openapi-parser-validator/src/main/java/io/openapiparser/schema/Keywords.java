@@ -19,6 +19,7 @@ public interface Keywords {
     String SCHEMA = "$schema";
 
     String REF = "$ref";
+    String DYNAMIC_ANCHOR = "$dynamicAnchor";
     String DYNAMIC_REF = "$dynamicRef";
     String RECURSIVE_ANCHOR = "$recursiveAnchor";
     String RECURSIVE_REF = "$recursiveRef";
@@ -95,6 +96,10 @@ public interface Keywords {
     String READ_ONLY = "readOnly";
     String WRITE_ONLY = "writeOnly";
     String EXAMPLES = "examples";
+
+    // vocabulary: hyper-schema
+    String BASE = "base";
+    String LINKS = "links";
 
     // other
     String DEPENDENCIES = "dependencies";

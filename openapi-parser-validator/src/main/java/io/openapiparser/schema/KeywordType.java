@@ -18,6 +18,7 @@ public enum KeywordType {
     MAP,
     URI,
     URI_REF,
+    URI_TEMPLATE,
     SCHEMA,
     SCHEMA_MAP,
     SCHEMA_ARRAY
