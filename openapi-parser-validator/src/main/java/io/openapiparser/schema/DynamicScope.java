@@ -13,32 +13,34 @@ import java.util.*;
 public final class DynamicScope {
 
     private static class Scope {
-        private final URI id;
-        private final @Nullable String fragment;
+        private final JsonSchema schema;
 
-        Scope (URI id) {
-            this.id = id;
-            this.fragment = null;
-        }
-        Scope (URI id, @Nullable String dynamicAnchor) {
-            this.id = id;
-            this.fragment = dynamicAnchor;
+        Scope (JsonSchema schema) {
+            this.schema = schema;
         }
 
-        boolean matches (String fragment) {
-            return fragment.equals (this.fragment);
+        boolean matches (String anchor) {
+            JsonSchemaContext context = schema.getContext ();
+            return context.hasDynamicReference (anchor);
+        }
+
+        boolean equal (JsonSchema other) {
+            return getBaseUri (schema).equals (getBaseUri (other));
+        }
+
+        URI getBaseUri () {
+            return getBaseUri (schema);
+        }
+
+        URI getBaseUri (JsonSchema source) {
+            return source.getContext ().getScope ().getBaseUri ();
         }
     }
 
     private final List<Scope> scopes = new ArrayList<> ();
 
     public DynamicScope (JsonSchema schema) {
-        Scope scope = createScope (schema);
-        if (scope == null) {
-            scope = new Scope (getBaseUri (schema));
-        }
-
-        scopes.add (scope);
+        scopes.add (new Scope (schema));
     }
 
     private DynamicScope (DynamicScope source) {
@@ -46,23 +48,19 @@ public final class DynamicScope {
     }
 
     public DynamicScope add (JsonSchema schema) {
-        Scope scope = createScope (schema);
-        if (scope == null) {
+        if (scopes.size () == 0) {
+            return this;
+        }
+
+        Scope last = scopes.get (scopes.size () - 1);
+        if (last.equal (schema)) {
             return this;
         }
 
         DynamicScope dynamicScope = new DynamicScope (this);
+        Scope scope = new Scope (schema);
         dynamicScope.scopes.add (scope);
         return dynamicScope;
-    }
-
-    private @Nullable Scope createScope (JsonSchema schema) {
-        URI id = schema.getId ();
-        if (id == null) {
-            return null;
-        }
-
-        return new Scope (getBaseUri (schema), schema.getDynamicAnchor ());
     }
 
     public @Nullable URI findScope (URI fragment) {
@@ -84,11 +82,7 @@ public final class DynamicScope {
         if (match == null)
             return null;
 
-        return match.id;
-    }
-
-    private URI getBaseUri(JsonSchema schema) {
-        return schema.getContext ().getScope ().getBaseUri ();
+        return match.getBaseUri ();
     }
 
     @Override

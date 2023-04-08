@@ -63,7 +63,15 @@ class ResolverContext {
             return;
         }
 
-        registry.add (ref, ref.getScope (), document);
+        registry.addReference (ref, ref.getScope (), document);
+    }
+
+    public void addDynamicAnchorRef (Ref ref, Map<String, Object> document) {
+        if (registry.hasDynamicReference (ref.getAbsoluteUri ())) {
+            return;
+        }
+
+        registry.addDynamicReference (ref, ref.getScope (), document);
     }
 
     public void addRef (Ref ref, Scope scope, Object document) {
@@ -71,7 +79,7 @@ class ResolverContext {
             return;
         }
 
-        registry.add (ref, scope, document);
+        registry.addReference (ref, scope, document);
     }
 
     public @Nullable Object getDocument (URI documentUri) {

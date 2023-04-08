@@ -53,9 +53,14 @@ public class JsonSchemaContext {
         return references.getReference (refLocal);
     }
 
-    public Reference getReference (URI ref, URI dynamicScope) {
+    public Reference getDynamicReference (URI ref, URI dynamicScope) {
         URI resolved = dynamicScope.resolve (ref);
         return references.getReference (resolved);
+    }
+
+    public boolean hasDynamicReference (String dynamicAnchor) {
+        URI anchorUri = UriSupport.resolve(scope.getBaseUri (), dynamicAnchor);
+        return references.hasDynamicReference (anchorUri);
     }
 
     public JsonSchemaContext withScope (Scope targetScope) {

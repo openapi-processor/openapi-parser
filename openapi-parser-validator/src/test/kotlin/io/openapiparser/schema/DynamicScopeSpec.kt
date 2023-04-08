@@ -5,6 +5,7 @@
 
 package io.openapiparser.schema
 
+import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeSameInstanceAs
@@ -13,40 +14,36 @@ import io.openapiparser.schema.UriSupport.*
 import java.net.URI
 
 class DynamicScopeSpec : StringSpec({
+    isolationMode = IsolationMode.InstancePerTest
 
-    fun createCtx(id: String?): JsonSchemaContext {
-        val uri = if (id == null) {
-            emptyUri()
-        } else {
-            URI.create(id)
-        }
-
-        return JsonSchemaContext(
-            Scope(emptyUri(), uri, SchemaVersion.Draft201909),
-            ReferenceRegistry()
-        )
-    }
+    val registry = ReferenceRegistry()
 
     fun createSchema (id: String? = null, recursiveAnchor: Boolean? = null): JsonSchema {
+        val uri = if(id != null) createUri(id) else emptyUri()
+
         val map = mutableMapOf<String, Any>()
         if (id != null) {
             map["\$id"] = id
         }
 
-        if (recursiveAnchor != null) {
-            map["\$recursiveAnchor"] = recursiveAnchor
-        }
+        val scope = Scope.createScope(uri, map, SchemaVersion.Draft201909)
 
-        return JsonSchemaObject(map, createCtx(id))
+        return if (recursiveAnchor == null) {
+            registry.addReference(Ref(scope), scope, map)
+            JsonSchemaObject(map, JsonSchemaContext(scope, registry))
+        } else {
+            map["\$recursiveAnchor"] = recursiveAnchor
+            registry.addDynamicReference(Ref(scope, "#"), scope, map)
+            JsonSchemaObject(map, JsonSchemaContext(scope, registry))
+        }
     }
 
-    val rootCtx = createCtx("")
-    val rootSchema = JsonSchemaObject(mapOf<String, Any>(), rootCtx)
+    val rootSchema = createSchema()
     val dynamicScope = DynamicScope(rootSchema)
 
     "create scope from schema without id" {
         val found = dynamicScope.findScope(URI.create("#"))
-        found.shouldBe(rootCtx.scope.baseUri)
+        found.shouldBe(rootSchema.context.scope.baseUri)
     }
 
     "adding schema without id should not change dynamic scope" {
@@ -85,8 +82,8 @@ class DynamicScopeSpec : StringSpec({
         val schemaA = createSchema("https://localhost/skip", true)
         currentScope = currentScope.add(schemaA)
 
-        currentScope = currentScope.add(createSchema())
-        currentScope = currentScope.add(createSchema())
+        currentScope = currentScope.add(createSchema("https://localhost/skip"))
+        currentScope = currentScope.add(createSchema("https://localhost/skip"))
 
         val scope = currentScope.findScope(URI.create("#"))
 
@@ -108,8 +105,8 @@ class DynamicScopeSpec : StringSpec({
         val schemaD = createSchema("https://localhost/skip", true)
         currentScope = currentScope.add(schemaD)
 
-        currentScope = currentScope.add(createSchema())
-        currentScope = currentScope.add(createSchema())
+        currentScope = currentScope.add(createSchema("https://localhost/skip"))
+        currentScope = currentScope.add(createSchema("https://localhost/skip"))
 
         val scope = currentScope.findScope(URI.create("#"))
 

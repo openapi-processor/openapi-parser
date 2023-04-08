@@ -119,7 +119,7 @@ public class JsonSchemaObject implements JsonSchema {
 
             return schema;
         } else {
-            Reference reference = context.getReference (nonNull (getDynamicRef ()), dynamicScope);
+            Reference reference = context.getDynamicReference (nonNull (getDynamicRef ()), dynamicScope);
 
             JsonSchemaContext refContext = context.withScope (reference.getValueScope ());
             JsonSchema schema = new JsonSchemaRefConverter (refContext)

@@ -17,7 +17,40 @@ import static io.openapiparser.schema.UriSupport.stripFragment;
  * holds all resolved references of a document.
  */
 public class ReferenceRegistry {
-    private final Map<String, Reference> references = new HashMap<> ();  // URI key???
+    static class ReferenceKey {
+        URI uri;
+        ReferenceType type;
+
+        public ReferenceKey (URI uri, ReferenceType type) {
+            this.uri = uri;
+            this.type = type;
+        }
+
+        @Override
+        public boolean equals (Object o) {
+            if (this == o)
+                return true;
+
+            if (o == null || getClass () != o.getClass ())
+                return false;
+
+            ReferenceKey that = (ReferenceKey) o;
+            return Objects.equals (uri, that.uri)
+                && type == that.type;
+        }
+
+        @Override
+        public int hashCode () {
+            return Objects.hash (uri, type);
+        }
+
+        @Override
+        public String toString () {
+            return String.format ("%s (%s)", uri, type);
+        }
+    }
+
+    private final Map<ReferenceKey, Reference> references = new HashMap<> ();
 
     public boolean isEmpty() {
         return references.isEmpty ();
@@ -31,23 +64,14 @@ public class ReferenceRegistry {
      * @return true if the ref is resolved, otherwise false.
      */
     public boolean hasReference (URI absoluteRef) {
-        boolean hasRef = hasReferenceX (absoluteRef);
+        boolean hasRef = hasReference (absoluteRef, ReferenceType.STATIC);
         if (hasRef)
             return true;
 
         if (hasEmptyFragment (absoluteRef))
-            return hasReferenceX (stripFragment (absoluteRef));
+            return hasReference (stripFragment (absoluteRef), ReferenceType.STATIC);
 
         return false;
-    }
-
-    public boolean contains (URI absoluteRef) {
-        return hasReference (absoluteRef);
-    }
-
-    @Deprecated
-    public boolean hasRef (URI absoluteRef) {
-        return hasReference (absoluteRef);
     }
 
     /**
@@ -57,12 +81,12 @@ public class ReferenceRegistry {
      * @return the reference
      */
     public Reference getReference (URI absoluteRef) {
-        Reference reference = getReferenceX (absoluteRef);
+        Reference reference = getReference (absoluteRef, ReferenceType.STATIC);
         if (reference != null)
             return reference;
 
         if (hasEmptyFragment (absoluteRef))
-            reference = getReferenceX (stripFragment (absoluteRef));
+            reference = getReference (stripFragment (absoluteRef), ReferenceType.STATIC);
 
         if (reference == null)
             throw new RuntimeException (); // todo
@@ -70,27 +94,29 @@ public class ReferenceRegistry {
         return reference;
     }
 
-    @Deprecated
-    public Reference getRef (URI absoluteRef) {
-        return getReference (absoluteRef);
-    }
-
     public void addReference (Ref ref, Scope valueScope, Object document) {
-        add (ref, valueScope, document);
-    }
-
-    public void add (Ref ref, Scope valueScope, Object document) {
         references.put (
-            ref.getAbsoluteUri ().toString (),
+            new ReferenceKey (ref.getAbsoluteUri (), ReferenceType.STATIC),
             new Reference (ref, new RefValue(valueScope, document))
         );
     }
 
-    private boolean hasReferenceX (URI uri) {
-        return references.containsKey (uri.toString ());
+    public void addDynamicReference (Ref ref, Scope valueScope, Object document) {
+        references.put (
+            new ReferenceKey (ref.getAbsoluteUri (), ReferenceType.DYNAMIC),
+            new Reference (ref, new RefValue(valueScope, document))
+        );
     }
 
-    private @Nullable Reference getReferenceX (URI uri) {
-        return references.get (uri.toString ());
+    public boolean hasDynamicReference (URI uri) {
+        return references.containsKey (new ReferenceKey (uri, ReferenceType.DYNAMIC));
+    }
+
+    private boolean hasReference (URI uri, ReferenceType type) {
+        return references.containsKey (new ReferenceKey (uri, type));
+    }
+
+    private @Nullable Reference getReference (URI uri, ReferenceType type) {
+        return references.get (new ReferenceKey (uri, type));
     }
 }

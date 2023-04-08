@@ -41,13 +41,12 @@ public class ResolverId {
         // only 2019-09
         URI recursiveAnchor = getRecursiveAnchor (bucket);
         registerDynamicAnchor (recursiveAnchor, bucket);
-        resolve(recursiveAnchor, bucket);
+        resolveDynamicAnchor (recursiveAnchor, bucket);
 
         // since 2020-12
         URI dynamicAnchor = getDynamicAnchor (bucket);
         registerDynamicAnchor (dynamicAnchor, bucket);
-        resolve(dynamicAnchor, bucket);
-
+        resolveDynamicAnchor (dynamicAnchor, bucket);
 
         Scope scope = bucket.getScope ();
         JsonPointer location = bucket.getLocation ();
@@ -143,7 +142,7 @@ public class ResolverId {
 
     private @Nullable URI getRecursiveAnchor (Bucket bucket) {
         Boolean anchor = bucket.convert ("$recursiveAnchor", new BooleanConverter ());
-        if (anchor == null)
+        if (anchor == null || !anchor)
             return null;
 
         return bucket.getScope ().resolveAnchor ("");
@@ -169,6 +168,13 @@ public class ResolverId {
             return;
 
         context.addRef (new Ref (bucket.getScope (), uri), bucket.getRawValues ());
+    }
+
+    private void resolveDynamicAnchor (@Nullable URI uri, Bucket bucket) {
+        if (uri == null)
+            return;
+
+        context.addDynamicAnchorRef (new Ref (bucket.getScope (), uri), bucket.getRawValues ());
     }
 
     private void resolveId (Bucket bucket) {
