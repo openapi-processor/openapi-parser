@@ -46,6 +46,10 @@ public class ResolverRef {
                 Ref ref = createRef (scope, name, value);
                 walkRef (ref, propLocation);
 
+            } else if (name.equals (Keywords.DYNAMIC_REF) && isString (value)) {
+                Ref ref = createRef (scope, name, value);
+                walkRef (ref, propLocation);
+
             } else if (name.equals (Keywords.RECURSIVE_REF) && isString (value)) {
                 Ref ref = createRef (scope, name, value);
                 walkRef (ref, propLocation);
