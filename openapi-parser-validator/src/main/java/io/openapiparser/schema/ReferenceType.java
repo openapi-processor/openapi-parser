@@ -6,5 +6,5 @@
 package io.openapiparser.schema;
 
 enum ReferenceType {
-    DYNAMIC, STATIC
+    STATIC, DYNAMIC
 }

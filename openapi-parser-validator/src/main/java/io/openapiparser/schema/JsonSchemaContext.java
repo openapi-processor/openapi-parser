@@ -55,7 +55,7 @@ public class JsonSchemaContext {
 
     public Reference getDynamicReference (URI ref, URI dynamicScope) {
         URI resolved = dynamicScope.resolve (ref);
-        return references.getReference (resolved);
+        return references.getDynamicReference (resolved);
     }
 
     public boolean hasDynamicReference (String dynamicAnchor) {

@@ -36,7 +36,7 @@ public class ResolverId {
         // since 2019-09
         URI currentAnchor = getAnchor (bucket);
         registerAnchor (currentAnchor, bucket);
-        resolve(currentAnchor, bucket);
+        resolveAnchor (currentAnchor, bucket);
 
         // only 2019-09
         URI recursiveAnchor = getRecursiveAnchor (bucket);
@@ -164,6 +164,13 @@ public class ResolverId {
     }
 
     private void resolve (@Nullable URI uri, Bucket bucket) {
+        if (uri == null)
+            return;
+
+        context.addRef (new Ref (bucket.getScope (), uri), bucket.getRawValues ());
+    }
+
+    private void resolveAnchor (@Nullable URI uri, Bucket bucket) {
         if (uri == null)
             return;
 
