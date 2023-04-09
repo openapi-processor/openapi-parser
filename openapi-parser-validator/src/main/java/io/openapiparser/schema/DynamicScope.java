@@ -64,18 +64,20 @@ public final class DynamicScope {
     }
 
     public @Nullable URI findScope (URI fragment) {
+        Scope current = scopes.get (scopes.size () - 1);
+        if (!current.matches (fragment.toString ())) {
+            return current.getBaseUri ();
+        }
+
         ListIterator<Scope> lit = scopes.listIterator (scopes.size ());
 
         Scope match = null;
         while(lit.hasPrevious()) {
             Scope previous = lit.previous ();
-            if (previous.matches (fragment.toString ())) {
+
+            boolean hasDynamicAnchor = previous.matches (fragment.toString ());
+            if (hasDynamicAnchor) {
                 match = previous;
-            } else {
-                if (match == null) {
-                    match = previous;
-                }
-                break;
             }
         }
 

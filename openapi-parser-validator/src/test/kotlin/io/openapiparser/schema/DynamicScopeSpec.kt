@@ -73,43 +73,32 @@ class DynamicScopeSpec : StringSpec({
         scope.shouldBe(URI.create("https://localhost/bar"))
     }
 
-    "if current id has dynamic anchor move up to last anchor" {
+    "if current id has dynamic anchor move up to outermost scope" {
         var currentScope = dynamicScope
 
-        val schemaB = createSchema("https://localhost/last", true)
-        currentScope = currentScope.add(schemaB)
-
-        val schemaA = createSchema("https://localhost/skip", true)
-        currentScope = currentScope.add(schemaA)
-
-        currentScope = currentScope.add(createSchema("https://localhost/skip"))
-        currentScope = currentScope.add(createSchema("https://localhost/skip"))
+        currentScope = currentScope.add(createSchema("https://localhost/last", true))
+        currentScope = currentScope.add(createSchema("https://localhost/skip", true))
+        currentScope = currentScope.add(createSchema("https://localhost/current", true))
 
         val scope = currentScope.findScope(URI.create("#"))
-
         scope.shouldBe(URI.create("https://localhost/last"))
     }
 
-    "if current id has dynamic anchor move up to last anchor in a row" {
+    "if current id has dynamic anchor move up to outermost scope and ignore scopes without anchor" {
         var currentScope = dynamicScope
 
-        val schemaA = createSchema("https://localhost/ignore", true)
-        currentScope = currentScope.add(schemaA)
-
-        val schemaB = createSchema("https://localhost/stop")
-        currentScope = currentScope.add(schemaB)
-
-        val schemaC = createSchema("https://localhost/last", true)
-        currentScope = currentScope.add(schemaC)
-
-        val schemaD = createSchema("https://localhost/skip", true)
-        currentScope = currentScope.add(schemaD)
-
-        currentScope = currentScope.add(createSchema("https://localhost/skip"))
-        currentScope = currentScope.add(createSchema("https://localhost/skip"))
+        currentScope = currentScope.add(createSchema("https://localhost/other", null))
+        currentScope = currentScope.add(createSchema("https://localhost/last", true))
+        currentScope = currentScope.add(createSchema("https://localhost/skip0", null))
+        currentScope = currentScope.add(createSchema("https://localhost/skip1", true))
+        currentScope = currentScope.add(createSchema("https://localhost/skip2", null))
+        currentScope = currentScope.add(createSchema("https://localhost/current", true))
 
         val scope = currentScope.findScope(URI.create("#"))
-
         scope.shouldBe(URI.create("https://localhost/last"))
     }
+
+//    "" {
+//
+//    }
 })
