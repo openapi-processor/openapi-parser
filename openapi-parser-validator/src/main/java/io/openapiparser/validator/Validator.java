@@ -384,7 +384,6 @@ public class Validator {
         }
 
         return parentScope.add (schema);
-        // .resolve ("#" + dynamicAnchor);
     }
 
     private boolean shouldValidate (JsonSchema schema) {
