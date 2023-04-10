@@ -99,6 +99,14 @@ public class SchemaStore {
     }
 
     /**
+     * register draft-202012 json schema.
+     */
+    public void registerDraft202012 () {
+        register (SchemaVersion.Draft202012.getSchemaResource ());
+        SchemaVersion.Draft202012.getVocabularyResources ().forEach (this::register);
+    }
+
+    /**
      * register draft-201909 json schema.
      */
     public void registerDraft201909 () {

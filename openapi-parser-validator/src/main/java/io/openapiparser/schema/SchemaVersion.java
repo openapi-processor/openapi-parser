@@ -12,6 +12,53 @@ import java.util.*;
 
 public enum SchemaVersion {
 
+    Draft202012 (
+        new SchemaResource (
+            "https://json-schema.org/draft/2020-12/schema",
+            "/json-schema.org/draft/2020-12/schema"
+        ),
+        SchemaKeywords.draft202012,
+        IdProvider.DRAFT201909,
+        Arrays.asList (
+            new SchemaResource (
+                "https://json-schema.org/draft/2020-12/meta/applicator",
+                "/json-schema.org/draft/2020-12/meta/applicator"
+            ),
+            new SchemaResource (
+                "https://json-schema.org/draft/2020-12/meta/content",
+                "/json-schema.org/draft/2020-12/meta/content"
+            ),
+            new SchemaResource (
+                "https://json-schema.org/draft/2020-12/meta/core",
+                "/json-schema.org/draft/2020-12/meta/core"
+            ),
+            new SchemaResource (
+                "https://json-schema.org/draft/2020-12/meta/format-annotation",
+                "/json-schema.org/draft/2020-12/meta/format-annotation"
+            ),
+            new SchemaResource (
+                "https://json-schema.org/draft/2020-12/meta/format-assertion",
+                "/json-schema.org/draft/2020-12/meta/format-assertion"
+            ),
+            new SchemaResource (
+                "https://json-schema.org/draft/2020-12/meta/hyper-schema",
+                "/json-schema.org/draft/2020-12/meta/hyper-schema"
+            ),
+            new SchemaResource (
+                "https://json-schema.org/draft/2020-12/meta/meta-data",
+                "/json-schema.org/draft/2020-12/meta/meta-data"
+            ),
+            new SchemaResource (
+                "https://json-schema.org/draft/2020-12/meta/unevaluated",
+                "/json-schema.org/draft/2020-12/meta/unevaluated"
+            ),
+            new SchemaResource (
+                "https://json-schema.org/draft/2020-12/meta/validation",
+                "/json-schema.org/draft/2020-12/meta/validation"
+            )
+        )
+    ),
+
     Draft201909 (
         new SchemaResource (
             "https://json-schema.org/draft/2019-09/schema",
@@ -115,6 +162,10 @@ public enum SchemaVersion {
      * @return the detected schema version or null
      */
     public static @Nullable SchemaVersion getVersion (URI schemaUri) {
+        if (SchemaVersion.Draft202012.getSchemaUri ().equals (schemaUri)) {
+            return Draft202012;
+        }
+
         if (SchemaVersion.Draft201909.getSchemaUri ().equals (schemaUri)) {
             return Draft201909;
         }
