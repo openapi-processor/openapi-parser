@@ -8,7 +8,12 @@ package io.openapiparser.schema;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
+
+import static io.openapiparser.schema.UriSupport.createUri;
+import static io.openapiparser.schema.UriSupport.emptyFragment;
 
 public final class DynamicScope {
 
@@ -63,21 +68,37 @@ public final class DynamicScope {
         return dynamicScope;
     }
 
-    public @Nullable URI findScope (URI fragment) {
-        Scope current = scopes.get (scopes.size () - 1);
-        if (!current.matches (fragment.toString ())) {
-            return current.getBaseUri ();
+    public @Nullable URI findScope (URI dynamicRef) {
+        Scope match = null;
+        URI dynamicAnchor;
+        if (dynamicRef.equals (emptyFragment ())) {
+            dynamicAnchor = dynamicRef;
+        } else {
+            dynamicAnchor = createUri ("#" + dynamicRef.getFragment ());
         }
 
+        boolean first = true;
         ListIterator<Scope> lit = scopes.listIterator (scopes.size ());
-
-        Scope match = null;
         while(lit.hasPrevious()) {
             Scope previous = lit.previous ();
 
-            boolean hasDynamicAnchor = previous.matches (fragment.toString ());
-            if (hasDynamicAnchor) {
-                match = previous;
+            if (first) {
+                first = false;
+
+                // find start scope, full dynamic ref
+                boolean hasDynamicAnchor = previous.matches (dynamicRef.toString ());
+                if (hasDynamicAnchor) {
+                    match = previous;
+                } else {
+                    // start scope has no matching dynamicAnchor, handle as $ref
+                    return null;
+                }
+            } else {
+                // find outermost scope, #fragment only
+                boolean hasDynamicAnchor = previous.matches (dynamicAnchor.toString ());
+                if (hasDynamicAnchor) {
+                    match = previous;
+                }
             }
         }
 

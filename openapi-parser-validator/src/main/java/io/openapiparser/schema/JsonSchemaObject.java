@@ -119,7 +119,11 @@ public class JsonSchemaObject implements JsonSchema {
 
             return schema;
         } else {
-            Reference reference = context.getDynamicReference (nonNull (getDynamicRef ()), dynamicScope);
+            URI dynamicRef = nonNull(getDynamicRef ());
+            String fragment = dynamicRef.getFragment ();
+            dynamicRef = UriSupport.createUri ("#" + fragment);
+
+            Reference reference = context.getDynamicReference (dynamicRef, dynamicScope);
 
             JsonSchemaContext refContext = context.withScope (reference.getValueScope ());
             JsonSchema schema = new JsonSchemaRefConverter (refContext)
