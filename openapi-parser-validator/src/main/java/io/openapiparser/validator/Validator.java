@@ -127,7 +127,7 @@ public class Validator {
         JsonSchema jsThen = schema.getThen ();
         JsonSchema jsElse = schema.getElse ();
 
-        if (jsIf == null || (jsThen == null && jsElse == null)) {
+        if (jsIf == null /*|| (jsThen == null && jsElse == null*)*/) {
             return new NullStep ("if");
         }
 
@@ -304,11 +304,18 @@ public class Validator {
         }
 
         CompositeStep step = new FlatStep ();
+        AnnotationsComposite currentAnnotations = step.mergeAnnotations (annotations);
+
         step.add (new MaxItems ().validate (schema, instance));
         step.add (new MinItems ().validate (schema, instance));
         step.add (new UniqueItems ().validate (schema, instance));
         step.add (new Contains (this).validate (schema, instance, dynamicScope));
-        step.add (new Items (this).validate (schema, instance, annotations, dynamicScope));
+
+        if (isBeforeDraft202012 (schema)) {
+            step.add (new Items (this).validate (schema, instance, currentAnnotations, dynamicScope));
+        } else {
+            step.add (new ItemsX (this).validate (schema, instance, currentAnnotations, dynamicScope));
+        }
         return step;
     }
 
@@ -317,14 +324,14 @@ public class Validator {
             return new NullStep ("no object");
 
         CompositeStep step = new FlatStep ();
-        AnnotationsComposite current = step.mergeAnnotations (annotations);
+        AnnotationsComposite currentAnnotations = step.mergeAnnotations (annotations);
 
         step.add (new MaxProperties ().validate (schema, instance));
         step.add (new MinProperties ().validate (schema, instance));
         step.add (new Required ().validate (schema, instance));
         step.add (new DependentRequired ().validate (schema, instance));
         step.add (new DependentSchemas (this).validate (schema, instance, dynamicScope));
-        step.add (new Properties (this).validate(schema, instance, current, dynamicScope));
+        step.add (new Properties (this).validate(schema, instance, currentAnnotations, dynamicScope));
         step.add (new Dependencies (this).validate (schema, instance, dynamicScope));
         step.add (new PropertyNames (this).validate (schema, instance, dynamicScope));
         return step;
@@ -402,7 +409,11 @@ public class Validator {
         return schema instanceof JsonSchemaBoolean;
     }
 
-    private boolean isDraft4(JsonSchema schema) {
+    private boolean isBeforeDraft202012 (JsonSchema schema) {
+        return schema.getContext ().getVersion ().isBefore202012 ();
+    }
+
+    private boolean isDraft4 (JsonSchema schema) {
         return SchemaVersion.Draft4.equals (schema.getContext ().getVersion ());
     }
 }

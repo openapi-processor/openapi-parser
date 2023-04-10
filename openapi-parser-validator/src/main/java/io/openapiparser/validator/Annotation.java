@@ -40,4 +40,9 @@ public class Annotation {
     public Collection<String> asStrings () {
         return (Collection<String>) value;
     }
+
+    @SuppressWarnings ("unchecked")
+    public Collection<Integer> asIntegers () {
+        return (Collection<Integer>) value;
+    }
 }
