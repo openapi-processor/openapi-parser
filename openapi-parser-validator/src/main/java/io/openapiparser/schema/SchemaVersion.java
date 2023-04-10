@@ -229,8 +229,12 @@ public enum SchemaVersion {
         return compareTo (Draft201909) <= 0;
     }
 
+    public boolean isBefore202012 () {
+        return compareTo (Draft202012) > 0;
+    }
+
     public boolean isBefore201909 () {
-        return compareTo (Draft201909) < 0;
+        return compareTo (Draft201909) > 0;
     }
 
     public boolean isApplicatorVocabulary (URI candidate) {
