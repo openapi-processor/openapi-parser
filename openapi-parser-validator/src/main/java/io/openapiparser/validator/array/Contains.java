@@ -5,10 +5,16 @@
 
 package io.openapiparser.validator.array;
 
-import io.openapiparser.schema.*;
+import io.openapiparser.schema.DynamicScope;
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.Validator;
-import io.openapiparser.validator.steps.*;
+import io.openapiparser.validator.steps.CompositeStep;
+import io.openapiparser.validator.steps.FlatStep;
+import io.openapiparser.validator.steps.NullStep;
+import io.openapiparser.validator.steps.ValidationStep;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import static io.openapiparser.support.Nullness.nonNull;
@@ -36,6 +42,8 @@ public class Contains {
 
         CompositeStep step = new FlatStep ();
 
+        Collection<Integer> containsAnnotation = new ArrayList<> ();
+
         Collection<Object> instanceValue = getInstanceValue (instance);
         int instanceSize = instanceValue.size ();
 
@@ -49,6 +57,7 @@ public class Contains {
             containsStep.add (validate);
 
             if (validate.isValid ()) {
+                containsAnnotation.add (idx);
                 validCount++;
             }
         }
@@ -82,6 +91,7 @@ public class Contains {
             containsStep.setInvalid ();
         }
 
+        containsStep.addAnnotation (containsAnnotation);
         return step;
     }
 

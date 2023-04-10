@@ -7,16 +7,17 @@ package io.openapiparser.validator.array;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.validator.Annotation;
 import io.openapiparser.validator.ValidationMessage;
 import io.openapiparser.validator.steps.CompositeStep;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
 public class ContainsStep extends CompositeStep {
     private final JsonSchema schema;
     private final JsonInstance instance;
 
+    private Annotation annotation;
     private boolean valid = true;
 
     public ContainsStep (JsonSchema schema, JsonInstance instance) {
@@ -39,6 +40,22 @@ public class ContainsStep extends CompositeStep {
             return Collections.emptyList ();
 
         return Collections.singletonList (getError());
+    }
+
+    public void addAnnotation (Collection<Integer> annotation) {
+        this.annotation = new Annotation ("contains", annotation);
+    }
+
+    @Override
+    public Collection<Annotation> getAnnotations (String keyword) {
+        Collection<Annotation> composite = super.getAnnotations (keyword);
+        if (!keyword.equals ("contains")) {
+            return composite;
+        }
+
+        Collection<Annotation> annotations = new ArrayList<> (composite);
+        annotations.add (annotation);
+        return annotations;
     }
 
     private ValidationMessage getError () {
