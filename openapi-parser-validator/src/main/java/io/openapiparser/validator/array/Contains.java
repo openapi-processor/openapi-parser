@@ -21,12 +21,7 @@ import static io.openapiparser.support.Nullness.nonNull;
 
 /**
  * validates contains, minContains &amp; maxContains.
- *
- * <p>See specification:
- *
- * <p>Draft 6:
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.14">
- *     items</a>
+ * <p>Specifications: since Draft 6
  */
 public class Contains {
     private final Validator validator;
