@@ -16,7 +16,8 @@ class PendingSpec : FreeSpec({
 //    settings.version = SchemaVersion.Draft4
 //    settings.version = SchemaVersion.Draft6
 //    settings.version = SchemaVersion.Draft7
-    settings.version = SchemaVersion.Draft201909
+//    settings.version = SchemaVersion.Draft201909
+    settings.version = SchemaVersion.Draft202012
 
     include(draftSpec(
         "/suites/pending",
@@ -24,6 +25,7 @@ class PendingSpec : FreeSpec({
 //        draft4Extras
 //        draft6Extras
 //        draft7Extras
-        draft201909Extras
+//        draft201909Extras
+        draft202012Extras
     ))
 })
