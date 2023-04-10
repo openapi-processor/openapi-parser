@@ -230,6 +230,15 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     @Override
+    public Collection<JsonSchema> getPrefixItems () {
+        Collection<JsonSchema> prefixItems = getJsonSchemasOf ("prefixItems");
+        if (prefixItems == null)
+            return Collections.emptyList ();
+
+        return prefixItems;
+    }
+
+    @Override
     public JsonSchemas getItems () {
         boolean exists = schemaObject.hasProperty ("items");
         if (!exists)

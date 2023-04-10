@@ -123,6 +123,10 @@ public interface JsonSchema {
         return null;
     }
 
+    default Collection<JsonSchema> getPrefixItems () {
+        return Collections.emptyList ();
+    }
+
     default JsonSchemas getItems () {
         return new JsonSchemas ();  // default empty schema (draft 4)
     }
