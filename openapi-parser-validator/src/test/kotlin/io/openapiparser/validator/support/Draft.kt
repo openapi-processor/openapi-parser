@@ -39,8 +39,8 @@ fun draftSpec(
         .filterIsInstance<Exclude>()
         .map { e -> e.test }
 
-    val remotes = extras
-        .filterIsInstance<Remote>()
+//    val remotes = extras
+//        .filterIsInstance<Remote>()
 
     fun toPath(path: String): Path {
         val resource = Validator::class.java.getResource(path)
@@ -57,20 +57,41 @@ fun draftSpec(
         )
     }
 
-    fun loadDocument(path: String): Any {
-        return json.readValue(
-            Files.readAllBytes(toPath(path)),
-            json.typeFactory.constructMapType(
-                HashMap::class.java,
-                String::class.java,
-                Object::class.java
-            )
-        )
+//    fun loadDocument(path: String): Any {
+//        return json.readValue(
+//            Files.readAllBytes(toPath(path)),
+//            json.typeFactory.constructMapType(
+//                HashMap::class.java,
+//                String::class.java,
+//                Object::class.java
+//            )
+//        )
+//    }
+
+    fun createStore(loader: DocumentLoader): SchemaStore {
+        val store = SchemaStore(loader)
+
+        when (settings.version) {
+            SchemaVersion.Draft202012 -> store.registerDraft202012()
+            SchemaVersion.Draft201909 -> {
+                store.registerDraft7()
+                store.registerDraft201909()
+                store.registerDraft202012()
+            }
+            SchemaVersion.Draft7 -> {
+                store.registerDraft7()
+                store.registerDraft201909()
+            }
+            SchemaVersion.Draft6 -> store.registerDraft6()
+            SchemaVersion.Draft4 -> store.registerDraft4()
+        }
+
+        return store
     }
 
-    fun createSchema(schema: Any, documents: List<Document>): JsonSchema {
-        val loader = DocumentLoader(TestUriReader(documents), JacksonConverter())
-        val store = SchemaStore(loader)
+    fun createSchema(schema: Any): JsonSchema {
+        val loader = DocumentLoader(TestRemotesUriReader(), JacksonConverter())
+        val store = createStore(loader)
         val uri = store.register(schema)
         return store.getSchema(uri, settings.version)
     }
@@ -88,12 +109,8 @@ fun draftSpec(
                 val suites = loadSuites(path)
 
                 for (suite in suites) {
-                    val documents = remotes
-                        .filter { e -> e.test == suite.description }
-                        .map { e -> e.document }
-
                     suite.description - {
-                        val schema = createSchema(suite.schema, documents)
+                        val schema = createSchema(suite.schema)
 
                         val tests = suite.tests
                             .filter { t -> !excludes.contains(t.description) }
@@ -117,5 +134,6 @@ fun draftSpec(
 }
 
 class Exclude(val test: String)
+@Deprecated("obsolete")
 class Remote(val test: String, val document: Document)
 class Document(val id: String, val path: String)
