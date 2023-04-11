@@ -127,7 +127,7 @@ public class Validator {
         JsonSchema jsThen = schema.getThen ();
         JsonSchema jsElse = schema.getElse ();
 
-        if (jsIf == null /*|| (jsThen == null && jsElse == null*)*/) {
+        if (jsIf == null) {
             return new NullStep ("if");
         }
 
