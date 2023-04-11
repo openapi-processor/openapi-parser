@@ -75,7 +75,7 @@ public class ReferenceRegistry {
     }
 
     /**
-     * get a reference.
+     * get a static reference.
      *
      * @param absoluteRef absolute ref uri
      * @return the reference
@@ -94,6 +94,20 @@ public class ReferenceRegistry {
         return reference;
     }
 
+    /**
+     * get a dynamic reference.
+     *
+     * @param absoluteRef absolute ref uri
+     * @return the reference
+     */
+    public Reference getDynamicReference (URI absoluteRef) {
+        Reference reference = getReference (absoluteRef, ReferenceType.DYNAMIC);
+        if (reference != null)
+            return reference;
+
+        return getReference (absoluteRef);
+    }
+
     public void addReference (Ref ref, Scope valueScope, Object document) {
         references.put (
             new ReferenceKey (ref.getAbsoluteUri (), ReferenceType.STATIC),
@@ -109,7 +123,7 @@ public class ReferenceRegistry {
     }
 
     public boolean hasDynamicReference (URI uri) {
-        return references.containsKey (new ReferenceKey (uri, ReferenceType.DYNAMIC));
+        return hasReference (uri, ReferenceType.DYNAMIC);
     }
 
     private boolean hasReference (URI uri, ReferenceType type) {
