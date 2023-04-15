@@ -15,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.unmodifiableList;
@@ -166,6 +167,27 @@ public class JsonPointer {
      */
     public List<String> getTokens () {
         return unmodifiableList (tokens);
+    }
+
+    public boolean isEmpty() {
+        return pointer == null;
+    }
+
+    @Override
+    public boolean equals (Object o) {
+        if (this == o)
+            return true;
+
+        if (o == null || getClass () != o.getClass ())
+            return false;
+
+        JsonPointer that = (JsonPointer) o;
+        return Objects.equals (pointer, that.pointer);
+    }
+
+    @Override
+    public int hashCode () {
+        return Objects.hash (pointer);
     }
 
     @Override

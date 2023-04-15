@@ -5,14 +5,16 @@
 
 package io.openapiparser.validator.steps;
 
-import io.openapiparser.schema.JsonInstance;
-import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.schema.*;
 import io.openapiparser.validator.Annotation;
 import io.openapiparser.validator.ValidationMessage;
 
+import java.net.URI;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.stream.Collectors;
+
+import static io.openapiparser.schema.UriSupport.resolve;
 
 public class SchemaStep extends CompositeStep {
     private final JsonSchema schema;
@@ -40,6 +42,30 @@ public class SchemaStep extends CompositeStep {
             .map (s -> s.getAnnotations (keyword))
             .flatMap (Collection::stream)
             .collect(Collectors.toList ());
+    }
+
+
+    @Override
+    public JsonPointer getInstanceLocation () {
+        return instance.getLocation ();
+    }
+
+    @Override
+    public JsonPointer getKeywordLocation () {
+        return schema.getLocation ();
+    }
+
+    @Override
+    public URI getAbsoluteKeywordLocation () {
+        JsonSchemaContext context = schema.getContext ();
+        Scope scope = context.getScope ();
+
+        JsonPointer location = schema.getLocation ();
+        if (location.isEmpty ()) {
+            return scope.getBaseUri ();
+        }
+
+        return resolve (scope.getBaseUri (), location.toUri ());
     }
 
     @Override

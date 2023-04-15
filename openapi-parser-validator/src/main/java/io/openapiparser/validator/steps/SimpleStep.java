@@ -5,12 +5,14 @@
 
 package io.openapiparser.validator.steps;
 
-import io.openapiparser.schema.JsonInstance;
-import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.schema.*;
 import io.openapiparser.validator.ValidationMessage;
 
+import java.net.URI;
 import java.util.Collection;
 import java.util.Collections;
+
+import static io.openapiparser.schema.UriSupport.resolve;
 
 public abstract class SimpleStep implements ValidationStep {
     protected final JsonSchema schema;
@@ -56,6 +58,24 @@ public abstract class SimpleStep implements ValidationStep {
 
     public void setValid (boolean valid) {
         this.valid = valid;
+    }
+
+    public JsonPointer getInstanceLocation () {
+        return instance.getLocation ().append (property);
+    }
+
+    @Override
+    public JsonPointer getKeywordLocation () {
+        return schema.getLocation ().append (property);
+    }
+
+    @Override
+    public URI getAbsoluteKeywordLocation () {
+        JsonSchemaContext context = schema.getContext ();
+        Scope scope = context.getScope ();
+
+        JsonPointer location = getKeywordLocation ();
+        return resolve (scope.getBaseUri (), location.toUri ());
     }
 
     @Override

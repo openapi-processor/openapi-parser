@@ -5,9 +5,12 @@
 
 package io.openapiparser.validator.steps;
 
+import io.openapiparser.schema.JsonPointer;
+import io.openapiparser.schema.UriSupport;
 import io.openapiparser.validator.Annotation;
 import io.openapiparser.validator.ValidationMessage;
 
+import java.net.URI;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -20,4 +23,18 @@ public interface ValidationStep {
     default Collection<Annotation> getAnnotations (String keyword) {
         return Collections.emptyList ();
     }
+
+    default JsonPointer getKeywordLocation() {
+        return JsonPointer.empty ();
+    }
+
+    default URI getAbsoluteKeywordLocation() {
+        return UriSupport.emptyUri ();
+    }
+
+    default JsonPointer getInstanceLocation() {
+        return JsonPointer.empty ();
+    }
+
+
 }

@@ -7,13 +7,14 @@ package io.openapiparser.validator.object;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.schema.Keywords;
 import io.openapiparser.validator.ValidationMessage;
 import io.openapiparser.validator.steps.SimpleStep;
 
 public class MinPropertiesStep extends SimpleStep {
 
     public MinPropertiesStep (JsonSchema schema, JsonInstance instance) {
-        super(schema, instance);
+        super(schema, instance, Keywords.MIN_PROPERTIES);
     }
 
     @Override
