@@ -16,16 +16,7 @@ import static io.openapiparser.support.Nullness.nonNull;
 
 /**
  * validates minProperties.
- *
- * <p>See specification:
- *
- * <p>Draft 6:
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.16">
- *     minProperties</a>
- *
- * <br>Draft 4:
- * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.2">
- *     minProperties</a>
+ * <p>Specification: since Draft 4
  */
 public class MinProperties {
 
