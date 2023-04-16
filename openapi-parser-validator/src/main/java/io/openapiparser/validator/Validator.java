@@ -96,7 +96,7 @@ public class Validator {
         }
 
         JsonSchema refSchema = schema.getRefSchema ();
-        SchemaRefStep step = new SchemaRefStep (refSchema);
+        RefStep step = new RefStep (schema, instance);
         step.add (validate (refSchema, instance, dynamicScope));
 
         return new RefResult(step, !refAllowsSibling(step, schema));
@@ -114,7 +114,7 @@ public class Validator {
         }
 
         JsonSchema refSchema = schema.getRefSchema (dynamicScope.findScope (dynamicRef));
-        SchemaRefStep step = new SchemaRefStep (refSchema);
+        DynamicRefStep step = new DynamicRefStep (schema, instance);
         step.add (validate (refSchema, instance, dynamicScope));
         return step;
     }
@@ -398,7 +398,7 @@ public class Validator {
     }
 
     private boolean refAllowsSibling (ValidationStep step, JsonSchema schema) {
-        if (step instanceof SchemaRefStep) {
+        if (step instanceof RefStep) {
             return schema.getContext().refAllowsSiblings();
         }
 

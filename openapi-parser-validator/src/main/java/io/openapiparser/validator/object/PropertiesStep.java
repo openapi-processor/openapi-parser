@@ -5,6 +5,8 @@
 
 package io.openapiparser.validator.object;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.Annotation;
 import io.openapiparser.validator.ValidationMessage;
 import io.openapiparser.validator.steps.ValidationStep;
@@ -14,12 +16,16 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class PropertiesStep implements ValidationStep {
+    protected final JsonSchema schema;
+    protected final JsonInstance instance;
     private final String propertyName;
     private final Collection<ValidationStep> steps = new ArrayList<> ();
     private final Map<String, Annotation> annotations = new HashMap<> ();
 
 
-    public PropertiesStep (String propertyName) {
+    public PropertiesStep (JsonSchema schema, JsonInstance instance, String propertyName) {
+        this.schema = schema;
+        this.instance = instance;
         this.propertyName = propertyName;
     }
 
@@ -76,8 +82,9 @@ public class PropertiesStep implements ValidationStep {
 
     @Override
     public String toString () {
-        return String.format ("%s (property: %s)",
+        return String.format ("%s (instance: %s), (schema: %s)",
             isValid () ? "valid" : "invalid",
-            propertyName);
+            instance.toString ().isEmpty () ? "/" : instance.toString (),
+            schema.getLocation ().append (propertyName));
     }
 }

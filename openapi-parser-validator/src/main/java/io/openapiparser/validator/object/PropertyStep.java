@@ -5,6 +5,8 @@
 
 package io.openapiparser.validator.object;
 
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.Annotation;
 import io.openapiparser.validator.ValidationMessage;
 import io.openapiparser.validator.steps.*;
@@ -13,12 +15,16 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.Collection;
 
 public class PropertyStep implements ValidationStep {
+    protected final JsonSchema schema;
+    protected final JsonInstance instance;
     private final String propertyName;
 
     private final ValidationStep step;
-    private @Nullable Annotation annotation;
+    //private @Nullable Annotation annotation;
 
-    public PropertyStep (String propertyName, ValidationStep step) {
+    public PropertyStep (JsonSchema schema, JsonInstance instance, String propertyName, ValidationStep step) {
+        this.schema = schema;
+        this.instance = instance;
         this.propertyName = propertyName;
         this.step = step;
     }
@@ -45,8 +51,9 @@ public class PropertyStep implements ValidationStep {
 
     @Override
     public String toString () {
-        return String.format ("%s (property: %s)",
+        return String.format ("%s (instance: %s), (schema: %s)",
             isValid () ? "valid" : "invalid",
-            propertyName);
+            instance.getLocation (),
+            schema.getLocation ());
     }
 }

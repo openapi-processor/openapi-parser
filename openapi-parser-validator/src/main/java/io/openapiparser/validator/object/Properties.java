@@ -62,10 +62,10 @@ public class Properties {
     public ValidationStep validate (JsonSchema schema, JsonInstance instance, Annotations annotations, DynamicScope dynamicScope) {
         CompositeStep step = new FlatStep ();
 
-        PropertiesStep propertiesStep = new PropertiesStep ("properties");
-        PropertiesStep patternPropertiesStep = new PropertiesStep ("patternProperties");
-        PropertiesStep additionalPropertiesStep = new PropertiesStep ("additionalProperties");
-        PropertiesStep unevaluatedPropertiesStep = new PropertiesStep ("unevaluatedProperties");
+        PropertiesStep propertiesStep = new PropertiesStep (schema, instance, "properties");
+        PropertiesStep patternPropertiesStep = new PropertiesStep (schema, instance,"patternProperties");
+        PropertiesStep additionalPropertiesStep = new PropertiesStep (schema, instance,"additionalProperties");
+        PropertiesStep unevaluatedPropertiesStep = new PropertiesStep (schema, instance,"unevaluatedProperties");
 
         Map<String, JsonSchema> schemaProperties = schema.getProperties ();
         Map<String, JsonSchema> patternProperties = schema.getPatternProperties ();
@@ -92,7 +92,7 @@ public class Properties {
                     propertiesAnnotations.add (propName);
                 }
 
-                propertiesStep.add (new PropertyStep (propName, propStep));
+                propertiesStep.add (new PropertyStep (propSchema, propInstance, propName, propStep));
                 checkAdditionalProperty = false;
             }
 
@@ -108,7 +108,7 @@ public class Properties {
                         patternPropertiesAnnotation.add (propName);
                     }
 
-                    patternPropertiesStep.add (new PropertyStep (propName, propStep));
+                    patternPropertiesStep.add (new PropertyStep (patternSchema, instance, propName, propStep));
                     checkAdditionalProperty = false;
                 }
             }
@@ -121,7 +121,7 @@ public class Properties {
                     additionalPropertiesAnnotation.add (propName);
                 }
 
-                additionalPropertiesStep.add (new PropertyStep (propName, propStep));
+                additionalPropertiesStep.add (new PropertyStep (additionalProperties, value, propName, propStep));
             }
         });
 
