@@ -75,32 +75,6 @@ public class Properties {
         Map<String, Object> instanceObject = nonNull(instance.asObject ());
         Set<String> instanceProperties = new HashSet<>(instanceObject.keySet ());
 
-        // no additional properties // todo move down
-        if (additionalProperties instanceof JsonSchemaBoolean && additionalProperties.isFalse ()) {
-            instanceProperties.removeAll (schemaProperties.keySet ());
-
-            Iterator<String> it = instanceProperties.iterator();
-            while (it.hasNext()) {
-                String property = it.next ();
-
-                for (String pattern : patternProperties.keySet ()) {
-                    Pattern p = Pattern.compile(pattern);
-                    Matcher m = p.matcher(property);
-                    if (m.find()) {
-                        it.remove ();
-                    }
-                }
-            }
-
-            if (!instanceProperties.isEmpty ()) {
-                instanceProperties.forEach (propName -> {
-                    ValidationStep invalidStep = new PropertyInvalidStep (schema, instance, propName);
-                    ValidationStep namedStep = new PropertyStep (propName, invalidStep);
-                    additionalPropertiesStep.add (namedStep);
-                });
-            }
-        }
-
         Set<String> propertiesAnnotations = new HashSet<> ();
         Collection<String> patternPropertiesAnnotation = new ArrayList<> ();
         Collection<String> additionalPropertiesAnnotation = new ArrayList<> ();
@@ -150,6 +124,32 @@ public class Properties {
                 additionalPropertiesStep.add (new PropertyStep (propName, propStep));
             }
         });
+
+        // no additional properties
+        if (additionalProperties instanceof JsonSchemaBoolean && additionalProperties.isFalse ()) {
+            instanceProperties.removeAll (schemaProperties.keySet ());
+
+            Iterator<String> it = instanceProperties.iterator();
+            while (it.hasNext()) {
+                String property = it.next ();
+
+                for (String pattern : patternProperties.keySet ()) {
+                    Pattern p = Pattern.compile(pattern);
+                    Matcher m = p.matcher(property);
+                    if (m.find()) {
+                        it.remove ();
+                    }
+                }
+            }
+
+            if (!instanceProperties.isEmpty ()) {
+                instanceProperties.forEach (propName -> {
+                    ValidationStep invalidStep = new PropertyInvalidStep (schema, instance, propName);
+                    ValidationStep namedStep = new PropertyStep (schema, instance, propName, invalidStep);
+                    additionalPropertiesStep.add (namedStep);
+                });
+            }
+        }
 
         Set<String> tmpAnnotations = collectAnnotations (annotations, "properties");
         tmpAnnotations.addAll (propertiesAnnotations);
