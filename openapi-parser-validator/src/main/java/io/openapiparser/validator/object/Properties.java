@@ -191,7 +191,7 @@ public class Properties {
         if (patternPropertiesStep.isNotEmpty ())
             step.add (patternPropertiesStep);
 
-        if (additionalPropertiesStep.isNotEmpty ())
+        if (additionalProperties != null)
             step.add (additionalPropertiesStep);
 
         if (unevaluatedPropertiesStep.isNotEmpty ())
