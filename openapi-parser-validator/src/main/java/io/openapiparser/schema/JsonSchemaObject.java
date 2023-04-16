@@ -321,12 +321,8 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     @Override
-    public Integer getMinProperties () {
-        Integer value = schemaObject.convert ("minProperties", new IntegerConverter ());
-        if (value == null)
-            return 0;
-
-        return value;
+    public @Nullable Integer getMinProperties () {
+        return schemaObject.convert ("minProperties", new IntegerConverter ());
     }
 
     @Override
@@ -370,34 +366,33 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     @Override
-    public Map<String, JsonDependency> getDependencies () {
+    public @Nullable Map<String, JsonDependency> getDependencies () {
         Map<String, JsonDependency> dependencies = schemaObject.convert (
             "dependencies", new MapDependencyConverter (context));
 
-        if (dependencies == null) {
-            return Collections.emptyMap ();
-        }
+        if (dependencies == null)
+            return null;
 
         return dependencies;
     }
 
     @Override
-    public Map<String, JsonSchema> getDependentSchemas () {
+    public @Nullable Map<String, JsonSchema> getDependentSchemas () {
         Map<String, JsonSchema> dependentSchemas = schemaObject.convert (
             "dependentSchemas", new MapJsonSchemasConverter (context));
 
         if (dependentSchemas == null)
-            return Collections.emptyMap ();
+            return null;
 
         return dependentSchemas;
     }
 
-    public Map<String, Set<String>> getDependentRequired () {
+    public @Nullable Map<String, Set<String>> getDependentRequired () {
         Map<String, Set<String>> dependentRequired = schemaObject.convert (
-            "dependentRequired", new MapSetStringsOrEmptyConverter ());
+            "dependentRequired", new MapSetStringsOrEmptyConverter (ResponseType.Null));
 
         if (dependentRequired == null)
-            return Collections.emptyMap ();
+            return null;
 
         return dependentRequired;
     }

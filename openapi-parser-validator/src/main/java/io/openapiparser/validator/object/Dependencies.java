@@ -38,9 +38,13 @@ public class Dependencies {
     }
 
     public ValidationStep validate (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope) {
+        Map<String, JsonDependency> dependencies = schema.getDependencies ();
+        if (dependencies == null) {
+            return new NullStep ("dependencies");
+        }
+
         DependenciesStep step = new DependenciesStep (schema, instance);
 
-        Map<String, JsonDependency> dependencies = schema.getDependencies ();
         Map<String, Object> instanceObject = nonNull(instance.asObject ());
 
         instanceObject.keySet ().forEach (propName -> {

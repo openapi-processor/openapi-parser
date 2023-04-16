@@ -20,10 +20,20 @@ import static java.util.Collections.unmodifiableSet;
  */
 public class MapSetStringsOrEmptyConverter implements PropertyConverter<Map<String, Set<String>>> {
 
+    private final ResponseType responseType;
+
+    public MapSetStringsOrEmptyConverter () {
+        responseType = ResponseType.Empty;
+    }
+
+    public MapSetStringsOrEmptyConverter (ResponseType responseType) {
+        this.responseType = responseType;
+    }
+
     @Override
     public @Nullable Map<String, Set<String>> convert (String name, @Nullable Object value, String location) {
         if (value == null)
-            return Collections.emptyMap ();
+            return responseType == ResponseType.Empty ? Collections.emptyMap () : null;
 
         Map<String, Object> values = convertMap (location, value);
 

@@ -14,7 +14,7 @@ import io.openapiparser.validator.ValidationMessage;
  */
 public class MinPropertiesError extends ValidationMessage {
 
-    public MinPropertiesError (JsonSchema schema, JsonInstance instance, int size) {
+    public MinPropertiesError (JsonSchema schema, JsonInstance instance, Integer size) {
         super (schema, instance, "minProperties",
             String.format ("the size should be greater or equal to %d", size));
     }

@@ -167,8 +167,8 @@ public interface JsonSchema {
         return null;
     }
 
-    default Integer getMinProperties () {
-        return 0;
+    default @Nullable Integer getMinProperties () {
+        return null;
     }
 
     default @Nullable Collection<String> getRequired () {
@@ -189,16 +189,16 @@ public interface JsonSchema {
 
     default @Nullable JsonSchema getUnevaluatedProperties () { return null; }
 
-    default Map<String, JsonDependency> getDependencies () {
-        return Collections.emptyMap ();
+    default @Nullable Map<String, JsonDependency> getDependencies () {
+        return null;
     }
 
-    default Map<String, JsonSchema> getDependentSchemas () {
-        return Collections.emptyMap ();
+    default @Nullable Map<String, JsonSchema> getDependentSchemas () {
+        return null;
     }
 
-    default Map<String, Set<String>> getDependentRequired () {
-        return Collections.emptyMap ();
+    default @Nullable Map<String, Set<String>> getDependentRequired () {
+        return null;
     }
 
     default @Nullable JsonSchema getPropertyNames () {

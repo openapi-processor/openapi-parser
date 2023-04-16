@@ -6,6 +6,7 @@
 package io.openapiparser.validator.object;
 
 import io.openapiparser.schema.*;
+import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 
 import java.util.*;
@@ -32,6 +33,10 @@ public class DependentRequired {
         }
 
         Map<String, Set<String>> required = schema.getDependentRequired ();
+        if (required == null) {
+            return new NullStep ("dependentRequired");
+        }
+
         Map<String, Object> instanceObject = nonNull(instance.asObject ());
 
         instanceObject.keySet ().forEach (propName -> {

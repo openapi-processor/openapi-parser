@@ -8,6 +8,7 @@ package io.openapiparser.validator.conditional;
 import io.openapiparser.schema.*;
 import io.openapiparser.validator.Validator;
 import io.openapiparser.validator.object.PropertyStep;
+import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 
 import java.util.Map;
@@ -35,13 +36,12 @@ public class DependentSchemas {
     }
 
     public ValidationStep validate (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope) {
-        DependentSchemasStep step = new DependentSchemasStep ("dependentSchemas");
-
         Map<String, JsonSchema> schemas = schema.getDependentSchemas ();
-        if (schemas.isEmpty ()) {
-            return step;
+        if (schemas == null) {
+            return new NullStep ("dependentSchemas");
         }
 
+        DependentSchemasStep step = new DependentSchemasStep ("dependentSchemas");
         Map<String, Object> instanceObject = nonNull(instance.asObject ());
 
         instanceObject.keySet ().forEach (propName -> {
@@ -51,7 +51,7 @@ public class DependentSchemas {
             }
 
             ValidationStep propStep = validator.validate (propSchema, instance, dynamicScope);
-            step.add (new PropertyStep (propName, propStep));
+            step.add (new PropertyStep (propSchema, instance, propName, propStep));
         });
 
         return step;

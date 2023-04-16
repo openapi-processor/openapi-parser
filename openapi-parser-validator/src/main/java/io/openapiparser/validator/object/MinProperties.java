@@ -24,7 +24,6 @@ public class MinProperties {
         Map<String, Object> instanceObject = nonNull(instance.asObject ());
         Set<String> instanceProperties = new HashSet<>(instanceObject.keySet ());
         Integer minProperties = schema.getMinProperties ();
-
         if (minProperties == null)
             return new NullStep ("minProperties");
 
