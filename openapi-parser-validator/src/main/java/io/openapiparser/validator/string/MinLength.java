@@ -12,29 +12,24 @@ import io.openapiparser.validator.steps.ValidationStep;
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
- * validates minLength.
- *
- * <p>See specification:
- * <p>Draft 6:
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.7">
- *     minLength</a>
- * <br>Draft 4:
- * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.2.2">
- *     minLength</a>
+ * validates minLength. Since Draft 4.
  */
 public class MinLength {
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
-        MinLengthStep step = new MinLengthStep (schema, instance);
-
+    public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
         Integer minLength = schema.getMinLength ();
+        if (minLength == null)
+            return;
+
+        MinLengthStep step = new MinLengthStep (schema, instance);
         String instanceValue = getInstanceValue (instance);
+
         boolean valid = instanceValue.codePointCount (0, instanceValue.length ()) >= minLength;
         if (!valid) {
             step.setInvalid ();
         }
 
-        return step;
+        parentStep.add (step);
     }
 
     private String getInstanceValue (JsonInstance instance) {

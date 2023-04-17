@@ -80,6 +80,9 @@ public abstract class SimpleStep implements ValidationStep {
 
     @Override
     public String toString () {
-        return isValid () ? "valid" : "invalid";
+        return String.format ("%s (instance: %s), (schema: %s)",
+            isValid () ? "valid" : "invalid",
+            instance.toString ().isEmpty () ? "/" : instance.toString (),
+            schema.getLocation ().append (property));
     }
 }

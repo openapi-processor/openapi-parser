@@ -14,21 +14,11 @@ import java.util.*;
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
- * validate uniqueItems.
- *
- * <p>See specification:
- *
- * <p>Draft 6:
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.13">
- *     uniqueItems</a>
- *
- * <br>Draft 4:
- * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.3.4">
- *     uniqueItems</a>
+ * validate uniqueItems. Since Draft 4.
  */
 public class UniqueItems {
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
+    public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
         UniqueItemsStep step = new UniqueItemsStep (schema, instance);
 
         Collection<Object> instanceValue = getInstanceValue (instance);
@@ -37,12 +27,12 @@ public class UniqueItems {
             for (Object item : instanceValue) {
                 if (!items.add (item)) {
                     step.setInvalid ();
-                    return step;
+                    break;
                 }
             }
         }
 
-        return step;
+        parentStep.add (step);
     }
 
     private Collection<Object> getInstanceValue (JsonInstance instance) {

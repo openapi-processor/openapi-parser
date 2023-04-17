@@ -5,9 +5,9 @@
 
 package io.openapiparser.validator.string;
 
-import io.openapiparser.schema.*;
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidatorSettings;
-import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -15,17 +15,7 @@ import static io.openapiparser.schema.Format.HOSTNAME;
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
- * validates hostname.
- *
- * <p>See specification:
- *
- * <p>Draft 6:
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-8.3.3">
- *     hostname</a>
- *
- * <br>Draft 4:
- * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-7.3.3">
- *     hostname</a>
+ * validates hostname. Since Draft4.
  */
 public class Hostname {
     private final ValidatorSettings settings;
@@ -34,10 +24,10 @@ public class Hostname {
         this.settings = settings;
     }
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
+    public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
         String format = schema.getFormat ();
         if (!shouldValidate (format))
-            return new NullStep ("hostname");
+            return;
 
         HostnameStep step = new HostnameStep (schema, instance);
 
@@ -47,7 +37,7 @@ public class Hostname {
             step.setInvalid ();
         }
 
-        return step;
+        parentStep.add (step);
     }
 
     boolean shouldValidate (@Nullable String format) {

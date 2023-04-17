@@ -5,9 +5,9 @@
 
 package io.openapiparser.validator.string;
 
-import io.openapiparser.schema.*;
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidatorSettings;
-import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -17,17 +17,7 @@ import static io.openapiparser.schema.Format.EMAIL;
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
- * validates email.
- *
- * <p>See specification:
- *
- * <p>Draft 6:
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-8.3.2">
- *     email</a>
- *
- * <br>Draft 4:
- * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-7.3.2">
- *     email</a>
+ * validates email. Since Draft 4.
  *
  * todo replace regex with validation code
  */
@@ -43,10 +33,10 @@ public class Email {
         this.settings = settings;
     }
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
+    public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
         String format = schema.getFormat ();
         if (!shouldValidate (format))
-            return new NullStep ("email");
+            return;
 
         EmailStep step = new EmailStep (schema, instance);
 
@@ -57,7 +47,7 @@ public class Email {
         if (!valid)
             step.setInvalid ();
 
-        return step;
+        parentStep.add (step);
     }
 
     private boolean shouldValidate (@Nullable String format) {

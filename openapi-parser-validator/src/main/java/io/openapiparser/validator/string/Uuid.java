@@ -5,9 +5,11 @@
 
 package io.openapiparser.validator.string;
 
-import io.openapiparser.schema.*;
+import io.openapiparser.schema.Format;
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidatorSettings;
-import io.openapiparser.validator.steps.*;
+import io.openapiparser.validator.steps.ValidationStep;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.UUID;
@@ -22,10 +24,10 @@ public class Uuid {
         this.settings = settings;
     }
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
+    public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
         String format = schema.getFormat ();
         if (!shouldValidate (format))
-            return new NullStep ("format");
+            return;
 
         UuidStep step = new UuidStep (schema, instance);
 
@@ -35,7 +37,7 @@ public class Uuid {
             step.setInvalid ();
         }
 
-        return step;
+        parentStep.add (step);
     }
 
     private boolean shouldValidate (@Nullable String format) {

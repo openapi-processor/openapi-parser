@@ -7,7 +7,6 @@ package io.openapiparser.validator.string;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 
 import java.util.regex.Matcher;
@@ -15,22 +14,14 @@ import java.util.regex.Matcher;
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
- * validates pattern.
- *
- * <p>See specification:
- * <p>Draft 6:
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.8">
- *     pattern</a>
- * <br>Draft 4:
- * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.2.3">
- *     pattern</a>
+ * validates pattern. Since Draft 4.
  */
 public class Pattern {
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
+    public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
         String pattern = schema.getPattern ();
         if (pattern == null)
-            return new NullStep ("pattern");
+            return;
 
         PatternStep step = new PatternStep (schema, instance);
 
@@ -42,7 +33,7 @@ public class Pattern {
             step.setInvalid ();
         }
 
-        return step;
+        parentStep.add (step);
     }
 
     private String getInstanceValue (JsonInstance instance) {

@@ -10,23 +10,18 @@ import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.steps.ValidationStep;
 
 /**
- * validates boolean.
- *
- * <p>See specification:
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-01#section-4.4">
- *     Draft 6: JSON schema documents
- * </a>
+ * validates boolean. Since Draft 6
  */
 public class Boolean {
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
+    public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
         BooleanStep step =  new BooleanStep (schema, instance);
 
         boolean value = schema.getBoolean ();
         if (!value) {
             step.setInvalid ();
         }
-        return step;
-    }
 
+        parentStep.add (step);
+    }
 }

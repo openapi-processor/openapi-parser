@@ -15,23 +15,14 @@ import java.util.*;
 
 /**
  * validates type.
- *
- * <p>See specification:
- *
- * <p>Draft 6:
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.25">
- *     type</a>
- *
- * <br>Draft 4:
- * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.5.2">
- *     type</a>
+ * <p>Specification: since Draft 4
  */
 public class Type {
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
+    public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
         final Collection<String> types = schema.getType ();
         if (types.isEmpty ())
-            return new NullStep ("type");
+            return;
 
         TypeStep step = new TypeStep (schema, instance);
 
@@ -63,7 +54,7 @@ public class Type {
             step.setInvalid ();
         }
 
-        return step;
+        parentStep.add (step);
     }
 
     private boolean isBoolean (JsonInstance instance) {

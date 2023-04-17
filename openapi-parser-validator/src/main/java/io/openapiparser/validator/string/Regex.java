@@ -7,25 +7,19 @@ package io.openapiparser.validator.string;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
- * validates regex format.
- *
- * <p>See specification:
- * <p>Draft 7:
- * <a href="https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-validation-01#section-7.3.8">
- *     regex</a>
+ * validates regex format. Since Draft 7.
  */
 public class Regex {
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
+    public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
         String pattern = schema.getFormat ();
         if (pattern == null)
-            return new NullStep ("regex");
+            return;
 
         RegexStep step = new RegexStep (schema, instance);
 
@@ -36,7 +30,7 @@ public class Regex {
             step.setInvalid ();
         }
 
-        return step;
+        parentStep.add (step);
     }
 
     private String getInstanceValue (JsonInstance instance) {

@@ -17,40 +17,7 @@ import java.util.stream.Collectors;
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
- * validates additionalProperties, properties and patternProperties.
- *
- * <p>See specification:
- *
- * <p>Draft 2019-09:
- * <a href="https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-02#section-9.3.2.1">
- *     properties</a>,
- * <a href="https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-02#section-9.3.2.2">
- *     patternProperties</a>,
- * <a href="https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-02#section-9.3.2.3">
- *     additionalProperties</a>
- * <a href="https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-02#section-9.3.2.4">
- *     unevaluatedProperties</a>
- *
- * <br>Draft 7:
- * <a href="https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-validation-01#section-6.5.4">
- *     properties</a>,
- * <a href="https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-validation-01#section-6.5.5">
- *     patternProperties</a>,
- * <a href="https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-validation-01#section-6.5.6">
- *     additionalProperties</a>
- *
- * <br>Draft 6:
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.18">
- *     properties</a>,
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.19">
- *     patternProperties</a>,
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.20">
- *     additionalProperties</a>
- *
- * <br>Draft 4:
- * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.4">
- *     additionalProperties, properties and patternProperties
- * </a>
+ * validates additionalProperties, properties and patternProperties. Since Draft 4.
  */
 public class Properties {
     private final Validator validator;
@@ -59,9 +26,7 @@ public class Properties {
         this.validator = validator;
     }
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance, Annotations annotations, DynamicScope dynamicScope) {
-        CompositeStep step = new FlatStep ();
-
+    public void validate (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope, ValidationStep parentStep) {
         PropertiesStep propertiesStep = new PropertiesStep (schema, instance, "properties");
         PropertiesStep patternPropertiesStep = new PropertiesStep (schema, instance,"patternProperties");
         PropertiesStep additionalPropertiesStep = new PropertiesStep (schema, instance,"additionalProperties");
@@ -87,12 +52,14 @@ public class Properties {
             JsonInstance propInstance = instance.getValue (propName);
 
             if (propSchema != null) {
-                ValidationStep propStep = validator.validate (propSchema, propInstance, dynamicScope);
+                PropertyStep propStep = new PropertyStep (propSchema, propInstance, propName);
+                propertiesStep.add (propStep);
+
+                validator.validate (propSchema, propInstance, dynamicScope, propStep);
                 if (propStep.isValid ()) {
                     propertiesAnnotations.add (propName);
                 }
 
-                propertiesStep.add (new PropertyStep (propSchema, propInstance, propName, propStep));
                 checkAdditionalProperty = false;
             }
 
@@ -103,12 +70,14 @@ public class Properties {
                     JsonSchema patternSchema = patternProperties.get (pattern);
                     JsonInstance value = instance.getValue (propName);
 
-                    ValidationStep propStep = validator.validate (patternSchema, value, dynamicScope);
+                    PropertyStep propStep = new PropertyStep (patternSchema, value, propName);
+                    patternPropertiesStep.add (propStep);
+
+                    validator.validate (patternSchema, value, dynamicScope, propStep);
                     if (propStep.isValid ()) {
                         patternPropertiesAnnotation.add (propName);
                     }
 
-                    patternPropertiesStep.add (new PropertyStep (patternSchema, instance, propName, propStep));
                     checkAdditionalProperty = false;
                 }
             }
@@ -116,12 +85,13 @@ public class Properties {
             if (checkAdditionalProperty && additionalProperties != null) {
                 JsonInstance value = instance.getValue (propName);
 
-                ValidationStep propStep = validator.validate (additionalProperties, value, dynamicScope);
+                PropertyStep propStep = new PropertyStep (additionalProperties, value, propName);
+                additionalPropertiesStep.add (propStep);
+
+                /*ValidationStep propStep =*/ validator.validate (additionalProperties, value, dynamicScope, propStep);
                 if (propStep.isValid ()) {
                     additionalPropertiesAnnotation.add (propName);
                 }
-
-                additionalPropertiesStep.add (new PropertyStep (additionalProperties, value, propName, propStep));
             }
         });
 
@@ -145,25 +115,25 @@ public class Properties {
             if (!instanceProperties.isEmpty ()) {
                 instanceProperties.forEach (propName -> {
                     ValidationStep invalidStep = new PropertyInvalidStep (schema, instance, propName);
-                    ValidationStep namedStep = new PropertyStep (schema, instance, propName, invalidStep);
-                    additionalPropertiesStep.add (namedStep);
+                    //ValidationStep namedStep = new PropertyStep (schema, instance, propName, invalidStep);
+                    additionalPropertiesStep.add (invalidStep);
                 });
             }
         }
 
-        Set<String> tmpAnnotations = collectAnnotations (annotations, "properties");
+        Set<String> tmpAnnotations = collectAnnotations (parentStep, "properties");
         tmpAnnotations.addAll (propertiesAnnotations);
         tmpAnnotations.forEach (instanceProperties::remove);
 
-        tmpAnnotations = collectAnnotations (annotations, "patternProperties");
+        tmpAnnotations = collectAnnotations (parentStep, "patternProperties");
         tmpAnnotations.addAll (patternPropertiesAnnotation);
         tmpAnnotations.forEach (instanceProperties::remove);
 
-        tmpAnnotations = collectAnnotations (annotations, "additionalProperties");
+        tmpAnnotations = collectAnnotations (parentStep, "additionalProperties");
         tmpAnnotations.addAll (additionalPropertiesAnnotation);
         tmpAnnotations.forEach (instanceProperties::remove);
 
-        tmpAnnotations = collectAnnotations (annotations, "unevaluatedProperties");
+        tmpAnnotations = collectAnnotations (parentStep, "unevaluatedProperties");
         tmpAnnotations.addAll (unevaluatedPropertiesAnnotation);
         tmpAnnotations.forEach (instanceProperties::remove);
 
@@ -171,12 +141,13 @@ public class Properties {
             instanceProperties.forEach (propName -> {
                 JsonInstance propInstance = instance.getValue (propName);
 
-                ValidationStep propStep = validator.validate (unevaluatedProperties, propInstance, dynamicScope);
+                PropertyStep propStep = new PropertyStep (unevaluatedProperties, propInstance, propName);
+                unevaluatedPropertiesStep.add (propStep);
+
+                validator.validate (unevaluatedProperties, propInstance, dynamicScope, propStep);
                 if (propStep.isValid ()) {
                     unevaluatedPropertiesAnnotation.add (propName);
                 }
-
-                unevaluatedPropertiesStep.add (propStep);
             });
         }
 
@@ -186,22 +157,20 @@ public class Properties {
         unevaluatedPropertiesStep.addAnnotation(unevaluatedPropertiesAnnotation);
 
         if (propertiesStep.isNotEmpty ())
-            step.add (propertiesStep);
+            parentStep.add (propertiesStep);
 
         if (patternPropertiesStep.isNotEmpty ())
-            step.add (patternPropertiesStep);
+            parentStep.add (patternPropertiesStep);
 
         if (additionalProperties != null)
-            step.add (additionalPropertiesStep);
+            parentStep.add (additionalPropertiesStep);
 
         if (unevaluatedPropertiesStep.isNotEmpty ())
-            step.add (unevaluatedPropertiesStep);
-
-        return step;
+            parentStep.add (unevaluatedPropertiesStep);
     }
 
-    private Set<String> collectAnnotations (Annotations annotations, String property) {
-        return annotations.getAnnotations (property)
+    private Set<String> collectAnnotations (ValidationStep step, String property) {
+        return step.getAnnotations (property)
             .stream ()
             .map (Annotation::asStrings)
             .flatMap (Collection::stream)

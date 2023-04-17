@@ -71,6 +71,7 @@ public class CompositeStep implements ValidationStep, Annotations {
     @Override
     public boolean isValid () {
         return steps.stream ()
+            .filter (ValidationStep::isValidatable)
             .allMatch (ValidationStep::isValid);
     }
 

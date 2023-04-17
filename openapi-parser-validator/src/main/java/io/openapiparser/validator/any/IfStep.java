@@ -7,80 +7,69 @@ package io.openapiparser.validator.any;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.schema.Keywords;
 import io.openapiparser.validator.Annotation;
 import io.openapiparser.validator.ValidationMessage;
-import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 
 public class IfStep implements ValidationStep {
     private final JsonSchema schema;
     private final JsonInstance instance;
 
-    private ValidationStep stepIf = new NullStep ("if");
-    private ValidationStep stepThen = new NullStep ("then");
-    private ValidationStep stepElse = new NullStep ("else");
+    private final Collection<ValidationStep> steps = new ArrayList<> ();
 
     public IfStep (JsonSchema schema, JsonInstance instance) {
         this.schema = schema;
         this.instance = instance;
     }
 
-    public void setIf(ValidationStep stepIf) {
-        this.stepIf = stepIf;
+    @Override
+    public void add (ValidationStep step) {
+        steps.add (step);
     }
 
-    public void setThen(ValidationStep stepThen) {
-        this.stepThen = stepThen;
-    }
-
-    public void setElse(ValidationStep stepElse) {
-        this.stepElse = stepElse;
+    @Override
+    public boolean isValidatable () {
+        return false;
     }
 
     @Override
     public boolean isValid () {
-        if (stepIf.isValid ()) {
-            return stepThen.isValid ();
-        } else {
-            return stepElse.isValid ();
-        }
+        return steps.stream ()
+            .filter (ValidationStep::isValidatable)
+            .allMatch (ValidationStep::isValid);
     }
 
     @Override
     public Collection<ValidationStep> getSteps () {
-        if (stepIf.isValid ()) {
-            return Collections.singletonList (stepThen);
-        } else {
-            return Collections.singletonList (stepElse);
-        }
+        return steps;
     }
 
     @Override
     public Collection<ValidationMessage> getMessages () {
-        if (isValid ())
             return Collections.emptyList ();
-
-        if (stepIf.isValid ()) {
-            return Collections.singletonList (
-                new IfError (schema, instance, "then", stepThen.getMessages ()));
-        } else {
-            return Collections.singletonList (
-                new IfError (schema, instance, "else", stepElse.getMessages ()));
-        }
     }
 
     @Override
     public Collection<Annotation> getAnnotations (String keyword) {
-        if (stepIf.isValid ()) {
-            Collection<Annotation> annotations = new ArrayList<> ();
-            annotations.addAll (stepIf.getAnnotations (keyword));
-            annotations.addAll (stepThen.getAnnotations (keyword));
-            return annotations;
-        } else {
-            return stepElse.getAnnotations (keyword);
-        }
+        return steps.stream ()
+            .filter (s -> s.isValidatable () && s.isValid ())
+            .map (s -> s.getAnnotations (keyword))
+            .flatMap (Collection::stream)
+            .collect(Collectors.toList ());
+    }
+
+    @Override
+    public String toString () {
+        return String.format ("%s (instance: %s), (schema: %s)",
+            isValid () ? "valid" : "invalid",
+            instance.toString ().isEmpty () ? "/" : instance.toString (),
+            schema.getLocation ().append (Keywords.IF));
     }
 }

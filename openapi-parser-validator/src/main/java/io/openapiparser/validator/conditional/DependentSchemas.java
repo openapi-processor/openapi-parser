@@ -5,10 +5,10 @@
 
 package io.openapiparser.validator.conditional;
 
-import io.openapiparser.schema.*;
+import io.openapiparser.schema.DynamicScope;
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.Validator;
-import io.openapiparser.validator.object.PropertyStep;
-import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 
 import java.util.Map;
@@ -16,17 +16,7 @@ import java.util.Map;
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
- * validates dependentSchemas.
- *
- * <p>See specification:
- *
- * <p>Draft 2019-09:
- * <a href="https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-02#section-9.2.2.4">
- *     dependentSchemas</a>
- *
- * todo move
- * <a href="https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-validation-02#section-6.5.4">
- *     dependentRequired</a>
+ * validates dependentSchemas. Since Draft 2019-09.
  */
 public class DependentSchemas {
     private final Validator validator;
@@ -35,10 +25,10 @@ public class DependentSchemas {
         this.validator = validator;
     }
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope) {
+    public void validate (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope, ValidationStep parentStep) {
         Map<String, JsonSchema> schemas = schema.getDependentSchemas ();
         if (schemas == null) {
-            return new NullStep ("dependentSchemas");
+            return;
         }
 
         DependentSchemasStep step = new DependentSchemasStep ("dependentSchemas");
@@ -50,10 +40,10 @@ public class DependentSchemas {
                 return;
             }
 
-            ValidationStep propStep = validator.validate (propSchema, instance, dynamicScope);
-            step.add (new PropertyStep (propSchema, instance, propName, propStep));
+            validator.validate (propSchema, instance, dynamicScope, step);
+            //step.add (new PropertyStep (propSchema, instance, propName, propStep));
         });
 
-        return step;
+        parentStep.add (step);
     }
 }

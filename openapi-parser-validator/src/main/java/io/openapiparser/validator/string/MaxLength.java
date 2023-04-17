@@ -7,28 +7,19 @@ package io.openapiparser.validator.string;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
- * validates maxLength.
- *
- * <p>See specification:
- * <p>Draft 6:
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.6">
- *     maxLength</a>
- * <br>Draft 4:
- * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.2.1">
- *     maxLength</a>
+ * validates maxLength. Since Draft 4.
  */
 public class MaxLength {
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
+    public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
         Integer maxLength = schema.getMaxLength ();
         if (maxLength == null)
-            return new NullStep ("maxLength");
+            return;
 
         MaxLengthStep step = new MaxLengthStep (schema, instance);
 
@@ -38,7 +29,7 @@ public class MaxLength {
             step.setInvalid ();
         }
 
-        return step;
+        parentStep.add (step);
     }
 
     private String getInstanceValue (JsonInstance instance) {

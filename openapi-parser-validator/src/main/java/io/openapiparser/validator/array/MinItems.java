@@ -14,31 +14,20 @@ import java.util.Collection;
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
- * validates minItems.
- *
- * <p>See specification:
- *
- * <p>Draft 6:
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.12">
- *     minItems</a>
- *
- * <br>Draft 4:
- * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.3.3">
- *     minItems</a>
+ * validates minItems. Since Draft 4.
  */
 public class MinItems {
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
+    public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
         MinItemsStep step = new MinItemsStep (schema, instance);
 
         Collection<Object> instanceValue = getInstanceValue (instance);
         int minItems = schema.getMinItems ();
         if (instanceValue.size () < minItems) {
             step.setInvalid ();
-            return step;
         }
 
-        return step;
+        parentStep.add (step);
     }
 
     private Collection<Object> getInstanceValue (JsonInstance instance) {

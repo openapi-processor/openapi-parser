@@ -28,20 +28,24 @@ class NotStepSpec : StringSpec({
     val error = ValidationMessage(schema, instance, "not", "error")
 
     "step is valid if sub step is not" {
-        val step = NotStep(schema, instance, TestStep(listOf(error)))
+        val step = NotStep(schema, instance)
+        step.add(TestStep(listOf(error)))
+
         step.isValid.shouldBeTrue()
         step.messages.isEmpty()
     }
 
     "step is invalid if sub step is valid" {
-        val step = NotStep(schema, instance, TestStep(listOf()))
+        val step = NotStep(schema, instance)
+        step.add(TestStep(listOf()))
 
         step.isValid.shouldBeFalse()
         step.messages.size shouldBe 1
     }
 
     "invalid step reports no sub step errors" {
-        val step = NotStep(schema, instance, TestStep(listOf()))
+        val step = NotStep(schema, instance)
+        step.add(TestStep(listOf()))
 
         step.isValid.shouldBeFalse()
         step.messages.first().nestedMessages.shouldBeEmpty()

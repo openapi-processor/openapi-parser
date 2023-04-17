@@ -7,10 +7,7 @@ package io.openapiparser.validator.array;
 
 import io.openapiparser.schema.*;
 import io.openapiparser.validator.Annotation;
-import io.openapiparser.validator.Annotations;
 import io.openapiparser.validator.Validator;
-import io.openapiparser.validator.steps.CompositeStep;
-import io.openapiparser.validator.steps.FlatStep;
 import io.openapiparser.validator.steps.ValidationStep;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -30,9 +27,7 @@ public class ItemsX {
         this.validator = validator;
     }
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance, Annotations annotations, DynamicScope dynamicScope) {
-        CompositeStep step = new FlatStep ();
-
+    public void validate (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope, ValidationStep parentStep) {
         ItemsStep prefixItemsStep = new ItemsStep ("prefixItems");
         ItemsStep itemsStep = new ItemsStep ("items");
         ItemsStep unevaluatedItemsStep = new ItemsStep ("unevaluatedItems");
@@ -56,7 +51,7 @@ public class ItemsX {
                 .forEach (idx -> {
                     JsonInstance value = instance.getValue (idx);
                     if (idx < prefixItems.size ()) {
-                        prefixItemsStep.add (validator.validate (prefixItemsSchemas.next (), value, dynamicScope));
+                        validator.validate (prefixItemsSchemas.next (), value, dynamicScope, prefixItemsStep);
                     }
                 });
 
@@ -76,7 +71,7 @@ public class ItemsX {
             IntStream.range (startIndex, instanceSize)
                 .forEach (idx -> {
                     JsonInstance value = instance.getValue (idx);
-                    itemsStep.add (validator.validate (itemsSchema, value, dynamicScope));
+                    validator.validate (itemsSchema, value, dynamicScope, itemsStep);
                     itemsCnt.getAndIncrement ();
                 });
 
@@ -85,10 +80,10 @@ public class ItemsX {
 
         JsonSchema unevaluatedSchema = schema.getUnevaluatedItems ();
         if (unevaluatedSchema != null) {
-            Integer allPrefixItemsAnnotation = reducePrefixItemsAnnotations (prefixItemsAnnotation, annotations, instanceSize);
-            Boolean allItemsAnnotation = reduceItemsAnnotations (itemsAnnotation, annotations);
-            Collection<Integer> containsAnnotation = getContainsAnnotation(annotations);
-            Boolean allUnevaluatedItemsAnnotation = reduceUnevaluatedItemsAnnotations (unevaluatedItemsAnnotation, annotations);
+            Integer allPrefixItemsAnnotation = reducePrefixItemsAnnotations (prefixItemsAnnotation, parentStep, instanceSize);
+            Boolean allItemsAnnotation = reduceItemsAnnotations (itemsAnnotation, parentStep);
+            Collection<Integer> containsAnnotation = getContainsAnnotation(parentStep);
+            Boolean allUnevaluatedItemsAnnotation = reduceUnevaluatedItemsAnnotations (unevaluatedItemsAnnotation, parentStep);
 
             AtomicInteger cntUnevaluatedItems = new AtomicInteger ();
 
@@ -101,7 +96,7 @@ public class ItemsX {
                     .filter (idx -> !containsAnnotation.contains (idx))
                     .forEach (idx -> {
                         JsonInstance value = instance.getValue (idx);
-                        unevaluatedItemsStep.add (validator.validate (unevaluatedSchema, value, dynamicScope));
+                        validator.validate (unevaluatedSchema, value, dynamicScope, unevaluatedItemsStep);
                         cntUnevaluatedItems.getAndIncrement ();
                     });
             } else if (
@@ -113,7 +108,7 @@ public class ItemsX {
                     .filter (idx -> !containsAnnotation.contains (idx))
                     .forEach (idx -> {
                         JsonInstance value = instance.getValue (idx);
-                        unevaluatedItemsStep.add (validator.validate (unevaluatedSchema, value, dynamicScope));
+                        validator.validate (unevaluatedSchema, value, dynamicScope, unevaluatedItemsStep);
                         cntUnevaluatedItems.getAndIncrement ();
                     });
             }
@@ -134,21 +129,19 @@ public class ItemsX {
             unevaluatedItemsStep.addAnnotation(unevaluatedItemsAnnotation);
 
         if (prefixItemsStep.isNotEmpty ())
-            step.add (prefixItemsStep);
+            parentStep.add (prefixItemsStep);
 
         if (itemsStep.isNotEmpty ())
-            step.add (itemsStep);
+            parentStep.add (itemsStep);
 
         if (unevaluatedItemsStep.isNotEmpty ())
-            step.add (unevaluatedItemsStep);
-
-        return step;
+            parentStep.add (unevaluatedItemsStep);
     }
 
     private @Nullable Integer reducePrefixItemsAnnotations (
-        @Nullable Integer currentPrefixItemsAnnotation, Annotations annotations, int instanceSize
+        @Nullable Integer currentPrefixItemsAnnotation, ValidationStep step, int instanceSize
     ) {
-        Collection<Annotation> otherAnnotations = annotations.getAnnotations ("prefixItems");
+        Collection<Annotation> otherAnnotations = step.getAnnotations ("prefixItems");
 
         Integer reducedAnnotation = currentPrefixItemsAnnotation;
         if (!otherAnnotations.isEmpty ()) {
@@ -190,9 +183,9 @@ public class ItemsX {
     }
 
     private @Nullable Boolean reduceItemsAnnotations (
-        @Nullable Boolean currentItemsAnnotation, Annotations annotations
+        @Nullable Boolean currentItemsAnnotation, ValidationStep step
     ) {
-        Collection<Annotation> otherAnnotations = annotations.getAnnotations ("items");
+        Collection<Annotation> otherAnnotations = step.getAnnotations ("items");
 
         Boolean reducedAnnotation = currentItemsAnnotation;
         if (!otherAnnotations.isEmpty ()) {
@@ -215,9 +208,9 @@ public class ItemsX {
     }
 
     private @Nullable Boolean reduceUnevaluatedItemsAnnotations (
-        @Nullable Boolean currentUnevaluatedItemsAnnotation, Annotations annotations
+        @Nullable Boolean currentUnevaluatedItemsAnnotation, ValidationStep step
     ) {
-        Collection<Annotation> otherAnnotations = annotations.getAnnotations ("unevaluatedItems");
+        Collection<Annotation> otherAnnotations = step.getAnnotations ("unevaluatedItems");
 
         Boolean reducedAnnotation = currentUnevaluatedItemsAnnotation;
         if (!otherAnnotations.isEmpty ()) {
@@ -239,8 +232,8 @@ public class ItemsX {
         return reducedAnnotation;
     }
 
-    private Collection<Integer> getContainsAnnotation (Annotations annotations) {
-        return annotations.getAnnotations ("contains")
+    private Collection<Integer> getContainsAnnotation (ValidationStep step) {
+        return step.getAnnotations ("contains")
             .stream ()
             .map (Annotation::asIntegers)
             .flatMap (Collection::stream)

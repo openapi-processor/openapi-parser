@@ -7,7 +7,6 @@ package io.openapiparser.validator.number;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 
 import java.math.BigDecimal;
@@ -15,22 +14,14 @@ import java.math.BigDecimal;
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
- * validates multipleOf.
- *
- * <p>See specification:
- * <p>Draft 6:
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.1">
- *     multipleOf</a>,
- * <br>Draft 4:
- * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.1.1">
- *     multipleOf</a>
+ * validates multipleOf. Since Draft 4.
  */
 public class MultipleOf {
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
+    public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
         Number multipleOf = schema.getMultipleOf ();
         if (multipleOf == null)
-            return new NullStep ("multipleOf");
+            return;
 
         MultipleOfStep step = new MultipleOfStep (schema, instance);
 
@@ -43,7 +34,7 @@ public class MultipleOf {
             step.setInvalid ();
         }
 
-        return step;
+        parentStep.add (step);
     }
 
     private Number getInstanceValue (JsonInstance instance) {

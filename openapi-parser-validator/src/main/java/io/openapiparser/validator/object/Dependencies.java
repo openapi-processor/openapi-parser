@@ -14,21 +14,7 @@ import java.util.*;
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
- * validates dependencies.
- *
- * <p>See specification:
- *
- * <p>Draft 7:
- * <a href="https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-validation-01#section-6.5.7">
- *     dependencies</a>
- *
- * <br>Draft 6:
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.21">
- *     dependencies</a>
- *
- * <br>Draft 4:
- * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.5">
- *     dependencies</a>
+ * validates dependencies. Since Draft 4.
  */
 public class Dependencies {
     private final Validator validator;
@@ -37,10 +23,10 @@ public class Dependencies {
         this.validator = validator;
     }
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope) {
+    public void validate (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope, ValidationStep parentStep) {
         Map<String, JsonDependency> dependencies = schema.getDependencies ();
         if (dependencies == null) {
-            return new NullStep ("dependencies");
+            return;
         }
 
         DependenciesStep step = new DependenciesStep (schema, instance);
@@ -51,7 +37,7 @@ public class Dependencies {
             JsonDependency propDependency = dependencies.get (propName);
             if (propDependency != null) {
                 if (propDependency.isSchema ()) {
-                    step.add (validator.validate (propDependency.getSchema (), instance, dynamicScope));
+                    validator.validate (propDependency.getSchema (), instance, dynamicScope, step);
                 } else {
                     Set<String> instanceProperties = new HashSet<> (instanceObject.keySet ());
 
@@ -66,6 +52,6 @@ public class Dependencies {
             }
         });
 
-        return step;
+        parentStep.add (step);
     }
 }

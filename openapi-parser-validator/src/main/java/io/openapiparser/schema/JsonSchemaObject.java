@@ -216,10 +216,10 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     @Override
-    public Integer getMinLength () {
+    public @Nullable Integer getMinLength () {
         final Integer minLength = schemaObject.convert ("minLength", new IntegerConverter ());
         if (minLength == null)
-            return 0;
+            return null;
 
         return minLength;
     }

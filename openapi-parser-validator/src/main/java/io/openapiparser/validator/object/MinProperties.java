@@ -7,31 +7,31 @@ package io.openapiparser.validator.object;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
- * validates minProperties.
- * <p>Specification: since Draft 4
+ * validates minProperties. Since Draft 4
  */
 public class MinProperties {
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
+    public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
         Map<String, Object> instanceObject = nonNull(instance.asObject ());
         Set<String> instanceProperties = new HashSet<>(instanceObject.keySet ());
         Integer minProperties = schema.getMinProperties ();
         if (minProperties == null)
-            return new NullStep ("minProperties");
+            return;
 
         MinPropertiesStep step = new MinPropertiesStep (schema, instance);
         if (instanceProperties.size () < minProperties) {
             step.setInvalid ();
         }
 
-        return step;
+        parentStep.add (step);
     }
 }

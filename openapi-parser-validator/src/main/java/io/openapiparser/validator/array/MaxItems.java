@@ -7,7 +7,6 @@ package io.openapiparser.validator.array;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 
 import java.util.Collection;
@@ -15,33 +14,22 @@ import java.util.Collection;
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
- * validates maxItems.
- *
- * <p>See specification:
- *
- * <p>Draft 6:
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.11">
- *     maxItems</a>
- *
- * <br>Draft 4:
- * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.3.2">
- *     maxItems</a>
+ * validates maxItems. Since Draft 4.
  */
 public class MaxItems {
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
+    public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
         Collection<Object> instanceValue = getInstanceValue (instance);
         Integer maxItems = schema.getMaxItems ();
         if (maxItems == null)
-            return new NullStep ("maxItems");
+            return;
 
         MaxItemsStep step = new MaxItemsStep (schema, instance);
 
-        if (instanceValue.size () <= maxItems)
-            return step;
+        if (instanceValue.size () > maxItems)
+            step.setInvalid ();
 
-        step.setInvalid ();
-        return step;
+        parentStep.add (step);
     }
 
     private Collection<Object> getInstanceValue (JsonInstance instance) {

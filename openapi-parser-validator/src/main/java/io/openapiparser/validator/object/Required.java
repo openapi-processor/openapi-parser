@@ -7,34 +7,27 @@ package io.openapiparser.validator.object;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.steps.*;
+import io.openapiparser.validator.steps.ValidationStep;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
- * validates required.
- *
- * <p>See specification:
- *
- * <p>Draft 6:
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.17">
- *     required</a>
- *
- * <br>Draft 4:
- * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.3">
- *     required</a>
+ * validates required. Since Draft 4.
  */
 public class Required {
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
+    public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
         Map<String, Object> instanceObject = nonNull(instance.asObject ());
         Set<String> instanceProperties = new HashSet<>(instanceObject.keySet ());
         Collection<String> requiredProperties = schema.getRequired ();
 
         if (requiredProperties == null)
-            return new NullStep ("required");
+            return;
 
         RequiredStep step = new RequiredStep (schema, instance);
         requiredProperties.forEach (p -> {
@@ -48,6 +41,6 @@ public class Required {
             step.add (rStep);
         });
 
-        return step;
+        parentStep.add (step);
     }
 }

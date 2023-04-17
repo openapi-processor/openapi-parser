@@ -7,6 +7,7 @@ package io.openapiparser.validator.any;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.schema.Keywords;
 import io.openapiparser.validator.ValidationMessage;
 import io.openapiparser.validator.steps.ValidationStep;
 
@@ -18,11 +19,15 @@ public class NotStep implements ValidationStep {
     private final JsonInstance instance;
     private boolean valid = true;
 
-    private final ValidationStep step;
+    private ValidationStep step;
 
-    public NotStep (JsonSchema schema, JsonInstance instance, ValidationStep step) {
+    public NotStep (JsonSchema schema, JsonInstance instance) {
         this.schema = schema;
         this.instance = instance;
+    }
+
+    @Override
+    public void add (ValidationStep step) {
         this.step = step;
     }
 
@@ -44,8 +49,15 @@ public class NotStep implements ValidationStep {
         return ! step.isValid ();
     }
 
+    public void setInvalid () {
+        this.valid = false;
+    }
+
     @Override
     public String toString () {
-        return isValid () ? "valid" : "invalid";
+        return String.format ("%s (instance: %s), (schema: %s)",
+            isValid () ? "valid" : "invalid",
+            instance.toString ().isEmpty () ? "/" : instance.toString (),
+            schema.getLocation ().append (Keywords.NOT));
     }
 }

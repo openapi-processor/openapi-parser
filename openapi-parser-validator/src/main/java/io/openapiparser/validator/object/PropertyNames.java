@@ -5,23 +5,20 @@
 
 package io.openapiparser.validator.object;
 
-import io.openapiparser.schema.*;
+import io.openapiparser.schema.DynamicScope;
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.Validator;
-import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
- * validates propertyNames.
- *
- * <p>See specification:
- *
- * <p>Draft 6:
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.22">
- *     propertyNames</a>,
+ * validates propertyNames. Since Draft 6.
  */
 public class PropertyNames {
     private final Validator validator;
@@ -30,10 +27,10 @@ public class PropertyNames {
         this.validator = validator;
     }
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope) {
+    public void validate (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope, ValidationStep parentStep) {
         JsonSchema propertyNames = schema.getPropertyNames ();
         if (propertyNames == null || !instance.isObject ())
-            return new NullStep("propertyNames");
+            return;
 
         PropertyNamesStep step = new PropertyNamesStep (schema, instance);
 
@@ -41,9 +38,9 @@ public class PropertyNames {
         Set<String> instanceProperties = new HashSet<>(instanceObject.keySet ());
         for (String instanceProperty : instanceProperties) {
             JsonInstance propertyName = instance.getPropertyName (instanceProperty);
-            step.add (validator.validate (propertyNames, propertyName, dynamicScope));
+            validator.validate (propertyNames, propertyName, dynamicScope, step);
         }
 
-        return step;
+        parentStep.add (step);
     }
 }

@@ -7,7 +7,6 @@ package io.openapiparser.validator.number.draft4;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 
 import java.math.BigDecimal;
@@ -15,21 +14,16 @@ import java.math.BigDecimal;
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
- * validates minimum and exclusiveMinimum.
- *
- * <p>See specification:
- * <p>Draft 4:
- * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.1.3">
- *     minimum and exclusiveMinimum</a>
+ * validates minimum and exclusiveMinimum. Draft 4.
  */
 public class Minimum4 {
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
+    public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
         Number minimum = schema.getMinimum ();
         Boolean exclusive = schema.getExclusiveMinimumB ();
 
         if (minimum == null)
-            return new NullStep ("minimum");
+            return;
 
         Minimum4Step step = new Minimum4Step (schema, instance);
 
@@ -44,7 +38,7 @@ public class Minimum4 {
             step.setInvalid ();
         }
 
-        return step;
+        parentStep.add (step);
     }
 
     private int compareTo (JsonInstance instance, Number minimum) {

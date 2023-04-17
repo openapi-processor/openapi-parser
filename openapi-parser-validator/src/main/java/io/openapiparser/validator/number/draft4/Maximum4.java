@@ -13,21 +13,16 @@ import java.math.BigDecimal;
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
- * validates maximum and exclusiveMaximum.
- *
- * <p>See specification:
- * <p>Draft 4:
- * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.1.2">
- *     maximum and exclusiveMaximum</a>
+ * validates maximum and exclusiveMaximum. Draft 4.
  */
 public class Maximum4 {
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
+    public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
         Number maximum = schema.getMaximum ();
         Boolean exclusive = schema.getExclusiveMaximumB ();
 
         if (maximum == null)
-            return new NullStep ("maximum");
+            return;
 
         Maximum4Step step = new Maximum4Step (schema, instance);
 
@@ -42,7 +37,7 @@ public class Maximum4 {
             step.setInvalid ();
         }
 
-        return step;
+        parentStep.add (step);
     }
 
     private int compareTo (JsonInstance instance, Number maximum) {

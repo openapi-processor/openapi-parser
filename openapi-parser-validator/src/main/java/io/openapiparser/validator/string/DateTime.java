@@ -5,34 +5,24 @@
 
 package io.openapiparser.validator.string;
 
-import io.openapiparser.schema.*;
+import io.openapiparser.schema.Format;
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidatorSettings;
-import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
-import org.checkerframework.checker.nullness.qual.*;
+import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.time.*;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
 import java.time.format.DateTimeFormatter;
 
 import static io.openapiparser.schema.Format.*;
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
- * validates format: date-time, date, time (except leap seconds).
- *
- * <p>See specification:
- *
- * <p>Draft 7:
- * <a href="https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-validation-01#section-7.3.1">
- *     dates and time</a>
- *
- * <br>Draft 6:
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-8.3.1">
- *     date-time</a>
- *
- * <br>Draft 4:
- * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-7.3.1">
- *     date-time</a>
+ * validates format: date-time, date, time (except leap seconds). Since Draft 4.
  */
 public class DateTime {
     private final ValidatorSettings settings;
@@ -41,10 +31,10 @@ public class DateTime {
         this.settings = settings;
     }
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
+    public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
         Format format = Format.of (schema.getFormat ());
         if (!shouldValidate (format)) {
-            return new NullStep ("datetime");
+            return;
         }
 
         DateTimeStep step = new DateTimeStep (schema, instance);
@@ -56,7 +46,7 @@ public class DateTime {
             step.setInvalid ();
         }
 
-        return step;
+        parentStep.add (step);
     }
 
 

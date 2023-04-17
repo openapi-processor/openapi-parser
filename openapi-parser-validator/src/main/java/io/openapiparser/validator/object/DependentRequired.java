@@ -5,36 +5,32 @@
 
 package io.openapiparser.validator.object;
 
-import io.openapiparser.schema.*;
-import io.openapiparser.validator.steps.NullStep;
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.steps.ValidationStep;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import static io.openapiparser.schema.Keywords.DEPENDENT_REQUIRED;
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
- * validates dependentRequired.
- *
- * <p>See specification:
- *
- * <p>Draft 2019-09:
- * <a href="https://datatracker.ietf.org/doc/html/draft-handrews-json-schema-validation-02#section-6.5.4">
- *     dependentRequired</a>
+ * validates dependentRequired. Since Draft 2019-09:
  */
 public class DependentRequired {
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
+    public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
         DependenciesStep step = new DependenciesStep (schema, instance);
 
         if (!shouldValidate(schema)) {
-            return step;
+            return;
         }
 
         Map<String, Set<String>> required = schema.getDependentRequired ();
         if (required == null) {
-            return new NullStep ("dependentRequired");
+            return;
         }
 
         Map<String, Object> instanceObject = nonNull(instance.asObject ());
@@ -53,7 +49,7 @@ public class DependentRequired {
             }
         });
 
-        return step;
+        parentStep.add (step);
     }
 
     private boolean shouldValidate(JsonSchema schema) {

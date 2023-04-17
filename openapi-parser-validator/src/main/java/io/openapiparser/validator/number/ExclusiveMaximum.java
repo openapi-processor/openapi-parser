@@ -5,8 +5,8 @@
 
 package io.openapiparser.validator.number;
 
-import io.openapiparser.schema.*;
-import io.openapiparser.validator.steps.NullStep;
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.steps.ValidationStep;
 
 import java.math.BigDecimal;
@@ -14,20 +14,15 @@ import java.math.BigDecimal;
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
- * validates exclusiveMaximum.
- *
- * <p>See specification:
- * <p>Draft 6:
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.3">
- *     exclusiveMaximum</a>,
+ * validates exclusiveMaximum. Since Draft 6.
  */
 public class ExclusiveMaximum {
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
+    public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
         Number maximum = schema.getExclusiveMaximum ();
 
         if (maximum == null)
-            return new NullStep ("exclusiveMaximum");
+            return;
 
         ExclusiveMaximumStep step = new ExclusiveMaximumStep (schema, instance);
 
@@ -36,7 +31,7 @@ public class ExclusiveMaximum {
             step.setInvalid ();
         }
 
-        return step;
+        parentStep.add (step);
     }
 
     private int compareTo (JsonInstance instance, Number maximum) {

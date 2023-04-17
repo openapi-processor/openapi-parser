@@ -19,6 +19,9 @@ public interface ValidationStep {
     Collection<ValidationStep> getSteps ();
     Collection<ValidationMessage> getMessages ();
 
+    default void add (ValidationStep step) {
+    }
+
     // todo remove default implementation
     default Collection<Annotation> getAnnotations (String keyword) {
         return Collections.emptyList ();
@@ -36,5 +39,11 @@ public interface ValidationStep {
         return JsonPointer.empty ();
     }
 
-
+    /**
+     * If true this step is used to calculate the final validation result. 'if' is the only keyword that is not
+     * validatable.
+     */
+    default boolean isValidatable () {
+        return true;
+    }
 }

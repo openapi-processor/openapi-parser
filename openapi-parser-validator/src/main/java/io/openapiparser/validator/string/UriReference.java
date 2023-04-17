@@ -5,9 +5,9 @@
 
 package io.openapiparser.validator.string;
 
-import io.openapiparser.schema.*;
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidatorSettings;
-import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 import io.openapiparser.validator.support.UriValidator;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -16,13 +16,7 @@ import static io.openapiparser.schema.Format.URI_REFERENCE;
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
- * validates format: uri-reference.
- *
- * <p>See specification:
- *
- * <p>Draft 6:
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-8.3.7">
- *     uri-reference</a>
+ * validates format: uri-reference. Since Draft 6.
  */
 public class UriReference {
     private final ValidatorSettings settings;
@@ -31,10 +25,10 @@ public class UriReference {
         this.settings = settings;
     }
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
+    public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
         String format = schema.getFormat ();
         if (!shouldValidate (format))
-            return new NullStep ("uri-reference");
+            return;
 
         UriStep step = new UriStep (schema, instance);
 
@@ -44,7 +38,7 @@ public class UriReference {
             step.setInvalid ();
         }
 
-        return step;
+        parentStep.add (step);
     }
 
     private boolean shouldValidate (@Nullable String format) {

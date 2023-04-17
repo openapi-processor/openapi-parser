@@ -16,23 +16,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * validates additionalItems and items.
- *
- * <p>See specification:
- *
- * <p>Draft 6:
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.9">
- *     items</a>,
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.10">
- *     additionalItems</a>,
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-4.2">
- *     array elements</a>
- *
- * <br>Draft 4:
- * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.3.1">
- *     additionalItems and items</a>,
- * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-8.2">
- *     array elements</a>
+ * validates additionalItems and items. Since Draft 4.
  */
 public class Items {
     private final Validator validator;
@@ -41,9 +25,7 @@ public class Items {
         this.validator = validator;
     }
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance, Annotations annotations, DynamicScope dynamicScope) {
-        CompositeStep step = new FlatStep ();
-
+    public void validate (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope, ValidationStep parentStep) {
         ItemsStep itemsStep = new ItemsStep ("items");
         ItemsStep additionalItemsStep = new ItemsStep ("additionalItems");
         ItemsStep unevaluatedItemsStep = new ItemsStep ("unevaluatedItems");
@@ -60,7 +42,7 @@ public class Items {
             IntStream.range (0, instanceSize)
                 .forEach (idx -> {
                     JsonInstance value = instance.getValue (idx);
-                    itemsStep.add (validator.validate (itemsSchema, value, dynamicScope));
+                    validator.validate (itemsSchema, value, dynamicScope, itemsStep);
                 });
 
             itemsAnnotation = instanceSize;
@@ -79,7 +61,7 @@ public class Items {
                     .forEach (idx -> {
                         JsonInstance value = instance.getValue (idx);
                         if (idx < items.size ()) {
-                            itemsStep.add (validator.validate (itemSchemas.next (), value, dynamicScope));
+                            validator.validate (itemSchemas.next (), value, dynamicScope, itemsStep);
                         }
                     });
 
@@ -103,11 +85,11 @@ public class Items {
                         JsonInstance value = instance.getValue (idx);
 
                         if (idx < items.size ()) {
-                            itemsStep.add (validator.validate (itemSchemas.next (), value, dynamicScope));
+                            validator.validate (itemSchemas.next (), value, dynamicScope, itemsStep);
                             cntItem.getAndIncrement ();
 
                         } else {
-                            additionalItemsStep.add (validator.validate (additionalSchema, value, dynamicScope));
+                            validator.validate (additionalSchema, value, dynamicScope, additionalItemsStep);
                             cntAdditionalItem.getAndIncrement ();
                         }
                     });
@@ -119,9 +101,9 @@ public class Items {
 
         JsonSchema unevaluatedSchema = schema.getUnevaluatedItems ();
         if (unevaluatedSchema != null) {
-            Integer allItemsAnnotation = reduceItemsAnnotations (itemsAnnotation, annotations, instanceSize);
-            Boolean allAdditionalItemsAnnotations = reduceAdditionalItemsAnnotations (additionalItemsAnnotation, annotations);
-            Boolean allUnevaluatedItemsAnnotations = reduceUnevaluatedItemsAnnotations (unevaluatedItemsAnnotation, annotations);
+            Integer allItemsAnnotation = reduceItemsAnnotations (itemsAnnotation, parentStep, instanceSize);
+            Boolean allAdditionalItemsAnnotations = reduceAdditionalItemsAnnotations (additionalItemsAnnotation, parentStep);
+            Boolean allUnevaluatedItemsAnnotations = reduceUnevaluatedItemsAnnotations (unevaluatedItemsAnnotation, parentStep);
 
             AtomicInteger cntUnevaluatedItems = new AtomicInteger ();
 
@@ -133,7 +115,7 @@ public class Items {
                 IntStream.range (allItemsAnnotation, instanceSize)
                     .forEach (idx -> {
                         JsonInstance value = instance.getValue (idx);
-                        unevaluatedItemsStep.add (validator.validate (unevaluatedSchema, value, dynamicScope));
+                        validator.validate (unevaluatedSchema, value, dynamicScope, unevaluatedItemsStep);
                         cntUnevaluatedItems.getAndIncrement ();
                     });
             } else if (
@@ -144,7 +126,7 @@ public class Items {
                 IntStream.range (0, instanceSize)
                     .forEach (idx -> {
                         JsonInstance value = instance.getValue (idx);
-                        unevaluatedItemsStep.add (validator.validate (unevaluatedSchema, value, dynamicScope));
+                        validator.validate (unevaluatedSchema, value, dynamicScope, unevaluatedItemsStep);
                         cntUnevaluatedItems.getAndIncrement ();
                     });
             }
@@ -167,21 +149,19 @@ public class Items {
             unevaluatedItemsStep.addAnnotation(unevaluatedItemsAnnotation);
 
         if (itemsStep.isNotEmpty ())
-            step.add (itemsStep);
+            parentStep.add (itemsStep);
 
         if (additionalItemsStep.isNotEmpty ())
-            step.add (additionalItemsStep);
+            parentStep.add (additionalItemsStep);
 
         if (unevaluatedItemsStep.isNotEmpty ())
-            step.add (unevaluatedItemsStep);
-
-        return step;
+            parentStep.add (unevaluatedItemsStep);
     }
 
     private @Nullable Integer reduceItemsAnnotations (
-        @Nullable Integer currentItemsAnnotation, Annotations annotations, int instanceSize
+        @Nullable Integer currentItemsAnnotation, ValidationStep step, int instanceSize
     ) {
-        Collection<Annotation> otherAnnotations = annotations.getAnnotations ("items");
+        Collection<Annotation> otherAnnotations = step.getAnnotations ("items");
 
         Integer reducedAnnotation = currentItemsAnnotation;
         if (!otherAnnotations.isEmpty ()) {
@@ -223,9 +203,9 @@ public class Items {
     }
 
     private @Nullable Boolean reduceAdditionalItemsAnnotations (
-        @Nullable Boolean currentAdditionalItemsAnnotation, Annotations annotations
+        @Nullable Boolean currentAdditionalItemsAnnotation, ValidationStep step
     ) {
-        Collection<Annotation> otherAnnotations = annotations.getAnnotations ("additionalItems");
+        Collection<Annotation> otherAnnotations = step.getAnnotations ("additionalItems");
 
         Boolean reducedAnnotation = currentAdditionalItemsAnnotation;
         if (!otherAnnotations.isEmpty ()) {
@@ -248,9 +228,9 @@ public class Items {
     }
 
     private @Nullable Boolean reduceUnevaluatedItemsAnnotations (
-        @Nullable Boolean currentUnevaluatedItemsAnnotation, Annotations annotations
+        @Nullable Boolean currentUnevaluatedItemsAnnotation, ValidationStep step
     ) {
-        Collection<Annotation> otherAnnotations = annotations.getAnnotations ("unevaluatedItems");
+        Collection<Annotation> otherAnnotations = step.getAnnotations ("unevaluatedItems");
 
         Boolean reducedAnnotation = currentUnevaluatedItemsAnnotation;
         if (!otherAnnotations.isEmpty ()) {

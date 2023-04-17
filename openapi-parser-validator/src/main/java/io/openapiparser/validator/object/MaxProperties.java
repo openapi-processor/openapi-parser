@@ -7,40 +7,31 @@ package io.openapiparser.validator.object;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.validator.steps.NullStep;
 import io.openapiparser.validator.steps.ValidationStep;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
- * validates maxProperties.
- *
- * <p>See specification:
- *
- * <p>Draft 6:
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.15">
- *     maxProperties</a>
- *
- * <br>Draft 4:
- * <a href="https://datatracker.ietf.org/doc/html/draft-fge-json-schema-validation-00#section-5.4.1">
- *     maxProperties</a>
+ * validates maxProperties. Since Draft 4.
  */
 public class MaxProperties {
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
+    public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
         Map<String, Object> instanceObject = nonNull(instance.asObject ());
         Set<String> instanceProperties = new HashSet<>(instanceObject.keySet ());
         Integer maxProperties = schema.getMaxProperties ();
         if (maxProperties == null)
-            return new NullStep ("maxProperties");
+            return;
 
         MaxPropertiesStep step = new MaxPropertiesStep (schema, instance);
 
         if (instanceProperties.size () > maxProperties)
             step.setInvalid ();
 
-        return step;
+        parentStep.add (step);
     }
 }

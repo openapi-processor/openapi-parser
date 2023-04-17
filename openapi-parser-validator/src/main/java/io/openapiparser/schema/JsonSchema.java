@@ -115,8 +115,8 @@ public interface JsonSchema {
         return null;
     }
 
-    default Integer getMinLength () {
-        return 0;
+    default @Nullable Integer getMinLength () {
+        return null;
     }
 
     default @Nullable String getPattern () {
@@ -143,10 +143,12 @@ public interface JsonSchema {
         return null;
     }
 
+    // todo remove default
     default Integer getMinItems () {
         return 0;
     }
 
+    // todo remove default
     default boolean isUniqueItems () {
         return false;
     }

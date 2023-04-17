@@ -5,8 +5,8 @@
 
 package io.openapiparser.validator.number;
 
-import io.openapiparser.schema.*;
-import io.openapiparser.validator.steps.NullStep;
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.steps.ValidationStep;
 
 import java.math.BigDecimal;
@@ -14,20 +14,15 @@ import java.math.BigDecimal;
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
- * maximum.
- *
- * <p>See specification:
- * <p>Draft 6:
- * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-01#section-6.2">
- *     maximum</a>,
+ * maximum. Since Draft 6.
  */
 public class Maximum {
 
-    public ValidationStep validate (JsonSchema schema, JsonInstance instance) {
+    public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
         Number maximum = schema.getMaximum ();
 
         if (maximum == null)
-            return new NullStep ("maximum");
+            return;
 
         MaximumStep step = new MaximumStep (schema, instance);
 
@@ -36,7 +31,7 @@ public class Maximum {
             step.setInvalid ();
         }
 
-        return step;
+        parentStep.add (step);
     }
 
     private int compareTo (JsonInstance instance, Number maximum) {
