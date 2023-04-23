@@ -11,7 +11,7 @@ import java.util.*;
 
 public class ValidatorSettings {
     private SchemaVersion version = SchemaVersion.getLatest ();
-    private Output output = Output.BASIC;
+    private Output output = Output.VERBOSE;
 
     private final EnumSet<Format> formats = EnumSet.noneOf(Format.class);
 
@@ -35,9 +35,24 @@ public class ValidatorSettings {
         this.version = version;
     }
 
+    /**
+     * set the output format.
+     *
+     * @param output the expected output format
+     * @return this
+     */
     public ValidatorSettings setOutput (Output output) {
         this.output = output;
         return this;
+    }
+
+    /**
+     * get output format.
+     *
+     * @return the output format, defaults to {@code Output.VERBOSE}.
+     */
+    public Output getOutput () {
+        return output;
     }
 
     /**
