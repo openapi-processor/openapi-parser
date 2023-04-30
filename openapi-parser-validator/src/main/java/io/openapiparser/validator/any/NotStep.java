@@ -5,21 +5,18 @@
 
 package io.openapiparser.validator.any;
 
-import io.openapiparser.schema.JsonInstance;
-import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.schema.Keywords;
+import io.openapiparser.schema.*;
 import io.openapiparser.validator.ValidationMessage;
-import io.openapiparser.validator.steps.ValidationStep;
+import io.openapiparser.validator.steps.CompositeStep;
+import io.openapiparser.validator.steps.Step;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.net.URI;
 
-public class NotStep implements ValidationStep {
+public class NotStep extends CompositeStep {
     private final JsonSchema schema;
     private final JsonInstance instance;
     private boolean valid = true;
-
-    private ValidationStep step;
 
     public NotStep (JsonSchema schema, JsonInstance instance) {
         this.schema = schema;
@@ -27,37 +24,43 @@ public class NotStep implements ValidationStep {
     }
 
     @Override
-    public void add (ValidationStep step) {
-        this.step = step;
-    }
+    public @Nullable ValidationMessage getMessage () {
+        if (!isValid ())
+            return new NotError (schema, instance);
 
-    @Override
-    public Collection<ValidationStep> getSteps () {
-        return Collections.singletonList (this);
-    }
-
-    @Override
-    public Collection<ValidationMessage> getMessages () {
-        if (isValid ())
-            return Collections.emptyList ();
-
-        return Collections.singletonList (new NotError (schema, instance, step.getMessages ()));
+        return null;
     }
 
     @Override
     public boolean isValid () {
-        return ! step.isValid ();
+        return ! super.isValid ();
     }
 
     public void setInvalid () {
-        this.valid = false;
+        valid = false;
+    }
+
+    @Override
+    public JsonPointer getInstanceLocation () {
+        return instance.getLocation ();
+    }
+
+    @Override
+    public JsonPointer getKeywordLocation () {
+        return schema.getLocation ().append (Keywords.NOT);
+    }
+
+    @Override
+    public URI getAbsoluteKeywordLocation () {
+        return Step.getAbsoluteKeywordLocation (getScope (), getKeywordLocation ());
     }
 
     @Override
     public String toString () {
-        return String.format ("%s (instance: %s), (schema: %s)",
-            isValid () ? "valid" : "invalid",
-            instance.toString ().isEmpty () ? "/" : instance.toString (),
-            schema.getLocation ().append (Keywords.NOT));
+        return Step.toString (getKeywordLocation (), getInstanceLocation (), isValid ());
+    }
+
+    private Scope getScope () {
+        return schema.getContext ().getScope ();
     }
 }

@@ -8,11 +8,12 @@ package io.openapiparser.validator.any
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
-import io.kotest.matchers.collections.shouldBeEmpty
+import io.kotest.matchers.nulls.shouldBeNull
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 import io.openapiparser.schema.*
 import io.openapiparser.schema.UriSupport.emptyUri
-import io.openapiparser.validator.ValidationMessage
 import io.openapiparser.validator.support.TestStep
 
 class NotStepSpec : StringSpec({
@@ -25,29 +26,26 @@ class NotStepSpec : StringSpec({
         Scope(emptyUri(), null, SchemaVersion.getLatest()), ReferenceRegistry())
     val instance = JsonInstance("value", instanceContext)
 
-    val error = ValidationMessage(schema, instance, "not", "error")
-
     "step is valid if sub step is not" {
         val step = NotStep(schema, instance)
-        step.add(TestStep(listOf(error)))
+        step.add(TestStep(valid = false))
 
         step.isValid.shouldBeTrue()
-        step.messages.isEmpty()
+        step.message.shouldBeNull()
     }
 
     "step is invalid if sub step is valid" {
         val step = NotStep(schema, instance)
-        step.add(TestStep(listOf()))
+        step.add(TestStep(valid = true))
 
         step.isValid.shouldBeFalse()
-        step.messages.size shouldBe 1
+        step.message.shouldNotBeNull()
     }
 
-    "invalid step reports no sub step errors" {
+    "invalid step should report error" {
         val step = NotStep(schema, instance)
-        step.add(TestStep(listOf()))
+        step.add(TestStep(valid = true))
 
-        step.isValid.shouldBeFalse()
-        step.messages.first().nestedMessages.shouldBeEmpty()
+        step.message.shouldBeInstanceOf<NotError>()
     }
 })

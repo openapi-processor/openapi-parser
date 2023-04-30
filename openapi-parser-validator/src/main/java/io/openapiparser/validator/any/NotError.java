@@ -9,17 +9,11 @@ import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
-import java.util.Collection;
-
 /**
  * Created by {@link io.openapiparser.validator.any.NotStep}.
  */
 public class NotError extends ValidationMessage {
-    public NotError (
-        JsonSchema schema,
-        JsonInstance instance,
-        Collection<ValidationMessage> messages
-    ) {
-        super(schema, instance, "not", "should not validate against schema", messages);
+    public NotError (JsonSchema schema, JsonInstance instance) {
+        super(schema, instance, "not", "should not validate to true");
     }
 }

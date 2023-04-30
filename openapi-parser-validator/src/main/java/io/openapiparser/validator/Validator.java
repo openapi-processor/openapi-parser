@@ -14,13 +14,15 @@ import io.openapiparser.validator.number.*;
 import io.openapiparser.validator.number.draft4.Maximum4;
 import io.openapiparser.validator.number.draft4.Minimum4;
 import io.openapiparser.validator.object.*;
-import io.openapiparser.validator.object.Properties;
-import io.openapiparser.validator.steps.*;
+import io.openapiparser.validator.steps.DynamicRefStep;
+import io.openapiparser.validator.steps.RefStep;
+import io.openapiparser.validator.steps.SchemaStep;
+import io.openapiparser.validator.steps.ValidationStep;
 import io.openapiparser.validator.string.*;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
-import java.util.*;
+import java.util.Collection;
 
 /**
  * the validator.
@@ -201,11 +203,8 @@ public class Validator {
 
         NotStep step = new NotStep (schema, instance);
 
-        SchemaStep notStep = new SchemaStep (not, instance);
-        validate (not, instance, dynamicScope, notStep);
-        step.add (notStep);
-
-        if (notStep.isValid ()) {
+        validate (not, instance, dynamicScope, step);
+        if (step.isValid ()) {
             step.setInvalid ();
         }
 
