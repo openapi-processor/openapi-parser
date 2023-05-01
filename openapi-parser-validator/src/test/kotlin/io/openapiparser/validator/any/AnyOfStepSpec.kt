@@ -8,10 +8,10 @@ package io.openapiparser.validator.any
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
-import io.kotest.matchers.shouldBe
+import io.kotest.matchers.nulls.shouldBeNull
+import io.kotest.matchers.types.shouldBeInstanceOf
 import io.openapiparser.schema.*
 import io.openapiparser.schema.UriSupport.emptyUri
-import io.openapiparser.validator.ValidationMessage
 import io.openapiparser.validator.support.TestStep
 
 class AnyOfStepSpec : StringSpec({
@@ -26,29 +26,21 @@ class AnyOfStepSpec : StringSpec({
         ReferenceRegistry())
     val instance = JsonInstance("value", instanceContext)
 
-    val error = ValidationMessage(schema, instance, "anyOf", "error")
 
-    "step is valid without error" {
+    "step is valid without sub step error" {
         val step = AnyOfStep(schema, instance)
+        step.add(TestStep(valid = true))
+
         step.isValid.shouldBeTrue()
-        step.messages.isEmpty()
+        step.message.shouldBeNull()
     }
 
-    "step is invalid with error" {
+    "step is invalid with sub step error" {
         val step = AnyOfStep(schema, instance)
+        step.add(TestStep(valid = false))
         step.setInvalid()
 
         step.isValid.shouldBeFalse()
-        step.messages.size shouldBe 1
-    }
-
-    "invalid step reports all sub step errors" {
-        val step = AnyOfStep(schema, instance)
-        step.add(TestStep(listOf(error)))
-        step.add(TestStep(listOf(error)))
-        step.setInvalid()
-
-        step.isValid.shouldBeFalse()
-        step.messages.first().nestedMessages.size shouldBe 2
+        step.message.shouldBeInstanceOf<AnyOfError>()
     }
 })
