@@ -64,7 +64,9 @@ public class ContainsStep extends CompositeStep {
         }
 
         Collection<Annotation> annotations = new ArrayList<> (composite);
-        annotations.add (annotation);
+        if (annotation != null) {
+            annotations.add (annotation);
+        }
         return annotations;
     }
 
