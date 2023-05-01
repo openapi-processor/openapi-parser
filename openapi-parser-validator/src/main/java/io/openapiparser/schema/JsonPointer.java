@@ -57,10 +57,6 @@ public class JsonPointer {
             pointer = decode (jsonPointer.substring (1));
         }
 
-//        if (!pointer.startsWith ("/")) {
-//            return EMPTY;
-//        }
-
         return new JsonPointer(pointer);
     }
 
@@ -70,16 +66,14 @@ public class JsonPointer {
     }
 
     private JsonPointer(String jsonPointer) {
-        this.pointer = jsonPointer;
-
         if (jsonPointer.isEmpty ()) {
+            this.pointer = null;
             this.tokens = Collections.emptyList ();
             return;
         }
 
+        this.pointer = jsonPointer;
         if (!jsonPointer.startsWith ("/")) {
-//            tokens = Collections.emptyList ();
-//            return;
             throw new JsonPointerInvalidException (jsonPointer);
         }
 
@@ -132,7 +126,7 @@ public class JsonPointer {
             .map (JsonPointerSupport::encode)
             .collect (Collectors.joining ("/"));
 
-        return URI.create ("#/" + escaped);
+        return UriSupport.createUri ("#/" + escaped);
     }
 
     /**
@@ -174,7 +168,7 @@ public class JsonPointer {
     }
 
     @Override
-    public boolean equals (Object o) {
+    public boolean equals (@Nullable Object o) {
         if (this == o)
             return true;
 
