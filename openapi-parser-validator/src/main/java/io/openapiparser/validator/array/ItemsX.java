@@ -28,9 +28,9 @@ public class ItemsX {
     }
 
     public void validate (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope, ValidationStep parentStep) {
-        ItemsStep prefixItemsStep = new ItemsStep ("prefixItems");
-        ItemsStep itemsStep = new ItemsStep ("items");
-        ItemsStep unevaluatedItemsStep = new ItemsStep ("unevaluatedItems");
+        ItemsStep prefixItemsStep = new ItemsStep (schema, instance, "prefixItems");
+        ItemsStep itemsStep = new ItemsStep (schema, instance,"items");
+        ItemsStep unevaluatedItemsStep = new ItemsStep (schema, instance,"unevaluatedItems");
 
         Integer prefixItemsAnnotation = null;
         Boolean itemsAnnotation = null;
