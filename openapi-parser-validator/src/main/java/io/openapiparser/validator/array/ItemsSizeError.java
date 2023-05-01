@@ -12,6 +12,7 @@ import io.openapiparser.validator.ValidationMessage;
 /**
  * Created by {@link Items}.
  */
+@Deprecated
 public class ItemsSizeError extends ValidationMessage {
     public ItemsSizeError (JsonSchema schema, JsonInstance instance) {
         super (schema, instance,

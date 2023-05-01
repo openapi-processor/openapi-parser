@@ -7,13 +7,15 @@ package io.openapiparser.validator.array;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.schema.Keywords;
 import io.openapiparser.validator.ValidationMessage;
 import io.openapiparser.validator.steps.SimpleStep;
 
+@Deprecated
 public class ItemsSizeStep extends SimpleStep {
 
     public ItemsSizeStep (JsonSchema schema, JsonInstance instance) {
-        super(schema, instance);
+        super(schema, instance, Keywords.ITEMS);
     }
 
     @Override
