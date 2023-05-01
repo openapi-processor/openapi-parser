@@ -24,9 +24,23 @@ class UriSupportSpec : StringSpec({
         resolve(uri, frag).shouldBe(expected)
     }
 
-    "resolves absolute uri" {
+    "resolves absolute opaque uri" {
         val uri = createUri("urn:uuid:deadbeef-1234-ffff-ffff-4321feebdaed#/root")
         val absolute = createUri("urn:uuid:deadbeef-1234-eeee-eeee-4321feebdaed#/other")
         resolve(uri, absolute).shouldBe(absolute)
+    }
+
+    "resolves fragment without slash on opaque uri with fragment" {
+        val uri = createUri("urn:uuid:deadbeef-1234-ffff-ffff-4321feebdaed#id")
+        val absolute = createUri("#newId")
+        val expected = createUri("urn:uuid:deadbeef-1234-ffff-ffff-4321feebdaed#newId")
+        resolve(uri, absolute).shouldBe(expected)
+    }
+
+    "resolves fragment with slash on opaque uri with fragment" {
+        val uri = createUri("urn:uuid:deadbeef-1234-ffff-ffff-4321feebdaed#id")
+        val absolute = createUri("#/type")
+        val expected = createUri("urn:uuid:deadbeef-1234-ffff-ffff-4321feebdaed#id/type")
+        resolve(uri, absolute).shouldBe(expected)
     }
 })

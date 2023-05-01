@@ -63,16 +63,42 @@ public class UriSupport {
         return uri.resolve(child);
     }
 
-    private static URI resolveOpaque (URI uri, URI child) {
-        if (uri.equals(child)) {
+    private static URI resolveOpaque (URI uri, URI part) {
+        if (uri.equals(part)) {
             return uri;
         }
 
-        if (child.isAbsolute()) {
-            return child;
+        if (part.isAbsolute()) {
+            return part;
         }
 
-        return createUri(uri.toString() + child.toString());
+        String uriPath = uri.getFragment () != null ? uri.getFragment () : "";
+        int uriIdx = uriPath.indexOf ("/");
+        String uriId = uriIdx >= 0 ? uriPath.substring (0, uriIdx) : uriPath;
+        String uriPointer = uriIdx >= 0 ? uriPath.substring (uriIdx) : "";
+
+        String partPath = part.getFragment () != null ? part.getFragment (): "";
+        int partIdx = partPath.indexOf ("/");
+        String partId = partIdx >= 0 ? partPath.substring (0, partIdx) : partPath;
+        String partPointer = partIdx >= 0 ? partPath.substring (partIdx) : "";
+
+        String id = uriId;
+        if (!partId.isEmpty ()) {
+            id = partId;
+        }
+
+        String uriValue = uri.toString ();
+        if (!uriPath.isEmpty ()) {
+            uriValue = uriValue.substring (0, uriValue.lastIndexOf ("#"));
+        }
+
+        String pointer = resolve (createUri (uriPointer), createUri (partPointer)).toString ();
+        String newUri = uriValue;
+        if (!id.isEmpty () || !pointer.isEmpty ()) {
+            newUri += "#" + id + pointer;
+        }
+
+        return createUri(newUri);
     }
 
     public static URI stripFragment(URI uri) {
