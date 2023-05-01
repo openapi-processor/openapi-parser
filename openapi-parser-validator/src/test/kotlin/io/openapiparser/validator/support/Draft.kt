@@ -5,12 +5,16 @@
 
 package io.openapiparser.validator.support
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.kotest.core.spec.style.freeSpec
 import io.kotest.matchers.shouldBe
 import io.openapiparser.jackson.JacksonConverter
+import io.openapiparser.ouput.OutputConverter
 import io.openapiparser.schema.*
+import io.openapiparser.schema.UriSupport.createUri
 import io.openapiparser.schema.UriSupport.emptyUri
 import io.openapiparser.validator.Validator
 import io.openapiparser.validator.ValidatorSettings
@@ -18,6 +22,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 import kotlin.io.path.name
+
 
 /**
  * creates test cases from a JSON-Schema-Test-Suite draft folder.
@@ -39,14 +44,6 @@ fun draftSpec(
         .filterIsInstance<Exclude>()
         .map { e -> e.test }
 
-//    val remotes = extras
-//        .filterIsInstance<Remote>()
-
-    fun toPath(path: String): Path {
-        val resource = Validator::class.java.getResource(path)
-        return Paths.get(resource!!.toURI())
-    }
-
     fun loadSuites(path: Path): Collection<Suite> {
         return json.readValue(
             Files.readAllBytes(path),
@@ -56,17 +53,6 @@ fun draftSpec(
             )
         )
     }
-
-//    fun loadDocument(path: String): Any {
-//        return json.readValue(
-//            Files.readAllBytes(toPath(path)),
-//            json.typeFactory.constructMapType(
-//                HashMap::class.java,
-//                String::class.java,
-//                Object::class.java
-//            )
-//        )
-//    }
 
     fun createStore(loader: DocumentLoader): SchemaStore {
         val store = SchemaStore(loader)
@@ -92,7 +78,10 @@ fun draftSpec(
     fun createSchema(schema: Any): JsonSchema {
         val loader = DocumentLoader(TestRemotesUriReader(), JacksonConverter())
         val store = createStore(loader)
-        val uri = store.register(schema)
+//        val uri = createUri("urn:uuid:${UUID(0L, 0L)})")
+//        val uri = createUri("urn:test:0")
+        val uri = createUri("https://test/")
+        store.register(uri, schema)
         return store.getSchema(uri, settings.version)
     }
 
@@ -123,7 +112,16 @@ fun draftSpec(
                                 val validator = Validator(settings)
                                 val step = validator.validate(schema, instance)
 
-                                // assert
+                                // output
+                                val converter = OutputConverter (Output.VERBOSE)
+                                val output = converter.convert(step)
+
+                                val mapper = ObjectMapper()
+                                mapper.enable(SerializationFeature.INDENT_OUTPUT)
+                                mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
+                                println(mapper.writeValueAsString(output))
+
+                                // check valid
                                 step.isValid.shouldBe(test.valid)
                             }
                         }
@@ -134,6 +132,4 @@ fun draftSpec(
 }
 
 class Exclude(val test: String)
-@Deprecated("obsolete")
-class Remote(val test: String, val document: Document)
 class Document(val id: String, val path: String)
