@@ -5,9 +5,12 @@
 
 package io.openapiparser.validator.steps;
 
-import io.openapiparser.schema.JsonInstance;
-import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.schema.Keywords;
+import io.openapiparser.schema.*;
+import org.checkerframework.checker.nullness.qual.Nullable;
+
+import java.net.URI;
+
+import static io.openapiparser.support.Nullness.nonNull;
 
 public class RefStep extends CompositeStep {
     private final JsonSchema schema;
@@ -18,10 +21,29 @@ public class RefStep extends CompositeStep {
         this.instance = instance;
     }
 
+    public JsonPointer getInstanceLocation () {
+        return instance.getLocation ();
+    }
+
+    @Override
+    public JsonPointer getKeywordLocation () {
+        return schema.getLocation ().append (Keywords.REF);
+    }
+
+    @Override
+    public URI getAbsoluteKeywordLocation () {
+        return Step.getAbsoluteKeywordLocation (getScope(), getKeywordLocation ());
+    }
+
+    public URI getRef () {
+        return nonNull(schema.getRef ());
+    }
+
     public String toString () {
-        return String.format ("%s (instance: %s), (schema: %s)",
-            isValid () ? "valid" : "invalid",
-            instance.getLocation (),
-            schema.getLocation ().append (Keywords.REF));
+        return Step.toString (getKeywordLocation (), getInstanceLocation (), isValid ());
+    }
+
+    private Scope getScope () {
+        return schema.getContext ().getScope ();
     }
 }

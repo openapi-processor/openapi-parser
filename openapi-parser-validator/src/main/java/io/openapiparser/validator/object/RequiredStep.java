@@ -6,8 +6,15 @@
 package io.openapiparser.validator.object;
 
 import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonPointer;
 import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.schema.Scope;
+import io.openapiparser.validator.Annotation;
+import io.openapiparser.validator.ValidationMessage;
 import io.openapiparser.validator.steps.*;
+import org.checkerframework.checker.nullness.qual.Nullable;
+
+import java.net.URI;
 
 public class RequiredStep extends CompositeStep {
     private final JsonSchema schema;
@@ -18,30 +25,36 @@ public class RequiredStep extends CompositeStep {
         this.instance = instance;
     }
 
-    /*
-    private final Collection<ValidationMessage> messages = new ArrayList<> ();
-
-    public void add (ValidationMessage message) {
-        messages.add (message);
+    @Override
+    public @Nullable ValidationMessage getMessage () {
+        return null;
     }
 
     @Override
-    public Collection<ValidationMessage> getMessages () {
-        Collection<ValidationMessage> result = new ArrayList<> ();
-        result.addAll (super.getMessages ());
-        result.addAll (messages);
-        return result;
+    public @Nullable Annotation getAnnotation () {
+        return null;
+    }
+
+    public JsonPointer getInstanceLocation () {
+        return instance.getLocation ();
     }
 
     @Override
-    public boolean isValid () {
-        return super.isValid () && messages.isEmpty ();
+    public JsonPointer getKeywordLocation () {
+        return schema.getLocation ();
+    }
+
+    @Override
+    public URI getAbsoluteKeywordLocation () {
+        return Step.getAbsoluteKeywordLocation (getScope (), getKeywordLocation ());
     }
 
     @Override
     public String toString () {
-        return isValid () ? "valid" : "invalid";
+        return Step.toString (getKeywordLocation (), getInstanceLocation (), isValid ());
     }
 
-     */
+    private Scope getScope () {
+        return schema.getContext ().getScope ();
+    }
 }

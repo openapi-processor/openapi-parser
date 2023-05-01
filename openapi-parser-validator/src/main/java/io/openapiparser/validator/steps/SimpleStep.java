@@ -6,25 +6,19 @@
 package io.openapiparser.validator.steps;
 
 import io.openapiparser.schema.*;
+import io.openapiparser.validator.Annotation;
 import io.openapiparser.validator.ValidationMessage;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
 import java.util.Collection;
 import java.util.Collections;
-
-import static io.openapiparser.schema.UriSupport.resolve;
 
 public abstract class SimpleStep implements ValidationStep {
     protected final JsonSchema schema;
     protected final JsonInstance instance;
     protected final String property;
     private boolean valid = true;
-
-    public SimpleStep (JsonSchema schema, JsonInstance instance) {
-        this.schema = schema;
-        this.instance = instance;
-        this.property = "n/a";
-    }
 
     public SimpleStep (JsonSchema schema, JsonInstance instance, String property) {
         this.schema = schema;
@@ -36,15 +30,26 @@ public abstract class SimpleStep implements ValidationStep {
 
     @Override
     public Collection<ValidationStep> getSteps () {
-        return Collections.singletonList (this);
+        return Collections.emptyList ();
     }
 
     @Override
-    public Collection<ValidationMessage> getMessages () {
-        if (valid)
-            return Collections.emptyList ();
+    public void add (ValidationStep step) {
+    }
 
-        return Collections.singletonList (getError());
+    @Override
+    public @Nullable ValidationMessage getMessage () {
+        return getError ();
+    }
+
+    @Override
+    public @Nullable Annotation getAnnotation () {
+        return null;
+    }
+
+    @Override
+    public Collection<Annotation> getAnnotations (String keyword) {
+        return Collections.emptyList ();
     }
 
     @Override
@@ -60,8 +65,9 @@ public abstract class SimpleStep implements ValidationStep {
         this.valid = valid;
     }
 
+    @Override
     public JsonPointer getInstanceLocation () {
-        return instance.getLocation ().append (property);
+        return instance.getLocation ();
     }
 
     @Override
@@ -71,18 +77,15 @@ public abstract class SimpleStep implements ValidationStep {
 
     @Override
     public URI getAbsoluteKeywordLocation () {
-        JsonSchemaContext context = schema.getContext ();
-        Scope scope = context.getScope ();
+        return Step.getAbsoluteKeywordLocation (getScope (), getKeywordLocation ());
+    }
 
-        JsonPointer location = getKeywordLocation ();
-        return resolve (scope.getBaseUri (), location.toUri ());
+    protected Scope getScope () {
+        return schema.getContext ().getScope ();
     }
 
     @Override
     public String toString () {
-        return String.format ("%s (instance: %s), (schema: %s)",
-            isValid () ? "valid" : "invalid",
-            instance.toString ().isEmpty () ? "/" : instance.toString (),
-            schema.getLocation ().append (property));
+        return Step.toString (getKeywordLocation (), getInstanceLocation (), valid);
     }
 }

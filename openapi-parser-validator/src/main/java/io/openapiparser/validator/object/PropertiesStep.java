@@ -6,14 +6,17 @@
 package io.openapiparser.validator.object;
 
 import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonPointer;
 import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.schema.Scope;
 import io.openapiparser.validator.Annotation;
 import io.openapiparser.validator.ValidationMessage;
+import io.openapiparser.validator.steps.Step;
 import io.openapiparser.validator.steps.ValidationStep;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.net.URI;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class PropertiesStep implements ValidationStep {
     protected final JsonSchema schema;
@@ -46,12 +49,8 @@ public class PropertiesStep implements ValidationStep {
         return steps;
     }
 
-    @Override
-    public Collection<ValidationMessage> getMessages () {
-        return steps.stream ()
-            .map (ValidationStep::getMessages)
-            .flatMap (Collection::stream)
-            .collect(Collectors.toList ());
+    public @Nullable ValidationMessage getMessage () {
+        return null;
     }
 
     @Override
@@ -81,10 +80,26 @@ public class PropertiesStep implements ValidationStep {
     }
 
     @Override
+    public JsonPointer getInstanceLocation () {
+        return instance.getLocation ();
+    }
+
+    @Override
+    public JsonPointer getKeywordLocation () {
+        return schema.getLocation ().append (propertyName);
+    }
+
+    @Override
+    public URI getAbsoluteKeywordLocation () {
+        return Step.getAbsoluteKeywordLocation (getScope (), getKeywordLocation ());
+    }
+
+    @Override
     public String toString () {
-        return String.format ("%s (instance: %s), (schema: %s)",
-            isValid () ? "valid" : "invalid",
-            instance.toString ().isEmpty () ? "/" : instance.toString (),
-            schema.getLocation ().append (propertyName));
+        return Step.toString (getKeywordLocation (), getInstanceLocation (), isValid ());
+    }
+
+    private Scope getScope () {
+        return schema.getContext ().getScope ();
     }
 }

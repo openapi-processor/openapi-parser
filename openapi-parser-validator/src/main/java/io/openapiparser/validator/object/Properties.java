@@ -79,7 +79,7 @@ public class Properties {
                     }
 
                     checkAdditionalProperty = false;
-                }
+                } // else no pattern match
             }
 
             if (checkAdditionalProperty && additionalProperties != null) {
@@ -111,14 +111,15 @@ public class Properties {
                     }
                 }
             }
-
+            // necessary ? reported by additionProperties
+            /*
             if (!instanceProperties.isEmpty ()) {
                 instanceProperties.forEach (propName -> {
                     ValidationStep invalidStep = new PropertyInvalidStep (schema, instance, propName);
                     //ValidationStep namedStep = new PropertyStep (schema, instance, propName, invalidStep);
                     additionalPropertiesStep.add (invalidStep);
                 });
-            }
+            }*/
         }
 
         Set<String> tmpAnnotations = collectAnnotations (parentStep, "properties");
@@ -156,10 +157,10 @@ public class Properties {
         additionalPropertiesStep.addAnnotation(additionalPropertiesAnnotation);
         unevaluatedPropertiesStep.addAnnotation(unevaluatedPropertiesAnnotation);
 
-        if (propertiesStep.isNotEmpty ())
+        if (!schemaProperties.isEmpty ())
             parentStep.add (propertiesStep);
 
-        if (patternPropertiesStep.isNotEmpty ())
+        if (!patternProperties.isEmpty ())
             parentStep.add (patternPropertiesStep);
 
         if (additionalProperties != null)

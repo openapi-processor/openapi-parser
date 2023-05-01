@@ -5,16 +5,14 @@
 
 package io.openapiparser.validator.steps;
 
-import io.openapiparser.schema.*;
-import io.openapiparser.validator.Annotation;
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonPointer;
+import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.schema.Scope;
 import io.openapiparser.validator.ValidationMessage;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.stream.Collectors;
-
-import static io.openapiparser.schema.UriSupport.resolve;
 
 public class SchemaStep extends CompositeStep {
     private final JsonSchema schema;
@@ -26,24 +24,47 @@ public class SchemaStep extends CompositeStep {
     }
 
     @Override
-    public Collection<ValidationMessage> getMessages () {
-        if (isValid ())
-            return Collections.emptyList ();
-
-        return Collections.singletonList (
-            new ValidationMessage (schema, instance,
-                "schema", "the schema is invalid", super.getMessages ()));
+    public @Nullable ValidationMessage getMessage () {
+//        if (shouldFlattenBooleanSchema ()) {
+//            assert steps.size () == 1;
+//            return steps.stream ()
+//                .findFirst ()
+//                .get ()
+//                .getMessage ();
+//        } else {
+            return null;
+//        }
     }
 
-    @Override
-    public Collection<Annotation> getAnnotations (String keyword) {
-        return steps.stream ()
-            .filter (ValidationStep::isValid)
-            .map (s -> s.getAnnotations (keyword))
-            .flatMap (Collection::stream)
-            .collect(Collectors.toList ());
-    }
+//    @Override
+//    public Collection<ValidationStep> getSteps () {
+//        if (shouldFlattenBooleanSchema ()) {
+//            return  Collections.emptyList ();
+//        } else {
+//            return super.getSteps ();
+//        }
+//    }
 
+//    @Override
+//    public Collection<ValidationMessage> getMessages () {
+//        return Collections.emptyList ();
+
+//        if (isValid ())
+//            return Collections.emptyList ();
+//
+//        return Collections.singletonList (
+//            new ValidationMessage (schema, instance,
+//                "schema", "the schema is invalid", super.getMessages ()));
+//    }
+
+//    @Override
+//    public Collection<Annotation> getAnnotations (String keyword) {
+//        return steps.stream ()
+//            .filter (ValidationStep::isValid)
+//            .map (s -> s.getAnnotations (keyword))
+//            .flatMap (Collection::stream)
+//            .collect(Collectors.toList ());
+//    }
 
     @Override
     public JsonPointer getInstanceLocation () {
@@ -57,22 +78,15 @@ public class SchemaStep extends CompositeStep {
 
     @Override
     public URI getAbsoluteKeywordLocation () {
-        JsonSchemaContext context = schema.getContext ();
-        Scope scope = context.getScope ();
-
-        JsonPointer location = schema.getLocation ();
-        if (location.isEmpty ()) {
-            return scope.getBaseUri ();
-        }
-
-        return resolve (scope.getBaseUri (), location.toUri ());
+        return Step.getAbsoluteKeywordLocation (getScope (), getKeywordLocation ());
     }
 
     @Override
     public String toString () {
-        return String.format ("%s (instance: %s), (schema: %s)",
-            isValid () ? "valid" : "invalid",
-            instance.toString ().isEmpty () ? "/" : instance.toString (),
-            schema.toString ().isEmpty () ? "/" : schema.toString ());
+        return Step.toString (getKeywordLocation (), getInstanceLocation (), isValid ());
+    }
+
+    private Scope getScope () {
+        return schema.getContext ().getScope ();
     }
 }

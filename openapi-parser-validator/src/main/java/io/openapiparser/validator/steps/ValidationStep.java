@@ -6,38 +6,31 @@
 package io.openapiparser.validator.steps;
 
 import io.openapiparser.schema.JsonPointer;
-import io.openapiparser.schema.UriSupport;
 import io.openapiparser.validator.Annotation;
 import io.openapiparser.validator.ValidationMessage;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
 import java.util.Collection;
-import java.util.Collections;
 
 public interface ValidationStep {
     boolean isValid ();
+
     Collection<ValidationStep> getSteps ();
-    Collection<ValidationMessage> getMessages ();
 
-    default void add (ValidationStep step) {
-    }
+    void add (ValidationStep step);
 
-    // todo remove default implementation
-    default Collection<Annotation> getAnnotations (String keyword) {
-        return Collections.emptyList ();
-    }
+    @Nullable ValidationMessage getMessage ();
 
-    default JsonPointer getKeywordLocation() {
-        return JsonPointer.empty ();
-    }
+    @Nullable Annotation getAnnotation ();
 
-    default URI getAbsoluteKeywordLocation() {
-        return UriSupport.emptyUri ();
-    }
+    Collection<Annotation> getAnnotations (String keyword);
 
-    default JsonPointer getInstanceLocation() {
-        return JsonPointer.empty ();
-    }
+    JsonPointer getKeywordLocation ();
+
+    URI getAbsoluteKeywordLocation ();
+
+    JsonPointer getInstanceLocation ();
 
     /**
      * If true this step is used to calculate the final validation result. 'if' is the only keyword that is not

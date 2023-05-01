@@ -17,11 +17,7 @@ import static io.openapiparser.schema.UriSupport.resolve;
  */
 public class Step {
 
-    public static URI getAbsoluteKeywordLocation (JsonSchema schema) {
-        JsonSchemaContext context = schema.getContext ();
-        Scope scope = context.getScope ();
-
-        JsonPointer location = schema.getLocation ();
+    public static URI getAbsoluteKeywordLocation (Scope scope, JsonPointer location) {
         if (location.isEmpty ()) {
             return scope.getBaseUri ();
         }

@@ -5,9 +5,11 @@
 
 package io.openapiparser.validator.object;
 
-import io.openapiparser.schema.JsonInstance;
-import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.schema.*;
 import io.openapiparser.validator.steps.CompositeStep;
+import io.openapiparser.validator.steps.Step;
+
+import java.net.URI;
 
 public class PropertyNamesStep extends CompositeStep {
     private final JsonSchema schema;
@@ -16,5 +18,29 @@ public class PropertyNamesStep extends CompositeStep {
     public PropertyNamesStep (JsonSchema schema, JsonInstance instance) {
         this.schema = schema;
         this.instance = instance;
+    }
+
+    @Override
+    public JsonPointer getInstanceLocation () {
+        return instance.getLocation ();
+    }
+
+    @Override
+    public JsonPointer getKeywordLocation () {
+        return schema.getLocation ().append (Keywords.PROPERTY_NAMES);
+    }
+
+    @Override
+    public URI getAbsoluteKeywordLocation () {
+        return Step.getAbsoluteKeywordLocation (getScope (), getKeywordLocation ());
+    }
+
+    protected Scope getScope () {
+        return schema.getContext ().getScope ();
+    }
+
+    @Override
+    public String toString () {
+        return Step.toString (getKeywordLocation (), getInstanceLocation (), isValid ());
     }
 }

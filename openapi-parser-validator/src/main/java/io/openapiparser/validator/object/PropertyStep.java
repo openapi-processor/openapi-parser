@@ -6,11 +6,16 @@
 package io.openapiparser.validator.object;
 
 import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonPointer;
 import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.schema.Scope;
 import io.openapiparser.validator.Annotation;
 import io.openapiparser.validator.ValidationMessage;
+import io.openapiparser.validator.steps.Step;
 import io.openapiparser.validator.steps.ValidationStep;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -18,7 +23,7 @@ import java.util.stream.Collectors;
 public class PropertyStep implements ValidationStep {
     protected final JsonSchema schema;
     protected final JsonInstance instance;
-    private final String propertyName;
+    private final String propertyName;  // not used?????
 
     protected final Collection<ValidationStep> steps = new ArrayList<> ();
 
@@ -44,12 +49,12 @@ public class PropertyStep implements ValidationStep {
         return steps;
     }
 
-    @Override
-    public Collection<ValidationMessage> getMessages () {
-        return steps.stream ()
-            .map (ValidationStep::getMessages)
-            .flatMap (Collection::stream)
-            .collect(Collectors.toList ());
+    public @Nullable ValidationMessage getMessage () {
+        return null;
+    }
+
+    public @Nullable Annotation getAnnotation () {
+        return null;
     }
 
     @Override
@@ -62,10 +67,26 @@ public class PropertyStep implements ValidationStep {
     }
 
     @Override
+    public JsonPointer getInstanceLocation () {
+        return instance.getLocation ();
+    }
+
+    @Override
+    public JsonPointer getKeywordLocation () {
+        return schema.getLocation ();  // append PropertyName???
+    }
+
+    @Override
+    public URI getAbsoluteKeywordLocation () {
+        return Step.getAbsoluteKeywordLocation (getScope (), getKeywordLocation ());
+    }
+
+    @Override
     public String toString () {
-        return String.format ("%s (instance: %s), (schema: %s)",
-            isValid () ? "valid" : "invalid",
-            instance.getLocation (),
-            schema.getLocation ());
+        return Step.toString (getKeywordLocation (), getInstanceLocation (), isValid ());
+    }
+
+    private Scope getScope () {
+        return schema.getContext ().getScope ();
     }
 }

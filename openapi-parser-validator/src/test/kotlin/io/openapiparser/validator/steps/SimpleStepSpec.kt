@@ -33,9 +33,10 @@ class SimpleStepSpec : StringSpec({
         val instance = createInstance(mapOf(
             "test" to "value"
         ), JsonPointer.empty())
+
         val step = TestSimpleStep(schema, instance, "test")
 
-        step.instanceLocation shouldBe JsonPointer.from("/test")
+        step.instanceLocation shouldBe JsonPointer.from("")
         step.keywordLocation shouldBe JsonPointer.from("/test")
         step.absoluteKeywordLocation shouldBe createUri("https://output.test/schema#/test")
     }

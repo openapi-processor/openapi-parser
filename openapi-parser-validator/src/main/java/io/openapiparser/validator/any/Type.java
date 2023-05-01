@@ -5,13 +5,15 @@
 
 package io.openapiparser.validator.any;
 
-import io.openapiparser.schema.*;
-import io.openapiparser.validator.steps.NullStep;
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.schema.SchemaVersion;
 import io.openapiparser.validator.steps.ValidationStep;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * validates type.
