@@ -5,15 +5,14 @@
 
 package io.openapiparser.validator.any;
 
-import io.openapiparser.schema.JsonInstance;
-import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.schema.Keywords;
+import io.openapiparser.schema.*;
 import io.openapiparser.validator.ValidationMessage;
 import io.openapiparser.validator.steps.CompositeStep;
+import io.openapiparser.validator.steps.Step;
 import io.openapiparser.validator.steps.ValidationStep;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.net.URI;
 
 public class AllOfStep extends CompositeStep {
     private final JsonSchema schema;
@@ -36,12 +35,11 @@ public class AllOfStep extends CompositeStep {
     }
 
     @Override
-    public Collection<ValidationMessage> getMessages () {
-        if (isValid ())
-            return Collections.emptyList ();
+    public @Nullable ValidationMessage getMessage () {
+        if (valid)
+            return null;
 
-        return Collections.singletonList (
-            new AllOfError (schema, instance, super.getMessages ()));
+        return new AllOfError (schema, instance);
     }
 
     @Override
@@ -49,11 +47,26 @@ public class AllOfStep extends CompositeStep {
         return valid;
     }
 
+    public JsonPointer getInstanceLocation () {
+        return instance.getLocation ();
+    }
+
+    @Override
+    public JsonPointer getKeywordLocation () {
+        return schema.getLocation ().append (Keywords.ALL_OF);
+    }
+
+    @Override
+    public URI getAbsoluteKeywordLocation () {
+        return Step.getAbsoluteKeywordLocation (getScope (), getKeywordLocation ());
+    }
+
     @Override
     public String toString () {
-        return String.format ("%s (instance: %s), (schema: %s)",
-            isValid () ? "valid" : "invalid",
-            instance.toString ().isEmpty () ? "/" : instance.toString (),
-            schema.getLocation ().append (Keywords.ALL_OF));
+        return Step.toString (getKeywordLocation (), getInstanceLocation (), valid);
+    }
+
+    private Scope getScope () {
+        return schema.getContext ().getScope ();
     }
 }
