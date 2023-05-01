@@ -9,23 +9,16 @@ import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidatorSettings;
 import io.openapiparser.validator.steps.ValidationStep;
+import io.openapiparser.validator.support.EmailValidator;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
-import java.util.regex.Matcher;
 
 import static io.openapiparser.schema.Format.EMAIL;
 import static io.openapiparser.support.Nullness.nonNull;
 
 /**
  * validates email. Since Draft 4.
- *
- * todo replace regex with validation code
  */
 public class Email {
-    // https://stackoverflow.com/a/48725527
-    private static final String EMAIL_REGEX =
-        "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*" +
-        "@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$";
 
     private final ValidatorSettings settings;
 
@@ -40,10 +33,9 @@ public class Email {
 
         EmailStep step = new EmailStep (schema, instance);
 
-        java.util.regex.Pattern p = java.util.regex.Pattern.compile(EMAIL_REGEX);
         String instanceValue = getInstanceValue (instance);
-        Matcher m = p.matcher(instanceValue);
-        boolean valid = m.find ();
+        boolean valid = new EmailValidator (instanceValue).validate ();
+
         if (!valid)
             step.setInvalid ();
 
