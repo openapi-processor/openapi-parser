@@ -7,13 +7,14 @@ package io.openapiparser.validator.number.draft4;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.schema.Keywords;
 import io.openapiparser.validator.ValidationMessage;
 import io.openapiparser.validator.steps.SimpleStep;
 
 public class Minimum4Step extends SimpleStep {
 
     public Minimum4Step (JsonSchema schema, JsonInstance instance) {
-        super(schema, instance);
+        super(schema, instance, Keywords.MINIMUM);
     }
 
     @Override

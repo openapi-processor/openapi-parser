@@ -15,8 +15,6 @@ import io.openapiparser.validator.ValidationMessage;
 public class MaxContainsError extends ValidationMessage {
 
     public MaxContainsError (JsonSchema schema, JsonInstance instance, int size) {
-        super (schema, instance,
-            "maxContains",
-            String.format ("should contain at maximum %d items", size));
+        super (schema, instance, "maxContains", String.format ("should contain at maximum %d items", size));
     }
 }

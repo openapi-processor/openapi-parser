@@ -7,13 +7,14 @@ package io.openapiparser.validator.string;
 
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.schema.Keywords;
 import io.openapiparser.validator.ValidationMessage;
 import io.openapiparser.validator.steps.SimpleStep;
 
 public class PatternStep extends SimpleStep {
 
     public PatternStep (JsonSchema schema, JsonInstance instance) {
-        super (schema, instance);
+        super (schema, instance, Keywords.PATTERN);
     }
 
     @Override

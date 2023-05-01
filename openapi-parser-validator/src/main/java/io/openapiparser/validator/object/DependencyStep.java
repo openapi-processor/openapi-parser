@@ -14,7 +14,7 @@ public class DependencyStep extends SimpleStep {
     private final String propertyName;
 
     public DependencyStep (JsonSchema schema, JsonInstance instance, String propertyName) {
-        super(schema, instance);
+        super(schema, instance, propertyName);
         this.propertyName = propertyName;
     }
 

@@ -11,6 +11,8 @@ import io.openapiparser.schema.Keywords;
 import io.openapiparser.validator.ValidationMessage;
 import io.openapiparser.validator.steps.SimpleStep;
 
+import static io.openapiparser.support.Nullness.nonNull;
+
 public class MinPropertiesStep extends SimpleStep {
 
     public MinPropertiesStep (JsonSchema schema, JsonInstance instance) {
@@ -19,6 +21,6 @@ public class MinPropertiesStep extends SimpleStep {
 
     @Override
     protected ValidationMessage getError () {
-        return new MinPropertiesError (schema, instance, schema.getMinProperties ());
+        return new MinPropertiesError (schema, instance, nonNull(schema.getMinProperties ()));
     }
 }
