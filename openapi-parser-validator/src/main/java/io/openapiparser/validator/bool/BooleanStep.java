@@ -13,7 +13,7 @@ import io.openapiparser.validator.steps.SimpleStep;
 public class BooleanStep extends SimpleStep {
 
     public BooleanStep (JsonSchema schema, JsonInstance instance) {
-        super(schema, instance);
+        super(schema, instance, schema.isTrue () ? "true" : "false");
     }
 
     @Override
