@@ -6,18 +6,23 @@
 package io.openapiparser.validator.array;
 
 import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonPointer;
 import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.schema.Scope;
 import io.openapiparser.validator.Annotation;
 import io.openapiparser.validator.ValidationMessage;
 import io.openapiparser.validator.steps.CompositeStep;
+import io.openapiparser.validator.steps.Step;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.net.URI;
 import java.util.*;
 
 public class ContainsStep extends CompositeStep {
     private final JsonSchema schema;
     private final JsonInstance instance;
 
-    private Annotation annotation;
+    private @Nullable Annotation annotation;
     private boolean valid = true;
 
     public ContainsStep (JsonSchema schema, JsonInstance instance) {
@@ -35,11 +40,16 @@ public class ContainsStep extends CompositeStep {
     }
 
     @Override
-    public Collection<ValidationMessage> getMessages () {
+    public @Nullable ValidationMessage getMessage () {
         if (valid)
-            return Collections.emptyList ();
+            return null;
 
-        return Collections.singletonList (getError());
+        return new ContainsError (schema, instance);
+    }
+
+    @Override
+    public @Nullable Annotation getAnnotation () {
+        return annotation;
     }
 
     public void addAnnotation (Collection<Integer> annotation) {
@@ -58,7 +68,27 @@ public class ContainsStep extends CompositeStep {
         return annotations;
     }
 
-    private ValidationMessage getError () {
-        return new ContainsError (schema, instance, super.getMessages ());
+    @Override
+    public JsonPointer getInstanceLocation () {
+        return instance.getLocation ();
+    }
+
+    @Override
+    public JsonPointer getKeywordLocation () {
+        return schema.getLocation ();
+    }
+
+    @Override
+    public URI getAbsoluteKeywordLocation () {
+        return Step.getAbsoluteKeywordLocation (getScope (), getKeywordLocation ());
+    }
+
+    @Override
+    public String toString () {
+        return Step.toString (getKeywordLocation (), getInstanceLocation (), isValid ());
+    }
+
+    private Scope getScope () {
+        return schema.getContext ().getScope ();
     }
 }

@@ -6,11 +6,12 @@
 package io.openapiparser.validator.steps;
 
 import io.openapiparser.validator.*;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class CompositeStep implements ValidationStep, Annotations {
+public abstract class CompositeStep implements ValidationStep, Annotations {
     protected final Collection<ValidationStep> steps;
 
     public CompositeStep () {
@@ -30,26 +31,20 @@ public class CompositeStep implements ValidationStep, Annotations {
     }
 
     public void add (ValidationStep step) {
-        if (isNullStep(step))
-            return;
-
-        if (isFlatStep(step)) {
-            steps.addAll (step.getSteps ());
-        } else {
-            steps.add (step);
-        }
+        steps.add (step);
     }
 
-    public Collection<ValidationStep> getSteps () {
-        return Collections.singletonList (this);
+    public @Nullable ValidationMessage getMessage () {
+        return null;
+    }
+
+    public @Nullable Annotation getAnnotation () {
+        return null;
     }
 
     @Override
-    public Collection<ValidationMessage> getMessages () {
-        return steps.stream ()
-            .map (ValidationStep::getMessages)
-            .flatMap (Collection::stream)
-            .collect(Collectors.toList ());
+    public Collection<ValidationStep> getSteps () {
+        return steps;
     }
 
     @Override
@@ -61,6 +56,7 @@ public class CompositeStep implements ValidationStep, Annotations {
             .collect(Collectors.toList ());
     }
 
+    // todo not needed ??
     public AnnotationsComposite mergeAnnotations (Annotations annotations) {
         AnnotationsComposite merge = new AnnotationsComposite ();
         merge.add (annotations);
@@ -77,14 +73,6 @@ public class CompositeStep implements ValidationStep, Annotations {
 
     @Override
     public String toString () {
-        return isValid () ? "valid" : "invalid";
-    }
-
-    private static boolean isNullStep(ValidationStep step) {
-        return step instanceof NullStep;
-    }
-
-    private static boolean isFlatStep(ValidationStep step) {
-        return step instanceof FlatStep;
+        return isValid () ? "(composite) valid" : "invalid";
     }
 }

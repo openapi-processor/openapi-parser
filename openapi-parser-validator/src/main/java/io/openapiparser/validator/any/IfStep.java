@@ -5,16 +5,16 @@
 
 package io.openapiparser.validator.any;
 
-import io.openapiparser.schema.JsonInstance;
-import io.openapiparser.schema.JsonSchema;
-import io.openapiparser.schema.Keywords;
+import io.openapiparser.schema.*;
 import io.openapiparser.validator.Annotation;
 import io.openapiparser.validator.ValidationMessage;
+import io.openapiparser.validator.steps.Step;
 import io.openapiparser.validator.steps.ValidationStep;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.stream.Collectors;
 
 
@@ -51,9 +51,12 @@ public class IfStep implements ValidationStep {
         return steps;
     }
 
-    @Override
-    public Collection<ValidationMessage> getMessages () {
-            return Collections.emptyList ();
+    public @Nullable ValidationMessage getMessage () {
+        return null;
+    }
+
+    public @Nullable Annotation getAnnotation () {
+        return null;
     }
 
     @Override
@@ -66,10 +69,26 @@ public class IfStep implements ValidationStep {
     }
 
     @Override
+    public JsonPointer getInstanceLocation () {
+        return instance.getLocation ();
+    }
+
+    @Override
+    public JsonPointer getKeywordLocation () {
+        return schema.getLocation ().append (Keywords.IF);
+    }
+
+    @Override
+    public URI getAbsoluteKeywordLocation () {
+        return Step.getAbsoluteKeywordLocation (getScope(), getKeywordLocation ());
+    }
+
+    @Override
     public String toString () {
-        return String.format ("%s (instance: %s), (schema: %s)",
-            isValid () ? "valid" : "invalid",
-            instance.toString ().isEmpty () ? "/" : instance.toString (),
-            schema.getLocation ().append (Keywords.IF));
+        return Step.toString (getKeywordLocation (), getInstanceLocation (), isValid ());
+    }
+
+    private Scope getScope () {
+        return schema.getContext ().getScope ();
     }
 }

@@ -26,9 +26,9 @@ public class Items {
     }
 
     public void validate (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope, ValidationStep parentStep) {
-        ItemsStep itemsStep = new ItemsStep ("items");
-        ItemsStep additionalItemsStep = new ItemsStep ("additionalItems");
-        ItemsStep unevaluatedItemsStep = new ItemsStep ("unevaluatedItems");
+        ItemsStep itemsStep = new ItemsStep (schema, instance, "items");
+        ItemsStep additionalItemsStep = new ItemsStep (schema, instance,"additionalItems");
+        ItemsStep unevaluatedItemsStep = new ItemsStep (schema, instance,"unevaluatedItems");
 
         Integer itemsAnnotation = null;
         Boolean additionalItemsAnnotation = null;
@@ -61,21 +61,24 @@ public class Items {
                     .forEach (idx -> {
                         JsonInstance value = instance.getValue (idx);
                         if (idx < items.size ()) {
-                            validator.validate (itemSchemas.next (), value, dynamicScope, itemsStep);
+                            JsonSchema idxSchema = itemSchemas.next ();
+                            SchemaStep idxStep = new SchemaStep (idxSchema, instance);
+                            validator.validate (idxSchema, value, dynamicScope, idxStep);
+                            itemsStep.add (idxStep);
                         }
                     });
 
                 itemsAnnotation = maxIdx;
             }
-            else if (additional.size () == 1) { // isSingle?
+            else if (additional.isSingle ()) {
                 Iterator<JsonSchema> itemSchemas = items.getSchemas ().iterator ();
                 JsonSchema additionalSchema = additional.getSchema ();
 
-                if (isBooleanFalse (additionalSchema) && instanceSize > items.size ()) {
-                    ItemsSizeStep sStep = new ItemsSizeStep (additionalSchema, instance);
-                    sStep.setInvalid ();
-                    itemsStep.add (sStep);
-                }
+//                if (isBooleanFalse (additionalSchema) && instanceSize > items.size ()) {
+//                    ItemsSizeStep sStep = new ItemsSizeStep (additionalSchema, instance);
+//                    sStep.setInvalid ();
+//                    itemsStep.add (sStep);
+//                }
 
                 AtomicInteger cntItem = new AtomicInteger ();
                 AtomicInteger cntAdditionalItem = new AtomicInteger ();
@@ -85,11 +88,16 @@ public class Items {
                         JsonInstance value = instance.getValue (idx);
 
                         if (idx < items.size ()) {
-                            validator.validate (itemSchemas.next (), value, dynamicScope, itemsStep);
+                            JsonSchema idxSchema = itemSchemas.next ();
+                            SchemaStep idxStep = new SchemaStep (idxSchema, value);
+                            validator.validate (idxSchema, value, dynamicScope, idxStep);
+                            itemsStep.add (idxStep);
                             cntItem.getAndIncrement ();
 
                         } else {
-                            validator.validate (additionalSchema, value, dynamicScope, additionalItemsStep);
+                            SchemaStep idxStep = new SchemaStep (additionalSchema, value);
+                            validator.validate (additionalSchema, value, dynamicScope, idxStep);
+                            additionalItemsStep.add (idxStep);
                             cntAdditionalItem.getAndIncrement ();
                         }
                     });

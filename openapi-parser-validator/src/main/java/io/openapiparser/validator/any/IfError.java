@@ -9,21 +9,12 @@ import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.ValidationMessage;
 
-import java.util.Collection;
-
 /**
  * Created by {@link IfStep}.
  */
 public class IfError extends ValidationMessage {
 
-    public IfError (
-        JsonSchema schema,
-        JsonInstance instance,
-        String condition,
-        Collection<ValidationMessage> messages
-    ) {
-        super(schema, instance,
-            "if",
-            String.format ("should validate against '%s' schema", condition), messages);
+    public IfError (JsonSchema schema, JsonInstance instance, String condition) {
+        super(schema, instance, "if", String.format ("should validate against '%s' schema", condition));
     }
 }

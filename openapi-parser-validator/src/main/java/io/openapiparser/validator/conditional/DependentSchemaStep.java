@@ -3,9 +3,12 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.validator.object;
+package io.openapiparser.validator.conditional;
 
-import io.openapiparser.schema.*;
+import io.openapiparser.schema.JsonInstance;
+import io.openapiparser.schema.JsonPointer;
+import io.openapiparser.schema.JsonSchema;
+import io.openapiparser.schema.Scope;
 import io.openapiparser.validator.Annotation;
 import io.openapiparser.validator.ValidationMessage;
 import io.openapiparser.validator.steps.CompositeStep;
@@ -14,11 +17,12 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
 
-public class DependenciesStep extends CompositeStep {
+public class DependentSchemaStep extends CompositeStep {
+
     private final JsonSchema schema;
     private final JsonInstance instance;
 
-    public DependenciesStep (JsonSchema schema, JsonInstance instance) {
+    public DependentSchemaStep (JsonSchema schema, JsonInstance instance) {
         this.schema = schema;
         this.instance = instance;
     }
@@ -39,7 +43,7 @@ public class DependenciesStep extends CompositeStep {
 
     @Override
     public JsonPointer getKeywordLocation () {
-        return schema.getLocation ().append (Keywords.DEPENDENCIES);
+        return schema.getLocation ();
     }
 
     @Override

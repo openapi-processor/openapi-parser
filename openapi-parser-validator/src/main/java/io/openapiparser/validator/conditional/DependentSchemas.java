@@ -9,6 +9,7 @@ import io.openapiparser.schema.DynamicScope;
 import io.openapiparser.schema.JsonInstance;
 import io.openapiparser.schema.JsonSchema;
 import io.openapiparser.validator.Validator;
+import io.openapiparser.validator.steps.SchemaStep;
 import io.openapiparser.validator.steps.ValidationStep;
 
 import java.util.Map;
@@ -31,7 +32,7 @@ public class DependentSchemas {
             return;
         }
 
-        DependentSchemasStep step = new DependentSchemasStep ("dependentSchemas");
+        DependentSchemasStep step = new DependentSchemasStep (schema, instance);
         Map<String, Object> instanceObject = nonNull(instance.asObject ());
 
         instanceObject.keySet ().forEach (propName -> {
@@ -40,8 +41,9 @@ public class DependentSchemas {
                 return;
             }
 
-            validator.validate (propSchema, instance, dynamicScope, step);
-            //step.add (new PropertyStep (propSchema, instance, propName, propStep));
+            DependentSchemaStep depStep = new DependentSchemaStep (propSchema, instance);
+            validator.validate (propSchema, instance, dynamicScope, depStep);
+            step.add (depStep);
         });
 
         parentStep.add (step);

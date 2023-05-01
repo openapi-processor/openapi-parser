@@ -5,19 +5,55 @@
 
 package io.openapiparser.validator.conditional;
 
+import io.openapiparser.schema.*;
+import io.openapiparser.validator.Annotation;
+import io.openapiparser.validator.ValidationMessage;
 import io.openapiparser.validator.steps.CompositeStep;
+import io.openapiparser.validator.steps.Step;
+import org.checkerframework.checker.nullness.qual.Nullable;
+
+import java.net.URI;
 
 public class DependentSchemasStep extends CompositeStep {
-    private final String propertyName;
 
-    public DependentSchemasStep (String propertyName) {
-        this.propertyName = propertyName;
+    private final JsonSchema schema;
+    private final JsonInstance instance;
+
+    public DependentSchemasStep (JsonSchema schema, JsonInstance instance) {
+        this.schema = schema;
+        this.instance = instance;
+    }
+
+    @Override
+    public @Nullable ValidationMessage getMessage () {
+        return null;
+    }
+
+    @Override
+    public @Nullable Annotation getAnnotation () {
+        return null;
+    }
+
+    public JsonPointer getInstanceLocation () {
+        return instance.getLocation ();
+    }
+
+    @Override
+    public JsonPointer getKeywordLocation () {
+        return schema.getLocation ().append (Keywords.DEPENDENT_SCHEMAS);
+    }
+
+    @Override
+    public URI getAbsoluteKeywordLocation () {
+        return Step.getAbsoluteKeywordLocation (getScope (), getKeywordLocation ());
     }
 
     @Override
     public String toString () {
-        return String.format ("%s (property: %s)",
-            isValid () ? "valid" : "invalid",
-            propertyName);
+        return Step.toString (getKeywordLocation (), getInstanceLocation (), isValid ());
+    }
+
+    private Scope getScope () {
+        return schema.getContext ().getScope ();
     }
 }
