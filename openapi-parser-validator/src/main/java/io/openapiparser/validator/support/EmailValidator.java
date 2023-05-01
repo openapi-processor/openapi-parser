@@ -86,6 +86,7 @@ public class EmailValidator {
             boolean ipv6 = new IpV6Validator(ipv6Source).validate ();
             return ipv6;
         } else {
+            // todo use Hostname validator
             return isDomain (source);
         }
     }
