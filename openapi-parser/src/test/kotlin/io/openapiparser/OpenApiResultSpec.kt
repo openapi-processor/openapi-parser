@@ -86,7 +86,6 @@ class OpenApiResultSpec: StringSpec({
 
         val validator = mockk<Validator>()
         val step = mockk<ValidationStep>()
-        every { step.messages } returns emptyList()
         every { validator.validate(any(), any()) } returns step
 
         // when
