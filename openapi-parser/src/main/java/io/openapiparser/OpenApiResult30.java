@@ -6,6 +6,8 @@
 package io.openapiparser;
 
 import io.openapiparser.model.v30.OpenApi;
+import io.openapiparser.ouput.OutputConverter;
+import io.openapiparser.ouput.OutputUnit;
 import io.openapiparser.schema.*;
 import io.openapiparser.validator.Validator;
 import io.openapiparser.validator.ValidationMessage;
@@ -70,8 +72,15 @@ public class OpenApiResult30 implements OpenApiResult {
         JsonInstance instance = new JsonInstance (bundle, instanceContext);
 //        JsonInstance instance = new JsonInstance (root.getRawValues (), context.getInstanceContext ());
         ValidationStep result = validator.validate (schema, instance);
-        validationMessages = result.getMessages ();
-        return validationMessages.isEmpty ();
+        return result.isValid ();
+
+//        OutputConverter converter = new OutputConverter (Output.FLAG);
+//        OutputUnit output = converter.convert (result);
+//        return output.isValid ();
+
+        // todo extract messages
+//        validationMessages = result.getMessages ();
+//        return validationMessages.isEmpty ();
     }
 
     Object bundle () {
