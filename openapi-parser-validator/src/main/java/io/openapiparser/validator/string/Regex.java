@@ -17,7 +17,7 @@ import static io.openapiparser.support.Nullness.nonNull;
 public class Regex {
 
     public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
-        String pattern = schema.getFormat ();
+        String pattern = schema.getPattern ();
         if (pattern == null)
             return;
 
