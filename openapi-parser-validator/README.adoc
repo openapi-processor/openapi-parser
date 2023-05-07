@@ -10,6 +10,9 @@ Used by openapi-parser but also usable as standalone JSON Schema validator.
 
 It is tested against the official link:{json-schema-testsuite}[JSON Schema Test Suite]. It passes all required tests of the test suite & most *optional* tests. It implements the `format`s as listed. See the limitations below.
 
+* *2020-12* (https://json-schema.org/draft/2020-12/schema)
+** todo
+
 * *2019-09* (https://json-schema.org/draft/2019-09/schema)
 ** format: *duration* (not implemented)
 ** format: *uuid* (`jav.util.UUID`)
@@ -23,7 +26,7 @@ It is tested against the official link:{json-schema-testsuite}[JSON Schema Test 
 ** format: *idn-hostname* (not implemented)
 ** format: *iri* (not implemented)
 ** format: *iri-reference* (not implemented)
-** format: *regex* (`java.util.regex.Pattern`)
+** format: *regex* (`java.util.regex.Pattern`, see limitations)
 ** format: *relative-json-pointer.json* (not implemented)
 ** format: *uri-template.json* (not implemented)
 ** format: see Draft 6 formats
@@ -36,7 +39,7 @@ It is tested against the official link:{json-schema-testsuite}[JSON Schema Test 
 
 * *draft-04* (http://json-schema.org/draft-04/schema#) => OpenAPI 3.0.x
 ** format: *date-time* (`java.time.OffsetDateTime`, see limitations)
-** format: *email* (regex)
+** format: *email* (code)
 ** format: *hostname* (code)
 ** format: *ipv4* (code)
 ** format: *ipv6* (code)
@@ -44,22 +47,28 @@ It is tested against the official link:{json-schema-testsuite}[JSON Schema Test 
 
 === limitations
 
-==== ECMAScript regular expressions
+`io.openapiprocessor.json-schema-validator` uses jdk classes for `uri` handling & validating `format` s like, `time`, `date-time`, `uri` & `regex` assertions where possible.
 
-`java.util.regex` doesn't support the full ECMA 262 regular expression dialect.
+Unfortunately the jdk classes do not conform to 100% to their corresponding standards which causes a few limitations and a number of test failures in the optional section of the json-validator test suite:
 
-* `[draft7|draft6|draft4]/optional/ecmascript-regex.json`: passes *51* of *74* tests
+==== general: URI
+
+`java.net.URI` does not fully support `urn:` uris. With a bit of custom code the validator supports `urn` s to pass all tests that use `urn` s.
+
+==== general/format: ECMAScript regular expressions
+
+* `[draft2020-12|draft2019-09|draft7|draft6|draft4]/optional/ecmascript-regex.json`
+
+`java.util.regex` is not fully compatible with the ECMA 262 (i.e. JavaScript) regular expression dialect.
 
 ==== format: time
 
-`java.time.format.DateTimeFormatter` doesn't support leap seconds. This causes the six failing tests.
+* `[draft2020-12|draft2019-09|draft7|draft6|draft4]/optional/format/time.json`
 
-* `draft7/optional/format/time.json`: passes *32* of *38* tests
+`java.time.format.DateTimeFormatter` doesn't support leap seconds. This causes the leap second specific tests to fail.
 
 ==== format: date-time
 
-`java.time.format.DateTimeFormatter` doesn't support leap seconds. This causes the two failing tests.
+* `[draft2020-12|draft2019-09|draft7|draft6|draft4]/optional/format/date-time.json`
 
-* `[draft7|draft6|draft4]/optional/format/date-time.json`: passes *23* of *25* tests
-
-
+`java.time.format.DateTimeFormatter` doesn't support leap seconds. This causes the leap second specific tests to fail.
