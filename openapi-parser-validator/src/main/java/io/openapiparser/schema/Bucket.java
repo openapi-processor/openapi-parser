@@ -44,7 +44,7 @@ public class Bucket {
         return new Bucket (scope, location, asObject (source));
     }
 
-    @Deprecated
+    @Deprecated // myself and tests
     public Bucket (Map<String, Object> properties) {
         this.scope = new Scope (URI.create (""), URI.create (""), null);
         this.location = JsonPointer.EMPTY;
@@ -57,7 +57,7 @@ public class Bucket {
      * @param source the document URI
      * @param properties the document properties
      */
-    @Deprecated
+    @Deprecated // tests
     public Bucket (URI source, Map<String, Object> properties) {
         this.scope = new Scope (source, URI.create (""), null);
         this.location = JsonPointer.EMPTY;
