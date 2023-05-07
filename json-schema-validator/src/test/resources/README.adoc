@@ -17,6 +17,10 @@ get changes from submodule repository
 
     git submodule update --remote
 
+move submodule
+
+    git mv old/submod new target directory
+
 was created with:
 
     git submodule add https://github.com/json-schema-org/JSON-Schema-Test-Suite openapi-parser-validator/src/test/resources/suites/JSON-Schema-Test-Suite
