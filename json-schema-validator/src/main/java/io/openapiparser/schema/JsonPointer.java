@@ -12,10 +12,7 @@ import java.net.URI;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.unmodifiableList;
@@ -77,7 +74,7 @@ public class JsonPointer {
             throw new JsonPointerInvalidException (jsonPointer);
         }
 
-        tokens = Arrays.stream (jsonPointer.substring (1).split ("/"))
+        tokens = Arrays.stream (jsonPointer.substring (1).split ("/", -1))
             .map (JsonPointerSupport::decode)
             .collect (Collectors.toList ());
     }

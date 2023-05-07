@@ -120,6 +120,11 @@ class JsonPointerSpec : StringSpec({
         JsonPointer.from("/root").append(1).toString() shouldBe "/root/1"
     }
 
+    "get empty tail from pointer" {
+        JsonPointer.from("/root/").tail() shouldBe ""
+    }
+
+
     "get tail from pointer" {
         JsonPointer.EMPTY.tail() shouldBe ""
         JsonPointer.from("/root").tail() shouldBe "root"
