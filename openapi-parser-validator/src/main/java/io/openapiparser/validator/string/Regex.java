@@ -34,7 +34,7 @@ public class Regex {
         RegexStep step = new RegexStep (schema, instance);
 
         try {
-            Pattern.compile (getInstanceValue (instance));
+            Pattern.compile (getInstanceValue (instance), Pattern.UNICODE_CHARACTER_CLASS);
 
         } catch (Exception ex) {
             step.setInvalid ();
