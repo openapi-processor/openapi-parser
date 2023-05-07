@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":openapi-parser-validator"))
+    api(project(":json-schema-validator"))
     api(project(":openapi-parser-interfaces"))
 
     testImplementation(project(":openapi-parser-snakeyaml"))
