@@ -327,7 +327,7 @@ public class Validator {
         new IpV6 (settings).validate (schema, instance, parentStep);
         new Uri (settings).validate (schema, instance, parentStep);
         new UriReference (settings).validate (schema, instance, parentStep);
-        new Regex ().validate (schema, instance, parentStep);
+        new Regex (settings).validate (schema, instance, parentStep);
     }
 
     private DynamicScope calcDynamicScope (JsonSchema schema, @Nullable DynamicScope parentScope) {
@@ -339,7 +339,7 @@ public class Validator {
     }
 
     private boolean shouldValidate (JsonSchema schema) {
-        return schema.getContext ().getVocabularies ().requiresValidation ();
+        return schema.getContext ().getVocabularies ().hasValidation ();
     }
 
     private boolean refAllowsSibling (ValidationStep step, JsonSchema schema) {
