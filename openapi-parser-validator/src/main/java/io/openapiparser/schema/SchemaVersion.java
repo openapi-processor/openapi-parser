@@ -249,8 +249,22 @@ public enum SchemaVersion {
         return isVocabulary (candidate, "/vocab/core");
     }
 
-    public boolean isFormatVocabulary (URI candidate) {
-        return isVocabulary (candidate, "/vocab/format");
+    public boolean isFormatAnnotationVocabulary (URI candidate) {
+        if (this == Draft201909) {
+            return isVocabulary (candidate, "/vocab/format");
+        }
+
+        // since 202012
+        return isVocabulary (candidate, "/vocab/format-annotation");
+    }
+
+    public boolean isFormatAssertionVocabulary (URI candidate) {
+        if (this == Draft201909) {
+            return isVocabulary (candidate, "/vocab/format");
+        }
+
+        // since 202012
+        return isVocabulary (candidate, "/vocab/format-assertion");
     }
 
     public boolean isMetaDataVocabulary (URI candidate) {

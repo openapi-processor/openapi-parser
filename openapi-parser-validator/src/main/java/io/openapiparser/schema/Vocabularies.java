@@ -14,52 +14,61 @@ public class Vocabularies {
     public static final Vocabularies ALL = new Vocabularies ();
 
     private final Map<URI, Boolean> vocabularies;
+    private final SchemaVersion version;
 
     private enum State {
-        REQUIRED, OPTIONAL, MISSING
+        MISSING, OPTIONAL, REQUIRED
     }
 
     private State applicator = State.REQUIRED;
     private State content = State.REQUIRED;
     private State core = State.REQUIRED;
-    private State format = State.REQUIRED;
+    private State formatAnnotation = State.REQUIRED;
+    private State formatAssertion = State.REQUIRED;
     private State metaData = State.REQUIRED;
     private State validation = State.REQUIRED;
 
     private Vocabularies () {
         this.vocabularies = Collections.emptyMap ();
+        this.version = SchemaVersion.getLatest ();
     }
 
-    public Vocabularies (Map<URI, Boolean> vocabularies) {
+    public Vocabularies (Map<URI, Boolean> vocabularies, SchemaVersion version) {
         this.vocabularies = vocabularies;
+        this.version = version;
     }
 
-    public boolean requiresApplicator () {
-        return applicator.equals (State.REQUIRED);
+    public boolean hasApplicator () {
+        return applicator.ordinal () > State.MISSING.ordinal ();
     }
 
-    public boolean requiresContent () {
-        return content.equals (State.REQUIRED);
+    public boolean hasContent () {
+        return content.ordinal () > State.MISSING.ordinal ();
     }
 
-    public boolean requiresFormat () {
-        return format.equals (State.REQUIRED);
+    public boolean hasFormatAnnotation () {
+        return formatAnnotation.ordinal () > State.MISSING.ordinal ();
     }
 
-    public boolean requiresMetaData () {
-        return metaData.equals (State.REQUIRED);
+    public boolean hasFormatAssertion () {
+        return formatAssertion.ordinal () > State.MISSING.ordinal ();
     }
 
-    public boolean requiresValidation () {
-        return validation.equals (State.REQUIRED);
+    public boolean hasMetaData () {
+        return metaData.ordinal () > State.MISSING.ordinal ();
+    }
+
+    public boolean hasValidation () {
+        return validation.ordinal () > State.MISSING.ordinal ();
     }
 
     public static Vocabularies create (Map<URI, Boolean> vocabularies, SchemaVersion version) {
-        Vocabularies result = new Vocabularies (vocabularies);
+        Vocabularies result = new Vocabularies (vocabularies, version);
         result.applicator = getState (vocabularies, version, version::isApplicatorVocabulary);
         result.content = getState (vocabularies, version, version::isContentVocabulary);
         result.core = getState (vocabularies, version, version::isCoreVocabulary);
-        result.format = getState (vocabularies, version, version::isFormatVocabulary);
+        result.formatAnnotation = getState (vocabularies, version, version::isFormatAnnotationVocabulary);
+        result.formatAssertion = getState (vocabularies, version, version::isFormatAssertionVocabulary);
         result.metaData = getState (vocabularies, version, version::isMetaDataVocabulary);
         result.validation = getState (vocabularies, version, version::isValidationVocabulary);
 

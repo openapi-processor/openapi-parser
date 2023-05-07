@@ -27,22 +27,23 @@ public class ValidatorSettingsDefaults {
         ValidatorSettings settings = new ValidatorSettings ();
         settings.setVersion (SchemaVersion.Draft7);
         settings.enableFormats (
-            DATE_TIME,
-            EMAIL,
-            HOSTNAME,
-            IPV4,
-            IPV6,
+            REGEX,
+            JSON_POINTER,
+            RELATIVE_JSON_POINTER,
+            URI_TEMPLATE,
             URI,
             URI_REFERENCE,
-            URI_TEMPLATE,
-            JSON_POINTER,
-            DATE,
-            TIME,
-            IDN_EMAIL,
-            IDN_HOSTNAME,
             IRI,
             IRI_REFERENCE,
-            RELATIVE_JSON_POINTER
+            IPV6,
+            IPV4,
+            HOSTNAME,
+            IDN_HOSTNAME,
+            EMAIL,
+            IDN_EMAIL,
+            DATE_TIME,
+            DATE,
+            TIME
         );
         return settings;
     }
@@ -51,15 +52,15 @@ public class ValidatorSettingsDefaults {
         ValidatorSettings settings = new ValidatorSettings ();
         settings.setVersion (SchemaVersion.Draft6);
         settings.enableFormats (
-            DATE_TIME,
-            EMAIL,
-            HOSTNAME,
-            IPV4,
-            IPV6,
-            URI,
-            URI_REFERENCE,
+            JSON_POINTER,
             URI_TEMPLATE,
-            JSON_POINTER
+            URI_REFERENCE,
+            URI,
+            IPV6,
+            IPV4,
+            HOSTNAME,
+            EMAIL,
+            DATE_TIME
         );
         return settings;
     }
@@ -68,12 +69,12 @@ public class ValidatorSettingsDefaults {
         ValidatorSettings settings = new ValidatorSettings ();
         settings.setVersion (SchemaVersion.Draft4);
         settings.enableFormats (
-            DATE_TIME,
-            EMAIL,
-            HOSTNAME,
-            IPV4,
+            URI,
             IPV6,
-            URI
+            IPV4,
+            HOSTNAME,
+            EMAIL,
+            DATE_TIME
         );
         return settings;
     }
