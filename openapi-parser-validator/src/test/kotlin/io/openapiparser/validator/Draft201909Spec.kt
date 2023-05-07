@@ -5,12 +5,11 @@
 
 package io.openapiparser.validator
 
-import io.kotest.core.annotation.Ignored
 import io.kotest.core.spec.style.FreeSpec
 import io.openapiparser.schema.Format
-import io.openapiparser.validator.support.*
+import io.openapiparser.validator.support.Exclude
+import io.openapiparser.validator.support.draftSpec
 
-//@Ignored
 class Draft201909Spec: FreeSpec ({
     val settings = ValidatorSettingsDefaults.draft201909()
     settings.enableFormats(*Format.values())
@@ -51,7 +50,4 @@ val draft201909Extras = listOf(
     Exclude("valid leap second, large positive time-offset"),
     Exclude("valid leap second, negative time-offset"),
     Exclude("valid leap second, large negative time-offset"),
-    // (optional) cross-draft.json
-    // todo requires 2020-12
-    Exclude("first item not a string is invalid")
 )
