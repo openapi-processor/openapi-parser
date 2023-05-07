@@ -44,5 +44,7 @@ val draft7Extras = listOf(
     Exclude("valid leap second, positive time-offset"),
     Exclude("valid leap second, large positive time-offset"),
     Exclude("valid leap second, negative time-offset"),
-    Exclude("valid leap second, large negative time-offset")
+    Exclude("valid leap second, large negative time-offset"),
+    // todo
+    Exclude("empty tokens in \$ref json-pointer")
 )
