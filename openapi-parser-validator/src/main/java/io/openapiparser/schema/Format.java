@@ -22,6 +22,7 @@ public enum Format {
     IRI ("iri"),
     IRI_REFERENCE ("iri-reference"),
     RELATIVE_JSON_POINTER ("relative-json-pointer"),
+    REGEX ("regex"),
 
     // draft-06
     URI_REFERENCE ("uri-reference"),
