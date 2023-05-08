@@ -3,7 +3,7 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser;
+package io.openapiprocessor.interfaces;
 
 /**
  * yaml/json parser abstraction.

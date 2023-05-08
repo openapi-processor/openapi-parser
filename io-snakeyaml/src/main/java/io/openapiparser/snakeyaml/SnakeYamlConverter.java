@@ -5,8 +5,8 @@
 
 package io.openapiparser.snakeyaml;
 
-import io.openapiparser.Converter;
-import io.openapiparser.ConverterException;
+import io.openapiprocessor.interfaces.Converter;
+import io.openapiprocessor.interfaces.ConverterException;
 import org.yaml.snakeyaml.Yaml;
 
 /**

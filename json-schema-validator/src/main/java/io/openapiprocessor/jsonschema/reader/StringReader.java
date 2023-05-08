@@ -5,7 +5,7 @@
 
 package io.openapiprocessor.jsonschema.reader;
 
-import io.openapiparser.Reader;
+import io.openapiprocessor.interfaces.Reader;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

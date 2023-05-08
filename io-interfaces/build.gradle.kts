@@ -7,8 +7,8 @@ publishing {
     publications {
         getByName<MavenPublication>("openapiparser") {
             pom {
-                name.set("openapi-parser-interfaces")
-                description.set("OpenAPI Parser Interfaces")
+                name.set("io-interfaces")
+                description.set("OpenAPI Processor Interfaces")
             }
         }
     }

@@ -10,7 +10,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
-import io.openapiparser.*;
+import io.openapiprocessor.interfaces.Converter;
+import io.openapiprocessor.interfaces.ConverterException;
 
 import java.util.regex.Pattern;
 

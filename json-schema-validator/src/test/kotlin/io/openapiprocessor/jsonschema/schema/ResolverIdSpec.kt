@@ -7,8 +7,8 @@ package io.openapiprocessor.jsonschema.schema
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.booleans.shouldBeTrue
-import io.openapiparser.Converter
-import io.openapiparser.Reader
+import io.openapiprocessor.interfaces.Converter
+import io.openapiprocessor.interfaces.Reader
 import io.openapiprocessor.jsonschema.reader.UriReader
 import io.openapiparser.snakeyaml.SnakeYamlConverter
 import java.net.URI

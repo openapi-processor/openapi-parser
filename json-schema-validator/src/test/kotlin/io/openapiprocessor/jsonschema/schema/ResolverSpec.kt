@@ -13,9 +13,9 @@ import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
-import io.openapiparser.Converter
-import io.openapiparser.ConverterException
-import io.openapiparser.Reader
+import io.openapiprocessor.interfaces.Converter
+import io.openapiprocessor.interfaces.ConverterException
+import io.openapiprocessor.interfaces.Reader
 import io.openapiprocessor.jsonschema.converter.Types.asMap
 import io.openapiparser.jackson.JacksonConverter
 import io.openapiparser.memory.Memory
@@ -95,7 +95,10 @@ class ResolverSpec: StringSpec({
     // mockk fails
     "throws if conversion fails".config(enabled = false) {
         val converter = mockk<Converter>()
-        every { converter.convert(any()) } throws ConverterException("failed", Exception())
+        every { converter.convert(any()) } throws ConverterException(
+            "failed",
+            Exception()
+        )
 
         val store = DocumentStore()
         val loader = DocumentLoader(

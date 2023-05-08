@@ -5,8 +5,8 @@
 
 package io.openapiprocessor.jsonschema.schema;
 
-import io.openapiparser.Converter;
-import io.openapiparser.Reader;
+import io.openapiprocessor.interfaces.Converter;
+import io.openapiprocessor.interfaces.Reader;
 import io.openapiprocessor.jsonschema.support.Strings;
 
 import java.io.InputStream;
