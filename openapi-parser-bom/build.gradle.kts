@@ -6,9 +6,9 @@ plugins {
 dependencies {
     constraints {
         api(project(":openapi-parser"))
-        api(project(":openapi-parser-interfaces"))
         api(project(":openapi-parser-jackson"))
         api(project(":json-schema-validator"))
+        api(project(":io-interfaces"))
     }
 }
 

@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":openapi-parser-interfaces"))
+    implementation(project(":io-interfaces"))
 
     implementation(platform(libs.jackson.bom))
     implementation(libs.jackson.databind)
