@@ -3,7 +3,7 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.snakeyaml;
+package io.openapiprocessor.snakeyaml;
 
 import io.openapiprocessor.interfaces.Converter;
 import io.openapiprocessor.interfaces.ConverterException;

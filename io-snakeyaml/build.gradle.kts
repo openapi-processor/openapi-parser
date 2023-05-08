@@ -13,8 +13,8 @@ publishing {
     publications {
         getByName<MavenPublication>("openapiparser") {
             pom {
-                name.set("openapi-parser-snakeyaml")
-                description.set("OpenAPI Parser snakeyaml YAML Converter")
+                name.set("io-snakeyaml")
+                description.set("OpenAPI Processor snakeyaml YAML Converter")
             }
         }
     }

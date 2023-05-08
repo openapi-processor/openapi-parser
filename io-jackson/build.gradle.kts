@@ -15,8 +15,8 @@ publishing {
     publications {
         getByName<MavenPublication>("openapiparser") {
             pom {
-                name.set("openapi-parser-jackson")
-                description.set("OpenAPI Parser Jackson JSON/YAML Converter")
+                name.set("io-jackson")
+                description.set("OpenAPI Processor Jackson JSON/YAML Converter")
             }
         }
     }

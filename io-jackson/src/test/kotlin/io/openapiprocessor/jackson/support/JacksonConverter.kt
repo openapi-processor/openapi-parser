@@ -3,11 +3,11 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.snakeyaml.support
+package io.openapiprocessor.jackson.support
 
-import io.openapiparser.snakeyaml.SnakeYamlConverter
+import io.openapiprocessor.jackson.JacksonConverter
 
 @Suppress("UNCHECKED_CAST")
-fun SnakeYamlConverter.convertToMap(api: String): Map<String, Any> {
+fun JacksonConverter.convertToMap(api: String): Map<String, Any> {
     return this.convert(api) as Map<String, Any>
 }

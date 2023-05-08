@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.kotest.core.spec.style.freeSpec
 import io.kotest.matchers.shouldBe
-import io.openapiparser.jackson.JacksonConverter
+import io.openapiprocessor.jackson.JacksonConverter
 import io.openapiprocessor.jsonschema.ouput.OutputConverter
 import io.openapiprocessor.jsonschema.schema.*
 import io.openapiprocessor.jsonschema.schema.UriSupport.createUri

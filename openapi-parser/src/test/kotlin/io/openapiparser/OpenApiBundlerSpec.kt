@@ -13,7 +13,7 @@ import io.kotest.matchers.shouldBe
 import io.openapiprocessor.jsonschema.converter.Types.asObject
 import io.openapiprocessor.jsonschema.reader.UriReader
 import io.openapiprocessor.jsonschema.schema.JsonPointer.from
-import io.openapiparser.snakeyaml.SnakeYamlConverter
+import io.openapiprocessor.snakeyaml.SnakeYamlConverter
 import io.openapiprocessor.jsonschema.schema.*
 
 class OpenApiBundlerSpec : StringSpec({

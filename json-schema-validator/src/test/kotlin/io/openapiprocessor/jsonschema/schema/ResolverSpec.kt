@@ -17,7 +17,7 @@ import io.openapiprocessor.interfaces.Converter
 import io.openapiprocessor.interfaces.ConverterException
 import io.openapiprocessor.interfaces.Reader
 import io.openapiprocessor.jsonschema.converter.Types.asMap
-import io.openapiparser.jackson.JacksonConverter
+import io.openapiprocessor.jackson.JacksonConverter
 import io.openapiparser.memory.Memory
 import io.openapiprocessor.jsonschema.reader.StringReader
 import io.openapiprocessor.jsonschema.reader.UriReader

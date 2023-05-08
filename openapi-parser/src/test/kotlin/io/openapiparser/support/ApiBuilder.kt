@@ -14,7 +14,7 @@ import io.openapiprocessor.jsonschema.schema.DocumentLoader
 import io.openapiprocessor.jsonschema.schema.DocumentStore
 import io.openapiprocessor.jsonschema.schema.Resolver
 import io.openapiprocessor.jsonschema.schema.SchemaVersion
-import io.openapiparser.snakeyaml.SnakeYamlConverter
+import io.openapiprocessor.snakeyaml.SnakeYamlConverter
 import io.openapiprocessor.interfaces.Converter
 import io.openapiprocessor.interfaces.Reader
 import java.net.URI

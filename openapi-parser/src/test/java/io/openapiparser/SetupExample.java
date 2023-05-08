@@ -6,7 +6,7 @@
 package io.openapiparser;
 
 import io.openapiparser.model.v30.OpenApi;
-import io.openapiparser.snakeyaml.SnakeYamlConverter;
+import io.openapiprocessor.snakeyaml.SnakeYamlConverter;
 import io.openapiprocessor.interfaces.Converter;
 import io.openapiprocessor.interfaces.Reader;
 import io.openapiprocessor.jsonschema.reader.UriReader;

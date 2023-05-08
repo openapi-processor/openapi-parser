@@ -9,7 +9,7 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.openapiprocessor.jsonschema.converter.Types.asMap
-import io.openapiparser.jackson.JacksonConverter
+import io.openapiprocessor.jackson.JacksonConverter
 import java.net.URI
 
 class JsonPointerSpec : StringSpec({

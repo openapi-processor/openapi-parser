@@ -3,14 +3,14 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.jackson
+package io.openapiprocessor.jackson
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import io.openapiprocessor.interfaces.ConverterException
-import io.openapiparser.jackson.support.convertToMap
+import io.openapiprocessor.jackson.support.convertToMap
 
 class JacksonConverterSpec : StringSpec({
 

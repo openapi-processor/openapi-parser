@@ -12,7 +12,7 @@ import io.openapiprocessor.jsonschema.schema.DocumentLoader
 import io.openapiprocessor.jsonschema.schema.JsonInstance
 import io.openapiprocessor.jsonschema.schema.SchemaStore
 import io.openapiprocessor.jsonschema.schema.SchemaVersion
-import io.openapiparser.snakeyaml.SnakeYamlConverter
+import io.openapiprocessor.snakeyaml.SnakeYamlConverter
 import io.openapiprocessor.jsonschema.validator.support.InstanceBuilder
 
 
