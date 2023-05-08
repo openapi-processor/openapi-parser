@@ -1,0 +1,3 @@
+== json-schema-validator-bom
+
+A "bill of materials" POM for json-schema-validator dependencies.
