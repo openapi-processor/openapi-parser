@@ -7,8 +7,8 @@ dependencies {
     api(project(":json-schema-validator"))
     api(project(":io-interfaces"))
 
+    testImplementation(project(":io-jackson"))
     testImplementation(project(":io-snakeyaml"))
-    testImplementation(project(":openapi-parser-jackson"))
     testImplementation(project(":memory-protocol"))
     testImplementation(platform(libs.jackson.bom))
     testImplementation(libs.jackson.databind)
