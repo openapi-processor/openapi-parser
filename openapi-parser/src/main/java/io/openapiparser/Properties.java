@@ -6,14 +6,15 @@
 package io.openapiparser;
 
 import io.openapiparser.converter.*;
-import io.openapiparser.schema.Bucket;
-import io.openapiparser.schema.JsonPointer;
+import io.openapiprocessor.jsonschema.converter.*;
+import io.openapiprocessor.jsonschema.schema.Bucket;
+import io.openapiprocessor.jsonschema.schema.JsonPointer;
 import io.openapiparser.support.Experimental;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.*;
 
-import static io.openapiparser.support.Nullness.nonNull;
+import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
 
 /**
  * base class of OpenAPI model objects to reduce duplication.

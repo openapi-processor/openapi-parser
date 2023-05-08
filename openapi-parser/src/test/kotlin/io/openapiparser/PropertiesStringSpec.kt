@@ -11,9 +11,9 @@ import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 import io.mockk.mockk
-import io.openapiparser.converter.NoValueException
-import io.openapiparser.converter.TypeMismatchException
-import io.openapiparser.schema.Bucket
+import io.openapiprocessor.jsonschema.converter.NoValueException
+import io.openapiprocessor.jsonschema.converter.TypeMismatchException
+import io.openapiprocessor.jsonschema.schema.Bucket
 
 class PropertiesStringSpec: StringSpec({
 
@@ -24,12 +24,14 @@ class PropertiesStringSpec: StringSpec({
     }
 
     "gets string" {
-        val bucket = Bucket(linkedMapOf<String, Any>("property" to "foo"))
+        val bucket =
+            Bucket(linkedMapOf<String, Any>("property" to "foo"))
         Properties(mockk(), bucket).getStringOrThrow("property") shouldBe "foo"
     }
 
     "get string throws if value is not a string" {
-        val bucket = Bucket(linkedMapOf<String, Any>("property" to 1))
+        val bucket =
+            Bucket(linkedMapOf<String, Any>("property" to 1))
         shouldThrow<TypeMismatchException> {
             Properties(mockk(), bucket).getStringOrThrow("property")
         }
@@ -48,7 +50,14 @@ class PropertiesStringSpec: StringSpec({
     }
 
     "gets nullable string array" {
-        val bucket = Bucket(linkedMapOf<String, Any>("property" to listOf("foo", "bar")))
+        val bucket = Bucket(
+            linkedMapOf<String, Any>(
+                "property" to listOf(
+                    "foo",
+                    "bar"
+                )
+            )
+        )
         Properties(mockk(), bucket).getStringsOrNull("property")
             .shouldContainExactly("foo", "bar")
     }
@@ -58,14 +67,29 @@ class PropertiesStringSpec: StringSpec({
     }
 
     "gets string array" {
-        val bucket = Bucket(linkedMapOf<String, Any>("property" to listOf("foo", "bar")))
+        val bucket = Bucket(
+            linkedMapOf<String, Any>(
+                "property" to listOf(
+                    "foo",
+                    "bar"
+                )
+            )
+        )
         Properties(mockk(), bucket).getStringsOrEmpty("property")
             .shouldContainExactly("foo", "bar")
     }
 
     // todo
     "gets string array throws if values are not strings".config(enabled = false) {
-        val bucket = Bucket(linkedMapOf<String, Any>("property" to listOf(1, 2, 3)))
+        val bucket = Bucket(
+            linkedMapOf<String, Any>(
+                "property" to listOf(
+                    1,
+                    2,
+                    3
+                )
+            )
+        )
         shouldThrow<TypeMismatchException> {
             Properties(mockk(), bucket).getStringsOrNull("property")
         }

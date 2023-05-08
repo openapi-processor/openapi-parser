@@ -6,13 +6,14 @@
 package io.openapiparser.converter;
 
 import io.openapiparser.Factory;
-import io.openapiparser.schema.Scope;
+import io.openapiprocessor.jsonschema.converter.PropertyConverter;
+import io.openapiprocessor.jsonschema.schema.Scope;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Collections;
 import java.util.Map;
 
-import static io.openapiparser.converter.Types.convertMapOrNull;
+import static io.openapiprocessor.jsonschema.converter.Types.convertMapOrNull;
 
 /**
  * get a map of {@link T}s from {@code name} property {@code value}.

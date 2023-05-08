@@ -5,7 +5,6 @@
 
 package io.openapiparser.model.v31
 
-import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainExactly
@@ -14,7 +13,6 @@ import io.kotest.matchers.maps.shouldContainKey
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import io.openapiparser.converter.NoValueException
 
 /**
  * @see [io.openapiparser.model.v3x.SchemaSpec]

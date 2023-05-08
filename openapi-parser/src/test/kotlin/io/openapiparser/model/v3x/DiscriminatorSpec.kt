@@ -10,7 +10,7 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.maps.shouldBeEmpty
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import io.openapiparser.converter.NoValueException
+import io.openapiprocessor.jsonschema.converter.NoValueException
 import io.openapiparser.model.v30.discriminator as discriminator30
 import io.openapiparser.model.v31.discriminator as discriminator31
 

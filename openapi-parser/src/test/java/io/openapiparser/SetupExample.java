@@ -5,14 +5,15 @@
 
 package io.openapiparser;
 
-import io.openapiparser.jackson.JacksonConverter;
 import io.openapiparser.model.v30.OpenApi;
-import io.openapiparser.reader.UriReader;
-import io.openapiparser.schema.*;
 import io.openapiparser.snakeyaml.SnakeYamlConverter;
-import io.openapiparser.validator.Validator;
-import io.openapiparser.validator.ValidatorSettings;
-import io.openapiparser.validator.result.*;
+import io.openapiprocessor.jsonschema.reader.UriReader;
+import io.openapiprocessor.jsonschema.schema.*;
+import io.openapiprocessor.jsonschema.validator.Validator;
+import io.openapiprocessor.jsonschema.validator.ValidatorSettings;
+import io.openapiprocessor.jsonschema.validator.result.Message;
+import io.openapiprocessor.jsonschema.validator.result.MessageCollector;
+import io.openapiprocessor.jsonschema.validator.result.MessageTextBuilder;
 
 import java.util.LinkedList;
 

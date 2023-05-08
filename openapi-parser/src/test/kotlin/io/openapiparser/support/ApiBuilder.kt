@@ -6,14 +6,14 @@
 package io.openapiparser.support
 
 import io.openapiparser.*
-import io.openapiparser.converter.Types
-import io.openapiparser.reader.StringReader
-import io.openapiparser.reader.UriReader
-import io.openapiparser.schema.Bucket
-import io.openapiparser.schema.DocumentLoader
-import io.openapiparser.schema.DocumentStore
-import io.openapiparser.schema.Resolver
-import io.openapiparser.schema.SchemaVersion
+import io.openapiprocessor.jsonschema.converter.Types
+import io.openapiprocessor.jsonschema.reader.StringReader
+import io.openapiprocessor.jsonschema.reader.UriReader
+import io.openapiprocessor.jsonschema.schema.Bucket
+import io.openapiprocessor.jsonschema.schema.DocumentLoader
+import io.openapiprocessor.jsonschema.schema.DocumentStore
+import io.openapiprocessor.jsonschema.schema.Resolver
+import io.openapiprocessor.jsonschema.schema.SchemaVersion
 import io.openapiparser.snakeyaml.SnakeYamlConverter
 import java.net.URI
 import io.openapiparser.model.v30.OpenApi as OpenApi30
@@ -23,7 +23,8 @@ class ApiBuilder {
     private var api: String? = null
     private lateinit var apiUri: URI
     private var converter: Converter = SnakeYamlConverter()
-    private var documents: DocumentStore = DocumentStore()
+    private var documents: DocumentStore =
+        DocumentStore()
 
     fun withApi(api: String): ApiBuilder {
         return withYaml("file:///any", api.trimIndent())
@@ -54,7 +55,10 @@ class ApiBuilder {
 
         return OpenApi30(
             Context(result.scope, result.registry),
-            Bucket(result.scope, Types.asMap(result.document)!!)
+            Bucket(
+                result.scope,
+                Types.asMap(result.document)!!
+            )
         )
     }
 
@@ -64,7 +68,10 @@ class ApiBuilder {
 
         return OpenApi31(
             Context(result.scope, result.registry),
-            Bucket(result.scope, Types.asMap(result.document)!!)
+            Bucket(
+                result.scope,
+                Types.asMap(result.document)!!
+            )
         )
     }
 
@@ -81,13 +88,20 @@ class ApiBuilder {
 
         return factory(
             Context(result.scope, result.registry),
-            Bucket(result.scope, Types.asMap(result.document)!!)
+            Bucket(
+                result.scope,
+                Types.asMap(result.document)!!
+            )
         )
     }
 
     private fun createResolver(version: SchemaVersion): Resolver {
         val loader = DocumentLoader(getReader(), converter)
-        return Resolver(documents, loader, Resolver.Settings(version))
+        return Resolver(
+            documents,
+            loader,
+            Resolver.Settings(version)
+        )
     }
 
     private fun withYaml(baseUri: String, api: String): ApiBuilder {

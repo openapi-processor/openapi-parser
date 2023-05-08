@@ -14,10 +14,10 @@ import io.mockk.mockk
 import io.mockk.verify
 import io.openapiparser.OpenApiSchemas.OPENAPI_SCHEMA_30_ID
 import io.openapiparser.OpenApiSchemas.OPENAPI_SCHEMA_31_ID
-import io.openapiparser.schema.*
-import io.openapiparser.schema.UriSupport.emptyUri
-import io.openapiparser.validator.Validator
-import io.openapiparser.validator.steps.ValidationStep
+import io.openapiprocessor.jsonschema.schema.*
+import io.openapiprocessor.jsonschema.schema.UriSupport.emptyUri
+import io.openapiprocessor.jsonschema.validator.Validator
+import io.openapiprocessor.jsonschema.validator.steps.ValidationStep
 import io.openapiparser.model.v30.OpenApi as OpenApi30
 import io.openapiparser.model.v31.OpenApi as OpenApi31
 
@@ -73,7 +73,11 @@ class OpenApiResultSpec: StringSpec({
     "should validate api 30".config(enabled = false) {
         val sctx = mockk<JsonSchemaContext>()
         val document = emptyMap<String, Any>()
-        val scope = Scope(emptyUri(), emptyUri(), SchemaVersion.Draft4)
+        val scope = Scope(
+            emptyUri(),
+            emptyUri(),
+            SchemaVersion.Draft4
+        )
         val bucket = Bucket(scope, "/unused", document)
         val schema = JsonSchemaBoolean(true, sctx)
 
@@ -100,7 +104,11 @@ class OpenApiResultSpec: StringSpec({
     "should validate api 31".config(enabled = false) {
         val sctx = mockk<JsonSchemaContext>()
         val document = emptyMap<String, Any>()
-        val scope = Scope(emptyUri(), emptyUri(), SchemaVersion.Draft201909)
+        val scope = Scope(
+            emptyUri(),
+            emptyUri(),
+            SchemaVersion.Draft201909
+        )
         val bucket = Bucket(scope, "/unused", document)
         val schema = JsonSchemaBoolean(true, sctx)
 

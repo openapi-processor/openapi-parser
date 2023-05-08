@@ -11,7 +11,7 @@ import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
-import io.openapiparser.converter.NoValueException
+import io.openapiprocessor.jsonschema.converter.NoValueException
 
 /**
  * @see [io.openapiparser.model.v3x.SchemaSpec]

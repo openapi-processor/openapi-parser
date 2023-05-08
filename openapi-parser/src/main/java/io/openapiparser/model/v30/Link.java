@@ -7,7 +7,7 @@ package io.openapiparser.model.v30;
 
 import io.openapiparser.Context;
 import io.openapiparser.Properties;
-import io.openapiparser.schema.Bucket;
+import io.openapiprocessor.jsonschema.schema.Bucket;
 
 import java.util.Map;
 

@@ -6,25 +6,23 @@
 package io.openapiparser
 
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
-import io.openapiparser.reader.UriReader
-import io.openapiparser.schema.*
+import io.openapiprocessor.jsonschema.reader.UriReader
 import io.openapiparser.snakeyaml.SnakeYamlConverter
-import io.openapiparser.validator.*
-import io.openapiparser.validator.result.FullResultTextBuilder
-import io.openapiparser.validator.result.ListResultBuilder
-import io.openapiparser.validator.result.MessageCollector
-import io.openapiparser.validator.result.MessageTextBuilder
+import io.openapiprocessor.jsonschema.schema.*
+import io.openapiprocessor.jsonschema.validator.Validator
 
 class ValidateSpec: StringSpec({
 
     "validate openapi with \$ref into another file" {
-        val loader = DocumentLoader(UriReader(), SnakeYamlConverter())
+        val loader = DocumentLoader(
+            UriReader(),
+            SnakeYamlConverter()
+        )
 
         val documents = DocumentStore()
         val settings = Resolver.Settings (SchemaVersion.Draft4)
-        val resolver = Resolver (documents, loader, settings)
+        val resolver = Resolver(documents, loader, settings)
 
         val store = SchemaStore(loader)
         store.registerDraft4()

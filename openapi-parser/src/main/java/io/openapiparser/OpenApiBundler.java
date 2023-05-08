@@ -5,16 +5,16 @@
 
 package io.openapiparser;
 
-import io.openapiparser.schema.Keyword;
-import io.openapiparser.schema.Keywords;
-import io.openapiparser.schema.*;
+import io.openapiprocessor.jsonschema.schema.Keyword;
+import io.openapiprocessor.jsonschema.schema.Keywords;
+import io.openapiprocessor.jsonschema.schema.*;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
 import java.util.*;
 
-import static io.openapiparser.converter.Types.*;
-import static io.openapiparser.schema.Scope.createScope;
+import static io.openapiprocessor.jsonschema.converter.Types.*;
+import static io.openapiprocessor.jsonschema.schema.Scope.createScope;
 
 public class OpenApiBundler {
     private final Context context;
@@ -106,7 +106,7 @@ public class OpenApiBundler {
             Keyword keyword = version.getKeyword (name);
             boolean navigable = keyword != null && keyword.isNavigable ();
 
-            if (name.equals (io.openapiparser.schema.Keywords.REF) && isString (value)) {
+            if (name.equals (Keywords.REF) && isString (value)) {
                 Runnable modify = walkRef (bucket, propLocation);
                 if (modify != null) {
                     modifications.add (modify);

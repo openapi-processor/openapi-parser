@@ -6,7 +6,8 @@
 package io.openapiparser.converter;
 
 import io.openapiparser.Factory;
-import io.openapiparser.schema.Scope;
+import io.openapiprocessor.jsonschema.converter.NoValueException;
+import io.openapiprocessor.jsonschema.schema.Scope;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**

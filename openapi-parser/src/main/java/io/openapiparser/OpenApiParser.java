@@ -5,14 +5,16 @@
 
 package io.openapiparser;
 
-import io.openapiparser.converter.StringNotNullConverter;
-import io.openapiparser.schema.*;
+import io.openapiprocessor.jsonschema.converter.StringNotNullConverter;
+import io.openapiprocessor.jsonschema.schema.Bucket;
+import io.openapiprocessor.jsonschema.schema.Resolver;
+import io.openapiprocessor.jsonschema.schema.ResolverResult;
 
 import java.net.URI;
 
 import static io.openapiparser.Keywords.OPENAPI;
-import static io.openapiparser.converter.Types.asMap;
-import static io.openapiparser.support.Nullness.nonNull;
+import static io.openapiprocessor.jsonschema.converter.Types.asMap;
+import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
 
 public class OpenApiParser {
     private final Resolver resolver;

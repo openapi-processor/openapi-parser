@@ -6,12 +6,10 @@
 package io.openapiparser;
 
 import io.openapiparser.model.v30.OpenApi;
-import io.openapiparser.ouput.OutputConverter;
-import io.openapiparser.ouput.OutputUnit;
-import io.openapiparser.schema.*;
-import io.openapiparser.validator.Validator;
-import io.openapiparser.validator.ValidationMessage;
-import io.openapiparser.validator.steps.ValidationStep;
+import io.openapiprocessor.jsonschema.schema.*;
+import io.openapiprocessor.jsonschema.validator.ValidationMessage;
+import io.openapiprocessor.jsonschema.validator.Validator;
+import io.openapiprocessor.jsonschema.validator.steps.ValidationStep;
 
 import java.util.Collection;
 import java.util.Collections;

@@ -10,7 +10,7 @@ import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.nulls.shouldBeNull
 import io.mockk.mockk
-import io.openapiparser.schema.Bucket
+import io.openapiprocessor.jsonschema.schema.Bucket
 
 class PropertiesBooleanSpec: StringSpec({
 
@@ -19,7 +19,8 @@ class PropertiesBooleanSpec: StringSpec({
     }
 
     "get boolean" {
-        val bucket = Bucket(linkedMapOf<String, Any>("property" to true))
+        val bucket =
+            Bucket(linkedMapOf<String, Any>("property" to true))
         Properties(mockk(), bucket).getBooleanOrNull("property")?.shouldBeTrue()
     }
 

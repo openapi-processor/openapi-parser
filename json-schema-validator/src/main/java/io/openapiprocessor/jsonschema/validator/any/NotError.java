@@ -1,0 +1,19 @@
+/*
+ * Copyright 2022 https://github.com/openapi-processor/openapi-parser
+ * PDX-License-Identifier: Apache-2.0
+ */
+
+package io.openapiprocessor.jsonschema.validator.any;
+
+import io.openapiprocessor.jsonschema.schema.JsonInstance;
+import io.openapiprocessor.jsonschema.schema.JsonSchema;
+import io.openapiprocessor.jsonschema.validator.ValidationMessage;
+
+/**
+ * Created by {@link NotStep}.
+ */
+public class NotError extends ValidationMessage {
+    public NotError (JsonSchema schema, JsonInstance instance) {
+        super(schema, instance, "not", "should not validate to true");
+    }
+}

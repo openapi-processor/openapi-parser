@@ -6,7 +6,7 @@
 package io.openapiparser.model.v30;
 
 import io.openapiparser.support.Required;
-import io.openapiparser.converter.NoValueException;
+import io.openapiprocessor.jsonschema.converter.NoValueException;
 
 /**
  * the <em>Reference</em> object.

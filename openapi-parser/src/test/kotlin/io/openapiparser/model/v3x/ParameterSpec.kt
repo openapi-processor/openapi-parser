@@ -14,7 +14,7 @@ import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
-import io.openapiparser.converter.NoValueException
+import io.openapiprocessor.jsonschema.converter.NoValueException
 import io.openapiparser.model.v30.Example as Example30
 import io.openapiparser.model.v30.MediaType as MediaType30
 import io.openapiparser.model.v30.parameter as parameter30

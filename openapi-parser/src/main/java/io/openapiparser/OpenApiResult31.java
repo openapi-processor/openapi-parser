@@ -6,9 +6,11 @@
 package io.openapiparser;
 
 import io.openapiparser.model.v31.OpenApi;
-import io.openapiparser.schema.*;
-import io.openapiparser.validator.ValidationMessage;
-import io.openapiparser.validator.Validator;
+import io.openapiprocessor.jsonschema.schema.Bucket;
+import io.openapiprocessor.jsonschema.schema.DocumentStore;
+import io.openapiprocessor.jsonschema.schema.SchemaStore;
+import io.openapiprocessor.jsonschema.validator.ValidationMessage;
+import io.openapiprocessor.jsonschema.validator.Validator;
 
 import java.util.Collection;
 import java.util.Collections;

@@ -9,7 +9,7 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 import io.mockk.mockk
-import io.openapiparser.schema.Bucket
+import io.openapiprocessor.jsonschema.schema.Bucket
 
 class PropertiesNumberSpec: StringSpec({
 
@@ -20,7 +20,8 @@ class PropertiesNumberSpec: StringSpec({
     }
 
     "get number" {
-        val bucket = Bucket(linkedMapOf<String, Any>("property" to 9.9))
+        val bucket =
+            Bucket(linkedMapOf<String, Any>("property" to 9.9))
         Properties(mockk(), bucket).getNumberOrNull("property").shouldBe(9.9)
     }
 
@@ -31,7 +32,8 @@ class PropertiesNumberSpec: StringSpec({
     }
 
     "get integer" {
-        val bucket = Bucket(linkedMapOf<String, Any>("property" to 9))
+        val bucket =
+            Bucket(linkedMapOf<String, Any>("property" to 9))
         Properties(mockk(), bucket).getIntegerOrNull("property").shouldBe(9)
     }
 

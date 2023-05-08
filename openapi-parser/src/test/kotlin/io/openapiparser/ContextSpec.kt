@@ -5,15 +5,7 @@
 
 package io.openapiparser
 
-import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.shouldBe
-import io.mockk.every
-import io.mockk.mockk
-import io.openapiparser.jackson.JacksonConverter
-import io.openapiparser.reader.StringReader
-import java.lang.Exception
-import java.net.URI
 
 class ContextSpec : StringSpec({
 

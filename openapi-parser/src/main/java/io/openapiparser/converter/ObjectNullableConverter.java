@@ -6,14 +6,16 @@
 package io.openapiparser.converter;
 
 import io.openapiparser.Factory;
-import io.openapiparser.schema.Bucket;
-import io.openapiparser.schema.Scope;
+import io.openapiprocessor.jsonschema.converter.PropertyConverter;
+import io.openapiprocessor.jsonschema.converter.TypeMismatchException;
+import io.openapiprocessor.jsonschema.schema.Bucket;
+import io.openapiprocessor.jsonschema.schema.Scope;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
 
-import static io.openapiparser.converter.Types.asMap;
-import static io.openapiparser.converter.Types.isMap;
+import static io.openapiprocessor.jsonschema.converter.Types.asMap;
+import static io.openapiprocessor.jsonschema.converter.Types.isMap;
 
 /**
  *  get a {@link T} object from the property.

@@ -5,11 +5,12 @@
 
 package io.openapiparser.converter;
 
+import io.openapiprocessor.jsonschema.converter.PropertyConverter;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.*;
 
-import static io.openapiparser.converter.Types.convertOrNull;
+import static io.openapiprocessor.jsonschema.converter.Types.convertOrNull;
 
 /**
  * get a collection of {@link String}s.

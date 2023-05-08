@@ -10,24 +10,32 @@ import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import io.openapiparser.converter.Types.asObject
-import io.openapiparser.reader.UriReader
-import io.openapiparser.schema.*
-import io.openapiparser.schema.JsonPointer.from
+import io.openapiprocessor.jsonschema.converter.Types.asObject
+import io.openapiprocessor.jsonschema.reader.UriReader
+import io.openapiprocessor.jsonschema.schema.JsonPointer.from
 import io.openapiparser.snakeyaml.SnakeYamlConverter
+import io.openapiprocessor.jsonschema.schema.*
 
 class OpenApiBundlerSpec : StringSpec({
 
     fun resolve(documentUri: String): ResolverResult {
         val documents = DocumentStore()
-        val loader = DocumentLoader(UriReader(), SnakeYamlConverter())
-        val resolver = Resolver(documents, loader, Resolver.Settings(SchemaVersion.Draft4))
+        val loader = DocumentLoader(
+            UriReader(),
+            SnakeYamlConverter()
+        )
+        val resolver = Resolver(
+            documents,
+            loader,
+            Resolver.Settings(SchemaVersion.Draft4)
+        )
         return resolver.resolve(documentUri)
     }
 
     fun bundle30(result: ResolverResult): Bucket {
         val context = Context(result.scope, result.registry)
-        val bucket = Bucket(result.scope, asObject(result.document))
+        val bucket =
+            Bucket(result.scope, asObject(result.document))
         val api = OpenApiResult30(context, bucket, result.documents)
         val bundle = api.bundle()
         return Bucket.toBucket(result.scope, bundle)!!

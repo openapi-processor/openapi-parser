@@ -5,14 +5,14 @@
 
 package io.openapiparser;
 
-import io.openapiparser.converter.UriConverter;
-import io.openapiparser.schema.*;
+import io.openapiprocessor.jsonschema.converter.UriConverter;
+import io.openapiprocessor.jsonschema.schema.*;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
 
-import static io.openapiparser.schema.Keywords.REF;
-import static io.openapiparser.support.Nullness.nonNull;
+import static io.openapiprocessor.jsonschema.schema.Keywords.REF;
+import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
 
 /**
  * the context is used to resolve $ref's.

@@ -4,7 +4,7 @@
  */
 package io.openapiparser;
 
-import io.openapiparser.schema.Bucket;
+import io.openapiprocessor.jsonschema.schema.Bucket;
 
 public class Factory<T> {
     private final Context context;

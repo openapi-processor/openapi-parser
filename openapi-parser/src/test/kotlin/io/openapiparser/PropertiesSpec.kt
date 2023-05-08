@@ -13,11 +13,11 @@ import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 import io.mockk.mockk
-import io.openapiparser.converter.NoValueException
-import io.openapiparser.converter.TypeMismatchException
-import io.openapiparser.schema.Bucket
-import io.openapiparser.schema.SchemaVersion
-import io.openapiparser.schema.Scope
+import io.openapiprocessor.jsonschema.converter.NoValueException
+import io.openapiprocessor.jsonschema.converter.TypeMismatchException
+import io.openapiprocessor.jsonschema.schema.Bucket
+import io.openapiprocessor.jsonschema.schema.SchemaVersion
+import io.openapiprocessor.jsonschema.schema.Scope
 import java.net.URI
 
 class PropertiesSpec: StringSpec({
@@ -32,7 +32,8 @@ class PropertiesSpec: StringSpec({
     }
 
     "get raw value" {
-        val bucket = Bucket(linkedMapOf<String, Any>("foo" to "bar"))
+        val bucket =
+            Bucket(linkedMapOf<String, Any>("foo" to "bar"))
         Properties(mockk(), bucket).getRawValue("foo").shouldBe("bar")
     }
 
@@ -44,7 +45,8 @@ class PropertiesSpec: StringSpec({
     }
 
     "gets object" {
-        val bucket = Bucket(linkedMapOf<String, Any>("foo" to mapOf<String, Any>()))
+        val bucket =
+            Bucket(linkedMapOf<String, Any>("foo" to mapOf<String, Any>()))
 
         val scope = Scope.createScope(URI.create("https://foo"), bucket.rawValues, anyVersion)
         val props = Properties(Context(scope, mockk()), bucket)
@@ -53,7 +55,8 @@ class PropertiesSpec: StringSpec({
     }
 
     "gets object throws if value is not an object" {
-        val bucket = Bucket(linkedMapOf<String, Any>("foo" to "no object"))
+        val bucket =
+            Bucket(linkedMapOf<String, Any>("foo" to "no object"))
 
         val scope = Scope.createScope(URI.create("https://foo"), bucket.rawValues, anyVersion)
         val props = Properties(Context(scope, mockk()), bucket)
@@ -80,10 +83,14 @@ class PropertiesSpec: StringSpec({
     }
 
     "get objects array" {
-        val bucket = Bucket( linkedMapOf<String, Any>("property" to listOf(
-            mapOf<String, Any>("foo" to "bar"),
-            mapOf<String, Any>("foos" to "bars")
-        )))
+        val bucket = Bucket(
+            linkedMapOf<String, Any>(
+                "property" to listOf(
+                    mapOf<String, Any>("foo" to "bar"),
+                    mapOf<String, Any>("foos" to "bars")
+                )
+            )
+        )
 
         val scope = Scope.createScope(URI.create("https://foo"), bucket.rawValues, anyVersion)
         val props = Properties(Context(scope, mockk()), bucket)
@@ -92,10 +99,14 @@ class PropertiesSpec: StringSpec({
     }
 
     "get objects array throws if any value is not an object" {
-        val bucket = Bucket(linkedMapOf<String, Any>("property" to listOf(
-            mapOf<String, Any>("foo" to "bar"),
-            "not an object"
-        )))
+        val bucket = Bucket(
+            linkedMapOf<String, Any>(
+                "property" to listOf(
+                    mapOf<String, Any>("foo" to "bar"),
+                    "not an object"
+                )
+            )
+        )
 
         val scope = Scope.createScope(URI.create("https://foo"), bucket.rawValues, anyVersion)
         val props = Properties(Context(scope, mockk()), bucket)
@@ -106,11 +117,13 @@ class PropertiesSpec: StringSpec({
     }
 
     "get extension values" {
-        val bucket = Bucket(linkedMapOf<String, Any>(
-            "property" to "foo",
-            "x-foo" to "foo extension",
-            "x-bar" to linkedMapOf<String, Any>()
-        ))
+        val bucket = Bucket(
+            linkedMapOf<String, Any>(
+                "property" to "foo",
+                "x-foo" to "foo extension",
+                "x-bar" to linkedMapOf<String, Any>()
+            )
+        )
         val props = Properties(mockk(), bucket)
 
         val extensions = props.extensions
@@ -119,9 +132,11 @@ class PropertiesSpec: StringSpec({
     }
 
     "gets empty extension values if there are no extensions" {
-        val bucket = Bucket(linkedMapOf<String, Any>(
-            "property" to "foo",
-        ))
+        val bucket = Bucket(
+            linkedMapOf<String, Any>(
+                "property" to "foo",
+            )
+        )
         val props = Properties(mockk(), bucket)
 
         val extensions = props.extensions

@@ -5,12 +5,14 @@
 
 package io.openapiparser.converter;
 
+import io.openapiprocessor.jsonschema.converter.PropertyConverter;
+import io.openapiprocessor.jsonschema.converter.Types;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Collections;
 import java.util.Map;
 
-import static io.openapiparser.support.Nullness.nonNull;
+import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
 
 /**
  * get a map of {@link String}s from {@code name} property {@code value}.

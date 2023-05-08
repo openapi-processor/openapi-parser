@@ -9,7 +9,7 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
-import io.openapiparser.converter.NoValueException
+import io.openapiprocessor.jsonschema.converter.NoValueException
 import io.openapiparser.model.v30.license as license30
 import io.openapiparser.model.v31.license as license31
 

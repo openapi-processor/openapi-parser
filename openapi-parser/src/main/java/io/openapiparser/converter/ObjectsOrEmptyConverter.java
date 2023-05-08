@@ -6,16 +6,16 @@
 package io.openapiparser.converter;
 
 import io.openapiparser.Factory;
-import io.openapiparser.schema.JsonPointer;
-import io.openapiparser.schema.Scope;
+import io.openapiprocessor.jsonschema.converter.PropertyConverter;
+import io.openapiprocessor.jsonschema.schema.JsonPointer;
+import io.openapiprocessor.jsonschema.schema.Scope;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.net.URI;
 import java.util.*;
 
-import static io.openapiparser.converter.Types.convertOrNull;
-import static io.openapiparser.support.Nullness.nonNull;
+import static io.openapiprocessor.jsonschema.converter.Types.convertOrNull;
+import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
 
 /**
  * get a collection of {@link T}s.

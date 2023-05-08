@@ -7,8 +7,8 @@ package io.openapiparser.model.v31;
 
 import io.openapiparser.*;
 import io.openapiparser.Properties;
-import io.openapiparser.converter.NoValueException;
-import io.openapiparser.schema.Bucket;
+import io.openapiprocessor.jsonschema.converter.NoValueException;
+import io.openapiprocessor.jsonschema.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.*;
