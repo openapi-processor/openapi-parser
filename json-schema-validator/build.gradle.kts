@@ -9,7 +9,7 @@ dependencies {
 
     testImplementation(project(":memory-protocol"))
     testImplementation(project(":openapi-parser-jackson"))
-    testImplementation(project(":openapi-parser-snakeyaml"))
+    testImplementation(project(":io-snakeyaml"))
     testImplementation(platform(libs.jackson.bom))
     testImplementation(libs.jackson.databind)
     testImplementation(libs.jackson.yaml)

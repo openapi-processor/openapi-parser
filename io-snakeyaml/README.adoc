@@ -1,0 +1,9 @@
+:interfaces: https://github.com/openapi-processor/openapi-parser/tree/master/io-interfaces
+:converter: https://github.com/openapi-processor/openapi-parser/blob/master/io-interfaces/src/main/java/io/openapiparser/Converter.java
+:snakeyaml: https://bitbucket.org/snakeyaml/snakeyaml/src/master/
+
+== openapi-parser-snakeyaml
+
+link:{converter}[`Converter`] implementation based on link:{snakeyaml}}[snakeyaml].
+
+It does convert yaml OpenAPI documents.
