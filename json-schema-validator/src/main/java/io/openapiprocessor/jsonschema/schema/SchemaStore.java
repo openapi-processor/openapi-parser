@@ -217,7 +217,12 @@ public class SchemaStore {
             throw new RuntimeException ();
         }
 
-       return metaSchemaSchema.getVocabulary ();
+        Vocabularies vocabulary = metaSchemaSchema.getVocabulary ();
+        if (vocabulary == null) {
+            return Vocabularies.ALL;
+        }
+
+        return vocabulary;
     }
 
     private @Nullable URI getMetaSchema (Object document) {
