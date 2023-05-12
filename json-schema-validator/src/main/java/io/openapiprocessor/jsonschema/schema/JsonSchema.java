@@ -128,29 +128,27 @@ public interface JsonSchema {
     }
 
     default JsonSchemas getItems () {
-        return new JsonSchemas ();  // default empty schema (draft 4)
+        return new JsonSchemas ();
     }
 
     default JsonSchemas getAdditionalItems () {
-        return new JsonSchemas (); // default empty schema (draft 4)
+        return new JsonSchemas ();
     }
 
     default @Nullable JsonSchema getUnevaluatedItems () {
-        return null; // default empty schema (draft 2019-09)
+        return null;
     }
 
     default @Nullable Integer getMaxItems () {
         return null;
     }
 
-    // todo remove default
-    default Integer getMinItems () {
-        return 0;
+    default @Nullable Integer getMinItems () {
+        return null;
     }
 
-    // todo remove default
-    default boolean isUniqueItems () {
-        return false;
+    default @Nullable Boolean isUniqueItems () {
+        return null;
     }
 
     default @Nullable JsonSchema getContains () {

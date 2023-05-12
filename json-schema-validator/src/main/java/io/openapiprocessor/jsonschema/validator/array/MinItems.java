@@ -19,10 +19,13 @@ import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
 public class MinItems {
 
     public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
+        Integer minItems = schema.getMinItems ();
+        if (minItems == null)
+            return;
+
         MinItemsStep step = new MinItemsStep (schema, instance);
 
         Collection<Object> instanceValue = getInstanceValue (instance);
-        int minItems = schema.getMinItems ();
         if (instanceValue.size () < minItems) {
             step.setInvalid ();
         }

@@ -214,11 +214,7 @@ public class JsonSchemaObject implements JsonSchema {
 
     @Override
     public @Nullable Integer getMinLength () {
-        final Integer minLength = schemaObject.convert ("minLength", new IntegerConverter ());
-        if (minLength == null)
-            return null;
-
-        return minLength;
+        return schemaObject.convert ("minLength", new IntegerConverter ());
     }
 
     @Override
@@ -279,21 +275,13 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     @Override
-    public Integer getMinItems () {
-        Integer minItems = schemaObject.convert ("minItems", new IntegerConverter ());
-        if (minItems == null)
-            return 0;
-
-        return minItems;
+    public @Nullable Integer getMinItems () {
+        return schemaObject.convert ("minItems", new IntegerConverter ());
     }
 
     @Override
-    public boolean isUniqueItems () {
-        Boolean unique = schemaObject.convert ("uniqueItems", new BooleanConverter ());
-        if (unique == null)
-            return false;
-
-        return unique;
+    public @Nullable Boolean isUniqueItems () {
+        return schemaObject.convert ("uniqueItems", new BooleanConverter ());
     }
 
     public @Nullable JsonSchema getContains () {
@@ -364,34 +352,16 @@ public class JsonSchemaObject implements JsonSchema {
 
     @Override
     public @Nullable Map<String, JsonDependency> getDependencies () {
-        Map<String, JsonDependency> dependencies = schemaObject.convert (
-            "dependencies", new MapDependencyConverter (context));
-
-        if (dependencies == null)
-            return null;
-
-        return dependencies;
+        return schemaObject.convert ("dependencies", new MapDependencyConverter (context));
     }
 
     @Override
     public @Nullable Map<String, JsonSchema> getDependentSchemas () {
-        Map<String, JsonSchema> dependentSchemas = schemaObject.convert (
-            "dependentSchemas", new MapJsonSchemasConverter (context));
-
-        if (dependentSchemas == null)
-            return null;
-
-        return dependentSchemas;
+        return schemaObject.convert ("dependentSchemas", new MapJsonSchemasConverter (context));
     }
 
     public @Nullable Map<String, Set<String>> getDependentRequired () {
-        Map<String, Set<String>> dependentRequired = schemaObject.convert (
-            "dependentRequired", new MapSetStringsOrEmptyConverter (ResponseType.Null));
-
-        if (dependentRequired == null)
-            return null;
-
-        return dependentRequired;
+        return schemaObject.convert ("dependentRequired", new MapSetStringsOrEmptyConverter (ResponseType.Null));
     }
 
     @Override

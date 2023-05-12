@@ -21,10 +21,14 @@ import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
 public class UniqueItems {
 
     public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
+        Boolean uniqueItems = schema.isUniqueItems ();
+        if (uniqueItems == null)
+            return;
+
         UniqueItemsStep step = new UniqueItemsStep (schema, instance);
 
-        Collection<Object> instanceValue = getInstanceValue (instance);
-        if (schema.isUniqueItems ()) {
+        if (uniqueItems) {
+            Collection<Object> instanceValue = getInstanceValue (instance);
             Set<Object> items = new HashSet<> ();
             for (Object item : instanceValue) {
                 if (!items.add (item)) {
