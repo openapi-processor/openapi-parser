@@ -46,6 +46,10 @@ public class OutputConverter {
     public OutputUnit convert (ValidationStep step) {
         if (Output.FLAG.equals (output)) {
             return flag (step);
+
+        } else if (Output.BASIC.equals (output)) {
+            return basic (step);
+
         } else if (Output.VERBOSE.equals (output)) {
             return verbose (step, null);
         }
@@ -57,7 +61,77 @@ public class OutputConverter {
         return new OutputUnitFlag (step.isValid ());
     }
 
-    // pass parent step
+    private OutputUnit basic (ValidationStep step) {
+        OutputUnit verbose = verbose (step, null);
+
+        OutputUnitNode basic = new OutputUnitNode ();
+        basic.setValid (verbose.isValid ());
+
+        if (verbose.isValid ()) {
+            Collection<OutputUnit> annotations = new ArrayList<> ();
+            flattenBasicAnnotations (verbose, annotations);
+            basic.setAnnotations (annotations);
+        } else {
+            Collection<OutputUnit> errors = new ArrayList<> ();
+            flattenBasicErrors (verbose, errors);
+            basic.setErrors (errors);
+        }
+
+        return basic;
+    }
+
+    private void flattenBasicAnnotations (OutputUnit verbose, Collection<OutputUnit> result) {
+        Object currentAnnotation = verbose.getAnnotation ();
+        if (hasAnnotationValue (currentAnnotation)) {
+            OutputUnitNode node = new OutputUnitNode ();
+            node.setValid (verbose.isValid ());
+            node.setKeywordLocation (verbose.getKeywordLocation ());
+            node.setInstanceLocation (verbose.getInstanceLocation ());
+            node.setAbsoluteKeywordLocation (verbose.getAbsoluteKeywordLocation ());
+            node.setAnnotation (verbose.getAnnotation ());
+            result.add (node);
+        }
+
+        Collection<OutputUnit> annotations = verbose.getAnnotations ();
+        if (annotations == null)
+            return;
+
+        for (OutputUnit annotation : annotations) {
+            flattenBasicAnnotations (annotation, result);
+        }
+    }
+
+    private void flattenBasicErrors (OutputUnit verbose, Collection<OutputUnit> result) {
+        String currentError = verbose.getError ();
+        if (currentError != null) {
+            OutputUnitNode node = new OutputUnitNode ();
+            node.setValid (verbose.isValid ());
+            node.setKeywordLocation (verbose.getKeywordLocation ());
+            node.setInstanceLocation (verbose.getInstanceLocation ());
+            node.setAbsoluteKeywordLocation (verbose.getAbsoluteKeywordLocation ());
+            node.setError (verbose.getError ());
+            result.add (node);
+        }
+
+        Collection<OutputUnit> errors = verbose.getErrors ();
+        if (errors == null)
+            return;
+
+        for (OutputUnit error : errors) {
+            flattenBasicErrors (error, result);
+        }
+    }
+
+    private boolean hasAnnotationValue (Object annotation) {
+        if (annotation == null)
+            return false;
+
+        if (annotation instanceof Collection && ((Collection<?>) annotation).isEmpty ())
+            return false;
+
+        return true;
+    }
+
     private OutputUnit verbose (ValidationStep step, @Nullable RefLocation parentRefLocation) {
         Collection<OutputUnit> annotations = new ArrayList<> ();
         Collection<OutputUnit> errors = new ArrayList<> ();
@@ -66,15 +140,15 @@ public class OutputConverter {
         if (step instanceof RefStep) {
             RefStep refStep = (RefStep) step;
             URI ref = refStep.getRef ();
-            String fragment = ref.getFragment (); // != null ? ref.getFragment (): "";
-             refLocation = new RefLocation (fragment, getKeywordLocation (step, refLocation));
+            String fragment = ref.getFragment ();
+            refLocation = new RefLocation (fragment, getKeywordLocation (step, refLocation));
 
         } else if (step instanceof DynamicRefStep) {
             DynamicRefStep refStep = (DynamicRefStep) step;
 
             URI ref = refStep.getRef ();
-            String fragment = ref.getFragment (); // != null ? ref.getFragment (): "";
-             refLocation = new RefLocation (fragment, getKeywordLocation (step, refLocation));
+            String fragment = ref.getFragment ();
+            refLocation = new RefLocation (fragment, getKeywordLocation (step, refLocation));
         }
 
         for (ValidationStep s : step.getSteps ()) {
@@ -85,7 +159,7 @@ public class OutputConverter {
             }
         }
 
-        OutputUnitVerbose verbose = new OutputUnitVerbose ();
+        OutputUnitNode verbose = new OutputUnitNode ();
         verbose.setValid (step.isValid ());
         verbose.setKeywordLocation (getKeywordLocation (step, refLocation));
         verbose.setInstanceLocation (step.getInstanceLocation ().toString ());

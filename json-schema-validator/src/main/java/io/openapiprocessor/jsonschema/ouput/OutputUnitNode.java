@@ -9,7 +9,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Collection;
 
-public class OutputUnitVerbose implements OutputUnit, OutputUnitWrite {
+public class OutputUnitNode implements OutputUnit, OutputUnitWrite {
 
     private boolean valid;
     private String keywordLocation;
@@ -52,11 +52,19 @@ public class OutputUnitVerbose implements OutputUnit, OutputUnitWrite {
 
     @Override
     public @Nullable Collection<OutputUnit> getErrors () {
+        if (errors != null && errors.isEmpty ()) {
+            return null;
+        }
+
         return errors;
     }
 
     @Override
     public @Nullable Collection<OutputUnit> getAnnotations () {
+        if (annotations != null && annotations.isEmpty ()) {
+            return null;
+        }
+
         return annotations;
     }
 
