@@ -119,13 +119,11 @@ fun draftSpec(
                                 val instance = createInstance(test.data)
 
                                 // act
-                                val validator =
-                                    Validator(settings)
+                                val validator = Validator(settings)
                                 val step = validator.validate(schema, instance)
 
                                 // output
-                                val converter =
-                                    OutputConverter(Output.VERBOSE)
+                                val converter = OutputConverter(Output.VERBOSE)
                                 val output = converter.convert(step)
 
                                 val mapper = ObjectMapper()
