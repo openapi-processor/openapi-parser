@@ -21,7 +21,7 @@ publishing {
     publications {
         getByName<MavenPublication>("openapiparser") {
             pom {
-                name.set("openapi-parser-validator")
+                name.set("json-schema-validator")
                 description.set("OpenAPI Parser JSON-Schema Validator")
             }
         }
