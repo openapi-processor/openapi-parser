@@ -37,13 +37,17 @@ a Java 8 based link:{openapi}[OpenAPI] 3.0.x & 3.1 parser with validation and pl
 
 the link:{openapi}[OpenAPI] parser.
 
+=== link:{parser-bom}[openapi-parser-bom]
+
+A "bill of materials" POM for openapi-parser dependencies.
+
 === link:{validator}[json-schema-validator]
 
 the JSON Schema validator used by the `openapi-parser`.
 
 === link:{validator-bom}[json-schema-validator-bom]
 
-A "bill of materials" POM for json-schema dependencies.
+A "bill of materials" POM for json-schema-validator dependencies.
 
 === link:{converter-jackson}[io-jackson]
 
@@ -56,12 +60,3 @@ yaml `Reader` & Converter` based on link:{snakeyaml}[snakeyaml].
 === link:{interfaces}[io-interfaces]
 
 defines the interfaces for the pluggable document reader and json/yaml converter. Only needed for implementing additional reader or converter.
-
-=== link:{parser-bom}[openapi-parser-bom]
-
-A "bill of materials" POM for openapi-parser dependencies.
-
-
-
-
-
