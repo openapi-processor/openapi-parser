@@ -1,21 +1,21 @@
 :json-schema-testsuite: https://github.com/json-schema-org/JSON-Schema-Test-Suite
 
-== openapi-parser-validator
+== json-schema-validator
 
-A dependency-less java 8 based JSON Schema validator with pluggable json parser.
+this is a dependency-less java 8 based JSON Schema validator with pluggable json parser.
 
 Used by openapi-parser but also usable as standalone JSON Schema validator.
 
+== features
 
-== supported JSON Schema versions
+* supports drafts *2020-12*, *2019-09*, *7*, *6* and *4*
+* supports *annotations*
+* supports the output format: *flag*, *basic* & *verbose*.
+* passes all required tests of the official link:{json-schema-testsuite}[JSON Schema Test Suite] & most *optional* tests
 
-It implements the drafts *2020-12*, *2019-09*, *7*, *6* and *4*.
+== limitations
 
-Vocabularies support is currently limited. Enabling/disabling vocabularies is not yet implemented except for *format-assertion*, *format-validation*.
-
-It supports *annotations* and the output format: *verbose*.
-
-It is tested against the official link:{json-schema-testsuite}[JSON Schema Test Suite]. It passes all required tests of the test suite & most *optional* tests.
+Vocabularies support is currently limited. Enabling/disabling vocabularies is not yet fully implemented except for *format-assertion*, *format-validation*.
 
 It implements the `format` s as listed. See the limitations below.
 
