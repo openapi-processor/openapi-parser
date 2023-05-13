@@ -5,6 +5,7 @@
 
 package io.openapiprocessor.jsonschema.validator.result;
 
+@Deprecated
 public class MessageTextBuilder {
 
     public String getText (Message message) {

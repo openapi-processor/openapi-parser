@@ -9,6 +9,7 @@ import io.openapiprocessor.jsonschema.validator.ValidationMessage;
 
 import java.util.*;
 
+@Deprecated
 public class MessageCollector {
     private final Collection<ValidationMessage> messages;
     private final Map<MessageKey, LinkedList<Message>> merged = new LinkedHashMap<> ();
