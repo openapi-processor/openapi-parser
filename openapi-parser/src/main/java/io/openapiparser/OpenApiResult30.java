@@ -6,13 +6,15 @@
 package io.openapiparser;
 
 import io.openapiparser.model.v30.OpenApi;
+import io.openapiprocessor.jsonschema.ouput.OutputConverter;
+import io.openapiprocessor.jsonschema.ouput.OutputUnit;
 import io.openapiprocessor.jsonschema.schema.*;
-import io.openapiprocessor.jsonschema.validator.ValidationMessage;
 import io.openapiprocessor.jsonschema.validator.Validator;
 import io.openapiprocessor.jsonschema.validator.steps.ValidationStep;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 import static io.openapiparser.OpenApiSchemas.OPENAPI_SCHEMA_30;
 import static io.openapiparser.OpenApiSchemas.OPENAPI_SCHEMA_30_ID;
@@ -21,23 +23,21 @@ public class OpenApiResult30 implements OpenApiResult {
     private final Context context;
     private final Bucket root;
 
-    private DocumentStore documents;
+    private final DocumentStore documents;
 
-    private Collection<ValidationMessage> validationMessages;
+    private Collection<ValidationError> validationErrors;
 
     @Deprecated
     public OpenApiResult30 (Context context, Bucket root) {
         this.context = context;
         this.root = root;
         this.documents = new DocumentStore ();
-        this.validationMessages = Collections.emptyList ();
     }
 
     public OpenApiResult30 (Context context, Bucket root, DocumentStore documents) {
         this.context = context;
         this.root = root;
         this.documents = documents;
-        this.validationMessages = Collections.emptyList ();
     }
 
     @Override
@@ -56,8 +56,8 @@ public class OpenApiResult30 implements OpenApiResult {
     }
 
     @Override
-    public Collection<ValidationMessage> getValidationMessages () {
-        return validationMessages;
+    public Collection<ValidationError> getValidationErrors () {
+        return validationErrors;
     }
 
     public boolean validate (Validator validator, SchemaStore schemaStore) {
@@ -70,20 +70,40 @@ public class OpenApiResult30 implements OpenApiResult {
         JsonInstance instance = new JsonInstance (bundle, instanceContext);
 //        JsonInstance instance = new JsonInstance (root.getRawValues (), context.getInstanceContext ());
         ValidationStep result = validator.validate (schema, instance);
-        return result.isValid ();
 
-//        OutputConverter converter = new OutputConverter (Output.FLAG);
-//        OutputUnit output = converter.convert (result);
-//        return output.isValid ();
+        OutputConverter converter = new OutputConverter (Output.FLAG);
+        OutputUnit output = converter.convert (result);
 
-        // todo extract messages
-//        validationMessages = result.getMessages ();
-//        return validationMessages.isEmpty ();
+        if (output.isValid ()) {
+            validationErrors = Collections.emptyList ();
+            return true;
+        }
+
+        Collection<OutputUnit> errors = output.getErrors ();
+        assert errors != null;
+
+        validationErrors = errors
+            .stream ()
+            .map (e -> {
+                return new ValidationError (
+                    e.getInstanceLocation (),
+                    e.getKeywordLocation (),
+                    e.getAbsoluteKeywordLocation (),
+                    e.getError ()
+                );
+            })
+            .collect(Collectors.toList());
+
+        for (OutputUnit error : errors) {
+            error.getError ();
+            error.getInstanceLocation ();
+
+        }
+
+        return false;
     }
 
     Object bundle () {
-        OpenApiBundler bundler = new OpenApiBundler (context, documents, root);
-        Object bundle = bundler.bundle ();
-        return bundle;
+        return new OpenApiBundler (context, documents, root).bundle ();
     }
 }

@@ -41,7 +41,7 @@ public interface OpenApiResult {
 
     /**
      * run schema validation. Retrieve the collection of validation messages from
-     * {@link #getValidationMessages()}.
+     * {@link #getValidationErrors()}.
      *
      * @param validator json schema validator
      * @param schemaStore json schema store
@@ -50,9 +50,9 @@ public interface OpenApiResult {
     boolean validate (Validator validator, SchemaStore schemaStore);
 
     /**
-     * validation details.
+     * validation errors.
      *
-     * @return the validation messages.
+     * @return the validation errors.
      */
-    Collection<ValidationMessage> getValidationMessages ();
+    Collection<ValidationError> getValidationErrors ();
 }

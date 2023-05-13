@@ -6,18 +6,16 @@
 package io.openapiparser;
 
 import io.openapiparser.model.v30.OpenApi;
-import io.openapiprocessor.snakeyaml.SnakeYamlConverter;
 import io.openapiprocessor.interfaces.Converter;
 import io.openapiprocessor.interfaces.Reader;
 import io.openapiprocessor.jsonschema.reader.UriReader;
 import io.openapiprocessor.jsonschema.schema.*;
 import io.openapiprocessor.jsonschema.validator.Validator;
 import io.openapiprocessor.jsonschema.validator.ValidatorSettings;
-import io.openapiprocessor.jsonschema.validator.result.Message;
-import io.openapiprocessor.jsonschema.validator.result.MessageCollector;
 import io.openapiprocessor.jsonschema.validator.result.MessageTextBuilder;
+import io.openapiprocessor.snakeyaml.SnakeYamlConverter;
 
-import java.util.LinkedList;
+import java.util.Collection;
 
 public class SetupExample {
 
@@ -43,12 +41,12 @@ public class SetupExample {
         Validator validator = new Validator (settings);
         boolean valid = result.validate (validator, store);
 
-        // print validation messages (i.e. errors)
-        MessageCollector collector = new MessageCollector (result.getValidationMessages ());
-        LinkedList<Message> messages = collector.collect ();
-        MessageTextBuilder builder = new MessageTextBuilder ();
-        for (Message message : messages) {
-            System.out.println (builder.getText(message));
+        // print validation errors
+        Collection<ValidationError> errors = result.getValidationErrors ();
+        ValidationErrorTextBuilder builder = new ValidationErrorTextBuilder ();
+
+        for (ValidationError error : errors) {
+            System.out.println (builder.getText(error));
         }
     }
 }
