@@ -1,11 +1,12 @@
 :openapi: https://www.openapis.org/
 :parser: https://github.com/openapi-processor/openapi-parser/tree/master/openapi-parser
-:platform: https://github.com/openapi-processor/openapi-parser/tree/master/openapi-parser-bom
-:validator: https://github.com/openapi-processor/openapi-parser/tree/master/openapi-parser-validator
-:interfaces: https://github.com/openapi-processor/openapi-parser/tree/master/openapi-parser-interfaces
-:converter-jackson: https://github.com/openapi-processor/openapi-parser/tree/master/openapi-parser-jackson
-:converter-snakeyaml: https://github.com/openapi-processor/openapi-parser/tree/master/openapi-parser-snakeyaml
-:memory: https://github.com/openapi-processor/openapi-parser/tree/master/openapi-parser-memory
+:parser-bom: https://github.com/openapi-processor/openapi-parser/tree/master/openapi-parser-bom
+:validator: https://github.com/openapi-processor/openapi-parser/tree/master/json-schema-validator
+:validator-bom: https://github.com/openapi-processor/openapi-parser/tree/master/json-schema-validator-bom
+:io-interfaces: https://github.com/openapi-processor/openapi-parser/tree/master/io-interfaces
+:converter-jackson: https://github.com/openapi-processor/openapi-parser/tree/master/io-jackson
+:converter-snakeyaml: https://github.com/openapi-processor/openapi-parser/tree/master/io-snakeyaml
+:memory: https://github.com/openapi-processor/openapi-parser/tree/master/memory-protocol
 :jackson: https://github.com/FasterXML/jackson
 :snakeyaml: https://bitbucket.org/snakeyaml/snakeyaml/src/master/
 
@@ -36,23 +37,27 @@ a Java 8 based link:{openapi}[OpenAPI] 3.0.x & 3.1 parser with validation and pl
 
 the link:{openapi}[OpenAPI] parser.
 
-=== link:{validator}[openapi-parser-validator]
+=== link:{validator}[json-schema-validator]
 
 the JSON Schema validator used by the `openapi-parser`.
 
-=== link:{converter-jackson}[openapi-parser-jackson]
+=== link:{validator-bom}[json-schema-validator-bom]
 
-json/yaml `Converter` based on link:{jackson}[Jackson].
+A "bill of materials" POM for json-schema dependencies.
 
-=== link:{converter-snakeyaml}[openapi-parser-snakeyaml]
+=== link:{converter-jackson}[io-jackson]
 
-yaml `Converter` based on link:{snakeyaml}[snakeyaml].
+json/yaml `Reader` & Converter` based on link:{jackson}[Jackson].
 
-=== link:{interfaces}[openapi-parser-interfaces]
+=== link:{converter-snakeyaml}[io-snakeyaml]
+
+yaml `Reader` & Converter` based on link:{snakeyaml}[snakeyaml].
+
+=== link:{interfaces}[io-interfaces]
 
 defines the interfaces for the pluggable document reader and json/yaml converter. Only needed for implementing additional reader or converter.
 
-=== link:{platform}[openapi-parser-bom]
+=== link:{parser-bom}[openapi-parser-bom]
 
 A "bill of materials" POM for openapi-parser dependencies.
 
