@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.Map;
 
 public class JsonInstance {
+    @Deprecated
     private final JsonInstanceContext context;
 
     private final @Nullable Object value;
