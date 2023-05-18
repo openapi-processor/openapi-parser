@@ -8,17 +8,26 @@ package io.openapiparser;
 public class ValidationErrorTextBuilder {
 
     public String getText (ValidationError error) {
-        String keywordLocation = trim(error.getKeywordLocationAbsolute (), 60);
-        String instanceLocation = error.getInstanceLocation ().length () != 0
-            ? trim (error.getInstanceLocation (), 40)
-            : "/";
+//        String keywordLocation = trim(error.getKeywordLocationAbsolute (), 60);
+//        String instanceLocation = error.getInstanceLocation ().length () != 0
+//            ? trim (error.getInstanceLocation (), 40)
+//            : "/";
+//
+//        String text = trim (error.getText (), 40);
 
-        String text = trim (error.getText (), 40);
+//        return String.format("%-30s: %-40s - %-60s",
+//            instanceLocation,
+//            text,
+//            keywordLocation
+//        );
 
-        return String.format("%-30s: %-40s - %-60s",
-            instanceLocation,
-            text,
-            keywordLocation
+        String schemaLocation = error.getKeywordLocationAbsolute ();
+        schemaLocation = schemaLocation.substring (schemaLocation.indexOf ('#'));
+
+        return String.format ("%s at instance %s (schema %s)",
+            error.getText (),
+            error.getInstanceLocation (),
+            schemaLocation
         );
     }
 
