@@ -5,6 +5,8 @@
 
 package io.openapiprocessor.jsonschema.ouput;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 import java.util.Collection;
 
 public class OutputUnitFlag implements OutputUnit {
@@ -20,36 +22,36 @@ public class OutputUnitFlag implements OutputUnit {
 
     @Override
     public String getKeywordLocation () {
-        throw new RuntimeException ();
+        return "";
     }
 
     @Override
     public String getInstanceLocation () {
-        throw new RuntimeException ();
+        return "";
     }
 
     @Override
     public String getAbsoluteKeywordLocation () {
-        throw new RuntimeException ();
+        return "";
     }
 
     @Override
-    public String getError () {
-        throw new RuntimeException ();
+    public @Nullable String getError () {
+        return null;
     }
 
     @Override
-    public Object getAnnotation () {
-        throw new RuntimeException ();
+    public @Nullable Object getAnnotation () {
+        return null;
     }
 
     @Override
-    public Collection<OutputUnit> getErrors () {
-        throw new RuntimeException ();
+    public @Nullable Collection<OutputUnit> getErrors () {
+        return null;
     }
 
     @Override
-    public Collection<OutputUnit> getAnnotations () {
-        throw new RuntimeException ();
+    public @Nullable Collection<OutputUnit> getAnnotations () {
+        return null;
     }
 }
