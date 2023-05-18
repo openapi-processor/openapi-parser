@@ -62,9 +62,9 @@ It implements the `format` s as listed. See the limitations below.
 ** format: *ipv6* (code)
 ** format: *uri* (code)
 
-=== limitations
+=== jdk limitations
 
-`io.openapiprocessor.json-schema-validator` uses jdk classes for `uri` handling & validating `format` s like, `time`, `date-time`, `uri` & `regex` assertions where possible.
+`io.openapiprocessor.json-schema-validator` uses jdk classes for `uri` handling & validating `format` s like, `time`, `date-time`, `uri` & `regex` assertions where possible to avoid dependencies to other libraries.
 
 Unfortunately the jdk classes do not conform to 100% to their corresponding standards which causes a few limitations and a number of test failures in the optional section of the json-validator test suite:
 
