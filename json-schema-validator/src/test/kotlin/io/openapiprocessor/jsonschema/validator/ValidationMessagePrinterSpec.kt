@@ -23,12 +23,7 @@ class ValidationMessagePrinterSpec : StringSpec({
     )
     val schema = JsonSchemaObject(mapOf(), sctx)
 
-    val ictx = JsonInstanceContext(
-        scope,
-        ReferenceRegistry()
-    )
-    val instance = JsonInstance("value", ictx)
-
+    val instance = JsonInstance("value")
 
     val printer = ValidationMessagePrinter()
 

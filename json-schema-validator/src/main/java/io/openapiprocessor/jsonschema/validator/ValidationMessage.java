@@ -73,10 +73,6 @@ public class ValidationMessage {
         return schema.getLocation ().toString ();
     }
 
-    public String getInstanceScope () {
-        return instance.getScope ().toString ();
-    }
-
     public String getInstancePath () {
         return instance.getPath ();
     }

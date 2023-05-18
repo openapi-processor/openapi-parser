@@ -11,7 +11,7 @@ public class FullResultTextBuilder implements ResultTextBuilder {
 
     @Override
     public String getText (ValidationMessage message) {
-        String location = trim(lastPartOfPath(message.getInstanceScope ()), 20);
+        String location = trim(lastPartOfPath(message.getInstancePath ()), 20);
 
         String instancePath = message.getInstancePath ().length () != 0
             ? trim (message.getInstancePath (), 40)

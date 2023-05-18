@@ -26,14 +26,7 @@ class NotStepSpec : StringSpec({
     )
     val schema = JsonSchemaObject(mapOf(), schemaContext)
 
-    val instanceContext = JsonInstanceContext(
-        Scope(
-            emptyUri(),
-            null,
-            SchemaVersion.getLatest()
-        ), ReferenceRegistry()
-    )
-    val instance = JsonInstance("value", instanceContext)
+    val instance = JsonInstance("value")
 
     "step is valid if sub step is not" {
         val step = NotStep(schema, instance)

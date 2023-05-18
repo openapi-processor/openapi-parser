@@ -26,14 +26,14 @@ public class MessageCollector {
     private void collect (Collection<ValidationMessage> messages) {
         for (ValidationMessage message : messages) {
             Message msg = new Message (
-                message.getInstanceScope (),
+                "",
                 message.getInstancePath (),
                 message.getSchemaPath (),
                 message.getText ()
             );
 
             if (!msg.isEmpty ()) {
-                MessageKey key = new MessageKey (message.getInstanceScope (), message.getInstancePath ());
+                MessageKey key = new MessageKey ("", message.getInstancePath ());
                 Collection<Message> scopeMessages = merged.computeIfAbsent (key, k -> new LinkedList<> ());
                 scopeMessages.add (msg);
             }

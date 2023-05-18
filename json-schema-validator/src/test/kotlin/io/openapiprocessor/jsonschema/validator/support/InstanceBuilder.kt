@@ -16,13 +16,6 @@ class InstanceBuilder(private val loader: DocumentLoader, private val documents:
             Resolver.Settings(version)
         )
         val resolverResult = resolver.resolve(version.schemaUri, document)
-        val instanceContext = JsonInstanceContext(
-            resolverResult.scope,
-            ReferenceRegistry()
-        )
-        return JsonInstance(
-            resolverResult.document,
-            instanceContext
-        )
+        return JsonInstance(resolverResult.document)
     }
 }

@@ -89,15 +89,7 @@ fun draftSpec(
     }
 
     fun createInstance(instance: Any?): JsonInstance {
-        val scope =
-            Scope(emptyUri(), emptyUri(), settings.version)
-        return JsonInstance(
-            instance,
-            JsonInstanceContext(
-                scope,
-                ReferenceRegistry()
-            )
-        )
+        return JsonInstance(JsonPointer.empty(), instance)
     }
 
     Files.walk(root)

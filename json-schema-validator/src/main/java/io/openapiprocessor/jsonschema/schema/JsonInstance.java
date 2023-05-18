@@ -15,26 +15,17 @@ import java.util.Collection;
 import java.util.Map;
 
 public class JsonInstance {
-    @Deprecated
-    private final JsonInstanceContext context;
-
     private final @Nullable Object value;
     private final JsonPointer location;
 
-    public JsonInstance (@Nullable Object value, JsonInstanceContext context) {
-        this.context = context;
+    public JsonInstance (@Nullable Object value) {
         this.value = value;
         this.location = JsonPointer.EMPTY;
     }
 
-    public JsonInstance (JsonPointer location, @Nullable Object value, JsonInstanceContext context) {
-        this.context = context;
+    public JsonInstance (JsonPointer location, @Nullable Object value) {
         this.value = value;
         this.location = location;
-    }
-
-    public Scope getScope () {
-        return context.getScope ();
     }
 
     public JsonPointer getLocation () {
@@ -52,22 +43,19 @@ public class JsonInstance {
     public JsonInstance getPropertyName (String propertyName) {
         return new JsonInstance (
             location.append (propertyName),
-            getPropertyKey (propertyName),
-            context);
+            getPropertyKey (propertyName));
     }
 
     public JsonInstance getValue (String property) {
         return new JsonInstance (
             location.append (property),
-            getPropertyValue (property),
-            context);
+            getPropertyValue (property));
     }
 
     public JsonInstance getValue (int idx) {
         return new JsonInstance (
             location.append (idx),
-            getArrayValue (idx),
-            context);
+            getArrayValue (idx));
     }
 
     public int getArraySize () {
@@ -120,11 +108,7 @@ public class JsonInstance {
 
     @Override
     public String toString () {
-        String location = this.location.toString ();
-        if (location == null) {
-            return String.format ("%s", context.getScope ());
-        }
-        return String.format ("%s", this.location);
+        return String.format ("%s", this.location != null ? this.location : "/");
     }
 
     private @Nullable String getPropertyKey (String property) {

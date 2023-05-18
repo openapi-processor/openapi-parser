@@ -20,10 +20,5 @@ fun createSchema(document: Map<String, Any>, location: JsonPointer, documentUri:
 }
 
 fun createInstance(document: Map<String, Any>, location: JsonPointer): JsonInstance {
-    val scope = createScope(createUri(""), document, SchemaVersion.Draft201909)
-    val context = JsonInstanceContext(
-        scope,
-        ReferenceRegistry()
-    )
-    return JsonInstance(location, document, context)
+    return JsonInstance(location, document)
 }

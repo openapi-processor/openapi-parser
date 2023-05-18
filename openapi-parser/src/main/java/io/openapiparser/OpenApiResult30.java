@@ -65,10 +65,7 @@ public class OpenApiResult30 implements OpenApiResult {
         JsonSchema schema = schemaStore.getSchema (OPENAPI_SCHEMA_30_ID, SchemaVersion.Draft4);
 
         Object bundle = bundle ();
-        JsonInstanceContext instanceContext = new JsonInstanceContext (root.getScope (), new ReferenceRegistry ());
-
-        JsonInstance instance = new JsonInstance (bundle, instanceContext);
-//        JsonInstance instance = new JsonInstance (root.getRawValues (), context.getInstanceContext ());
+        JsonInstance instance = new JsonInstance (bundle);
         ValidationStep result = validator.validate (schema, instance);
 
         OutputConverter converter = new OutputConverter (Output.FLAG);

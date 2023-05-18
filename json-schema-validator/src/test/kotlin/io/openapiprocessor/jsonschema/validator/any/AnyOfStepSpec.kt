@@ -26,16 +26,7 @@ class AnyOfStepSpec : StringSpec({
     )
     val schema = JsonSchemaObject(mapOf(), schemaContext)
 
-    val instanceContext = JsonInstanceContext(
-        Scope(
-            emptyUri(),
-            null,
-            SchemaVersion.getLatest()
-        ),
-        ReferenceRegistry()
-    )
-    val instance = JsonInstance("value", instanceContext)
-
+    val instance = JsonInstance("value")
 
     "step is valid without sub step error" {
         val step = AnyOfStep(schema, instance)

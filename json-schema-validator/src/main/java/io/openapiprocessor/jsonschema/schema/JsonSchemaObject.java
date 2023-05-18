@@ -383,13 +383,11 @@ public class JsonSchemaObject implements JsonSchema {
         else if (raw instanceof Collection) {
             List<JsonInstance> instances = new ArrayList<> ();
 
+            int index = 0;
             for (Object o : Types.asCol (raw)) {
-                Scope scope = context.getScope ().move (o);
-                JsonInstance instance = new JsonInstance (
-                    o, new JsonInstanceContext (scope, new ReferenceRegistry ())
-                );
-
+                JsonInstance instance = new JsonInstance (getLocation ().append ("enum").append (index), o);
                 instances.add (instance);
+                index++;
             }
 
             return Collections.unmodifiableCollection(instances);
@@ -406,8 +404,7 @@ public class JsonSchemaObject implements JsonSchema {
         }
 
         Object raw = schemaObject.getRawValue ("const");
-        Scope scope = raw != null ? context.getScope ().move (raw) : context.getScope ();
-        return new JsonInstance (raw, new JsonInstanceContext (scope, new ReferenceRegistry ()));
+        return new JsonInstance (getLocation ().append ("const"), raw);
     }
 
     @Override
