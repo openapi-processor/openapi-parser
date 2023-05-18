@@ -96,6 +96,11 @@ public class SchemaStore {
         documents.addId (schemaUri, document);
     }
 
+    public void register (SchemaVersion version) {
+        register (version.getSchemaResource ());
+        version.getVocabularyResources ().forEach (this::register);
+    }
+
     /**
      * register draft-202012 json schema.
      */
