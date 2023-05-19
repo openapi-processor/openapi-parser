@@ -92,7 +92,8 @@ Unfortunately the jdk classes do not conform to 100% to their corresponding stan
 
 == usage
 
-```java
+[source,java]
+----
 package io.openapiprocessor.jsonschema.example;
 
 import io.openapiprocessor.interfaces.Converter;
@@ -193,4 +194,4 @@ public class SetupExampleTest {
         }
     }
 }
-```
+----
