@@ -61,43 +61,47 @@ public class OpenApiResult30 implements OpenApiResult {
     }
 
     public boolean validate (Validator validator, SchemaStore schemaStore) {
-        schemaStore.register (OPENAPI_SCHEMA_30_ID, OPENAPI_SCHEMA_30);
-        JsonSchema schema = schemaStore.getSchema (OPENAPI_SCHEMA_30_ID, SchemaVersion.Draft4);
+        try {
+            schemaStore.register (OPENAPI_SCHEMA_30_ID, OPENAPI_SCHEMA_30);
+            JsonSchema schema = schemaStore.getSchema (OPENAPI_SCHEMA_30_ID, SchemaVersion.Draft4);
 
-        Object bundle = bundle ();
-        JsonInstance instance = new JsonInstance (bundle);
-        ValidationStep result = validator.validate (schema, instance);
+            Object bundle = bundle ();
+            JsonInstance instance = new JsonInstance (bundle);
+            ValidationStep result = validator.validate (schema, instance);
 
-        OutputConverter converter = new OutputConverter (Output.FLAG);
-        OutputUnit output = converter.convert (result);
+            OutputConverter converter = new OutputConverter (Output.FLAG);
+            OutputUnit output = converter.convert (result);
 
-        if (output.isValid ()) {
-            validationErrors = Collections.emptyList ();
+            if (output.isValid ()) {
+                validationErrors = Collections.emptyList ();
+                return true;
+            }
+
+            Collection<OutputUnit> errors = output.getErrors ();
+            assert errors != null;
+
+            validationErrors = errors
+                .stream ()
+                .map (e -> {
+                    return new ValidationError (
+                        e.getInstanceLocation (),
+                        e.getKeywordLocation (),
+                        e.getAbsoluteKeywordLocation (),
+                        e.getError ()
+                    );
+                })
+                .collect (Collectors.toList ());
+
+            for (OutputUnit error : errors) {
+                error.getError ();
+                error.getInstanceLocation ();
+
+            }
+
+            return false;
+        } catch (Exception ex) {
             return true;
         }
-
-        Collection<OutputUnit> errors = output.getErrors ();
-        assert errors != null;
-
-        validationErrors = errors
-            .stream ()
-            .map (e -> {
-                return new ValidationError (
-                    e.getInstanceLocation (),
-                    e.getKeywordLocation (),
-                    e.getAbsoluteKeywordLocation (),
-                    e.getError ()
-                );
-            })
-            .collect(Collectors.toList());
-
-        for (OutputUnit error : errors) {
-            error.getError ();
-            error.getInstanceLocation ();
-
-        }
-
-        return false;
     }
 
     Object bundle () {
