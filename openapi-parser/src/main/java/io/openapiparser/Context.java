@@ -38,7 +38,7 @@ public class Context {
     }
 
     public @Nullable Bucket getRefObjectOrNull (Bucket bucket) {
-        JsonSchemaContext ctx = new JsonSchemaContext (scope, references);
+        JsonSchemaContext ctx = new JsonSchemaContext (bucket.getScope (), references);
         Reference reference = ctx.getReference (nonNull (getRef (bucket)));
         return Bucket.toBucket (reference.getValueScope (), reference.getValue (), reference.getPointer ()); // todo value is nullable ?
     }
@@ -48,7 +48,7 @@ public class Context {
     }
 
     public Reference getReference (Bucket bucket) {
-        JsonSchemaContext ctx = new JsonSchemaContext (scope, references);
+        JsonSchemaContext ctx = new JsonSchemaContext (bucket.getScope (), references);
         return ctx.getReference (nonNull (getRef (bucket)));
     }
 
