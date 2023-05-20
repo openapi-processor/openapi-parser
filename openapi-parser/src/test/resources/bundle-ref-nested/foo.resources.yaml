@@ -1,0 +1,12 @@
+resources:
+  Bar:
+    type: object
+    properties:
+      bar:
+        $ref: '#/resources/Bar2'
+
+  Bar2:
+    type: object
+    properties:
+      bar2:
+        type: string

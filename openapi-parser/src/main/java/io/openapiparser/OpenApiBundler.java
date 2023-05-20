@@ -152,9 +152,10 @@ public class OpenApiBundler {
         JsonPointer refPointer = reference.getPointer ();
         String refName = refPointer.tail ();
         RawValue refValue = getRefValue (documentBucket, refPointer);
+        Bucket refBucket = getRefBucket (refPointer, refValue);
 
         Runnable result = null;
-        if (isSchemaRef (location) && external) {
+        if (isSchemaRef (location,refBucket) && external) {
             bundleSchema (bucketValues, refName, refValue);
 
         } else if (isResponsesRef (location) && external) {
@@ -186,7 +187,7 @@ public class OpenApiBundler {
         }
 
         // walk the ref
-        walkBucket (getRefBucket (refPointer, refValue));
+        walkBucket (refBucket);
 
         return result;
     }
@@ -260,6 +261,8 @@ public class OpenApiBundler {
             throw new RuntimeException ();
         }
 
+        // todo, check that it contains only http methods!
+
         // postpone in-place modification...  can't remove/add while iterating
         return () -> {
             rawValues.remove (Keywords.REF);
@@ -326,12 +329,24 @@ public class OpenApiBundler {
         });
     }
 
-    private boolean isSchemaRef (JsonPointer location) {
+    private boolean isSchemaRef (JsonPointer location, Bucket bucket) {
+        Object rawType = bucket.getProperty (Keywords.TYPE);
+        if (rawType == null) {
+            return false;
+        }
+
+        if (!(rawType instanceof String)) {
+            return false;
+        };
+
+        String type = (String)rawType;
+
+        return type.equals ("object");
         // check for /**/schema/$ref
-        List<String> tokens = location.getTokens ();
-        return tokens.size () > 2
-            && tokens.get (tokens.size () - 2).equals ("schema")
-            && tokens.get (tokens.size () - 1).equals (Keywords.REF);
+//        List<String> tokens = location.getTokens ();
+//        return tokens.size () > 2
+//            && tokens.get (tokens.size () - 2).equals ("schema")
+//            && tokens.get (tokens.size () - 1).equals (Keywords.REF);
     }
 
     private boolean isResponsesRef (JsonPointer location) {

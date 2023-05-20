@@ -34,8 +34,7 @@ class OpenApiBundlerSpec : StringSpec({
 
     fun bundle30(result: ResolverResult): Bucket {
         val context = Context(result.scope, result.registry)
-        val bucket =
-            Bucket(result.scope, asObject(result.document))
+        val bucket = Bucket(result.scope, asObject(result.document))
         val api = OpenApiResult30(context, bucket, result.documents)
         val bundle = api.bundle()
         return Bucket.toBucket(result.scope, bundle)!!
@@ -156,6 +155,25 @@ class OpenApiBundlerSpec : StringSpec({
         val pathItem = getObject(bundle, "/paths/~1foo")
         pathItem.containsKey(Keywords.REF).shouldBeFalse()
         pathItem.containsKey("get").shouldBeTrue()
+    }
+
+    "bundle nested \$ref" {
+        val result = resolve("/bundle-ref-nested/openapi30.yaml")
+        val bundle = bundle30(result)
+
+        val pathItem = getObject(bundle, "/paths/~1foo")
+        pathItem.containsKey(Keywords.REF).shouldBeFalse()
+        pathItem.containsKey("get").shouldBeTrue()
+
+        val ref = getObject(bundle, "/paths/~1foo/get/responses/200/content/application~1json/schema")
+        ref["\$ref"].shouldBe("#/components/schemas/Bar")
+        val component = bundle.getRawValue(from("/components/schemas/Bar"))
+        component.shouldNotBeNull()
+
+        val refNested = getObject(bundle, "/components/schemas/Bar/properties/bar")
+        refNested["\$ref"].shouldBe("#/components/schemas/Bar2")
+        val componentNested = bundle.getRawValue(from("/components/schemas/Bar2"))
+        componentNested.shouldNotBeNull()
     }
 
     "does not override existing component" {
