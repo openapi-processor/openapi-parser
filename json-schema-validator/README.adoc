@@ -16,7 +16,6 @@ Used by openapi-parser but also usable as standalone JSON Schema validator.
 === **this is ready to try but still work in progress **
 
 * api may change, i.e. improve :-)
-* expect bugs, it passes about 5000 tests but json schema validation is complex.
 * vocabulary support (enabling/disabling) is not finished
 * not all format validations are implemented
 
