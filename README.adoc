@@ -10,6 +10,19 @@
 :jackson: https://github.com/FasterXML/jackson
 :snakeyaml: https://bitbucket.org/snakeyaml/snakeyaml/src/master/
 
+:all-ci: https://github.com/openapi-processor/openapi-parser/actions?query=workflow%3Abuild
+:all-ci-badge: https://github.com/openapi-processor/openapi-parser/workflows/build/badge.svg
+
+:central-search: https://search.maven.org/search?q=io.openapiprocessor
+:parser-central-badge: https://img.shields.io/maven-central/v/io.openapiprocessor/openapi-parser?label=Maven%20Central
+:parser-bom-central-badge: https://img.shields.io/maven-central/v/io.openapiprocessor/openapi-parser-bom?label=Maven%20Central
+:validator-central-badge: https://img.shields.io/maven-central/v/io.openapiprocessor/json-schema-validator?label=Maven%20Central
+:validator-bom-central-badge: https://img.shields.io/maven-central/v/io.openapiprocessor/json-schema-validator-bom?label=Maven%20Central
+:interfaces-central-badge: https://img.shields.io/maven-central/v/io.openapiprocessor/io-interfaces?label=Maven%20Central
+:jackson-central-badge: https://img.shields.io/maven-central/v/io.openapiprocessor/io-jackson?label=Maven%20Central
+:snakeyaml-central-badge: https://img.shields.io/maven-central/v/io.openapiprocessor/io-snakeyaml?label=Maven%20Central
+
+
 **work in progress**
 
 It is usable, but has the following limitations at the moment:
@@ -33,30 +46,48 @@ a Java 11 based link:{openapi}[OpenAPI] 3.0.x & 3.1 parser with validation and p
 
 == modules
 
+// badges
+link:{all-ci}[image:{all-ci-badge}[]]
+
+
 === link:{parser}[openapi-parser]
+
+link:{central-search}[image:{parser-central-badge}[]]
 
 the link:{openapi}[OpenAPI] parser.
 
 === link:{parser-bom}[openapi-parser-bom]
 
+link:{central-search}[image:{parser-bom-central-badge}[]]
+
 A "bill of materials" POM for openapi-parser dependencies.
 
 === link:{validator}[json-schema-validator]
+
+link:{central-search}[image:{validator-central-badge}[]]
 
 the JSON Schema validator used by the `openapi-parser`.
 
 === link:{validator-bom}[json-schema-validator-bom]
 
+link:{central-search}[image:{validator-bom-central-badge}[]]
+
 A "bill of materials" POM for json-schema-validator dependencies.
 
 === link:{converter-jackson}[io-jackson]
+
+link:{central-search}[image:{jackson-central-badge}[]]
 
 json/yaml `Reader` & `Converter` based on link:{jackson}[Jackson].
 
 === link:{converter-snakeyaml}[io-snakeyaml]
 
+link:{central-search}[image:{snakeyaml-central-badge}[]]
+
 yaml `Reader` & `Converter` based on link:{snakeyaml}[snakeyaml].
 
 === link:{io-interfaces}[io-interfaces]
+
+link:{central-search}[image:{interfaces-central-badge}[]]
 
 defines the interfaces for the pluggable document reader and json/yaml converter. Only needed for implementing additional reader or converter.
