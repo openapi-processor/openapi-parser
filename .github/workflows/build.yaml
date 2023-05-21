@@ -87,11 +87,11 @@ jobs:
         path: '*/build/reports'
 
   publish:
+    if: contains(needs.version.outputs.BUILD_VERSION, 'SNAPSHOT') && ${{ github.actor == 'hauner' }}
     needs: [version, test]
     name: publish snapshot
 
     runs-on: ubuntu-latest
-    if: contains(needs.version.outputs.BUILD_VERSION, 'SNAPSHOT')
 
     steps:
     - name: checkout
