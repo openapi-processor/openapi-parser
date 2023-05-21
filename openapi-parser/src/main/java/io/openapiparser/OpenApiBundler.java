@@ -17,6 +17,8 @@ import static io.openapiprocessor.jsonschema.converter.Types.*;
 import static io.openapiprocessor.jsonschema.schema.Scope.createScope;
 
 public class OpenApiBundler {
+    private final Set<URI> walked = new HashSet<> ();
+
     private final Context context;
     private final DocumentStore documents;
     private final Bucket root;
@@ -145,6 +147,9 @@ public class OpenApiBundler {
         Map<String, Object> bucketValues = bucket.getRawValues ();
         Reference reference = context.getReference (bucket);
 
+        URI refUri = reference.getAbsoluteRefUri ();
+        boolean loop = walked.contains (refUri);
+
         URI documentUri = reference.getDocumentUri ();
         boolean external = isExternalDocument (documentUri);
         Bucket documentBucket = getDocumentBucket (documentUri);
@@ -155,8 +160,8 @@ public class OpenApiBundler {
         Bucket refBucket = getRefBucket (refPointer, refValue);
 
         Runnable result = null;
-        if (isSchemaRef (location,refBucket) && external) {
-            bundleSchema (bucketValues, refName, refValue);
+        if (isSchemaRef (location, refBucket) && external) {
+            bundleSchema (bucketValues, refName, refValue, loop);
 
         } else if (isResponsesRef (location) && external) {
             bundleResponse (bucketValues, refName, refValue);
@@ -186,8 +191,11 @@ public class OpenApiBundler {
             result = bundlePath30 (bucketValues, refValue);
         }
 
-        // walk the ref
-        walkBucket (refBucket);
+        // walk unseen ref
+        if (!loop) {
+            walked.add (refUri);
+            walkBucket (refBucket);
+        }
 
         return result;
     }
@@ -200,8 +208,10 @@ public class OpenApiBundler {
         return ref;
     }
 
-    private void bundleSchema (Map<String, Object> rawValues, String refName, RawValue refValue) {
-        schemas.put (refName, refValue.getValue ());
+    private void bundleSchema (Map<String, Object> rawValues, String refName, RawValue refValue, boolean loop) {
+        if (!loop) {
+            schemas.put (refName, refValue.getValue ());
+        }
         rawValues.put (Keywords.REF, createRefPointer ("schemas", refName));
     }
 

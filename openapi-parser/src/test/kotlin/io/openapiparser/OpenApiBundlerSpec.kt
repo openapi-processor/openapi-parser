@@ -44,6 +44,17 @@ class OpenApiBundlerSpec : StringSpec({
         return asObject(bucket.getRawValue(from(jsonPointer))!!.value)
     }
 
+    "bundle handles \$ref loop" {
+        val result = resolve("/bundle-ref-loop/openapi30.yaml")
+        val bundle = bundle30(result)
+
+        val ref = getObject(bundle, "/paths/~1self-reference/get/responses/200/content/application~1json/schema")
+        ref["\$ref"].shouldBe("#/components/schemas/Self")
+
+        val schema = getObject(bundle, "/components/schemas/Self/properties/self")
+        schema["\$ref"].shouldBe("#/components/schemas/Self")
+    }
+
     "bundle schema \$ref" {
         val result = resolve("/bundle-ref-schema/openapi30.yaml")
         val bundle = bundle30(result)
