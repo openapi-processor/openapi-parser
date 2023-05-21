@@ -62,6 +62,9 @@ public class ResolverRef {
             } else if (navigable && keyword.isSchemaMap ()) {
                 walkSchemaMap (scope, value, propLocation);
 
+            } else if (name.equals (Keywords.DEFAULT) && Types.isObject (value)) {
+                walkSchema (scope, value, propLocation);
+
             } else if (keyword == null && Types.isObject (value)) {
                 walkSchema (scope, value, propLocation);
 
