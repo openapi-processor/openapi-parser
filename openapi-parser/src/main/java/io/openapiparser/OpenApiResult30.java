@@ -69,7 +69,7 @@ public class OpenApiResult30 implements OpenApiResult {
             JsonInstance instance = new JsonInstance (bundle);
             ValidationStep result = validator.validate (schema, instance);
 
-            OutputConverter converter = new OutputConverter (Output.FLAG);
+            OutputConverter converter = new OutputConverter (Output.BASIC);
             OutputUnit output = converter.convert (result);
 
             if (output.isValid ()) {
