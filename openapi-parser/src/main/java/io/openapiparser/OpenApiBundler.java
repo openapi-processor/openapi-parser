@@ -330,23 +330,32 @@ public class OpenApiBundler {
     }
 
     private boolean isSchemaRef (JsonPointer location, Bucket bucket) {
-        Object rawType = bucket.getProperty (Keywords.TYPE);
-        if (rawType == null) {
-            return false;
-        }
+//        Object rawType = bucket.getProperty (Keywords.TYPE);
+//        if (rawType == null) {
+//            return false;
+//        }
+//
+//        if (!(rawType instanceof String)) {
+//            return false;
+//        };
+//
+//        String type = (String)rawType;
+//
+//        return type.equals ("object");
 
-        if (!(rawType instanceof String)) {
-            return false;
-        };
+        List<String> tokens = location.getTokens ();
 
-        String type = (String)rawType;
-
-        return type.equals ("object");
         // check for /**/schema/$ref
-//        List<String> tokens = location.getTokens ();
-//        return tokens.size () > 2
-//            && tokens.get (tokens.size () - 2).equals ("schema")
-//            && tokens.get (tokens.size () - 1).equals (Keywords.REF);
+        boolean schema = tokens.size () > 2
+            && tokens.get (tokens.size () - 2).equals ("schema")
+            && tokens.get (tokens.size () - 1).equals (Keywords.REF);
+
+        // check for /**/properties/*/$ref
+        boolean property = tokens.size () > 3
+            && tokens.get (tokens.size () - 3).equals ("properties")
+            && tokens.get (tokens.size () - 1).equals (Keywords.REF);
+
+        return schema || property;
     }
 
     private boolean isResponsesRef (JsonPointer location) {
