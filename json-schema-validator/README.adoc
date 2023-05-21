@@ -2,7 +2,7 @@
 
 == json-schema-validator
 
-this is a dependency-less java 8 based JSON Schema validator with pluggable json parser.
+this is a dependency-less java 11 based JSON Schema validator with pluggable json parser.
 
 Used by openapi-parser but also usable as standalone JSON Schema validator.
 
