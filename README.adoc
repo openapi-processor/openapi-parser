@@ -57,6 +57,6 @@ json/yaml `Reader` & `Converter` based on link:{jackson}[Jackson].
 
 yaml `Reader` & `Converter` based on link:{snakeyaml}[snakeyaml].
 
-=== link:{interfaces}[io-interfaces]
+=== link:{io-interfaces}[io-interfaces]
 
 defines the interfaces for the pluggable document reader and json/yaml converter. Only needed for implementing additional reader or converter.
