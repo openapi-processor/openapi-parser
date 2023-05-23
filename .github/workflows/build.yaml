@@ -87,7 +87,7 @@ jobs:
         path: '*/build/reports'
 
   publish:
-    if: contains(needs.version.outputs.BUILD_VERSION, 'SNAPSHOT') && ${{ github.actor == 'hauner' }}
+    if: contains(needs.version.outputs.BUILD_VERSION, 'SNAPSHOT') && github.actor == 'hauner'
     needs: [version, test]
     name: publish snapshot
 
