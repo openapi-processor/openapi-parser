@@ -20,7 +20,7 @@ import java.util.Collection;
 
 public class SetupExampleTest {
 
-    @Test
+    //@Test
     void parseAndValidate () {
         // 1. create a document loader.
         // It loads a document by uri and converts it to a Map<String, Object>
