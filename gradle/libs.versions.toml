@@ -25,6 +25,6 @@ mockk = "io.mockk:mockk:1.13.5"
 jackson = ["jackson-databind", "jackson-yaml"]
 
 [plugins]
-kotlin = { id = "org.jetbrains.kotlin.jvm", version = "1.8.22" }
+kotlin = { id = "org.jetbrains.kotlin.jvm", version = "1.9.0" }
 nexus = { id = "io.github.gradle-nexus.publish-plugin", version = "1.3.0" }
 jacoco = { id = "org.barfuin.gradle.jacocolog", version = "3.1.0" }
