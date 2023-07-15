@@ -32,11 +32,15 @@ public class DateTime {
 
     public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
         Format format = Format.of (schema.getFormat ());
+        if (format == null)
+            return;
+
+        DateTimeStep step = new DateTimeStep (schema, instance);
+        parentStep.add (step);
+
         if (!shouldValidate (format)) {
             return;
         }
-
-        DateTimeStep step = new DateTimeStep (schema, instance);
 
         try {
             getParser (format).parse (getInstanceValue (instance));
@@ -44,10 +48,7 @@ public class DateTime {
         } catch (Exception ex) {
             step.setInvalid ();
         }
-
-        parentStep.add (step);
     }
-
 
     @EnsuresNonNullIf (expression = "#1", result = true)
     private boolean shouldValidate (@Nullable Format format) {
