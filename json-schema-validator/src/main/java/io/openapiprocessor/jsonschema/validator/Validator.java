@@ -277,7 +277,7 @@ public class Validator {
     }
 
     private void validateObject (JsonSchema schema, JsonInstance instance, DynamicScope dynamicScope, ValidationStep parentStep) {
-        if (!instance.isObject ())
+        if (!isObjectSchema(schema) || !instance.isObject ())
             return;
 
         new MaxProperties ().validate (schema, instance, parentStep);
@@ -352,6 +352,10 @@ public class Validator {
 
     private boolean isBooleanSchema (JsonSchema schema) {
         return schema instanceof JsonSchemaBoolean;
+    }
+
+    private boolean isObjectSchema (JsonSchema schema) {
+        return schema instanceof JsonSchemaObject;
     }
 
     private boolean isBeforeDraft202012 (JsonSchema schema) {
