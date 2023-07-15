@@ -16,6 +16,7 @@ public class ValidatorSettings {
     private SchemaVersion version = SchemaVersion.getLatest ();
     private Output output = Output.VERBOSE;
 
+    private boolean format = false;
     private final EnumSet<Format> formats = EnumSet.noneOf(Format.class);
 
     /**
@@ -59,6 +60,24 @@ public class ValidatorSettings {
     }
 
     /**
+     * enable format assertions.
+     */
+    public void enableFormat() {
+        format = true;
+    }
+
+    /**
+     * disable format assertions.
+     */
+    public void disableFormat() {
+        format = false;
+    }
+
+    public boolean assertFormat() {
+        return format;
+    }
+
+    /**
      * disable formats, i.e. that should not be validated.
      *
      * @param disable formats to disable
@@ -83,6 +102,11 @@ public class ValidatorSettings {
      * @return true if it should be validated, else false
      */
     public boolean validateFormat (Format format) {
-        return formats.contains (format);
+        return assertFormat(format);
     }
+
+    public boolean assertFormat (Format format) {
+        return this.format && formats.contains (format);
+    }
+
 }

@@ -5,6 +5,7 @@
 
 package io.openapiprocessor.jsonschema.validator;
 
+import io.openapiprocessor.jsonschema.schema.Output;
 import io.openapiprocessor.jsonschema.schema.SchemaVersion;
 import io.openapiprocessor.jsonschema.schema.Format;
 
@@ -19,12 +20,16 @@ public class ValidatorSettingsDefaults {
     public static ValidatorSettings draft201909 () {
         ValidatorSettings settings = new ValidatorSettings ();
         settings.setVersion (SchemaVersion.Draft201909);
+        //settings.setOutput(Output.FLAG);
+        //settings.disableFormat();
         return settings;
     }
 
     public static ValidatorSettings draft7 () {
         ValidatorSettings settings = new ValidatorSettings ();
         settings.setVersion (SchemaVersion.Draft7);
+        //settings.setOutput(Output.FLAG);
+        settings.enableFormat();
         settings.enableFormats (
             Format.REGEX,
             Format.JSON_POINTER,
@@ -50,6 +55,8 @@ public class ValidatorSettingsDefaults {
     public static ValidatorSettings draft6 () {
         ValidatorSettings settings = new ValidatorSettings ();
         settings.setVersion (SchemaVersion.Draft6);
+        //settings.setOutput(Output.FLAG);
+        settings.enableFormat();
         settings.enableFormats (
             Format.JSON_POINTER,
             Format.URI_TEMPLATE,
@@ -67,6 +74,8 @@ public class ValidatorSettingsDefaults {
     public static ValidatorSettings draft4 () {
         ValidatorSettings settings = new ValidatorSettings ();
         settings.setVersion (SchemaVersion.Draft4);
+        //settings.setOutput(Output.FLAG);
+        settings.enableFormat();
         settings.enableFormats (
             Format.URI,
             Format.IPV6,
