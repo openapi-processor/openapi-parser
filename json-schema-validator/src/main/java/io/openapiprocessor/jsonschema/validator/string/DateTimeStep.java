@@ -25,7 +25,7 @@ public class DateTimeStep extends SimpleStep {
     @Override
     public @Nullable Annotation getAnnotation () {
         String format = schema.getFormat();
-        if (format == null) {
+        if (format == null || !isValid()) {
             return null;
         }
 
