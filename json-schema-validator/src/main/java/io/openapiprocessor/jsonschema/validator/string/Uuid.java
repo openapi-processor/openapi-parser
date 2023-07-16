@@ -10,7 +10,6 @@ import io.openapiprocessor.jsonschema.schema.JsonInstance;
 import io.openapiprocessor.jsonschema.schema.JsonSchema;
 import io.openapiprocessor.jsonschema.validator.ValidatorSettings;
 import io.openapiprocessor.jsonschema.validator.steps.ValidationStep;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.UUID;
 
@@ -25,11 +24,16 @@ public class Uuid {
     }
 
     public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
-        String format = schema.getFormat ();
-        if (!shouldValidate (format))
+        Format format = Format.of (schema.getFormat ());
+        if (format == null || !supportsFormat(format))
             return;
 
         UuidStep step = new UuidStep (schema, instance);
+        parentStep.add (step);
+
+        if (!shouldValidate (schema)) {
+            return;
+        }
 
         String instanceValue = getInstanceValue (instance);
         boolean valid = isUuid (instanceValue);
@@ -37,13 +41,19 @@ public class Uuid {
             step.setInvalid ();
         }
 
-        parentStep.add (step);
     }
 
-    private boolean shouldValidate (@Nullable String format) {
-        return format != null
-            && format.equals (Format.UUID.getFormat ())
-            && settings.validateFormat (Format.UUID);
+    private boolean shouldValidate (JsonSchema schema) {
+        boolean shouldAssert = schema.getContext().getVocabularies().requiresFormatAssertion();
+        if (!shouldAssert) {
+            shouldAssert = settings.assertFormat();
+        }
+
+        return shouldAssert;
+    }
+
+    private boolean supportsFormat(Format format) {
+        return Format.UUID.equals (format);
     }
 
     private String getInstanceValue (JsonInstance instance) {
