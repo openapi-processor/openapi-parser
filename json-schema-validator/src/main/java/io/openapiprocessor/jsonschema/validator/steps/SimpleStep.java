@@ -16,6 +16,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.net.URI;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 public abstract class SimpleStep implements ValidationStep {
     protected final JsonSchema schema;
@@ -52,7 +53,11 @@ public abstract class SimpleStep implements ValidationStep {
 
     @Override
     public Collection<Annotation> getAnnotations (String keyword) {
-        return Collections.emptyList ();
+        Annotation annotation = getAnnotation();
+        if (annotation == null)
+            return List.of();
+
+        return List.of(annotation);
     }
 
     @Override

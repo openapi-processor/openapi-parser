@@ -13,9 +13,6 @@ import io.openapiprocessor.jsonschema.validator.ValidationMessage;
 import io.openapiprocessor.jsonschema.validator.steps.SimpleStep;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.Collection;
-import java.util.List;
-
 public class EmailStep extends SimpleStep {
 
     public EmailStep (JsonSchema schema, JsonInstance instance) {
@@ -30,15 +27,6 @@ public class EmailStep extends SimpleStep {
         }
 
         return new Annotation(Keywords.FORMAT, format);
-    }
-
-    @Override
-    public Collection<Annotation> getAnnotations(String keyword) {
-        Annotation annotation = getAnnotation();
-        if (annotation == null)
-            return List.of();
-
-        return List.of(annotation);
     }
 
     @Override
