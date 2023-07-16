@@ -14,6 +14,8 @@ public class ValidatorSettingsDefaults {
     public static ValidatorSettings draft202012 () {
         ValidatorSettings settings = new ValidatorSettings ();
         settings.setVersion (SchemaVersion.Draft202012);
+        //settings.setOutput(Output.FLAG);
+        settings.disableFormat();
         return settings;
     }
 
@@ -21,7 +23,7 @@ public class ValidatorSettingsDefaults {
         ValidatorSettings settings = new ValidatorSettings ();
         settings.setVersion (SchemaVersion.Draft201909);
         //settings.setOutput(Output.FLAG);
-        //settings.disableFormat();
+        settings.disableFormat();
         return settings;
     }
 
