@@ -13,24 +13,36 @@ import io.openapiprocessor.jsonschema.validator.ValidationMessage;
 import io.openapiprocessor.jsonschema.validator.steps.SimpleStep;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.util.Collection;
+import java.util.List;
+
 public class EmailStep extends SimpleStep {
-    private @Nullable Annotation annotation;
 
     public EmailStep (JsonSchema schema, JsonInstance instance) {
         super(schema, instance, Keywords.FORMAT);
     }
 
     @Override
-    protected ValidationMessage getError () {
-        return new EmailError (schema, instance);
+    public @Nullable Annotation getAnnotation () {
+        String format = schema.getFormat();
+        if (format == null || !isValid()) {
+            return null;
+        }
+
+        return new Annotation(Keywords.FORMAT, format);
     }
 
     @Override
-    public @Nullable Annotation getAnnotation () {
-        return annotation;
+    public Collection<Annotation> getAnnotations(String keyword) {
+        Annotation annotation = getAnnotation();
+        if (annotation == null)
+            return List.of();
+
+        return List.of(annotation);
     }
 
-    public void createAnnotation () {
-        annotation = new Annotation (Keywords.FORMAT, schema.getFormat ());
+    @Override
+    protected ValidationMessage getError () {
+        return new EmailError (schema, instance);
     }
 }

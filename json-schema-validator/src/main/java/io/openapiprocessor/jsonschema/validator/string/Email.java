@@ -5,13 +5,12 @@
 
 package io.openapiprocessor.jsonschema.validator.string;
 
+import io.openapiprocessor.jsonschema.schema.Format;
 import io.openapiprocessor.jsonschema.schema.JsonInstance;
 import io.openapiprocessor.jsonschema.schema.JsonSchema;
-import io.openapiprocessor.jsonschema.schema.Vocabularies;
 import io.openapiprocessor.jsonschema.validator.ValidatorSettings;
 import io.openapiprocessor.jsonschema.validator.steps.ValidationStep;
 import io.openapiprocessor.jsonschema.validator.support.EmailValidator;
-import io.openapiprocessor.jsonschema.schema.Format;
 
 import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
 
@@ -26,56 +25,42 @@ public class Email {
     }
 
     public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
-        if (!hasFormat (schema))
+        Format format = Format.of (schema.getFormat ());
+        if (format == null || !isEmailFormat(format))
             return;
 
         EmailStep step = new EmailStep (schema, instance);
-
-        if (shouldValidate (schema)) {
-            String instanceValue = getInstanceValue (instance);
-            boolean valid = new EmailValidator (instanceValue).validate ();
-
-            if (!valid)
-                step.setInvalid ();
-        }
-
-        if (shouldAnnotate (schema)) {
-            step.createAnnotation ();
-        }
-
         parentStep.add (step);
+
+        if (!shouldValidate (format, schema)) {
+            return;
+        }
+
+        String instanceValue = getInstanceValue (instance);
+        boolean valid = new EmailValidator (instanceValue).validate ();
+        if (!valid) {
+             step.setInvalid ();
+        }
     }
 
-    private boolean shouldAnnotate (JsonSchema schema) {
-        return getVocabularies (schema).hasFormatAnnotation ();
+    private boolean shouldValidate (Format format, JsonSchema schema) {
+        boolean shouldAssert = assertFormat(schema);
+        if (!shouldAssert) {
+            shouldAssert = settings.assertFormat();
+        }
+
+        return shouldAssert;
     }
 
-    private boolean shouldValidate (JsonSchema schema) {
-        return getVocabularies (schema).hasFormatAssertion ()
-            && settings.validateFormat (Format.EMAIL);
+    private boolean assertFormat(JsonSchema schema) {
+        return schema.getContext().getVocabularies().requiresFormatAssertion();
     }
 
-    private boolean hasFormat (JsonSchema schema) {
-        String format = schema.getFormat ();
-        return format != null
-            && format.equals (Format.EMAIL.getFormat ());
+    private boolean isEmailFormat (Format format) {
+        return Format.EMAIL.equals (format);
     }
 
     private String getInstanceValue (JsonInstance instance) {
         return nonNull (instance.asString ());
-    }
-
-    private Vocabularies getVocabularies (JsonSchema schema) {
-        JsonSchema metaSchema = schema.getMetaSchemaSchema ();
-        if (metaSchema == null) {
-            return Vocabularies.ALL;
-        }
-
-        Vocabularies vocabularies = metaSchema.getVocabulary ();
-        if (vocabularies == null) {
-            return Vocabularies.ALL;
-        }
-
-        return vocabularies;
     }
 }
