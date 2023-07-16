@@ -5,12 +5,11 @@
 
 package io.openapiprocessor.jsonschema.validator.string;
 
+import io.openapiprocessor.jsonschema.schema.Format;
 import io.openapiprocessor.jsonschema.schema.JsonInstance;
 import io.openapiprocessor.jsonschema.schema.JsonSchema;
 import io.openapiprocessor.jsonschema.validator.ValidatorSettings;
 import io.openapiprocessor.jsonschema.validator.steps.ValidationStep;
-import io.openapiprocessor.jsonschema.schema.Format;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
 
@@ -25,25 +24,35 @@ public class Hostname {
     }
 
     public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
-        String format = schema.getFormat ();
-        if (!shouldValidate (format))
+        Format format = Format.of (schema.getFormat ());
+        if (format == null || !isFormat(format))
             return;
 
         HostnameStep step = new HostnameStep (schema, instance);
+        parentStep.add (step);
+
+        if (!shouldValidate (schema))
+            return;
+
 
         String instanceValue = getInstanceValue (instance);
         boolean valid = isValid (instanceValue);
         if (!valid) {
             step.setInvalid ();
         }
-
-        parentStep.add (step);
     }
 
-    boolean shouldValidate (@Nullable String format) {
-        return format != null
-            && format.equals (Format.HOSTNAME.getFormat ())
-            && settings.validateFormat (Format.HOSTNAME);
+    private boolean shouldValidate (JsonSchema schema) {
+        boolean shouldAssert = schema.getContext().getVocabularies().requiresFormatAssertion();
+        if (!shouldAssert) {
+            shouldAssert = settings.assertFormat();
+        }
+
+        return shouldAssert;
+    }
+
+    private static boolean isFormat(Format format) {
+        return Format.HOSTNAME.equals(format);
     }
 
     private String getInstanceValue (JsonInstance instance) {
