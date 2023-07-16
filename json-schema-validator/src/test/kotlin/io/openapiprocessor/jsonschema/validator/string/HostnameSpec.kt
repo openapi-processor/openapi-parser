@@ -25,13 +25,13 @@ class HostnameSpec : StringSpec({
     val context = JsonSchemaContext(scope, ReferenceRegistry(), vocabularies)
 
     "provides format as annotation" {
-        val email = Hostname(settings)
+        val hostname = Hostname(settings)
 
         val schema = JsonSchemaObject(mapOf("format" to "hostname"), context)
         val instance = JsonInstance("any")
         val step = SchemaStep(schema, instance)
 
-        email.validate(schema, instance, step)
+        hostname.validate(schema, instance, step)
 
         step.getAnnotations(Keywords.FORMAT) shouldHaveSingleElement {a -> a.value == "hostname"}
     }
