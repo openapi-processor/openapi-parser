@@ -36,7 +36,7 @@ public class DateTime {
         DateTimeStep step = new DateTimeStep (schema, instance);
         parentStep.add (step);
 
-        if (!shouldValidate (format, schema)) {
+        if (!shouldValidate (schema)) {
             return;
         }
 
@@ -48,8 +48,8 @@ public class DateTime {
         }
     }
 
-    private boolean shouldValidate (Format format, JsonSchema schema) {
-        boolean shouldAssert = assertFormat(schema);
+    private boolean shouldValidate (JsonSchema schema) {
+        boolean shouldAssert = schema.getContext().getVocabularies().requiresFormatAssertion();
         if (!shouldAssert) {
             shouldAssert = settings.assertFormat();
         }
@@ -57,14 +57,10 @@ public class DateTime {
         return shouldAssert;
     }
 
-    private boolean assertFormat(JsonSchema schema) {
-        return schema.getContext().getVocabularies().requiresFormatAssertion();
-    }
-
     private static boolean isTimeFormat(Format format) {
-        return format.equals(Format.DATE_TIME)
-            || format.equals(Format.DATE)
-            || format.equals(Format.TIME);
+        return Format.DATE_TIME.equals(format)
+            || Format.DATE.equals(format)
+            || Format.TIME.equals(format);
     }
 
     private String getInstanceValue (JsonInstance instance) {

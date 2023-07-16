@@ -35,5 +35,4 @@ class EmailSpec : StringSpec({
 
         step.getAnnotations(Keywords.FORMAT) shouldHaveSingleElement {a -> a.value == "email"}
     }
-
 })

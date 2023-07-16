@@ -32,7 +32,7 @@ public class Email {
         EmailStep step = new EmailStep (schema, instance);
         parentStep.add (step);
 
-        if (!shouldValidate (format, schema)) {
+        if (!shouldValidate (schema)) {
             return;
         }
 
@@ -43,17 +43,13 @@ public class Email {
         }
     }
 
-    private boolean shouldValidate (Format format, JsonSchema schema) {
-        boolean shouldAssert = assertFormat(schema);
+    private boolean shouldValidate (JsonSchema schema) {
+        boolean shouldAssert = schema.getContext().getVocabularies().requiresFormatAssertion();
         if (!shouldAssert) {
             shouldAssert = settings.assertFormat();
         }
 
         return shouldAssert;
-    }
-
-    private boolean assertFormat(JsonSchema schema) {
-        return schema.getContext().getVocabularies().requiresFormatAssertion();
     }
 
     private boolean isEmailFormat (Format format) {
