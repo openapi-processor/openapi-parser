@@ -5,6 +5,7 @@
 
 package io.openapiprocessor.jsonschema.schema;
 
+import java.net.URI;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +27,10 @@ public class Vocabularies201909 {
         "https://json-schema.org/draft/2019-09/vocab/meta-data", getKeywordsMetaData ());
     public static final Vocabulary validation = new Vocabulary (
         "https://json-schema.org/draft/2019-09/vocab/validation", getKeywordsValidation ());
+
+    public static Vocabularies create (Map<URI, Boolean> vocabularies) {
+        return Vocabularies.create(vocabularies, SchemaVersion.Draft201909);
+    }
 
     static Map<String, Keyword> getKeywordsCore () {
         Map<String, Keyword> keywords = new HashMap<> ();

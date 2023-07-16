@@ -24,6 +24,10 @@ public class Vocabulary {
         this.keywords = keywords;
     }
 
+    public String getUri() {
+        return uri;
+    }
+
     public boolean isKeyword (String candidate) {
         return keywords.containsKey (candidate);
     }
