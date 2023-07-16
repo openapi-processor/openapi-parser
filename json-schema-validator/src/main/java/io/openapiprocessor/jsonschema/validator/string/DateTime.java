@@ -10,8 +10,6 @@ import io.openapiprocessor.jsonschema.schema.JsonInstance;
 import io.openapiprocessor.jsonschema.schema.JsonSchema;
 import io.openapiprocessor.jsonschema.validator.ValidatorSettings;
 import io.openapiprocessor.jsonschema.validator.steps.ValidationStep;
-import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -38,7 +36,7 @@ public class DateTime {
         DateTimeStep step = new DateTimeStep (schema, instance);
         parentStep.add (step);
 
-        if (!shouldValidate (format)) {
+        if (!shouldValidate (format, schema)) {
             return;
         }
 
@@ -50,11 +48,23 @@ public class DateTime {
         }
     }
 
-    @EnsuresNonNullIf (expression = "#1", result = true)
-    private boolean shouldValidate (@Nullable Format format) {
-        return format != null
-            && settings.validateFormat (format)
-            && (format.equals (Format.DATE_TIME) || format.equals (Format.DATE) || format.equals (Format.TIME));
+    private boolean shouldValidate (Format format, JsonSchema schema) {
+        boolean shouldAssert = assertFormat(schema);
+        if (!shouldAssert) {
+            shouldAssert = settings.assertFormat();
+        }
+
+        return shouldAssert && isTimeFormat(format);
+    }
+
+    private boolean assertFormat(JsonSchema schema) {
+        return schema.getContext().getVocabularies().requiresFormatAssertion();
+    }
+
+    private static boolean isTimeFormat(Format format) {
+        return format.equals(Format.DATE_TIME)
+            || format.equals(Format.DATE)
+            || format.equals(Format.TIME);
     }
 
     private String getInstanceValue (JsonInstance instance) {

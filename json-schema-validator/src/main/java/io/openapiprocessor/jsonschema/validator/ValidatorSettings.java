@@ -5,18 +5,18 @@
 
 package io.openapiprocessor.jsonschema.validator;
 
-import io.openapiprocessor.jsonschema.schema.Format;
-import io.openapiprocessor.jsonschema.schema.Output;
-import io.openapiprocessor.jsonschema.schema.SchemaVersion;
+import io.openapiprocessor.jsonschema.schema.*;
 
 import java.util.Arrays;
 import java.util.EnumSet;
 
 public class ValidatorSettings {
+    private enum AssertionFormat { UNSET, DISABLED, ENABLED }
+
     private SchemaVersion version = SchemaVersion.getLatest ();
     private Output output = Output.VERBOSE;
 
-    private boolean format = false;
+    private AssertionFormat format = AssertionFormat.UNSET;
     private final EnumSet<Format> formats = EnumSet.noneOf(Format.class);
 
     /**
@@ -63,18 +63,18 @@ public class ValidatorSettings {
      * enable format assertions.
      */
     public void enableFormat() {
-        format = true;
+        format = AssertionFormat.ENABLED;
     }
 
     /**
      * disable format assertions.
      */
     public void disableFormat() {
-        format = false;
+        format = AssertionFormat.DISABLED;
     }
 
     public boolean assertFormat() {
-        return format;
+        return format.equals(AssertionFormat.ENABLED);
     }
 
     /**
@@ -101,12 +101,12 @@ public class ValidatorSettings {
      * @param format the format
      * @return true if it should be validated, else false
      */
+    @Deprecated
     public boolean validateFormat (Format format) {
         return assertFormat(format);
     }
 
     public boolean assertFormat (Format format) {
-        return this.format && formats.contains (format);
+        return assertFormat() && formats.contains (format);
     }
-
 }

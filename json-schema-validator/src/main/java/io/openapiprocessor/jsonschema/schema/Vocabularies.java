@@ -62,6 +62,15 @@ public class Vocabularies {
         return validation.ordinal () > State.MISSING.ordinal ();
     }
 
+    /**
+     * format assertion vocabulary is required?
+     *
+     * @return true if format assertion vocabulary is required, otherwise false
+     */
+    public boolean requiresFormatAssertion() {
+        return State.REQUIRED.equals(formatAssertion);
+    }
+
     public static Vocabularies create (Map<URI, Boolean> vocabularies, SchemaVersion version) {
         Vocabularies result = new Vocabularies (vocabularies, version);
         result.applicator = getState (vocabularies, version, version::isApplicatorVocabulary);
