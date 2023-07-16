@@ -5,13 +5,12 @@
 
 package io.openapiprocessor.jsonschema.validator.string;
 
+import io.openapiprocessor.jsonschema.schema.Format;
 import io.openapiprocessor.jsonschema.schema.JsonInstance;
 import io.openapiprocessor.jsonschema.schema.JsonSchema;
 import io.openapiprocessor.jsonschema.validator.ValidatorSettings;
 import io.openapiprocessor.jsonschema.validator.steps.ValidationStep;
 import io.openapiprocessor.jsonschema.validator.support.IpV6Validator;
-import io.openapiprocessor.jsonschema.schema.Format;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
 
@@ -26,25 +25,35 @@ public class IpV6 {
     }
 
     public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
-        String format = schema.getFormat ();
-        if (!shouldValidate (format))
+        Format format = Format.of (schema.getFormat ());
+        if (format == null || !supportsFormat(format))
             return;
 
         IpV6Step step = new IpV6Step (schema, instance);
+        parentStep.add (step);
+
+        if (!shouldValidate (schema)) {
+            return;
+        }
 
         String instanceValue = getInstanceValue (instance);
         boolean valid = new IpV6Validator (instanceValue).validate ();
         if (!valid) {
             step.setInvalid ();
         }
-
-        parentStep.add (step);
     }
 
-    private boolean shouldValidate (@Nullable String format) {
-        return format != null
-            && format.equals (Format.IPV6.getFormat ())
-            && settings.validateFormat (Format.IPV6);
+    private boolean shouldValidate (JsonSchema schema) {
+        boolean shouldAssert = schema.getContext().getVocabularies().requiresFormatAssertion();
+        if (!shouldAssert) {
+            shouldAssert = settings.assertFormat();
+        }
+
+        return shouldAssert;
+    }
+
+    private static boolean supportsFormat(Format format) {
+        return Format.IPV6.equals(format);
     }
 
     private String getInstanceValue (JsonInstance instance) {
