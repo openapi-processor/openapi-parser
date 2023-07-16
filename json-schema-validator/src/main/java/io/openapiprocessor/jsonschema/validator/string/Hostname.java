@@ -25,7 +25,7 @@ public class Hostname {
 
     public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
         Format format = Format.of (schema.getFormat ());
-        if (format == null || !isFormat(format))
+        if (format == null || !supportsFormat(format))
             return;
 
         HostnameStep step = new HostnameStep (schema, instance);
@@ -33,7 +33,6 @@ public class Hostname {
 
         if (!shouldValidate (schema))
             return;
-
 
         String instanceValue = getInstanceValue (instance);
         boolean valid = isValid (instanceValue);
@@ -51,7 +50,7 @@ public class Hostname {
         return shouldAssert;
     }
 
-    private static boolean isFormat(Format format) {
+    private static boolean supportsFormat(Format format) {
         return Format.HOSTNAME.equals(format);
     }
 

@@ -30,7 +30,7 @@ public class DateTime {
 
     public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
         Format format = Format.of (schema.getFormat ());
-        if (format == null || !isTimeFormat(format))
+        if (format == null || !supportsFormat(format))
             return;
 
         DateTimeStep step = new DateTimeStep (schema, instance);
@@ -57,7 +57,7 @@ public class DateTime {
         return shouldAssert;
     }
 
-    private static boolean isTimeFormat(Format format) {
+    private static boolean supportsFormat(Format format) {
         return Format.DATE_TIME.equals(format)
             || Format.DATE.equals(format)
             || Format.TIME.equals(format);

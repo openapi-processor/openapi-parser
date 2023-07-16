@@ -26,7 +26,7 @@ public class Email {
 
     public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
         Format format = Format.of (schema.getFormat ());
-        if (format == null || !isEmailFormat(format))
+        if (format == null || !supportsFormat(format))
             return;
 
         EmailStep step = new EmailStep (schema, instance);
@@ -52,7 +52,7 @@ public class Email {
         return shouldAssert;
     }
 
-    private boolean isEmailFormat (Format format) {
+    private boolean supportsFormat(Format format) {
         return Format.EMAIL.equals (format);
     }
 
