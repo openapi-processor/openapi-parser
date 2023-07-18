@@ -5,15 +5,15 @@
 
 package io.openapiprocessor.jsonschema.validator
 
-import io.kotest.core.annotation.Ignored
 import io.kotest.core.spec.style.FreeSpec
 import io.openapiprocessor.jsonschema.schema.Format
 import io.openapiprocessor.jsonschema.validator.support.Exclude
+import io.openapiprocessor.jsonschema.validator.support.Settings
 import io.openapiprocessor.jsonschema.validator.support.draftSpec
 
-@Ignored
 class Draft202012Spec: FreeSpec ({
     val settings = ValidatorSettingsDefaults.draft202012()
+    settings.enableFormat()
     settings.enableFormats(*Format.values())
 
     include(
@@ -21,8 +21,7 @@ class Draft202012Spec: FreeSpec ({
         "/suites/JSON-Schema-Test-Suite/tests/draft2020-12",
         settings,
         draft202012Extras
-    )
-    )
+    ))
 })
 
 val draft202012Extras = listOf(
@@ -53,5 +52,19 @@ val draft202012Extras = listOf(
     Exclude("valid leap second, positive time-offset"),
     Exclude("valid leap second, large positive time-offset"),
     Exclude("valid leap second, negative time-offset"),
-    Exclude("valid leap second, large negative time-offset")
+    Exclude("valid leap second, large negative time-offset"),
+
+    Settings("invalid email string is only an annotation by default", disableFormat()),
+    Settings("invalid regex string is only an annotation by default", disableFormat()),
+    Settings("invalid ipv4 string is only an annotation by default", disableFormat()),
+    Settings("invalid ipv6 string is only an annotation by default", disableFormat()),
+    Settings("invalid hostname string is only an annotation by default", disableFormat()),
+    Settings("invalid date string is only an annotation by default", disableFormat()),
+    Settings("invalid date-time string is only an annotation by default", disableFormat()),
+    Settings("invalid time string is only an annotation by default", disableFormat()),
+    Settings("invalid uri string is only an annotation by default", disableFormat()),
+    Settings("invalid uri-reference string is only an annotation by default", disableFormat()),
+    Settings("invalid uuid string is only an annotation by default", disableFormat())
 )
+
+private fun disableFormat() = { s: ValidatorSettings -> s.disableFormat(); s }
