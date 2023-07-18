@@ -27,6 +27,7 @@ class ValidatorSchemaSpec : StringSpec({
     store.registerDraft6()
     store.registerDraft7()
     store.registerDraft201909()
+    store.registerDraft202012()
 
     fun getInstance (schema: SchemaVersion): JsonInstance {
         return InstanceBuilder(loader, store.documents).getDraft(schema)
@@ -38,7 +39,8 @@ class ValidatorSchemaSpec : StringSpec({
         Fixture(SchemaVersion.Draft4, SchemaVersion.Draft4),
         Fixture(SchemaVersion.Draft6, SchemaVersion.Draft6),
         Fixture(SchemaVersion.Draft7, SchemaVersion.Draft7),
-        Fixture(SchemaVersion.Draft201909, SchemaVersion.Draft201909)
+        Fixture(SchemaVersion.Draft201909, SchemaVersion.Draft201909),
+        Fixture(SchemaVersion.Draft202012, SchemaVersion.Draft202012)
     )
 
     for (f in fixtures) {
