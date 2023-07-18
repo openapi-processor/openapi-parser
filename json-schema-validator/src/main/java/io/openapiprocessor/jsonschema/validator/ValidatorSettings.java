@@ -19,6 +19,17 @@ public class ValidatorSettings {
     private AssertionFormat format = AssertionFormat.UNSET;
     private final EnumSet<Format> formats = EnumSet.noneOf(Format.class);
 
+    public ValidatorSettings() {
+    }
+
+    public ValidatorSettings(ValidatorSettings settings) {
+        this.version = settings.version;
+        this.output = settings.output;
+        format = settings.format;
+        formats.clear();
+        formats.addAll(settings.formats);
+    }
+
     /**
      * get the JSON schema version that should be used if a schema doesn't provide a $schema. The
      * default is {@code Version.Latest}.

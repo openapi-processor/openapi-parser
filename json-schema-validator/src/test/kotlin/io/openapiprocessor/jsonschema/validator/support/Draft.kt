@@ -15,7 +15,6 @@ import io.openapiprocessor.jackson.JacksonConverter
 import io.openapiprocessor.jsonschema.ouput.OutputConverter
 import io.openapiprocessor.jsonschema.schema.*
 import io.openapiprocessor.jsonschema.schema.UriSupport.createUri
-import io.openapiprocessor.jsonschema.schema.UriSupport.emptyUri
 import io.openapiprocessor.jsonschema.validator.Validator
 import io.openapiprocessor.jsonschema.validator.ValidatorSettings
 import java.nio.file.Files
@@ -43,6 +42,11 @@ fun draftSpec(
     val excludes = extras
         .filterIsInstance<Exclude>()
         .map { e -> e.test }
+
+    val settingsModifier = extras
+        .filterIsInstance<Settings>()
+        .map { s -> s.test to s.modify }
+        .toMap()
 
     fun loadSuites(path: Path): Collection<Suite> {
         return json.readValue(
@@ -108,10 +112,16 @@ fun draftSpec(
 
                         for (test in tests) {
                             test.description {
+                                var currentSettings = ValidatorSettings(settings)
+                                val modifier = settingsModifier[test.description]
+                                if(modifier != null) {
+                                    currentSettings = modifier(currentSettings)
+                                }
+
                                 val instance = createInstance(test.data)
 
                                 // act
-                                val validator = Validator(settings)
+                                val validator = Validator(currentSettings)
                                 val step = validator.validate(schema, instance)
 
                                 // output
@@ -134,4 +144,5 @@ fun draftSpec(
 }
 
 class Exclude(val test: String)
+class Settings(val test: String, val modify: (ValidatorSettings) -> ValidatorSettings)
 class Document(val id: String, val path: String)

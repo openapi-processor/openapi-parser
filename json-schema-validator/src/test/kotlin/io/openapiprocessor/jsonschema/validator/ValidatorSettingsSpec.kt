@@ -40,4 +40,12 @@ class ValidatorSettingsSpec : StringSpec({
         settings.assertFormat().shouldBeTrue()
     }
 
+    "should copy itself" {
+        val settings = ValidatorSettingsDefaults.draft201909()
+        val copy = ValidatorSettings(settings)
+        copy.enableFormat()
+
+        settings.assertFormat().shouldBeFalse()
+        copy.assertFormat().shouldBeTrue()
+    }
 })
