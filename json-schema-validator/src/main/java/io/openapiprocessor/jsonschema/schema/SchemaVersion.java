@@ -151,7 +151,7 @@ public enum SchemaVersion {
     }
 
     public static SchemaVersion getLatest () {
-        return Draft201909;
+        return Draft202012;
     }
 
     /**
