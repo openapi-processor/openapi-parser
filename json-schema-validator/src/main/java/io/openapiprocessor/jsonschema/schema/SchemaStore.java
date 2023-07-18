@@ -13,6 +13,9 @@ import org.slf4j.LoggerFactory;
 import java.net.URI;
 import java.util.*;
 
+import static io.openapiprocessor.jsonschema.converter.Types.*;
+import static io.openapiprocessor.jsonschema.schema.UriSupport.createUri;
+
 /**
  * Schema factory. This is used to register the schemas required to validate a json instant.
  */
@@ -176,13 +179,13 @@ public class SchemaStore {
         // create schema
         Resolver resolver = new Resolver (documents, loader, new Resolver.Settings (version));
         ResolverResult resolve = resolver.resolve (schemaUri, document);
-        schema = createSchema (resolve);
+        schema = createSchema (schemaUri, version, resolve);
 
         schemaCache.put (schemaUri, schema);
         return schema;
     }
 
-    private JsonSchema createSchema (ResolverResult result) {
+    private JsonSchema createSchema (URI schemaUri, SchemaVersion version, ResolverResult result) {
         Scope scope = result.getScope ();
         Object document = result.getDocument ();
 
@@ -194,52 +197,82 @@ public class SchemaStore {
                 new JsonSchemaContext (scope, new ReferenceRegistry (), vocabularies));
 
         } else if (Types.isObject (document)) {
-            URI metaSchema = getMetaSchema (document);
-            Vocabularies vocabularies = getVocabularies (metaSchema);
+            Map<String, Object> object = Types.asObject (document);
+            Vocabularies vocabularies = getVocabularies (schemaUri, version, object);
 
-            return new JsonSchemaObject (
-                Types.asObject (document),
-                new JsonSchemaContext (scope, result.getRegistry (), vocabularies));
+            return new JsonSchemaObject (object, new JsonSchemaContext (scope, result.getRegistry (), vocabularies));
         } else {
             // todo
             throw new RuntimeException ();
         }
     }
 
-    private Vocabularies getVocabularies (@Nullable URI metaSchema) {
-        if (metaSchema == null) {
+    private Vocabularies getVocabularies (URI schemaUri, SchemaVersion version, Map<String, Object> document) {
+        URI metaSchemaUri = getMetaSchemaUri(document);
+        if (metaSchemaUri == null) {
             return Vocabularies.ALL;
         }
 
-        SchemaVersion version = SchemaVersion.getVersion (metaSchema);
-        if (version != null) {
+        SchemaVersion metaVersion = getMetaSchemaVersion(metaSchemaUri, version);
+        Map<String, Object> metaObject = getDocument(metaSchemaUri);
+        if (metaObject == null) {
             return Vocabularies.ALL;
         }
 
-        JsonSchema metaSchemaSchema = getSchema (metaSchema);
-        if (metaSchemaSchema == null) {
-            // todo throw
+        return getVocabularies(metaObject, metaVersion);
+    }
+
+    private @Nullable SchemaVersion getMetaSchemaVersion(URI schemaUri, SchemaVersion version) {
+        SchemaVersion schemaVersion = SchemaVersion.getVersion(schemaUri);
+        if (schemaVersion != null)
+            return schemaVersion;
+
+        Map<String, Object> document = getDocument(schemaUri);
+        if (document == null)
+            return version;
+
+        URI metaSchemaUri = getMetaSchemaUri(document);
+        SchemaVersion metaVersion = SchemaVersion.getVersion (metaSchemaUri);
+        if (metaVersion != null)
+            return metaVersion;
+
+        return version;
+    }
+
+    private @Nullable URI getMetaSchemaUri(Map<String, Object> schema) {
+        Object schemaValue = schema.get (Keywords.SCHEMA);
+        if (!Types.isString (schemaValue))
+            return null;
+
+        return UriSupport.createUri (Types.asString(schemaValue));
+    }
+
+    private @Nullable Map<String, Object> getDocument(URI schemaUri) {
+        Object document = documents.get (schemaUri);
+        if (document == null) {
+            // todo throw unknown meta schema
             throw new RuntimeException ();
         }
 
-        Vocabularies vocabulary = metaSchemaSchema.getVocabulary ();
-        if (vocabulary == null) {
-            return Vocabularies.ALL;
-        }
+        if (!isObject(document))
+            return null;
 
-        return vocabulary;
+        return asObject(document);
     }
 
-    private @Nullable URI getMetaSchema (Object document) {
-        if (!Types.isObject (document))
-            return null;
+    private Vocabularies getVocabularies (Map<String, Object> document, SchemaVersion version) {
+        Object vocabularyValue = document.get(Keywords.VOCABULARY);
+        if (!isObject(vocabularyValue))
+            return Vocabularies.ALL;
 
-        Map<String, Object> object = Types.asObject (document);
-        Object schema = object.get (Keywords.SCHEMA);
-        if (!Types.isString (schema))
-            return null;
+        Map<String, Object> vocabularyObject = asObject(vocabularyValue);
 
-        return UriSupport.createUri (Types.asString(schema));
+        Map<URI, Boolean> vocabularies = new LinkedHashMap<> ();
+        vocabularyObject.forEach ((propKey, propValue) -> {
+            vocabularies.put (createUri (propKey), asBoolean (propValue));
+        });
+
+        return Vocabularies.create (vocabularies, version);
     }
 
     private URI generateUri () {
