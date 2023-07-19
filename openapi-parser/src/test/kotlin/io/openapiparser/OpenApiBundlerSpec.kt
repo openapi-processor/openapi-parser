@@ -6,6 +6,7 @@
 package io.openapiparser
 
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.datatest.withData
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -40,161 +41,236 @@ class OpenApiBundlerSpec : StringSpec({
         return Bucket.toBucket(result.scope, bundle)!!
     }
 
+    fun bundle31(result: ResolverResult): Bucket {
+        val context = Context(result.scope, result.registry)
+        val bucket = Bucket(result.scope, asObject(result.document))
+        val api = OpenApiResult31(context, bucket, result.documents)
+        val bundle = api.bundle()
+        return Bucket.toBucket(result.scope, bundle)!!
+    }
+
     fun getObject(bucket: Bucket, jsonPointer: String): Map<String, Any> {
         return asObject(bucket.getRawValue(from(jsonPointer))!!.value)
     }
 
-    "bundle handles \$ref loop" {
-        val result = resolve("/bundle-ref-loop/openapi30.yaml")
-        val bundle = bundle30(result)
+    data class Data(val api: String, val bundle: (result: ResolverResult) -> Bucket)
 
-        val ref = getObject(bundle, "/paths/~1self-reference/get/responses/200/content/application~1json/schema")
+    withData(
+        mapOf(
+            "bundle handles \$ref loop, 30" to Data("/bundle-ref-loop/openapi30.yaml", ::bundle30),
+            "bundle handles \$ref loop, 31" to Data("/bundle-ref-loop/openapi31.yaml", ::bundle31)
+        )
+    ) { (api, bundle) ->
+        val result = resolve(api)
+        val bundled = bundle(result)
+
+        val ref = getObject(bundled, "/paths/~1self-reference/get/responses/200/content/application~1json/schema")
         ref["\$ref"].shouldBe("#/components/schemas/Self")
 
-        val schema = getObject(bundle, "/components/schemas/Self/properties/self")
+        val schema = getObject(bundled, "/components/schemas/Self/properties/self")
         schema["\$ref"].shouldBe("#/components/schemas/Self")
     }
 
-    "bundle schema \$ref" {
-        val result = resolve("/bundle-ref-schema/openapi30.yaml")
-        val bundle = bundle30(result)
+    withData(
+        mapOf(
+            "bundle schema \$ref, 30" to Data("/bundle-ref-schema/openapi30.yaml", ::bundle30),
+            "bundle schema \$ref, 31" to Data("/bundle-ref-schema/openapi31.yaml", ::bundle31)
+        )
+    ) { (api, bundle) ->
+        val result = resolve(api)
+        val bundled = bundle(result)
 
-        val ref = getObject(bundle, "/paths/~1foo/get/responses/200/content/application~1json/schema")
+        val ref = getObject(bundled, "/paths/~1foo/get/responses/200/content/application~1json/schema")
         ref["\$ref"].shouldBe("#/components/schemas/Foo")
 
-        val component = bundle.getRawValue(from("/components/schemas/Foo"))
+        val component = bundled.getRawValue(from("/components/schemas/Foo"))
         component.shouldNotBeNull()
     }
 
-    "bundle response \$ref" {
-        val result = resolve("/bundle-ref-response/openapi30.yaml")
-        val bundle = bundle30(result)
+    withData(
+        mapOf(
+            "bundle response \$ref, 30" to Data("/bundle-ref-response/openapi30.yaml", ::bundle30),
+            "bundle response \$ref, 31" to Data("/bundle-ref-response/openapi31.yaml", ::bundle31)
+        )
+    ) { (api, bundle) ->
+        val result = resolve(api)
+        val bundled = bundle(result)
 
-        val ref = getObject(bundle, "/paths/~1foo/get/responses/200")
+        val ref = getObject(bundled, "/paths/~1foo/get/responses/200")
         ref.size shouldBe 1
         ref["\$ref"].shouldBe("#/components/responses/Foo")
 
-        val component = getObject(bundle, "/components/responses/Foo")
+        val component = getObject(bundled, "/components/responses/Foo")
         component.shouldNotBeNull()
     }
 
-    "bundle parameter \$ref" {
-        val result = resolve("/bundle-ref-parameter/openapi30.yaml")
-        val bundle = bundle30(result)
+    withData(
+        mapOf(
+            "bundle parameter \$ref, 30" to Data("/bundle-ref-parameter/openapi30.yaml", ::bundle30),
+            "bundle parameter \$ref, 31" to Data("/bundle-ref-parameter/openapi31.yaml", ::bundle31)
+        )
+    ) { (api, bundle) ->
+        val result = resolve(api)
+        val bundled = bundle(result)
 
-        val ref = getObject(bundle, "/paths/~1foo/get/parameters/0")
+        val ref = getObject(bundled, "/paths/~1foo/get/parameters/0")
         ref.size shouldBe 1
         ref["\$ref"].shouldBe("#/components/parameters/Foo")
 
-        val component = getObject(bundle, "/components/parameters/Foo")
+        val component = getObject(bundled, "/components/parameters/Foo")
         component.shouldNotBeNull()
     }
 
-    "bundle example \$ref" {
-        val result = resolve("/bundle-ref-example/openapi30.yaml")
-        val bundle = bundle30(result)
+    withData(
+        mapOf(
+            "bundle example \$ref, 30" to Data("/bundle-ref-example/openapi30.yaml", ::bundle30),
+            "bundle example \$ref, 31" to Data("/bundle-ref-example/openapi31.yaml", ::bundle31)
+        )
+    ) { (api, bundle) ->
+        val result = resolve(api)
+        val bundled = bundle(result)
 
-        val ref = getObject(bundle, "/paths/~1foo/get/parameters/0/examples/foo")
+        val ref = getObject(bundled, "/paths/~1foo/get/parameters/0/examples/foo")
         ref.size shouldBe 1
         ref["\$ref"].shouldBe("#/components/examples/Foo")
 
-        val component = getObject(bundle, "/components/examples/Foo")
+        val component = getObject(bundled, "/components/examples/Foo")
         component.shouldNotBeNull()
     }
 
-    "bundle request body \$ref" {
-        val result = resolve("/bundle-ref-request-body/openapi30.yaml")
-        val bundle = bundle30(result)
+    withData(
+        mapOf(
+            "bundle request body \$ref, 30" to Data("/bundle-ref-request-body/openapi30.yaml", ::bundle30),
+            "bundle request body \$ref, 31" to Data("/bundle-ref-request-body/openapi31.yaml", ::bundle31)
+        )
+    ) { (api, bundle) ->
+        val result = resolve(api)
+        val bundled = bundle(result)
 
-        val ref = getObject(bundle, "/paths/~1foo/get/requestBody")
+        val ref = getObject(bundled, "/paths/~1foo/get/requestBody")
         ref.size shouldBe 1
         ref["\$ref"].shouldBe("#/components/requestBodies/Foo")
 
-        val component = getObject(bundle, "/components/requestBodies/Foo")
+        val component = getObject(bundled, "/components/requestBodies/Foo")
         component.shouldNotBeNull()
     }
 
-    "bundle header \$ref" {
-        val result = resolve("/bundle-ref-header/openapi30.yaml")
-        val bundle = bundle30(result)
+    withData(
+        mapOf(
+            "bundle header \$ref, 30" to Data("/bundle-ref-header/openapi30.yaml", ::bundle30),
+            "bundle header \$ref, 31" to Data("/bundle-ref-header/openapi31.yaml", ::bundle31)
+        )
+    ) { (api, bundle) ->
+        val result = resolve(api)
+        val bundled = bundle(result)
 
-        val ref = getObject(bundle, "/paths/~1foo/get/responses/204/headers/foo")
+        val ref = getObject(bundled, "/paths/~1foo/get/responses/204/headers/foo")
         ref.size shouldBe 1
         ref["\$ref"].shouldBe("#/components/headers/Foo")
 
-        val component = getObject(bundle, "/components/headers/Foo")
+        val component = getObject(bundled, "/components/headers/Foo")
         component.shouldNotBeNull()
     }
 
-    "bundle security scheme \$ref" {
-        val result = resolve("/bundle-ref-security-scheme/openapi30.yaml")
-        val bundle = bundle30(result)
+    withData(
+        mapOf(
+            "bundle security scheme \$ref, 30" to Data("/bundle-ref-security-scheme/openapi30.yaml", ::bundle30),
+            "bundle security scheme \$ref, 31" to Data("/bundle-ref-security-scheme/openapi31.yaml", ::bundle31)
+        )
+    ) { (api, bundle) ->
+        val result = resolve(api)
+        val bundled = bundle(result)
 
-        val scheme = getObject(bundle, "/components/securitySchemes/jwt")
+        val scheme = getObject(bundled, "/components/securitySchemes/jwt")
         scheme.containsKey(Keywords.REF).shouldBeFalse()
         scheme.containsKey("type").shouldBeTrue()
     }
 
-    "bundle link \$ref" {
-        val result = resolve("/bundle-ref-link/openapi30.yaml")
-        val bundle = bundle30(result)
+    withData(
+        mapOf(
+            "bundle link \$ref, 30" to Data("/bundle-ref-link/openapi30.yaml", ::bundle30),
+            "bundle link \$ref, 31" to Data("/bundle-ref-link/openapi31.yaml", ::bundle31)
+        )
+    ) { (api, bundle) ->
+        val result = resolve(api)
+        val bundled = bundle(result)
 
-        val ref = getObject(bundle, "/paths/~1foo/get/responses/204/links/foo")
+        val ref = getObject(bundled, "/paths/~1foo/get/responses/204/links/foo")
         ref.size shouldBe 1
         ref["\$ref"].shouldBe("#/components/links/Foo")
 
-        val component = getObject(bundle, "/components/links/Foo")
+        val component = getObject(bundled, "/components/links/Foo")
         component.shouldNotBeNull()
     }
 
-    "bundle callback \$ref" {
-        val result = resolve("/bundle-ref-callback/openapi30.yaml")
-        val bundle = bundle30(result)
+    withData(
+        mapOf(
+            "bundle callback \$ref, 30" to Data("/bundle-ref-callback/openapi30.yaml", ::bundle30),
+            "bundle callback \$ref, 31" to Data("/bundle-ref-callback/openapi31.yaml", ::bundle31)
+        )
+    ) { (api, bundle) ->
+        val result = resolve(api)
+        val bundled = bundle(result)
 
-        val ref = getObject(bundle, "/paths/~1foo/get/callbacks/\$url")
+        val ref = getObject(bundled, "/paths/~1foo/get/callbacks/\$url")
         ref.size shouldBe 1
         ref["\$ref"].shouldBe("#/components/callbacks/Foo")
 
-        val component = getObject(bundle, "/components/callbacks/Foo")
+        val component = getObject(bundled, "/components/callbacks/Foo")
         component.shouldNotBeNull()
     }
 
-    "bundle path \$ref" {
-        val result = resolve("/bundle-ref-path-item/openapi30.yaml")
-        val bundle = bundle30(result)
+    withData(
+        mapOf(
+            "bundle path \$ref, 30" to Data("/bundle-ref-path-item/openapi30.yaml", ::bundle30),
+            "bundle path \$ref, 31" to Data("/bundle-ref-path-item/openapi31.yaml", ::bundle31)
+        )
+    ) { (api, bundle) ->
+        val result = resolve(api)
+        val bundled = bundle(result)
 
-        val pathItem = getObject(bundle, "/paths/~1foo")
+        val pathItem = getObject(bundled, "/paths/~1foo")
         pathItem.containsKey(Keywords.REF).shouldBeFalse()
         pathItem.containsKey("get").shouldBeTrue()
     }
 
-    "bundle nested \$ref" {
-        val result = resolve("/bundle-ref-nested/openapi30.yaml")
-        val bundle = bundle30(result)
+    withData(
+        mapOf(
+            "bundle nested \$ref, 30" to Data("/bundle-ref-nested/openapi30.yaml", ::bundle30),
+            "bundle nested \$ref, 31" to Data("/bundle-ref-nested/openapi31.yaml", ::bundle31)
+        )
+    ) { (api, bundle) ->
+        val result = resolve(api)
+        val bundled = bundle(result)
 
-        val pathItem = getObject(bundle, "/paths/~1foo")
+        val pathItem = getObject(bundled, "/paths/~1foo")
         pathItem.containsKey(Keywords.REF).shouldBeFalse()
         pathItem.containsKey("get").shouldBeTrue()
 
-        val ref = getObject(bundle, "/paths/~1foo/get/responses/200/content/application~1json/schema")
+        val ref = getObject(bundled, "/paths/~1foo/get/responses/200/content/application~1json/schema")
         ref["\$ref"].shouldBe("#/components/schemas/Bar")
-        val component = bundle.getRawValue(from("/components/schemas/Bar"))
+        val component = bundled.getRawValue(from("/components/schemas/Bar"))
         component.shouldNotBeNull()
 
-        val refNested = getObject(bundle, "/components/schemas/Bar/properties/bar")
+        val refNested = getObject(bundled, "/components/schemas/Bar/properties/bar")
         refNested["\$ref"].shouldBe("#/components/schemas/Bar2")
-        val componentNested = bundle.getRawValue(from("/components/schemas/Bar2"))
+        val componentNested = bundled.getRawValue(from("/components/schemas/Bar2"))
         componentNested.shouldNotBeNull()
     }
 
-    "does not override existing component" {
-        val result = resolve("/bundle-ref-components/openapi30.yaml")
-        val bundle = bundle30(result)
+    withData(
+        mapOf(
+            "does not override existing component, 30" to Data("/bundle-ref-components/openapi30.yaml", ::bundle30),
+            "does not override existing component, 31" to Data("/bundle-ref-components/openapi31.yaml", ::bundle31)
+        )
+    ) { (api, bundle) ->
+        val result = resolve(api)
+        val bundled = bundle(result)
 
-        val bundled = bundle.getRawValue(from("/components/schemas/Foo"))
-        bundled.shouldNotBeNull()
+        val foo = bundled.getRawValue(from("/components/schemas/Foo"))
+        foo.shouldNotBeNull()
 
-        val existing = bundle.getRawValue(from("/components/schemas/Bar"))
+        val existing = bundled.getRawValue(from("/components/schemas/Bar"))
         existing.shouldNotBeNull()
     }
 
