@@ -95,7 +95,6 @@ public class OpenApiResult30 implements OpenApiResult {
             for (OutputUnit error : errors) {
                 error.getError ();
                 error.getInstanceLocation ();
-
             }
 
             return false;
