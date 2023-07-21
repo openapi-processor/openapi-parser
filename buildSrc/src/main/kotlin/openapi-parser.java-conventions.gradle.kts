@@ -24,11 +24,13 @@ repositories {
 
 dependencies {
     checkerFramework(libs.checker)
+    compileOnly(libs.checkerq)
 
     testImplementation(platform(libs.kotest.bom))
     testImplementation(libs.kotest.runner)
     testImplementation(libs.kotest.datatest)
     testImplementation(libs.mockk)
+    testCompileOnly(libs.checkerq)
 }
 
 java {
