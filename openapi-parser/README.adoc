@@ -7,7 +7,6 @@
 It is usable, but has the following limitations at the moment:
 
 * it does support most but not all OpenAPI object properties
-* JSON schema validation is only available for OpenAPI 3.0.x
 * minimal documentation (just this README)
 
 source code gifts (i.e pull requests) are welcome :-)
