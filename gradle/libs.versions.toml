@@ -2,7 +2,7 @@
 openapiparser = "2023.3-SNAPSHOT"
 
 [libraries]
-plugin-kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.22"
+plugin-kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.0"
 plugin-checker = "org.checkerframework:checkerframework-gradle-plugin:0.6.29"
 plugin-outdated = "com.github.ben-manes:gradle-versions-plugin:0.46.0"
 checker = "org.checkerframework:checker:3.36.0"
