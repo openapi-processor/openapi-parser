@@ -15,6 +15,11 @@ dependencies {
     testImplementation(libs.jackson.yaml)
     testImplementation(libs.jackson.kotlin)
     testImplementation(libs.logback)
+
+    constraints {
+        implementation(libs.slf4j) { because("avoid multiple versions") }
+        testImplementation(libs.slf4j) { because("avoid multiple versions") }
+    }
 }
 
 publishing {

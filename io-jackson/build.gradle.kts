@@ -9,6 +9,11 @@ dependencies {
     implementation(platform(libs.jackson.bom))
     implementation(libs.jackson.databind)
     implementation(libs.jackson.yaml)
+
+    constraints {
+        implementation(libs.slf4j) { because("avoid multiple versions") }
+        testImplementation(libs.slf4j) { because("avoid multiple versions") }
+    }
 }
 
 publishing {

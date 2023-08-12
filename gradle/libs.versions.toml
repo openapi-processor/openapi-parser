@@ -1,14 +1,19 @@
 [versions]
 openapiparser = "2023.3-SNAPSHOT"
 
+kotlin = "1.9.0"
+
 [libraries]
-plugin-kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.22"
+
+# buildSrc
+plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 plugin-checker = "org.checkerframework:checkerframework-gradle-plugin:0.6.29"
 plugin-outdated = "com.github.ben-manes:gradle-versions-plugin:0.46.0"
+
 checker = "org.checkerframework:checker:3.36.0"
 checkerq = "org.checkerframework:checker-qual:3.37.0"
 slf4j = "org.slf4j:slf4j-api:2.0.7"
-logback = "ch.qos.logback:logback-classic:1.4.8"
+logback = "ch.qos.logback:logback-classic:1.4.11"
 
 jackson-bom = "com.fasterxml.jackson:jackson-bom:2.15.2"
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind" }
@@ -23,9 +28,10 @@ kotest-datatest = { module = "io.kotest:kotest-framework-datatest" }
 mockk = "io.mockk:mockk:1.13.5"
 
 [bundles]
-jackson = ["jackson-databind", "jackson-yaml"]
+jackson = ["jackson-databind", "jackson-yaml", "jackson-kotlin" ]
+kotest = ["kotest-runner", "kotest-datatest", "mockk"]
 
 [plugins]
-kotlin = { id = "org.jetbrains.kotlin.jvm", version = "1.8.22" }
+kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 nexus = { id = "io.github.gradle-nexus.publish-plugin", version = "1.3.0" }
 jacoco = { id = "org.barfuin.gradle.jacocolog", version = "3.1.0" }

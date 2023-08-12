@@ -7,6 +7,11 @@ dependencies {
     implementation(project(":io-interfaces"))
 
     implementation(libs.snakeyaml)
+
+    constraints {
+        implementation(libs.slf4j) { because("avoid multiple versions") }
+        testImplementation(libs.slf4j) { because("avoid multiple versions") }
+    }
 }
 
 publishing {
