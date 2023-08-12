@@ -23,7 +23,7 @@ val publishUser: String by extra
 val publishKey: String by extra
 
 nexusPublishing {
-    repositories {
+    this.repositories {
         sonatype {
             username.set(publishUser)
             password.set(publishKey)
