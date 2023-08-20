@@ -1,6 +1,9 @@
 [versions]
 openapiparser = "2023.3-SNAPSHOT"
 
+build-jdk = "11"
+test-jdk = "17"
+
 kotlin = "1.9.0"
 
 [libraries]

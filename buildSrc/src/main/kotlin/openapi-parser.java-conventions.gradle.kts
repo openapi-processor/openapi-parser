@@ -1,5 +1,3 @@
-@file:Suppress("UnstableApiUsage")
-
 import org.gradle.accessors.dm.LibrariesForLibs
 
 plugins {
@@ -38,20 +36,28 @@ java {
     withSourcesJar()
 
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
-        //vendor.set(JvmVendorSpec.ADOPTIUM)
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.build.jdk.get()))
     }
 }
 
 kotlin {
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
-        //vendor.set(JvmVendorSpec.ADOPTIUM)
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.build.jdk.get()))
     }
 }
 
-tasks.getByName<Test>("test") {
+//tasks.getByName<Test>("test") {
+//    useJUnitPlatform()
+//}
+
+tasks.withType<Test>().configureEach {
     useJUnitPlatform()
+
+    javaLauncher.set(javaToolchains.launcherFor {
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.test.jdk.get()))
+    })
+
+    finalizedBy(tasks.named("jacocoTestReport"))
 }
 
 tasks.withType<JavaCompile>().configureEach {
