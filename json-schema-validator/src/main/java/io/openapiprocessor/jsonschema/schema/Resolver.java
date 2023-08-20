@@ -28,8 +28,11 @@ public class Resolver {
     private static final Logger log = LoggerFactory.getLogger (Resolver.class);
 
     public static class Settings {
-        private final SchemaVersion version;
+        private SchemaVersion version;
         private boolean autoLoadSchemas = false;
+
+        public Settings () {
+        }
 
         public Settings (SchemaVersion version) {
             this.version = version;
@@ -83,10 +86,14 @@ public class Resolver {
      * todo try/catch
      */
     public ResolverResult resolve (URI documentUri, Object document) {
+        return resolve(documentUri, document, settings);
+    }
+
+    public ResolverResult resolve (URI documentUri, Object document, Settings currentSettings) {
         ReferenceRegistry registry = new ReferenceRegistry ();
 
         documents.addId (documentUri, document);
-        Scope scope = Scope.createScope (documentUri, document, settings.version);
+        Scope scope = Scope.createScope (documentUri, document, currentSettings.version);
         Bucket bucket = toBucket (scope, document);
 
         if (bucket == null) {

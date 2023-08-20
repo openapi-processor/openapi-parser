@@ -49,6 +49,24 @@ class ResolverSpec: StringSpec({
         result.registry.shouldNotBeNull()
     }
 
+    "resolves schema with version" {
+        val store = DocumentStore()
+        val loader = DocumentLoader(UriReader(), JacksonConverter())
+        val resolver = Resolver(store, loader, Resolver.Settings())
+
+        val uri = URI("https://document")
+        val doc = emptyMap<String, Any>()
+
+        val settings = Resolver.Settings (SchemaVersion.Draft202012)
+        val result = resolver.resolve(uri, doc, settings)
+
+        result.scope.documentUri shouldBe uri
+        result.scope.baseUri shouldBe uri
+        result.scope.version shouldBe settings.version
+        result.document shouldBe doc
+        result.registry.shouldNotBeNull()
+    }
+
     "resolves schema with internal ref" {
         val content = """
             ${'$'}ref: '#/definitions/foo'
