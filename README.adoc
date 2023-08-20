@@ -22,14 +22,7 @@
 :jackson-central-badge: https://img.shields.io/maven-central/v/io.openapiprocessor/io-jackson?label=Maven%20Central
 :snakeyaml-central-badge: https://img.shields.io/maven-central/v/io.openapiprocessor/io-snakeyaml?label=Maven%20Central
 
-
-**work in progress**
-
-It is usable, but has the following limitations at the moment:
-
-* it does support most but not all OpenAPI object properties
-* JSON schema validation is only available for OpenAPI 3.0.x
-* api may change
+It is usable, it is used as the internal openapi parser/validator by openapi-processor.
 
 == openapi-parser & validator
 
