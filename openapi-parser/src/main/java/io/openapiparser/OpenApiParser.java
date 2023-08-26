@@ -6,57 +6,84 @@
 package io.openapiparser;
 
 import io.openapiprocessor.jsonschema.converter.StringNotNullConverter;
-import io.openapiprocessor.jsonschema.schema.Bucket;
-import io.openapiprocessor.jsonschema.schema.Resolver;
-import io.openapiprocessor.jsonschema.schema.ResolverResult;
+import io.openapiprocessor.jsonschema.schema.*;
 
 import java.net.URI;
 
 import static io.openapiparser.Keywords.OPENAPI;
-import static io.openapiprocessor.jsonschema.converter.Types.asMap;
 import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
 
 public class OpenApiParser {
-    private final Resolver resolver;
+    private final DocumentStore documents;
+    private final DocumentLoader loader;
 
-    public OpenApiParser (Resolver resolver) {
-        this.resolver = resolver;
+    public OpenApiParser (DocumentStore documents, DocumentLoader loader) {
+        this.documents = documents;
+        this.loader = loader;
     }
 
-    public OpenApiResult parse(URI baseUri) throws Exception {
+    public OpenApiResult parse(URI baseUri) {
         try {
-            return createResult (resolver.resolve (baseUri));
+            return parse(baseUri, loader.loadDocument(baseUri));
         } catch (Exception e) {
-            throw new ParserException (e);
+            throw new ParserException (baseUri, e);
         }
     }
 
     public OpenApiResult parse(String resource) {
         try {
-            return createResult (resolver.resolve (resource));
+            return parse(URI.create (resource), loader.loadDocument(resource));
         } catch (Exception e) {
             throw new ParserException (e);
         }
     }
 
-    private OpenApiResult createResult (ResolverResult result) {
-        Object document = result.getDocument ();
-        Bucket api = new Bucket (result.getScope (), asMap (document));
-        String version = getVersion (api);
-
-        if (isVersion30 (version)) {
-            return new OpenApiResult30 (
-                new Context (result.getScope (), result.getRegistry ()), api, result.getDocuments ());
-        } else if (isVersion31 (version)) {
-            return new OpenApiResult31 (
-                new Context (result.getScope (), result.getRegistry ()), api, result.getDocuments ());
-        } else {
-            throw new UnknownVersionException (version);
+    public OpenApiResult parse(URI baseUri, Object document) {
+        try {
+            return parseVersion(baseUri, document);
+        } catch (Exception e) {
+            throw new ParserException (e);
         }
     }
 
-    private String getVersion (Bucket api) {
-        return nonNull (api.convert (OPENAPI, new StringNotNullConverter ()));
+    private OpenApiResult parseVersion(URI baseUri, Object document) {
+        String version = getVersion(baseUri, document);
+
+        if (isVersion30(version)) {
+            return parse30(baseUri, document);
+
+        } else if (isVersion31(version)) {
+            return parse31(baseUri, document);
+
+        } else {
+            throw new UnknownVersionException(version);
+        }
+    }
+
+    private OpenApiResult31 parse31(URI baseUri, Object document) {
+        Resolver resolver = new Resolver(documents, loader);
+        ResolverResult result = resolver.resolve(baseUri, document, new Resolver.Settings(SchemaVersion.Draft202012));
+
+        return new OpenApiResult31(
+                new Context(result.getScope(), result.getRegistry()),
+                Bucket.toBucket(result.getScope(), document),
+                documents);
+    }
+
+    private OpenApiResult30 parse30(URI baseUri, Object document) {
+        Resolver resolver = new Resolver(documents, loader);
+        ResolverResult result = resolver.resolve(baseUri, document, new Resolver.Settings(SchemaVersion.Draft4));
+
+        return new OpenApiResult30(
+                new Context(result.getScope(), result.getRegistry()),
+                Bucket.toBucket(result.getScope(), document),
+                documents);
+    }
+
+    private String getVersion(URI baseUri, Object document) {
+        Scope scope = Scope.createScope(baseUri, document, SchemaVersion.getLatest());
+        Bucket api = nonNull(Bucket.toBucket(scope, document));
+        return  api.convert (OPENAPI, new StringNotNullConverter ());
     }
 
     private boolean isVersion30(String version) {

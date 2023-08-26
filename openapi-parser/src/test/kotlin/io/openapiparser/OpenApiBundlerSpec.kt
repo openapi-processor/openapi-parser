@@ -21,16 +21,9 @@ class OpenApiBundlerSpec : StringSpec({
 
     fun resolve(documentUri: String): ResolverResult {
         val documents = DocumentStore()
-        val loader = DocumentLoader(
-            UriReader(),
-            SnakeYamlConverter()
-        )
-        val resolver = Resolver(
-            documents,
-            loader,
-            Resolver.Settings(SchemaVersion.Draft4)
-        )
-        return resolver.resolve(documentUri)
+        val loader = DocumentLoader(UriReader(), SnakeYamlConverter())
+        val resolver = Resolver(documents, loader)
+        return resolver.resolve(documentUri, Resolver.Settings(SchemaVersion.Draft4))
     }
 
     fun bundle30(result: ResolverResult): Bucket {

@@ -25,8 +25,7 @@ class ApiBuilder {
     private var api: String? = null
     private lateinit var apiUri: URI
     private var converter: Converter = SnakeYamlConverter()
-    private var documents: DocumentStore =
-        DocumentStore()
+    private var documents: DocumentStore = DocumentStore()
 
     fun withApi(api: String): ApiBuilder {
         return withYaml("file:///any", api.trimIndent())
@@ -48,33 +47,25 @@ class ApiBuilder {
     }
 
     fun buildParser(): OpenApiParser {
-        return OpenApiParser(createResolver(SchemaVersion.Draft4))
+        return OpenApiParser(documents, DocumentLoader(getReader(), converter))
     }
 
     fun buildOpenApi30(): OpenApi30 {
-        val resolver = createResolver(SchemaVersion.Draft4)
-        val result = resolver.resolve(apiUri)
+        val resolver = createResolver()
+        val result = resolver.resolve(apiUri, Resolver.Settings(SchemaVersion.Draft4))
 
         return OpenApi30(
             Context(result.scope, result.registry),
-            Bucket(
-                result.scope,
-                Types.asMap(result.document)!!
-            )
-        )
+            Bucket(result.scope, Types.asMap(result.document)!!))
     }
 
     fun buildOpenApi31(): OpenApi31 {
-        val resolver = createResolver(SchemaVersion.Draft201909)  // todo
-        val result = resolver.resolve(apiUri)
+        val resolver = createResolver()
+        val result = resolver.resolve(apiUri, Resolver.Settings(SchemaVersion.Draft201909))
 
         return OpenApi31(
             Context(result.scope, result.registry),
-            Bucket(
-                result.scope,
-                Types.asMap(result.document)!!
-            )
-        )
+            Bucket(result.scope, Types.asMap(result.document)!!))
     }
 
     fun <T> build(clazz: Class<T>): T {
@@ -85,25 +76,16 @@ class ApiBuilder {
     }
 
     private fun <T> build(factory: (context: Context, bucket: Bucket) -> T): T {
-        val resolver = createResolver(SchemaVersion.Draft4) // todo
-        val result = resolver.resolve(apiUri)
+        val resolver = createResolver()
+        val result = resolver.resolve(apiUri, Resolver.Settings(SchemaVersion.Draft4))
 
         return factory(
             Context(result.scope, result.registry),
-            Bucket(
-                result.scope,
-                Types.asMap(result.document)!!
-            )
-        )
+            Bucket(result.scope, Types.asMap(result.document)!!))
     }
 
-    private fun createResolver(version: SchemaVersion): Resolver {
-        val loader = DocumentLoader(getReader(), converter)
-        return Resolver(
-            documents,
-            loader,
-            Resolver.Settings(version)
-        )
+    private fun createResolver(): Resolver {
+        return Resolver(documents, DocumentLoader(getReader(), converter))
     }
 
     private fun withYaml(baseUri: String, api: String): ApiBuilder {

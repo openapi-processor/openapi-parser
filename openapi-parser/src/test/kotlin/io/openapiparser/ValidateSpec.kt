@@ -15,19 +15,16 @@ import io.openapiprocessor.jsonschema.validator.Validator
 class ValidateSpec: StringSpec({
 
     "validate openapi with \$ref into another file" {
+        val documents = DocumentStore()
         val loader = DocumentLoader(
             UriReader(),
             SnakeYamlConverter()
         )
 
-        val documents = DocumentStore()
-        val settings = Resolver.Settings (SchemaVersion.Draft4)
-        val resolver = Resolver(documents, loader, settings)
-
         val store = SchemaStore(loader)
         store.registerDraft4()
 
-        val parser = OpenApiParser(resolver)
+        val parser = OpenApiParser(documents, loader)
         val result = parser.parse("/v30/ref-into-another-file/openapi.yaml")
 
         val validator = Validator()
