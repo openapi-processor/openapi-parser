@@ -34,17 +34,12 @@ public class SetupExampleTest {
         // Converter converter = new JacksonConverter ();
         DocumentLoader loader = new DocumentLoader (reader, converter);
 
-        // 2. create a resolver.
-        // it is responsible for resolving the $ref'erences in the OpenAPI document.
-        // The Settings object is initialized with the JSON schema version used by
-        // OpenAPI (here Draft 4 for OpenAPI 3.0.x).
+        // 2. create a parser.
         DocumentStore documents = new DocumentStore ();
-        Resolver.Settings resolverSettings = new Resolver.Settings (SchemaVersion.Draft4);
-        Resolver resolver = new Resolver (documents, loader, resolverSettings);
+        OpenApiParser parser = new OpenApiParser (documents, loader);
 
         // 3. parse the OpenAPI from resource or url.
         // here it loads an OpenAPI document from a resource file, but URI works too.
-        OpenApiParser parser = new OpenApiParser (resolver);
         OpenApiResult result = parser.parse ("openapi.yaml");
 
         // 4. get the API model from the result to navigate the OpenAPI document.
