@@ -177,8 +177,8 @@ public class SchemaStore {
         }
 
         // create schema
-        Resolver resolver = new Resolver (documents, loader, new Resolver.Settings (version));
-        ResolverResult resolve = resolver.resolve (schemaUri, document);
+        Resolver resolver = new Resolver (documents, loader);
+        ResolverResult resolve = resolver.resolve (schemaUri, document, new Resolver.Settings (version));
         schema = createSchema (schemaUri, version, resolve);
 
         schemaCache.put (schemaUri, schema);

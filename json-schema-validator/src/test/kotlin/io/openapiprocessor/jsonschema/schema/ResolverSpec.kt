@@ -36,11 +36,11 @@ class ResolverSpec: StringSpec({
             StringReader(""), JacksonConverter()
         )
         val settings = Resolver.Settings (SchemaVersion.Draft4)
-        val resolver = Resolver(store, loader, settings)
+        val resolver = Resolver(store, loader)
 
         val uri = URI.create("https://document")
         val doc = emptyMap<String, Any>()
-        val result = resolver.resolve(uri, doc)
+        val result = resolver.resolve(uri, doc, settings)
 
         result.scope.documentUri shouldBe uri
         result.scope.baseUri shouldBe uri
@@ -52,7 +52,7 @@ class ResolverSpec: StringSpec({
     "resolves schema with version" {
         val store = DocumentStore()
         val loader = DocumentLoader(UriReader(), JacksonConverter())
-        val resolver = Resolver(store, loader, Resolver.Settings())
+        val resolver = Resolver(store, loader)
 
         val uri = URI("https://document")
         val doc = emptyMap<String, Any>()
@@ -79,10 +79,10 @@ class ResolverSpec: StringSpec({
             StringReader(content), JacksonConverter()
         )
         val settings = Resolver.Settings (SchemaVersion.Draft4)
-        val resolver = Resolver(store, loader, settings)
+        val resolver = Resolver(store, loader)
 
         val uri = URI.create("https://document")
-        val result = resolver.resolve(uri)
+        val result = resolver.resolve(uri, settings)
 
         result.scope.documentUri shouldBe uri
         result.scope.baseUri shouldBe uri
@@ -103,10 +103,10 @@ class ResolverSpec: StringSpec({
         val store = DocumentStore()
         val loader = DocumentLoader(reader, mockk())
         val settings = Resolver.Settings (SchemaVersion.Draft4)
-        val resolver = Resolver(store, loader, settings)
+        val resolver = Resolver(store, loader)
 
         shouldThrow<ResolverException> {
-            resolver.resolve(URI("https:/fails/to/load/openapi.yaml"))
+            resolver.resolve(URI("https:/fails/to/load/openapi.yaml"), settings)
         }
     }
 
@@ -123,10 +123,10 @@ class ResolverSpec: StringSpec({
             StringReader("broken"), mockk()
         )
         val settings = Resolver.Settings (SchemaVersion.Draft4)
-        val resolver = Resolver(store, loader, settings)
+        val resolver = Resolver(store, loader)
 
         shouldThrow<ResolverException> {
-            resolver.resolve(URI("https:/fails/to/convert/openapi.yaml"))
+            resolver.resolve(URI("https:/fails/to/convert/openapi.yaml"), settings)
         }
     }
 
@@ -148,10 +148,10 @@ class ResolverSpec: StringSpec({
             JacksonConverter()
         )
         val settings = Resolver.Settings (SchemaVersion.Draft4)
-        val resolver = Resolver(store, loader, settings)
+        val resolver = Resolver(store, loader)
 
         val uri = URI("memory:/instant.yaml")
-        val result = resolver.resolve(uri)
+        val result = resolver.resolve(uri, settings)
 
         val doc = asMap(result.document)
         doc.shouldContainExactly(mapOf("${'$'}ref" to "foo.yaml#/foo"))
@@ -176,10 +176,10 @@ class ResolverSpec: StringSpec({
             JacksonConverter()
         )
         val settings = Resolver.Settings (SchemaVersion.Draft4)
-        val resolver = Resolver(store, loader, settings)
+        val resolver = Resolver(store, loader)
 
         shouldThrow<ResolverException> {
-            resolver.resolve(URI("memory:/instant.yaml"))
+            resolver.resolve(URI("memory:/instant.yaml"), settings)
         }
     }
 })

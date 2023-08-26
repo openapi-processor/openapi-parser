@@ -10,12 +10,8 @@ import io.openapiprocessor.jsonschema.schema.*
 class InstanceBuilder(private val loader: DocumentLoader, private val documents: DocumentStore) {
     fun getDraft(version: SchemaVersion): JsonInstance {
         val document = documents.get(version.schemaUri)!!
-        val resolver = Resolver(
-            documents,
-            loader,
-            Resolver.Settings(version)
-        )
-        val resolverResult = resolver.resolve(version.schemaUri, document)
+        val resolver = Resolver(documents, loader)
+        val resolverResult = resolver.resolve(version.schemaUri, document, Resolver.Settings(version))
         return JsonInstance(resolverResult.document)
     }
 }

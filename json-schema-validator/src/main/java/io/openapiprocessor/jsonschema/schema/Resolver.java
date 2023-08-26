@@ -13,8 +13,6 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 
-import static io.openapiprocessor.jsonschema.schema.Scope.createScope;
-
 /**
  * loads the base document and resolves all internal and external $ref's. In case of an external
  * $ref it automatically downloads the referenced document if {@code autoLoadSchemas} is enabled.
@@ -50,30 +48,43 @@ public class Resolver {
 
     private final DocumentStore documents;
     private final DocumentLoader loader;
-    private final Settings settings;
 
-    public Resolver (DocumentStore documents, DocumentLoader loader, Settings settings) {
+    public Resolver (DocumentStore documents, DocumentLoader loader) {
         this.documents = documents;
         this.loader = loader;
-        this.settings = settings;
     }
 
-    public ResolverResult resolve (URI uri) {
+    /**
+     * resolves a given {@code uri}. It will download the document from the given {@code uri} and walk any referenced
+     * document. The result contains a {@link ReferenceRegistry} that provides the instance of each ref.
+     *
+     * @param uri resource path of document
+     * @param settings resolver settings
+     * @return resolver result
+     */
+    public ResolverResult resolve (URI uri, Settings settings) {
         try {
-            return resolve (uri, loader.loadDocument (uri));
+            return resolve (uri, loader.loadDocument (uri), settings);
         } catch (Exception e) {
             throw new ResolverException (String.format ("failed to resolve '%s'.", uri), e);
         }
     }
 
-    public ResolverResult resolve (String resourcePath) {
+    /**
+     * resolves a given {@code resourcePath}. It will walk any referenced document. The result contains
+     * a {@link ReferenceRegistry} that provides the instance of each ref.
+     *
+     * @param resourcePath resource path of document
+     * @param settings resolver settings
+     * @return resolver result
+     */
+    public ResolverResult resolve (String resourcePath, Settings settings) {
         try {
-            return resolve (URI.create (resourcePath), loader.loadDocument (resourcePath));
+            return resolve (URI.create (resourcePath), loader.loadDocument (resourcePath), settings);
         } catch (Exception e) {
             throw new ResolverException (String.format ("failed to resolve '%s'.", resourcePath), e);
         }
     }
-
 
     /**
      * resolves a given {@code document}. It will walk any referenced document. The result contains
@@ -81,19 +92,14 @@ public class Resolver {
      *
      * @param documentUri document uri
      * @param document document content
+     * @param settings resolver settings
      * @return resolver result
-     *
-     * todo try/catch
      */
-    public ResolverResult resolve (URI documentUri, Object document) {
-        return resolve(documentUri, document, settings);
-    }
-
-    public ResolverResult resolve (URI documentUri, Object document, Settings currentSettings) {
+    public ResolverResult resolve (URI documentUri, Object document, Settings settings) {
         ReferenceRegistry registry = new ReferenceRegistry ();
 
         documents.addId (documentUri, document);
-        Scope scope = Scope.createScope (documentUri, document, currentSettings.version);
+        Scope scope = Scope.createScope (documentUri, document, settings.version);
         Bucket bucket = toBucket (scope, document);
 
         if (bucket == null) {
