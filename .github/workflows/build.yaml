@@ -149,14 +149,14 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: |
-        ./gradlew :json-schema-validator:sonar --stacktrace
+        ./gradlew -Dorg.gradle.jvmargs="-Xmx1024m -XX:MaxMetaspaceSize=250m" :json-schema-validator:sonar --stacktrace
 
     - name: run sonar parser
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: |
-        ./gradlew :openapi-parser:sonar --stacktrace
+        ./gradlew -Dorg.gradle.jvmargs="-Xmx1024m -XX:MaxMetaspaceSize=250m" :openapi-parser:sonar --stacktrace
 
     - name: archive test results
       uses: actions/upload-artifact@v3
