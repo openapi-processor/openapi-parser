@@ -140,19 +140,23 @@ jobs:
     - name: set up gradle
       uses: gradle/gradle-build-action@v2.7.1
 
+    - name: run tests
+      run: |
+        ./gradlew check --warning-mode all
+
     - name: run sonar validator
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: |
-        ./gradlew check :json-schema-validator:sonar --stacktrace
+        ./gradlew :json-schema-validator:sonar --stacktrace
 
     - name: run sonar parser
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: |
-        ./gradlew check :openapi-parser:sonar --stacktrace
+        ./gradlew :openapi-parser:sonar --stacktrace
 
     - name: archive test results
       uses: actions/upload-artifact@v3
