@@ -153,3 +153,11 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: |
         ./gradlew :openapi-parser:check :openapi-parser:sonar --stacktrace
+
+    - name: archive test results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: test results
+        path: '*/build/reports'
+
