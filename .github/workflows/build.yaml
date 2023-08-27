@@ -145,11 +145,11 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: |
-        ./gradlew :openapi-parser check sonar --stacktrace
+        ./gradlew :openapi-parser:check :openapi-parser:sonar --stacktrace
 
     - name: run sonar parser
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: |
-        ./gradlew :json-schema-validator check sonar --stacktrace
+        ./gradlew :json-schema-validator:check :json-schema-validator:sonar --stacktrace
