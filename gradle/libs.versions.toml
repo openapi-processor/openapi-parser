@@ -38,3 +38,4 @@ kotest = ["kotest-runner", "kotest-datatest", "mockk"]
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 nexus = { id = "io.github.gradle-nexus.publish-plugin", version = "1.3.0" }
 jacoco = { id = "org.barfuin.gradle.jacocolog", version = "3.1.0" }
+sonar = { id = "org.sonarqube", version =  "4.3.0.3225" }

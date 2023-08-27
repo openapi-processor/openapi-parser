@@ -1,6 +1,7 @@
 plugins {
     id("openapi-parser.java-conventions")
     id("openapi-parser.publish-conventions")
+    alias(libs.plugins.sonar)
 }
 
 dependencies {
@@ -31,6 +32,15 @@ publishing {
             }
         }
     }
+}
+
+sonar {
+  properties {
+    property("sonar.projectKey", "openapi-processor_openapi-parser-openapi-parser")
+    property("sonar.organization", "openapi-processor")
+    property("sonar.host.url", "https://sonarcloud.io")
+    property("sonar.coverage.jacoco.xmlReportPaths", "$buildDir/reports/jacoco/test/jacocoTestReport.xml")
+  }
 }
 
 tasks {
