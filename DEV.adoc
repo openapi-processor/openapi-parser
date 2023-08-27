@@ -1,0 +1,5 @@
+= Development
+
+== dependencies
+
+ ../gradlew dependencyInsight --dependency org.slf4j:slf4j-api --configuration testRuntimeClasspath

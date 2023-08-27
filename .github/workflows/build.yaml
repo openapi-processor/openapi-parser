@@ -107,3 +107,49 @@ jobs:
         PUBLISH_KEY: ${{ secrets.PUBLISH_KEY }}
       run: |
         ./gradlew publishToSonatype
+
+  sonar:
+    needs: [publish]
+    name: sonar
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: cache sonar
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.sonar/cache
+        key: sonar-${{ runner.os }}
+        restore-keys: |
+          sonar-${{ runner.os }}
+
+    - name: set up jdk
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: |
+          11
+          17
+
+    - name: set up gradle
+      uses: gradle/gradle-build-action@v2.7.1
+
+    - name: run sonar validator
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: |
+        ./gradlew :openapi-parser check sonar --stacktrace
+
+    - name: run sonar parser
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: |
+        ./gradlew :json-schema-validator check sonar --stacktrace
