@@ -92,11 +92,6 @@ public class OpenApiResult30 implements OpenApiResult {
                 })
                 .collect (Collectors.toList ());
 
-            for (OutputUnit error : errors) {
-                error.getError ();
-                error.getInstanceLocation ();
-            }
-
             return false;
         } catch (Exception ex) {
             return true;
