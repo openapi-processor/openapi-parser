@@ -39,7 +39,7 @@ sonar {
     property("sonar.projectKey", "openapi-processor_openapi-parser-openapi-parser")
     property("sonar.organization", "openapi-processor")
     property("sonar.host.url", "https://sonarcloud.io")
-    property("sonar.coverage.jacoco.xmlReportPaths", "$buildDir/reports/jacoco/test/jacocoTestReport.xml")
+//    property("sonar.coverage.jacoco.xmlReportPaths", "$buildDir/reports/jacoco/test/jacocoTestReport.xml")
   }
 }
 
