@@ -16,12 +16,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
-import static io.openapiparser.OpenApiSchemas.*;
+import static io.openapiparser.OpenApiSchemas.OPENAPI_SCHEMA_31;
+import static io.openapiparser.OpenApiSchemas.OPENAPI_SCHEMA_31_ID;
 
 public class OpenApiResult31 implements OpenApiResult {
-    @Deprecated
-    public static final String OPENAPI_SCHEMA = "/openapi/schemas/v3.1/schema.yaml";
-
     private final Context context;
     private final Bucket root;
 
