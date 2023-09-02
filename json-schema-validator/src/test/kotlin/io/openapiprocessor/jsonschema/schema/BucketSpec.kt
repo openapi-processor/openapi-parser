@@ -15,20 +15,22 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 import io.openapiprocessor.jsonschema.converter.NoValueException
 import io.openapiprocessor.jsonschema.converter.TypeMismatchException
+import io.openapiprocessor.jsonschema.schema.Scope.toScope
 import io.openapiprocessor.jsonschema.schema.UriSupport.*
 import java.net.URI
 
 class BucketSpec: StringSpec({
 
+    val uri = URI("https://foo")
+
     "get document uri" {
         Bucket.empty().baseUri.shouldBe(emptyUri())
 
-        Bucket(URI("https://foo"), mapOf()).baseUri.shouldBe(URI("https://foo"))
+        Bucket(toScope(uri), mapOf()).baseUri.shouldBe(uri)
     }
 
     "get raw property value" {
-        val bucket = Bucket(
-            URI(""), mapOf(
+        val bucket = Bucket(toScope(emptyUri()), mapOf(
                 "1" to 1,
                 "foo" to "foo",
                 "bar" to true
@@ -47,14 +49,14 @@ class BucketSpec: StringSpec({
             "bar" to true
         )
 
-        val bucket = Bucket(URI(""), properties)
+        val bucket = Bucket(toScope(emptyUri()), properties)
 
         bucket.rawValues shouldContainExactly properties
     }
 
     "has property" {
         val properties = mapOf("foo" to "bar")
-        val bucket = Bucket(URI(""), properties)
+        val bucket = Bucket(toScope(emptyUri()), properties)
 
         bucket.hasProperty("foo").shouldBeTrue()
         bucket.hasProperty("bar").shouldBeFalse()

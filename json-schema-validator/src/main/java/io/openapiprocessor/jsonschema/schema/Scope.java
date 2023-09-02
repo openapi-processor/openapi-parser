@@ -24,6 +24,16 @@ public class Scope {
     private final URI baseUri;
     private final SchemaVersion version;
 
+    public static Scope toScope(URI documentUri) {
+        return new Scope(documentUri, SchemaVersion.getLatest());
+    }
+
+    public Scope (URI documentUri, SchemaVersion version) {
+        this.documentUri = documentUri;
+        baseUri = documentUri;
+        this.version = version;
+    }
+
     public Scope (URI documentUri, @Nullable URI id, SchemaVersion version) {
         this.documentUri = documentUri;
         baseUri = UriSupport.isEmpty (id) ? documentUri : nonNull(id);

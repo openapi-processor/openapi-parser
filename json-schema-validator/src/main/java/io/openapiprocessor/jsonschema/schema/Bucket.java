@@ -55,16 +55,9 @@ public class Bucket {
     /**
      * create a document "root" bucket with an empty location.
      *
-     * @param source the document URI
+     * @param scope the scope of the document
      * @param properties the document properties
      */
-    @Deprecated // tests
-    public Bucket (URI source, Map<String, Object> properties) {
-        this.scope = new Scope (source, URI.create (""), null);
-        this.location = JsonPointer.EMPTY;
-        this.properties = properties;
-    }
-
     public Bucket (Scope scope, Map<String, Object> properties) {
         this.scope = scope;
         this.location = JsonPointer.EMPTY;
