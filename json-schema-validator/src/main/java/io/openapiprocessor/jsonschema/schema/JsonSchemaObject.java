@@ -481,10 +481,6 @@ public class JsonSchemaObject implements JsonSchema {
 
     @Override
     public String toString () {
-        String location = schemaObject.getLocation ().toString ();
-        if (location == null) {
-            return String.format ("%s", context.getScope ());
-        }
         return String.format ("%s", schemaObject.getLocation ());
     }
 
