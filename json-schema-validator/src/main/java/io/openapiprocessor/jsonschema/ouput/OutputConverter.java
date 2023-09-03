@@ -6,7 +6,7 @@
 package io.openapiprocessor.jsonschema.ouput;
 
 import io.openapiprocessor.jsonschema.schema.Output;
-import io.openapiprocessor.jsonschema.support.UriSupport;
+import io.openapiprocessor.jsonschema.support.Uris;
 import io.openapiprocessor.jsonschema.validator.Annotation;
 import io.openapiprocessor.jsonschema.validator.ValidationMessage;
 import io.openapiprocessor.jsonschema.validator.steps.DynamicRefStep;
@@ -202,7 +202,7 @@ public class OutputConverter {
     }
 
     private String getAbsoluteKeywordLocation (ValidationStep step) {
-        return UriSupport.decode (step.getAbsoluteKeywordLocation ().toString ());
+        return Uris.decode (step.getAbsoluteKeywordLocation ().toString ());
     }
 
     private @Nullable String getError (ValidationStep step) {

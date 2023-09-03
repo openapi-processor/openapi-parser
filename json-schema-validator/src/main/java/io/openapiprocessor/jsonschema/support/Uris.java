@@ -18,7 +18,7 @@ import static io.openapiprocessor.jsonschema.support.Nullness.nullable;
 /**
  * Uri support functions.
  */
-public class UriSupport {
+public class Uris {
     public static final String EMPTY_FRAGMENT = "#";
 
     public static URI emptyUri () {

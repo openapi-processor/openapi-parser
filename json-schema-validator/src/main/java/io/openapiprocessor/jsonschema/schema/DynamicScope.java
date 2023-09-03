@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-import static io.openapiprocessor.jsonschema.support.UriSupport.createUri;
-import static io.openapiprocessor.jsonschema.support.UriSupport.emptyFragment;
+import static io.openapiprocessor.jsonschema.support.Uris.createUri;
+import static io.openapiprocessor.jsonschema.support.Uris.emptyFragment;
 
 public final class DynamicScope {
 

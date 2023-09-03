@@ -5,12 +5,12 @@
 
 package io.openapiprocessor.jsonschema.schema;
 
-import io.openapiprocessor.jsonschema.support.UriSupport;
+import io.openapiprocessor.jsonschema.support.Uris;
 
 import java.net.URI;
 
 import static io.openapiprocessor.jsonschema.schema.Keywords.HASH;
-import static io.openapiprocessor.jsonschema.support.UriSupport.*;
+import static io.openapiprocessor.jsonschema.support.Uris.*;
 
 /**
  * $ref support.
@@ -137,7 +137,7 @@ public class Ref {
             return scope.getBaseUri ();
         }
 
-        return UriSupport.resolve(scope.getBaseUri(), refUri);
+        return Uris.resolve(scope.getBaseUri(), refUri);
     }
 
     @Override

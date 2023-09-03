@@ -8,7 +8,7 @@ package io.openapiprocessor.jsonschema.validator.string
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldHaveSingleElement
 import io.openapiprocessor.jsonschema.schema.*
-import io.openapiprocessor.jsonschema.support.UriSupport
+import io.openapiprocessor.jsonschema.support.Uris
 import io.openapiprocessor.jsonschema.validator.ValidatorSettingsDefaults
 import io.openapiprocessor.jsonschema.validator.steps.SchemaStep
 import java.net.URI
@@ -16,7 +16,7 @@ import java.net.URI
 class EmailSpec : StringSpec({
 
     val settings = ValidatorSettingsDefaults.draft201909()
-    val scope = Scope(UriSupport.emptyUri(), null, SchemaVersion.Draft201909)
+    val scope = Scope(Uris.emptyUri(), null, SchemaVersion.Draft201909)
 
     val vocabularies = Vocabularies201909.create(mapOf(
         URI.create(Vocabularies201909.core.uri) to true,

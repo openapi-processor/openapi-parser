@@ -14,7 +14,7 @@ import io.kotest.matchers.shouldBe
 import io.openapiprocessor.jackson.JacksonConverter
 import io.openapiprocessor.jsonschema.ouput.OutputConverter
 import io.openapiprocessor.jsonschema.schema.*
-import io.openapiprocessor.jsonschema.support.UriSupport.createUri
+import io.openapiprocessor.jsonschema.support.Uris.createUri
 import io.openapiprocessor.jsonschema.validator.Validator
 import io.openapiprocessor.jsonschema.validator.ValidatorSettings
 import java.nio.file.Files

@@ -8,12 +8,12 @@ package io.openapiprocessor.jsonschema.validator.steps;
 import io.openapiprocessor.jsonschema.schema.JsonPointer;
 import io.openapiprocessor.jsonschema.schema.JsonPointerSupport;
 import io.openapiprocessor.jsonschema.schema.Scope;
-import io.openapiprocessor.jsonschema.support.UriSupport;
+import io.openapiprocessor.jsonschema.support.Uris;
 
 import java.net.URI;
 import java.util.stream.Collectors;
 
-import static io.openapiprocessor.jsonschema.support.UriSupport.resolve;
+import static io.openapiprocessor.jsonschema.support.Uris.resolve;
 
 /**
  * common step functions.
@@ -29,7 +29,7 @@ public class Step {
         String encoded = "#/" + location.getTokens ()
             .stream ()
             .map (JsonPointerSupport::encode)
-            .map (UriSupport::encode)
+            .map (Uris::encode)
             .collect (Collectors.joining ("/"));
 
         return resolve (scope.getBaseUri (),  encoded);

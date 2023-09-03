@@ -5,7 +5,7 @@
 
 package io.openapiprocessor.jsonschema.schema;
 
-import io.openapiprocessor.jsonschema.support.UriSupport;
+import io.openapiprocessor.jsonschema.support.Uris;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.io.UnsupportedEncodingException;
@@ -124,7 +124,7 @@ public class JsonPointer {
             .map (JsonPointerSupport::encode)
             .collect (Collectors.joining ("/"));
 
-        return UriSupport.createUri ("#/" + escaped);
+        return Uris.createUri ("#/" + escaped);
     }
 
     /**

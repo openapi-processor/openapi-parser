@@ -3,13 +3,13 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiprocessor.jsonschema.schema
+package io.openapiprocessor.jsonschema.support
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
-import io.openapiprocessor.jsonschema.support.UriSupport.*
+import io.openapiprocessor.jsonschema.support.Uris.*
 
-class UriSupportSpec : StringSpec({
+class UrisSpec : StringSpec({
 
     "strip fragment from opaque uri" {
         val uri = createUri("urn:uuid:deadbeef-1234-ffff-ffff-4321feebdaed#/root")

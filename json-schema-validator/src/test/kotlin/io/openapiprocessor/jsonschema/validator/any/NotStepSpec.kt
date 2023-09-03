@@ -11,7 +11,7 @@ import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.types.shouldBeInstanceOf
-import io.openapiprocessor.jsonschema.support.UriSupport.emptyUri
+import io.openapiprocessor.jsonschema.support.Uris.emptyUri
 import io.openapiprocessor.jsonschema.validator.support.TestStep
 import io.openapiprocessor.jsonschema.schema.*
 

@@ -6,7 +6,7 @@
 package io.openapiprocessor.jsonschema.validator.support
 
 import io.openapiprocessor.jsonschema.schema.JsonPointer
-import io.openapiprocessor.jsonschema.support.UriSupport
+import io.openapiprocessor.jsonschema.support.Uris
 import io.openapiprocessor.jsonschema.validator.Annotation
 import io.openapiprocessor.jsonschema.validator.ValidationMessage
 import io.openapiprocessor.jsonschema.validator.steps.ValidationStep
@@ -44,7 +44,7 @@ class TestStep(val valid: Boolean, private val steps: Collection<ValidationStep>
     }
 
     override fun getAbsoluteKeywordLocation(): URI {
-        return UriSupport.emptyUri()
+        return Uris.emptyUri()
     }
 
     override fun getInstanceLocation(): JsonPointer {

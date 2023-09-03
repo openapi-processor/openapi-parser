@@ -6,7 +6,7 @@
 package io.openapiprocessor.jsonschema.schema;
 
 import io.openapiprocessor.jsonschema.support.Types;
-import io.openapiprocessor.jsonschema.support.UriSupport;
+import io.openapiprocessor.jsonschema.support.Uris;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
@@ -26,7 +26,7 @@ public class Scope {
     private final SchemaVersion version;
 
     public static Scope empty() {
-        return createScope(UriSupport.emptyUri());
+        return createScope(Uris.emptyUri());
     }
 
     /**
@@ -51,7 +51,7 @@ public class Scope {
             return new Scope (documentUri, null, version);
         }
 
-        return new Scope (documentUri, UriSupport.resolve(documentUri, id), version);
+        return new Scope (documentUri, Uris.resolve(documentUri, id), version);
     }
 
     /**
@@ -81,7 +81,7 @@ public class Scope {
         if (absolute) {
             return new Scope (documentUri, URI.create (id), version);
         } else {
-            return new Scope (documentUri, UriSupport.resolve(currentScope.getBaseUri (), id), version);
+            return new Scope (documentUri, Uris.resolve(currentScope.getBaseUri (), id), version);
         }
     }
 
@@ -97,7 +97,7 @@ public class Scope {
 
     public Scope (URI documentUri, @Nullable URI id, SchemaVersion version) {
         this.documentUri = documentUri;
-        baseUri = UriSupport.isEmpty (id) ? documentUri : nonNull(id);
+        baseUri = Uris.isEmpty (id) ? documentUri : nonNull(id);
         this.version = version;
     }
 
@@ -114,7 +114,7 @@ public class Scope {
     }
 
     public Scope resolve (String id) {
-        URI resolved = UriSupport.resolve(baseUri, id);
+        URI resolved = Uris.resolve(baseUri, id);
         if (resolved.equals (this.baseUri))
             return this;
 
@@ -122,7 +122,7 @@ public class Scope {
     }
 
     public Scope resolve (URI id) {
-        URI resolved = UriSupport.resolve(baseUri, id);
+        URI resolved = Uris.resolve(baseUri, id);
         if (resolved.equals(this.baseUri))
             return this;
 
@@ -130,7 +130,7 @@ public class Scope {
     }
 
     public URI resolveAnchor (String anchor) {
-        return UriSupport.resolve(baseUri, "#" + anchor);
+        return Uris.resolve(baseUri, "#" + anchor);
     }
 
     public Scope move (URI documentUri, Object document) {
@@ -164,6 +164,6 @@ public class Scope {
         if (!Types.isString(schema))
             return null;
 
-        return UriSupport.createUri(Types.asString(schema));
+        return Uris.createUri(Types.asString(schema));
     }
 }

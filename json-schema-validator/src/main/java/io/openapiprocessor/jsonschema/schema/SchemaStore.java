@@ -6,7 +6,7 @@
 package io.openapiprocessor.jsonschema.schema;
 
 import io.openapiprocessor.jsonschema.support.Types;
-import io.openapiprocessor.jsonschema.support.UriSupport;
+import io.openapiprocessor.jsonschema.support.Uris;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +15,7 @@ import java.net.URI;
 import java.util.*;
 
 import static io.openapiprocessor.jsonschema.support.Types.*;
-import static io.openapiprocessor.jsonschema.support.UriSupport.createUri;
+import static io.openapiprocessor.jsonschema.support.Uris.createUri;
 
 /**
  * Schema factory. This is used to register the schemas required to validate a json instant.
@@ -245,7 +245,7 @@ public class SchemaStore {
         if (!Types.isString (schemaValue))
             return null;
 
-        return UriSupport.createUri (Types.asString(schemaValue));
+        return Uris.createUri (Types.asString(schemaValue));
     }
 
     private @Nullable Map<String, Object> getDocument(URI schemaUri) {

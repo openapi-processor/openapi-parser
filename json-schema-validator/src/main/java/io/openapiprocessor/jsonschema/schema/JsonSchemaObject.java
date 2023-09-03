@@ -8,7 +8,7 @@ package io.openapiprocessor.jsonschema.schema;
 import io.openapiprocessor.jsonschema.converter.*;
 import io.openapiprocessor.jsonschema.support.Nullness;
 import io.openapiprocessor.jsonschema.support.Types;
-import io.openapiprocessor.jsonschema.support.UriSupport;
+import io.openapiprocessor.jsonschema.support.Uris;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
@@ -120,7 +120,7 @@ public class JsonSchemaObject implements JsonSchema {
         } else {
             URI dynamicRef = Nullness.nonNull(getDynamicRef ());
             String fragment = dynamicRef.getFragment ();
-            dynamicRef = UriSupport.createUri ("#" + fragment);
+            dynamicRef = Uris.createUri ("#" + fragment);
 
             Reference reference = context.getDynamicReference (dynamicRef, dynamicScope);
 

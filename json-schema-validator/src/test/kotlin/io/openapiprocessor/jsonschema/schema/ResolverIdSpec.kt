@@ -10,7 +10,7 @@ import io.kotest.matchers.booleans.shouldBeTrue
 import io.openapiprocessor.interfaces.Converter
 import io.openapiprocessor.interfaces.Reader
 import io.openapiprocessor.jsonschema.reader.UriReader
-import io.openapiprocessor.jsonschema.support.UriSupport
+import io.openapiprocessor.jsonschema.support.Uris
 import io.openapiprocessor.snakeyaml.SnakeYamlConverter
 import java.net.URI
 
@@ -18,8 +18,8 @@ import java.net.URI
 class ResolverIdSpec : StringSpec({
 
     val scope = Scope(
-        UriSupport.emptyUri(),
-        UriSupport.emptyUri(),
+        Uris.emptyUri(),
+        Uris.emptyUri(),
         SchemaVersion.Draft4
     )
 
@@ -66,7 +66,7 @@ class ResolverIdSpec : StringSpec({
 
         resolver.resolve(bucket)
 
-        documents.contains(UriSupport.emptyUri())
+        documents.contains(Uris.emptyUri())
         documents.contains(URI("/id")).shouldBeTrue()
     }
 

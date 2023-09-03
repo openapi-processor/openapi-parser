@@ -20,7 +20,7 @@ import io.openapiprocessor.jsonschema.schema.Bucket.createBucket
 import io.openapiprocessor.jsonschema.schema.SchemaVersion
 import io.openapiprocessor.jsonschema.schema.Scope
 import io.openapiprocessor.jsonschema.schema.Scope.createScope
-import io.openapiprocessor.jsonschema.support.UriSupport.createUri
+import io.openapiprocessor.jsonschema.support.Uris.createUri
 
 class PropertiesSpec: StringSpec({
     @Suppress("UNUSED_PARAMETER")
