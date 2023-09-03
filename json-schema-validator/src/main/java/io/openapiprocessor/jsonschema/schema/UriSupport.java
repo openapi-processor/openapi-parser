@@ -7,8 +7,10 @@ package io.openapiprocessor.jsonschema.schema;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.io.UnsupportedEncodingException;
-import java.net.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 import static io.openapiprocessor.jsonschema.support.Nullness.nullable;
@@ -155,16 +157,12 @@ public class UriSupport {
     }
 
     public static String encode (String source) {
-        try {
-            return URLEncoder.encode (source, StandardCharsets.UTF_8.name());
-        } catch (UnsupportedEncodingException ex) {
-            throw new RuntimeException (ex);
-        }
+        return URLEncoder.encode (source, StandardCharsets.UTF_8);
     }
 
     public static String decode (String source) {
         try {
-            return URLDecoder.decode (source, StandardCharsets.UTF_8.name());
+            return URLDecoder.decode (source, StandardCharsets.UTF_8);
         } catch (Exception ex) {
             throw new RuntimeException (ex);
         }
