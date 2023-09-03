@@ -11,6 +11,8 @@ import io.openapiprocessor.jsonschema.schema.Keywords;
 import io.openapiprocessor.jsonschema.validator.ValidationMessage;
 import io.openapiprocessor.jsonschema.validator.steps.SimpleStep;
 
+import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
+
 public class MinItemsStep extends SimpleStep {
 
     public MinItemsStep (JsonSchema schema, JsonInstance instance) {
@@ -19,6 +21,6 @@ public class MinItemsStep extends SimpleStep {
 
     @Override
     protected ValidationMessage getError () {
-        return new MinItemsError (schema, instance, schema.getMinItems ());
+        return new MinItemsError (schema, instance, nonNull(schema.getMinItems ()));
     }
 }
