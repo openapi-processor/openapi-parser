@@ -77,17 +77,10 @@ public class Bucket {
     /**
      * create an object bucket with the object location in the source document and its properties.
      *
-     * @param source the document URI
+     * @param scope the document scope
      * @param location the location (json pointer) inside {@code source}
      * @param properties the document properties
      */
-    @Deprecated
-    public Bucket (URI source, String location, Map<String, Object> properties) {
-        this.scope = new Scope (source, URI.create (""), null);
-        this.location = JsonPointer.from (location);
-        this.properties = properties;
-    }
-
     public Bucket (Scope scope, String location, Map<String, Object> properties) {
         this.scope = scope;
         this.location = JsonPointer.from (location);
