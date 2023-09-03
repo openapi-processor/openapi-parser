@@ -24,10 +24,6 @@ public class Scope {
     private final URI baseUri;
     private final SchemaVersion version;
 
-    public static Scope toScope(URI documentUri) {
-        return new Scope(documentUri, SchemaVersion.getLatest());
-    }
-
     public Scope (URI documentUri, SchemaVersion version) {
         this.documentUri = documentUri;
         baseUri = documentUri;
@@ -78,6 +74,10 @@ public class Scope {
 
     public Scope move (Object document) {
         return createScope (baseUri, document, this);
+    }
+
+    public static Scope createScope(URI documentUri) {
+        return new Scope(documentUri, SchemaVersion.getLatest());
     }
 
     /**
