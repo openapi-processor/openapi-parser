@@ -6,7 +6,7 @@
 package io.openapiprocessor.jsonschema.schema;
 
 import io.openapiprocessor.jsonschema.converter.*;
-import io.openapiprocessor.jsonschema.support.Nullness;
+import io.openapiprocessor.jsonschema.support.Null;
 import io.openapiprocessor.jsonschema.support.Types;
 import io.openapiprocessor.jsonschema.support.Uris;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -92,7 +92,7 @@ public class JsonSchemaObject implements JsonSchema {
 
     @Override
     public JsonSchema getRefSchema () {
-        Reference reference = context.getReference (Nullness.nonNull(getRef()));
+        Reference reference = context.getReference (Null.nonNull(getRef()));
         JsonSchemaContext refContext = context.withScope (reference.getValueScope ());
 
         JsonSchema schema = new JsonSchemaRefConverter (refContext)
@@ -108,7 +108,7 @@ public class JsonSchemaObject implements JsonSchema {
         if (dynamicScope == null) {
             // like $ref
             // no ref in registry with scope
-            Reference reference = context.getReference (Nullness.nonNull (getDynamicRef ()));
+            Reference reference = context.getReference (Null.nonNull (getDynamicRef ()));
             JsonSchemaContext refContext = context.withScope (reference.getValueScope ());
             JsonSchema schema = new JsonSchemaRefConverter (refContext)
                 .convert (Keywords.DYNAMIC_REF, reference.getValue (), reference.getPointer ());
@@ -118,7 +118,7 @@ public class JsonSchemaObject implements JsonSchema {
 
             return schema;
         } else {
-            URI dynamicRef = Nullness.nonNull(getDynamicRef ());
+            URI dynamicRef = Null.nonNull(getDynamicRef ());
             String fragment = dynamicRef.getFragment ();
             dynamicRef = Uris.createUri ("#" + fragment);
 

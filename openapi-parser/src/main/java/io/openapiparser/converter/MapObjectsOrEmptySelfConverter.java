@@ -12,7 +12,7 @@ import io.openapiprocessor.jsonschema.schema.Scope;
 
 import java.util.*;
 
-import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
+import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 
 /**
  * get a map of {@link T}s.

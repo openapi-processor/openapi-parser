@@ -9,7 +9,7 @@ import io.openapiprocessor.jsonschema.schema.JsonInstance;
 import io.openapiprocessor.jsonschema.schema.JsonSchema;
 import io.openapiprocessor.jsonschema.validator.ValidationMessage;
 
-import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
+import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 
 /**
  * Created by {@link MultipleOfStep}.

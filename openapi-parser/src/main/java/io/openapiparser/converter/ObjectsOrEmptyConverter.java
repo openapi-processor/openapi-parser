@@ -15,7 +15,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.*;
 
 import static io.openapiprocessor.jsonschema.support.Types.convertOrNull;
-import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
+import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 
 /**
  * get a collection of {@link T}s.

@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
+import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 
 /**
  * wraps the properties {@link Map} of a json/yaml object and its location in the source document.

@@ -12,7 +12,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.net.URI;
 
 import static io.openapiprocessor.jsonschema.schema.Keywords.REF;
-import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
+import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 
 /**
  * the context is used to resolve $ref's.

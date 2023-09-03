@@ -13,7 +13,7 @@ import io.openapiprocessor.jsonschema.validator.steps.ValidationStep;
 
 import java.util.Map;
 
-import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
+import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 
 /**
  * validates dependentSchemas. Since Draft 2019-09.

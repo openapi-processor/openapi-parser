@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
+import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 
 /**
  * validate uniqueItems. Since Draft 4.

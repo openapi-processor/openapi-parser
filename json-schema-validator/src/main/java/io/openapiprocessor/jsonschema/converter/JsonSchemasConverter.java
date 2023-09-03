@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import static io.openapiprocessor.jsonschema.support.Types.convertOrNull;
-import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
+import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 
 /**
  * get a collection of {@link JsonSchema}s.

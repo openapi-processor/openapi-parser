@@ -12,7 +12,7 @@ import io.openapiprocessor.jsonschema.support.Strings;
 import java.io.InputStream;
 import java.net.URI;
 
-import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
+import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 
 public class DocumentLoader {
     private final Reader reader;

@@ -14,7 +14,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.regex.Pattern;
 
-import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
+import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 
 /**
  * validates regex format. Since Draft 7.

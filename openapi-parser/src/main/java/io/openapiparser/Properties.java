@@ -14,7 +14,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.*;
 
-import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
+import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 
 /**
  * base class of OpenAPI model objects to reduce duplication.

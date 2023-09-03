@@ -6,11 +6,10 @@
 package io.openapiprocessor.jsonschema.validator.steps;
 
 import io.openapiprocessor.jsonschema.schema.*;
-import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 import java.net.URI;
 
-import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
+import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 
 public class DynamicRefStep extends CompositeStep {
     private final JsonSchema schema;

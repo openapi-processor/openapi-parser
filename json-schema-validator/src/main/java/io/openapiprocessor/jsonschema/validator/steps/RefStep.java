@@ -9,7 +9,7 @@ import io.openapiprocessor.jsonschema.schema.*;
 
 import java.net.URI;
 
-import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
+import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 
 public class RefStep extends CompositeStep {
     private final JsonSchema schema;

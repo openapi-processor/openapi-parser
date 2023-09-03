@@ -13,7 +13,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
-import static io.openapiprocessor.jsonschema.support.Nullness.nullable;
+import static io.openapiprocessor.jsonschema.support.Null.nullable;
 
 /**
  * Uri support functions.

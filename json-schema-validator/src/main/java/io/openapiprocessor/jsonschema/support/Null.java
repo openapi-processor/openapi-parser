@@ -10,7 +10,7 @@ import org.checkerframework.checker.nullness.qual.*;
 /**
  * based on org/checkerframework/checker/nullness/util/NullnessUtil.java
  */
-public class Nullness {
+public class Null {
     @SuppressWarnings({"nullness"})
     @EnsuresNonNull (value = "#1")
     public static <T> @NonNull T nonNull (@Nullable T value) {

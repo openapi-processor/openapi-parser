@@ -11,7 +11,7 @@ import io.openapiprocessor.jsonschema.schema.Keywords;
 import io.openapiprocessor.jsonschema.validator.ValidationMessage;
 import io.openapiprocessor.jsonschema.validator.steps.SimpleStep;
 
-import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
+import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 
 public class MaxPropertiesStep extends SimpleStep {
 

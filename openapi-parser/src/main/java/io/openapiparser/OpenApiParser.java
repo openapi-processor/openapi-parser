@@ -11,7 +11,7 @@ import io.openapiprocessor.jsonschema.schema.*;
 import java.net.URI;
 
 import static io.openapiparser.Keywords.OPENAPI;
-import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
+import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 
 public class OpenApiParser {
     private final DocumentStore documents;

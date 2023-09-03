@@ -11,7 +11,7 @@ import io.openapiprocessor.jsonschema.validator.steps.ValidationStep;
 
 import java.util.regex.Matcher;
 
-import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
+import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 
 /**
  * validates pattern. Since Draft 4.

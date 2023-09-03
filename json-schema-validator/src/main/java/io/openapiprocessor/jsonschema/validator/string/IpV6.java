@@ -12,7 +12,7 @@ import io.openapiprocessor.jsonschema.validator.ValidatorSettings;
 import io.openapiprocessor.jsonschema.validator.steps.ValidationStep;
 import io.openapiprocessor.jsonschema.validator.support.IpV6Validator;
 
-import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
+import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 
 /**
  * validates ipv6. Since Draft4.

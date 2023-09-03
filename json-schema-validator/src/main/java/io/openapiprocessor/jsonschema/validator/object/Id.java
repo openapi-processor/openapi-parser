@@ -14,7 +14,7 @@ import java.util.Map;
 
 import static io.openapiprocessor.jsonschema.support.Types.asString;
 import static io.openapiprocessor.jsonschema.support.Types.isString;
-import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
+import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 
 public class Id {
 

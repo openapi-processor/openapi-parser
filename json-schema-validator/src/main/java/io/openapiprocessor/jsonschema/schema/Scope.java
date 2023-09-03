@@ -12,7 +12,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.net.URI;
 import java.util.Map;
 
-import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
+import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 
 
 // base uri:

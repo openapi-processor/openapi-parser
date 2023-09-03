@@ -9,7 +9,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Collection;
 
-import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
+import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 
 /**
  * handles json schema dependency which may be a schema or an array of string.

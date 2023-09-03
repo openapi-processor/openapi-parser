@@ -11,7 +11,7 @@ import io.openapiprocessor.jsonschema.validator.steps.ValidationStep;
 
 import java.math.BigDecimal;
 
-import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
+import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 
 /**
  * validates exclusiveMaximum. Since Draft 6.
