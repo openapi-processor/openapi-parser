@@ -27,7 +27,7 @@ public class Nullness {
      */
     @SuppressWarnings({"nullness"})
     @EnsuresNonNull (value = "#1")
-    public static <T> @NonNull T nullable (@Nullable T value) {
+    public static <T> T nullable (@Nullable T value) {
         return value;
     }
 }
