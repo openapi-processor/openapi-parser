@@ -14,6 +14,8 @@ import io.mockk.mockk
 import io.openapiprocessor.jsonschema.converter.NoValueException
 import io.openapiprocessor.jsonschema.converter.TypeMismatchException
 import io.openapiprocessor.jsonschema.schema.Bucket
+import io.openapiprocessor.jsonschema.schema.Bucket.createBucket
+import io.openapiprocessor.jsonschema.schema.Scope
 
 class PropertiesStringSpec: StringSpec({
 
@@ -24,14 +26,13 @@ class PropertiesStringSpec: StringSpec({
     }
 
     "gets string" {
-        val bucket =
-            Bucket(linkedMapOf<String, Any>("property" to "foo"))
+        val bucket = createBucket(Scope.empty(), linkedMapOf<String, Any>("property" to "foo"))
         Properties(mockk(), bucket).getStringOrThrow("property") shouldBe "foo"
     }
 
     "get string throws if value is not a string" {
-        val bucket =
-            Bucket(linkedMapOf<String, Any>("property" to 1))
+        val bucket = createBucket(Scope.empty(), linkedMapOf<String, Any>("property" to 1))
+
         shouldThrow<TypeMismatchException> {
             Properties(mockk(), bucket).getStringOrThrow("property")
         }
@@ -50,7 +51,8 @@ class PropertiesStringSpec: StringSpec({
     }
 
     "gets nullable string array" {
-        val bucket = Bucket(
+        val bucket = createBucket(
+            Scope.empty(),
             linkedMapOf<String, Any>(
                 "property" to listOf(
                     "foo",
@@ -67,7 +69,8 @@ class PropertiesStringSpec: StringSpec({
     }
 
     "gets string array" {
-        val bucket = Bucket(
+        val bucket = createBucket(
+            Scope.empty(),
             linkedMapOf<String, Any>(
                 "property" to listOf(
                     "foo",
@@ -81,7 +84,8 @@ class PropertiesStringSpec: StringSpec({
 
     // todo
     "gets string array throws if values are not strings".config(enabled = false) {
-        val bucket = Bucket(
+        val bucket = createBucket(
+            Scope.empty(),
             linkedMapOf<String, Any>(
                 "property" to listOf(
                     1,
@@ -94,5 +98,4 @@ class PropertiesStringSpec: StringSpec({
             Properties(mockk(), bucket).getStringsOrNull("property")
         }
     }
-
 })

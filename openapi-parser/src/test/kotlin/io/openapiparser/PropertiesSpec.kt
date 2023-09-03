@@ -19,8 +19,8 @@ import io.openapiprocessor.jsonschema.schema.Bucket
 import io.openapiprocessor.jsonschema.schema.Bucket.createBucket
 import io.openapiprocessor.jsonschema.schema.SchemaVersion
 import io.openapiprocessor.jsonschema.schema.Scope
-import io.openapiprocessor.jsonschema.schema.Scope.empty
-import java.net.URI
+import io.openapiprocessor.jsonschema.schema.Scope.createScope
+import io.openapiprocessor.jsonschema.schema.UriSupport.createUri
 
 class PropertiesSpec: StringSpec({
     @Suppress("UNUSED_PARAMETER")
@@ -34,7 +34,7 @@ class PropertiesSpec: StringSpec({
     }
 
     "get raw value" {
-        val bucket = createBucket(empty(), linkedMapOf<String, Any>("foo" to "bar"))
+        val bucket = createBucket(Scope.empty(), linkedMapOf<String, Any>("foo" to "bar"))
         Properties(mockk(), bucket).getRawValue("foo").shouldBe("bar")
     }
 
@@ -46,18 +46,18 @@ class PropertiesSpec: StringSpec({
     }
 
     "gets object" {
-        val bucket = createBucket(empty(), linkedMapOf<String, Any>("foo" to mapOf<String, Any>()))
+        val bucket = createBucket(Scope.empty(), linkedMapOf<String, Any>("foo" to mapOf<String, Any>()))
 
-        val scope = Scope.createScope(URI.create("https://foo"), bucket.rawValues, anyVersion)
+        val scope = createScope(createUri("https://foo"), bucket.rawValues, anyVersion)
         val props = Properties(Context(scope, mockk()), bucket)
 
         props.getObjectOrNull("foo", DummyObject::class.java).shouldBeInstanceOf<DummyObject>()
     }
 
     "gets object throws if value is not an object" {
-        val bucket = createBucket(empty(), linkedMapOf<String, Any>("foo" to "no object"))!!
+        val bucket = createBucket(Scope.empty(), linkedMapOf<String, Any>("foo" to "no object"))
 
-        val scope = Scope.createScope(URI.create("https://foo"), bucket.rawValues, anyVersion)
+        val scope = createScope(createUri("https://foo"), bucket.rawValues, anyVersion)
         val props = Properties(Context(scope, mockk()), bucket)
 
         shouldThrow<TypeMismatchException> {
@@ -82,7 +82,8 @@ class PropertiesSpec: StringSpec({
     }
 
     "get objects array" {
-        val bucket = Bucket(
+        val bucket = createBucket(
+            Scope.empty(),
             linkedMapOf<String, Any>(
                 "property" to listOf(
                     mapOf<String, Any>("foo" to "bar"),
@@ -91,14 +92,15 @@ class PropertiesSpec: StringSpec({
             )
         )
 
-        val scope = Scope.createScope(URI.create("https://foo"), bucket.rawValues, anyVersion)
+        val scope = createScope(createUri("https://foo"), bucket.rawValues, anyVersion)
         val props = Properties(Context(scope, mockk()), bucket)
 
         props.getObjectsOrEmpty("property", DummyObject::class.java).size shouldBe 2
     }
 
     "get objects array throws if any value is not an object" {
-        val bucket = Bucket(
+        val bucket = createBucket(
+            Scope.empty(),
             linkedMapOf<String, Any>(
                 "property" to listOf(
                     mapOf<String, Any>("foo" to "bar"),
@@ -107,7 +109,7 @@ class PropertiesSpec: StringSpec({
             )
         )
 
-        val scope = Scope.createScope(URI.create("https://foo"), bucket.rawValues, anyVersion)
+        val scope = createScope(createUri("https://foo"), bucket.rawValues, anyVersion)
         val props = Properties(Context(scope, mockk()), bucket)
 
         shouldThrow<TypeMismatchException> {
@@ -116,7 +118,8 @@ class PropertiesSpec: StringSpec({
     }
 
     "get extension values" {
-        val bucket = Bucket(
+        val bucket = createBucket(
+            Scope.empty(),
             linkedMapOf<String, Any>(
                 "property" to "foo",
                 "x-foo" to "foo extension",
@@ -131,7 +134,8 @@ class PropertiesSpec: StringSpec({
     }
 
     "gets empty extension values if there are no extensions" {
-        val bucket = Bucket(
+        val bucket = createBucket(
+            Scope.empty(),
             linkedMapOf<String, Any>(
                 "property" to "foo",
             )

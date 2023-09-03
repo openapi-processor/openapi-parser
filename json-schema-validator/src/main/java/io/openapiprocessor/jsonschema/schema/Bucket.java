@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import static io.openapiprocessor.jsonschema.schema.UriSupport.emptyUri;
 import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
 
 /**
@@ -27,7 +26,7 @@ public class Bucket {
     private final Map<String, Object> properties;
 
     public static Bucket empty() {
-        return new Bucket (Collections.emptyMap ());
+        return createBucket(Scope.empty(), Collections.emptyMap());
     }
 
     public static @Nullable Bucket createBucket(Scope scope, @Nullable Object source) {
@@ -48,13 +47,6 @@ public class Bucket {
 
     public static Bucket createBucket(Scope scope, Map<String, Object> source) {
         return new Bucket (scope, Types.asObject (source));
-    }
-
-    @Deprecated // myself and tests
-    public Bucket (Map<String, Object> properties) {
-        this.scope = Scope.createScope(emptyUri());
-        this.location = JsonPointer.EMPTY;
-        this.properties = properties; // unmodifiable?
     }
 
     /**
