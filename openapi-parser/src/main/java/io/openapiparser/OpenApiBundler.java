@@ -46,7 +46,7 @@ public class OpenApiBundler {
         URI documentUri = root.getScope ().getDocumentUri ();
         Object document = documents.get (documentUri);
 
-        Bucket bundled = Bucket.toBucket (root.getScope (), document, root.getLocation ());
+        Bucket bundled = Bucket.createBucket(root.getScope (), document, root.getLocation ());
         if (bundled == null)
             return null;  // nullable: throw??
 
@@ -201,7 +201,7 @@ public class OpenApiBundler {
     }
 
     private static Bucket getRefBucket (JsonPointer refPointer, RawValue refValue) {
-        Bucket ref = Bucket.toBucket (refValue.getScope (), refValue.getValue (), refPointer);
+        Bucket ref = Bucket.createBucket(refValue.getScope (), refValue.getValue (), refPointer);
         if (ref == null) {
             throw new RuntimeException ();
         }
@@ -295,7 +295,7 @@ public class OpenApiBundler {
         }
 
         Scope scope = createScope (documentUri, document, SchemaVersion.Draft4);
-        return Bucket.toBucket (scope, document);
+        return Bucket.createBucket(scope, document);
     }
 
     private String createRefPointer (String type, String refName) {
@@ -304,7 +304,7 @@ public class OpenApiBundler {
 
     private void walkSchema (Scope currentScope, Object value, JsonPointer location) {
         Scope scope = currentScope.move (value);
-        Bucket bucket = Bucket.toBucket (scope, value, location);
+        Bucket bucket = Bucket.createBucket(scope, value, location);
         if (bucket == null) {
             return; // todo error
         }
@@ -328,7 +328,7 @@ public class OpenApiBundler {
 
     private void walkSchemaMap (Scope currentScope, Object value, JsonPointer location) {
         Scope targetScope = currentScope.move (value);
-        Bucket bucket = Bucket.toBucket (targetScope, value, location);
+        Bucket bucket = Bucket.createBucket(targetScope, value, location);
         if (bucket == null) {
             return; // // todo error
         }

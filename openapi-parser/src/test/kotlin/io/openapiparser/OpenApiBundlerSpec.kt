@@ -31,7 +31,7 @@ class OpenApiBundlerSpec : StringSpec({
         val bucket = Bucket(result.scope, asObject(result.document))
         val api = OpenApiResult30(context, bucket, result.documents)
         val bundle = api.bundle()
-        return Bucket.toBucket(result.scope, bundle)!!
+        return Bucket.createBucket(result.scope, bundle)!!
     }
 
     fun bundle31(result: ResolverResult): Bucket {
@@ -39,7 +39,7 @@ class OpenApiBundlerSpec : StringSpec({
         val bucket = Bucket(result.scope, asObject(result.document))
         val api = OpenApiResult31(context, bucket, result.documents)
         val bundle = api.bundle()
-        return Bucket.toBucket(result.scope, bundle)!!
+        return Bucket.createBucket(result.scope, bundle)!!
     }
 
     fun getObject(bucket: Bucket, jsonPointer: String): Map<String, Any> {

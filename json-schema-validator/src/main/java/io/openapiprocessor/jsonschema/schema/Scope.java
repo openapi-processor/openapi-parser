@@ -138,6 +138,10 @@ public class Scope {
         }
     }
 
+    public static Scope empty() {
+        return createScope(UriSupport.emptyUri());
+    }
+
     @Override
     public String toString () {
         return String.format ("base: %s (%s) (doc: %s)", baseUri, version, documentUri);

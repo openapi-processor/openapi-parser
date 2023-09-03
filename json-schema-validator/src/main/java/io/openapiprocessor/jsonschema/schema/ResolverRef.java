@@ -96,7 +96,7 @@ public class ResolverRef {
             context.setProcessedDocument (uri);
 
             Scope docScope = scope.move (uri, document);  // todo document != null
-            Bucket bucket = Bucket.toBucket (docScope, document, JsonPointer.EMPTY);
+            Bucket bucket = Bucket.createBucket(docScope, document, JsonPointer.EMPTY);
             if (bucket == null) {
                 return; // todo error
             }
@@ -119,7 +119,7 @@ public class ResolverRef {
 
     private void walkSchema (Scope currentScope, Object value, JsonPointer location) {
         Scope scope = currentScope.move (value);
-        Bucket bucket = Bucket.toBucket (scope, value, location);
+        Bucket bucket = Bucket.createBucket(scope, value, location);
         if (bucket == null) {
             return; // todo error
         }
@@ -143,7 +143,7 @@ public class ResolverRef {
 
     private void walkSchemaMap (Scope currentScope, Object value, JsonPointer location) {
         Scope targetScope = currentScope.move (value);
-        Bucket bucket = Bucket.toBucket (targetScope, value, location);
+        Bucket bucket = Bucket.createBucket(targetScope, value, location);
         if (bucket == null) {
             return; // // todo error
         }
@@ -170,7 +170,7 @@ public class ResolverRef {
             Object document = context.getDocument (documentUri);
             // todo check null
             Scope scope = ref.getScope ().move (documentUri, document);
-            Bucket bucket = Bucket.toBucket (scope, document);
+            Bucket bucket = Bucket.createBucket(scope, document);
 
             // no object -> to (simple) value
             if (bucket == null) {

@@ -77,7 +77,7 @@ public class ResolverId {
 
     private void walkSchema (Scope currentScope, Object value, JsonPointer location) {
         Scope scope = currentScope.move (value);
-        Bucket bucket = Bucket.toBucket (scope, value, location);
+        Bucket bucket = Bucket.createBucket(scope, value, location);
         if (bucket == null) {
             return; // todo error
         }
@@ -101,7 +101,7 @@ public class ResolverId {
 
     private void walkSchemaMap (Scope currentScope, Object value, JsonPointer location) {
         Scope targetScope = currentScope.move (value);
-        Bucket bucket = Bucket.toBucket (targetScope, value, location);
+        Bucket bucket = Bucket.createBucket(targetScope, value, location);
         if (bucket == null) {
             return; // // todo error
         }

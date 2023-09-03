@@ -8,8 +8,7 @@ package io.openapiprocessor.jsonschema.support
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
-import io.openapiprocessor.jsonschema.converter.Types.asMap
-import io.openapiprocessor.jsonschema.converter.Types.asString
+import io.openapiprocessor.jsonschema.converter.Types.*
 
 class TypesSpec: StringSpec({
 
@@ -25,4 +24,11 @@ class TypesSpec: StringSpec({
         asMap(emptyMap<String, String>() as Any).shouldNotBeNull()
     }
 
+    "casts null to object" {
+        asObject(null).shouldBeNull()
+    }
+
+    "casts object to object" {
+        asObject(emptyMap<String, String>() as Any).shouldNotBeNull()
+    }
 })

@@ -10,6 +10,8 @@ import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 import io.mockk.mockk
 import io.openapiprocessor.jsonschema.schema.Bucket
+import io.openapiprocessor.jsonschema.schema.Bucket.createBucket
+import io.openapiprocessor.jsonschema.schema.Scope.empty
 
 class PropertiesNumberSpec: StringSpec({
 
@@ -20,8 +22,7 @@ class PropertiesNumberSpec: StringSpec({
     }
 
     "get number" {
-        val bucket =
-            Bucket(linkedMapOf<String, Any>("property" to 9.9))
+        val bucket = createBucket(empty(), linkedMapOf<String, Any>("property" to 9.9))
         Properties(mockk(), bucket).getNumberOrNull("property").shouldBe(9.9)
     }
 
@@ -32,8 +33,7 @@ class PropertiesNumberSpec: StringSpec({
     }
 
     "get integer" {
-        val bucket =
-            Bucket(linkedMapOf<String, Any>("property" to 9))
+        val bucket = createBucket(empty(), linkedMapOf<String, Any>("property" to 9))
         Properties(mockk(), bucket).getIntegerOrNull("property").shouldBe(9)
     }
 
@@ -41,5 +41,4 @@ class PropertiesNumberSpec: StringSpec({
         val props = Properties(mockk(), Bucket.empty())
         props.getIntegerOrDefault("missing", 9).shouldBe(9)
     }
-
 })

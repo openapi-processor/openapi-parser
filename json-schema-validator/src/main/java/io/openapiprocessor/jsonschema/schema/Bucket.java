@@ -7,7 +7,6 @@ package io.openapiprocessor.jsonschema.schema;
 
 import io.openapiprocessor.jsonschema.converter.*;
 import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.checker.nullness.qual.PolyNull;
 
 import java.net.URI;
 import java.util.Collection;
@@ -24,14 +23,14 @@ import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
  */
 public class Bucket {
     private final Scope scope;
-    private final JsonPointer location;  // from document
+    private final JsonPointer location;
     private final Map<String, Object> properties;
 
     public static Bucket empty() {
         return new Bucket (Collections.emptyMap ());
     }
 
-    public static @Nullable Bucket toBucket (Scope scope, @PolyNull Object source) {
+    public static @Nullable Bucket createBucket(Scope scope, @Nullable Object source) {
         if (!Types.isObject (source)) {
             return null;
         }
@@ -39,11 +38,16 @@ public class Bucket {
         return new Bucket (scope, Types.asObject (source));
     }
 
-    public static @Nullable Bucket toBucket (Scope scope, @Nullable Object source, JsonPointer location) {
+    public static @Nullable Bucket createBucket(Scope scope, @Nullable Object source, JsonPointer location) {
         if (!Types.isObject (source)) {
             return null;
         }
+
         return new Bucket (scope, location, Types.asObject (source));
+    }
+
+    public static Bucket createBucket(Scope scope, Map<String, Object> source) {
+        return new Bucket (scope, Types.asObject (source));
     }
 
     @Deprecated // myself and tests

@@ -40,7 +40,7 @@ public class Context {
     public @Nullable Bucket getRefObjectOrNull (Bucket bucket) {
         JsonSchemaContext ctx = new JsonSchemaContext (bucket.getScope (), references);
         Reference reference = ctx.getReference (nonNull (getRef (bucket)));
-        return Bucket.toBucket (reference.getValueScope (), reference.getValue (), reference.getPointer ()); // todo value is nullable ?
+        return Bucket.createBucket(reference.getValueScope (), reference.getValue (), reference.getPointer ()); // todo value is nullable ?
     }
 
     public @Nullable URI getRef (Bucket bucket) {

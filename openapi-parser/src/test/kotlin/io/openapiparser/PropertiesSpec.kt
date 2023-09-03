@@ -16,8 +16,10 @@ import io.mockk.mockk
 import io.openapiprocessor.jsonschema.converter.NoValueException
 import io.openapiprocessor.jsonschema.converter.TypeMismatchException
 import io.openapiprocessor.jsonschema.schema.Bucket
+import io.openapiprocessor.jsonschema.schema.Bucket.createBucket
 import io.openapiprocessor.jsonschema.schema.SchemaVersion
 import io.openapiprocessor.jsonschema.schema.Scope
+import io.openapiprocessor.jsonschema.schema.Scope.empty
 import java.net.URI
 
 class PropertiesSpec: StringSpec({
@@ -32,8 +34,7 @@ class PropertiesSpec: StringSpec({
     }
 
     "get raw value" {
-        val bucket =
-            Bucket(linkedMapOf<String, Any>("foo" to "bar"))
+        val bucket = createBucket(empty(), linkedMapOf<String, Any>("foo" to "bar"))
         Properties(mockk(), bucket).getRawValue("foo").shouldBe("bar")
     }
 
@@ -45,8 +46,7 @@ class PropertiesSpec: StringSpec({
     }
 
     "gets object" {
-        val bucket =
-            Bucket(linkedMapOf<String, Any>("foo" to mapOf<String, Any>()))
+        val bucket = createBucket(empty(), linkedMapOf<String, Any>("foo" to mapOf<String, Any>()))
 
         val scope = Scope.createScope(URI.create("https://foo"), bucket.rawValues, anyVersion)
         val props = Properties(Context(scope, mockk()), bucket)
@@ -55,8 +55,7 @@ class PropertiesSpec: StringSpec({
     }
 
     "gets object throws if value is not an object" {
-        val bucket =
-            Bucket(linkedMapOf<String, Any>("foo" to "no object"))
+        val bucket = createBucket(empty(), linkedMapOf<String, Any>("foo" to "no object"))!!
 
         val scope = Scope.createScope(URI.create("https://foo"), bucket.rawValues, anyVersion)
         val props = Properties(Context(scope, mockk()), bucket)

@@ -66,7 +66,7 @@ public class OpenApiParser {
 
         return new OpenApiResult31(
                 new Context(result.getScope(), result.getRegistry()),
-                Bucket.toBucket(result.getScope(), document),
+                Bucket.createBucket(result.getScope(), document),
                 documents);
     }
 
@@ -76,13 +76,13 @@ public class OpenApiParser {
 
         return new OpenApiResult30(
                 new Context(result.getScope(), result.getRegistry()),
-                Bucket.toBucket(result.getScope(), document),
+                Bucket.createBucket(result.getScope(), document),
                 documents);
     }
 
     private String getVersion(URI baseUri, Object document) {
         Scope scope = Scope.createScope(baseUri, document, SchemaVersion.getLatest());
-        Bucket api = nonNull(Bucket.toBucket(scope, document));
+        Bucket api = nonNull(Bucket.createBucket(scope, document));
         return  api.convert (OPENAPI, new StringNotNullConverter ());
     }
 

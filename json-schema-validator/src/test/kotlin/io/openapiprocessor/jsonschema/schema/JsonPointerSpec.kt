@@ -10,6 +10,8 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.openapiprocessor.jsonschema.converter.Types.asMap
 import io.openapiprocessor.jackson.JacksonConverter
+import io.openapiprocessor.jsonschema.schema.Bucket.createBucket
+import io.openapiprocessor.jsonschema.schema.Scope.empty
 import java.net.URI
 
 class JsonPointerSpec : StringSpec({
@@ -34,6 +36,7 @@ class JsonPointerSpec : StringSpec({
 
         val converter = JacksonConverter()
         val document = asMap(converter.convert(source))
+        val bucket = createBucket(empty(), document)!!
 
         listOf(
             Pointer("", document!!),
@@ -49,8 +52,7 @@ class JsonPointerSpec : StringSpec({
             Pointer("/ ", 7),
             Pointer("/m~0n", 8),
         ).forEach {
-            Bucket(document)
-                .getRawValueValue(JsonPointer.from(it.pointer)) shouldBe it.expected
+            bucket.getRawValueValue(JsonPointer.from(it.pointer)) shouldBe it.expected
         }
     }
 
@@ -74,6 +76,7 @@ class JsonPointerSpec : StringSpec({
 
         val converter = JacksonConverter()
         val document = asMap(converter.convert(source))
+        val bucket = createBucket(empty(), document)!!
 
         listOf(
             Pointer("#", document!!),
@@ -90,8 +93,7 @@ class JsonPointerSpec : StringSpec({
             Pointer("#/m~0n", 8),
             Pointer(null, document)
         ).forEach {
-            Bucket(document)
-                .getRawValueValue(JsonPointer.from(it.pointer)) shouldBe it.expected
+            bucket.getRawValueValue(JsonPointer.from(it.pointer)) shouldBe it.expected
         }
     }
 
@@ -125,7 +127,6 @@ class JsonPointerSpec : StringSpec({
     "get empty tail from pointer" {
         JsonPointer.from("/root/").tail() shouldBe ""
     }
-
 
     "get tail from pointer" {
         JsonPointer.EMPTY.tail() shouldBe ""
