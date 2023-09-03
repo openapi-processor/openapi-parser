@@ -250,7 +250,7 @@ class BucketSpec: StringSpec({
         val pointer = JsonPointer.from("/definitions/foo/definitions/bar")
         val rawValue = bucket.getRawValue(pointer)
 
-        rawValue?.scope?.id.toString() shouldBe "https://host/barId"
+        rawValue?.scope?.baseUri.toString() shouldBe "https://host/barId"
     }
 
     "get raw value, does not duplicate parent scope" {
@@ -269,7 +269,7 @@ class BucketSpec: StringSpec({
         val pointer = JsonPointer.EMPTY
         val rawValue = bucket.getRawValue(pointer)
 
-        rawValue?.scope?.id.toString() shouldBe "https://host/document/self"
+        rawValue?.scope?.baseUri.toString() shouldBe "https://host/document/self"
     }
 
     "get raw value, does not duplicate parent scope with /" {
@@ -288,6 +288,6 @@ class BucketSpec: StringSpec({
         val pointer = JsonPointer.empty()
         val rawValue = bucket.getRawValue(pointer)
 
-        rawValue?.scope?.id.toString() shouldBe "https://host/document/self/"
+        rawValue?.scope?.baseUri.toString() shouldBe "https://host/document/self/"
     }
 })

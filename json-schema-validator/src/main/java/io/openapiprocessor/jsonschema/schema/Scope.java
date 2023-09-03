@@ -44,11 +44,6 @@ public class Scope {
         return documentUri;
     }
 
-    @Deprecated
-    public URI getId () {
-        return baseUri;
-    }
-
     public URI getBaseUri() {
         return baseUri;
     }
