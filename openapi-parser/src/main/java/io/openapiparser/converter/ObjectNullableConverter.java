@@ -14,8 +14,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
 
-import static io.openapiprocessor.jsonschema.converter.Types.asMap;
-import static io.openapiprocessor.jsonschema.converter.Types.isMap;
+import static io.openapiprocessor.jsonschema.support.Types.asMap;
+import static io.openapiprocessor.jsonschema.support.Types.isMap;
 
 /**
  *  get a {@link T} object from the property.

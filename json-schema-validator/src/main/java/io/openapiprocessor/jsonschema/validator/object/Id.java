@@ -12,8 +12,8 @@ import io.openapiprocessor.jsonschema.validator.steps.CompositeStep;
 
 import java.util.Map;
 
-import static io.openapiprocessor.jsonschema.converter.Types.asString;
-import static io.openapiprocessor.jsonschema.converter.Types.isString;
+import static io.openapiprocessor.jsonschema.support.Types.asString;
+import static io.openapiprocessor.jsonschema.support.Types.isString;
 import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
 
 public class Id {

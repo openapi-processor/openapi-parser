@@ -5,7 +5,7 @@
 
 package io.openapiprocessor.jsonschema.schema;
 
-import io.openapiprocessor.jsonschema.converter.Types;
+import io.openapiprocessor.jsonschema.support.Types;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import java.net.URI;
 import java.util.*;
 
-import static io.openapiprocessor.jsonschema.converter.Types.*;
+import static io.openapiprocessor.jsonschema.support.Types.*;
 import static io.openapiprocessor.jsonschema.schema.UriSupport.createUri;
 
 /**

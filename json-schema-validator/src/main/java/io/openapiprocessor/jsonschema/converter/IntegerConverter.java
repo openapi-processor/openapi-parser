@@ -7,7 +7,7 @@ package io.openapiprocessor.jsonschema.converter;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import static io.openapiprocessor.jsonschema.converter.Types.convertOrNull;
+import static io.openapiprocessor.jsonschema.support.Types.convertOrNull;
 
 /**
  * converts the property {@code value} to {@link Integer}.

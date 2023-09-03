@@ -13,7 +13,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.net.URI;
 import java.util.*;
 
-import static io.openapiprocessor.jsonschema.converter.Types.*;
+import static io.openapiprocessor.jsonschema.support.Types.*;
 import static io.openapiprocessor.jsonschema.schema.Scope.createScope;
 
 public class OpenApiBundler {

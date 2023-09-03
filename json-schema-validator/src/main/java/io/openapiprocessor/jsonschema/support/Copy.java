@@ -5,7 +5,6 @@
 
 package io.openapiprocessor.jsonschema.support;
 
-import io.openapiprocessor.jsonschema.converter.Types;
 import org.checkerframework.checker.nullness.qual.PolyNull;
 
 import java.util.Collection;

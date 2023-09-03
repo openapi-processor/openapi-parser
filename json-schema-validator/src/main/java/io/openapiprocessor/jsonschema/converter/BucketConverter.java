@@ -7,6 +7,7 @@ package io.openapiprocessor.jsonschema.converter;
 
 import io.openapiprocessor.jsonschema.schema.Bucket;
 import io.openapiprocessor.jsonschema.schema.Scope;
+import io.openapiprocessor.jsonschema.support.Types;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;

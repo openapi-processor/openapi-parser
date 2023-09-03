@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import static io.openapiprocessor.jsonschema.converter.Types.convertOrNull;
+import static io.openapiprocessor.jsonschema.support.Types.convertOrNull;
 import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
 
 /**

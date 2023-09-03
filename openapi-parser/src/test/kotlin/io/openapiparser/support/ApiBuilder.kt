@@ -6,7 +6,7 @@
 package io.openapiparser.support
 
 import io.openapiparser.*
-import io.openapiprocessor.jsonschema.converter.Types
+import io.openapiprocessor.jsonschema.support.Types
 import io.openapiprocessor.jsonschema.reader.StringReader
 import io.openapiprocessor.jsonschema.reader.UriReader
 import io.openapiprocessor.jsonschema.schema.Bucket

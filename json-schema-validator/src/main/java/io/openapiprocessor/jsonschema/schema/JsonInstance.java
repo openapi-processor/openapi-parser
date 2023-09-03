@@ -6,7 +6,7 @@
 package io.openapiprocessor.jsonschema.schema;
 
 import io.openapiprocessor.jsonschema.converter.TypeMismatchException;
-import io.openapiprocessor.jsonschema.converter.Types;
+import io.openapiprocessor.jsonschema.support.Types;
 import io.openapiprocessor.jsonschema.validator.support.Equals;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.Nullable;

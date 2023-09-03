@@ -6,7 +6,7 @@
 package io.openapiparser.converter;
 
 import io.openapiprocessor.jsonschema.converter.PropertyConverter;
-import io.openapiprocessor.jsonschema.converter.Types;
+import io.openapiprocessor.jsonschema.support.Types;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Collections;

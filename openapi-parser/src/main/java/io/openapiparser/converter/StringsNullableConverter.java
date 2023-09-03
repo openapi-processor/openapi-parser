@@ -11,7 +11,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.Collection;
 import java.util.Collections;
 
-import static io.openapiprocessor.jsonschema.converter.Types.convertOrNull;
+import static io.openapiprocessor.jsonschema.support.Types.convertOrNull;
 
 /**
  * get a collection of {@link String}s or null if empty.

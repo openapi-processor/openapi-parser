@@ -8,7 +8,7 @@ package io.openapiprocessor.jsonschema.schema
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
-import io.openapiprocessor.jsonschema.converter.Types.asMap
+import io.openapiprocessor.jsonschema.support.Types.asMap
 import io.openapiprocessor.jackson.JacksonConverter
 import io.openapiprocessor.jsonschema.schema.Bucket.createBucket
 import io.openapiprocessor.jsonschema.schema.Scope.empty

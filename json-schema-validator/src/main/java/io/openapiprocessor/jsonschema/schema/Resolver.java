@@ -5,7 +5,7 @@
 
 package io.openapiprocessor.jsonschema.schema;
 
-import io.openapiprocessor.jsonschema.converter.Types;
+import io.openapiprocessor.jsonschema.support.Types;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
 import org.slf4j.Logger;

@@ -16,7 +16,7 @@ import io.mockk.mockk
 import io.openapiprocessor.interfaces.Converter
 import io.openapiprocessor.interfaces.ConverterException
 import io.openapiprocessor.interfaces.Reader
-import io.openapiprocessor.jsonschema.converter.Types.asMap
+import io.openapiprocessor.jsonschema.support.Types.asMap
 import io.openapiprocessor.jackson.JacksonConverter
 import io.openapiparser.memory.Memory
 import io.openapiprocessor.jsonschema.reader.StringReader

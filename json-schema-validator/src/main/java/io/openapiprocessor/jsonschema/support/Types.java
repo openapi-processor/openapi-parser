@@ -3,8 +3,9 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiprocessor.jsonschema.converter;
+package io.openapiprocessor.jsonschema.support;
 
+import io.openapiprocessor.jsonschema.converter.TypeMismatchException;
 import org.checkerframework.checker.nullness.qual.*;
 
 import java.util.Collection;
@@ -12,15 +13,13 @@ import java.util.Map;
 
 /**
  * type conversion/cast utility functions.
- *
- * todo move to support package
  */
 public class Types {
 
     @SuppressWarnings ("unchecked")
     public static <T> T convert (String path, @Nullable Object value, Class<T> type) {
         if (!type.isInstance (value))
-            throw new TypeMismatchException (path, type);
+            throw new TypeMismatchException(path, type);
 
         return (T) value;
     }
@@ -40,12 +39,12 @@ public class Types {
     }
 
     @SuppressWarnings ("unchecked")
-    static Collection<Object> convertCollection (String path, @Nullable Object value) {
+    public static Collection<Object> convertCollection (String path, @Nullable Object value) {
         return convert (path, value, Collection.class);
     }
 
     @SuppressWarnings ("unchecked")
-    static Map<String, Object> convertMap (String path, @Nullable Object value) {
+    public static Map<String, Object> convertMap (String path, @Nullable Object value) {
         return convert (path, value, Map.class);
     }
 

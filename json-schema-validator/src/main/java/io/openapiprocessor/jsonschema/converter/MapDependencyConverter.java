@@ -9,6 +9,7 @@ import io.openapiprocessor.jsonschema.schema.JsonDependency;
 import io.openapiprocessor.jsonschema.schema.JsonPointer;
 import io.openapiprocessor.jsonschema.schema.JsonSchema;
 import io.openapiprocessor.jsonschema.schema.JsonSchemaContext;
+import io.openapiprocessor.jsonschema.support.Types;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Collection;

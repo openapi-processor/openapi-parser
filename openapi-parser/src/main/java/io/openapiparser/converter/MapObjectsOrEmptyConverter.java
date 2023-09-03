@@ -13,7 +13,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.Collections;
 import java.util.Map;
 
-import static io.openapiprocessor.jsonschema.converter.Types.convertMapOrNull;
+import static io.openapiprocessor.jsonschema.support.Types.convertMapOrNull;
 
 /**
  * get a map of {@link T}s from {@code name} property {@code value}.

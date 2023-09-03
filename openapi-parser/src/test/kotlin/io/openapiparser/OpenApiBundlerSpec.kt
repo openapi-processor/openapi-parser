@@ -11,7 +11,7 @@ import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import io.openapiprocessor.jsonschema.converter.Types.asObject
+import io.openapiprocessor.jsonschema.support.Types.asObject
 import io.openapiprocessor.jsonschema.reader.UriReader
 import io.openapiprocessor.jsonschema.schema.JsonPointer.from
 import io.openapiprocessor.snakeyaml.SnakeYamlConverter

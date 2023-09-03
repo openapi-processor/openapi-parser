@@ -13,8 +13,8 @@ import java.net.URI;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static io.openapiprocessor.jsonschema.converter.Types.asBoolean;
-import static io.openapiprocessor.jsonschema.converter.Types.convertMapOrNull;
+import static io.openapiprocessor.jsonschema.support.Types.asBoolean;
+import static io.openapiprocessor.jsonschema.support.Types.convertMapOrNull;
 import static io.openapiprocessor.jsonschema.schema.UriSupport.createUri;
 
 public class VocabularyConverter implements PropertyConverter<Vocabularies> {

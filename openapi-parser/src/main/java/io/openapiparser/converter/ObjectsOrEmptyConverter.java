@@ -14,7 +14,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.*;
 
-import static io.openapiprocessor.jsonschema.converter.Types.convertOrNull;
+import static io.openapiprocessor.jsonschema.support.Types.convertOrNull;
 import static io.openapiprocessor.jsonschema.support.Nullness.nonNull;
 
 /**

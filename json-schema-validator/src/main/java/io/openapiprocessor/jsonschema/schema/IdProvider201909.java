@@ -9,8 +9,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
 
-import static io.openapiprocessor.jsonschema.converter.Types.asString;
-import static io.openapiprocessor.jsonschema.converter.Types.isString;
+import static io.openapiprocessor.jsonschema.support.Types.asString;
+import static io.openapiprocessor.jsonschema.support.Types.isString;
 
 /**
  * draft-2019-09 IdProvider

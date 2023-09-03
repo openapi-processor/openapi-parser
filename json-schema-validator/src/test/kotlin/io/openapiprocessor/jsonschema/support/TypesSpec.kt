@@ -8,7 +8,7 @@ package io.openapiprocessor.jsonschema.support
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
-import io.openapiprocessor.jsonschema.converter.Types.*
+import io.openapiprocessor.jsonschema.support.Types.*
 
 class TypesSpec: StringSpec({
 

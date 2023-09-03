@@ -9,7 +9,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
 
-import static io.openapiprocessor.jsonschema.converter.Types.isString;
+import static io.openapiprocessor.jsonschema.support.Types.isString;
 import static io.openapiprocessor.jsonschema.schema.UriSupport.createUri;
 
 /**
