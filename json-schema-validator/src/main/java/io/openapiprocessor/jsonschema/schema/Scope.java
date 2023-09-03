@@ -24,6 +24,70 @@ public class Scope {
     private final URI baseUri;
     private final SchemaVersion version;
 
+    public static Scope empty() {
+        return createScope(UriSupport.emptyUri());
+    }
+
+    /**
+     * create the scope for the {@code document}. If {@code document} contains an id, it is the base uri, otherwise the
+     * scope is the {@code documentUri}. If the {@code documentUri} matches a know json schema the result scope will use
+     * its version, otherwise it will use the {@code fallback} version.
+     *
+     * @param documentUri uri of the document
+     * @param document source document
+     * @param fallback fallback json schema version
+     * @return the scope of the document
+     */
+    public static Scope createScope (URI documentUri, Object document, SchemaVersion fallback) {
+        SchemaVersion version = getSchemaVersion(documentUri, document, fallback);
+
+        if (!Types.isObject (document))
+            return new Scope (documentUri, null, version);
+
+        IdProvider provider = version.getIdProvider ();
+        String id = provider.getId (Types.asMap (document));
+        if (id == null) {
+            return new Scope (documentUri, null, version);
+        }
+
+        return new Scope (documentUri, UriSupport.resolve(documentUri, id), version);
+    }
+
+    /**
+     * create the scope for the {@code document}. If {@code document} contains an id, it is the base uri, otherwise the
+     * scope is the {@code documentUri}. If the {@code documentUri} matches a know json schema the result scope will use
+     * its version, otherwise it will use the {@code fallback} version.
+     *
+     * @param documentUri uri of the document
+     * @param document source document
+     * @param currentScope the current scope
+     * @return the scope of the document
+     */
+    public static Scope createScope(URI documentUri, Object document, Scope currentScope) {
+        SchemaVersion version = getSchemaVersion (documentUri, document, currentScope.getVersion ());
+
+        if (!Types.isObject (document))
+            return new Scope (documentUri, null, version);
+
+        IdProvider provider = version.getIdProvider ();
+        String id = provider.getId (Types.asMap (document));
+        if (id == null) {
+            return new Scope (documentUri, null, version);
+        }
+
+        URI idUri = URI.create (id);
+        boolean absolute = idUri.isAbsolute ();
+        if (absolute) {
+            return new Scope (documentUri, URI.create (id), version);
+        } else {
+            return new Scope (documentUri, UriSupport.resolve(currentScope.getBaseUri (), id), version);
+        }
+    }
+
+    public static Scope createScope(URI documentUri) {
+        return new Scope(documentUri, SchemaVersion.getLatest());
+    }
+
     public Scope (URI documentUri, SchemaVersion version) {
         this.documentUri = documentUri;
         baseUri = documentUri;
@@ -74,72 +138,6 @@ public class Scope {
 
     public Scope move (Object document) {
         return createScope (baseUri, document, this);
-    }
-
-    public static Scope createScope(URI documentUri) {
-        return new Scope(documentUri, SchemaVersion.getLatest());
-    }
-
-    /**
-     * create the scope for the {@code document}. If {@code document} contains an id, it is the
-     * base uri, otherwise the scope is the {@code documentUri}. If the {@code documentUri} matches
-     * a know json schema the result scope will use its version, otherwise it will use the
-     * {@code fallback} version.
-     *
-     * @param documentUri uri of the document
-     * @param document source document
-     * @param fallback fallback json schema version
-     * @return the scope of the document
-     */
-    public static Scope createScope (URI documentUri, Object document, SchemaVersion fallback) {
-        SchemaVersion version = getSchemaVersion(documentUri, document, fallback);
-
-        if (!Types.isObject (document))
-            return new Scope (documentUri, null, version);
-
-        IdProvider provider = version.getIdProvider ();
-        String id = provider.getId (Types.asMap (document));
-        if (id == null) {
-            return new Scope (documentUri, null, version);
-        }
-
-        return new Scope (documentUri, UriSupport.resolve(documentUri, id), version);
-    }
-
-    /**
-     * create the scope for the {@code document}. If {@code document} contains an id, it is the
-     * base uri, otherwise the scope is the {@code documentUri}. If the {@code documentUri} matches
-     * a know json schema the result scope will use its version, otherwise it will use the
-     * {@code fallback} version.
-     *
-     * @param documentUri uri of the document
-     * @param document source document
-     * @param currentScope the current scope
-     * @return the scope of the document
-     */
-    public static Scope createScope(URI documentUri, Object document, Scope currentScope) {
-        SchemaVersion version = getSchemaVersion (documentUri, document, currentScope.getVersion ());
-
-        if (!Types.isObject (document))
-            return new Scope (documentUri, null, version);
-
-        IdProvider provider = version.getIdProvider ();
-        String id = provider.getId (Types.asMap (document));
-        if (id == null) {
-            return new Scope (documentUri, null, version);
-        }
-
-        URI idUri = URI.create (id);
-        boolean absolute = idUri.isAbsolute ();
-        if (absolute) {
-            return new Scope (documentUri, URI.create (id), version);
-        } else {
-            return new Scope (documentUri, UriSupport.resolve(currentScope.getBaseUri (), id), version);
-        }
-    }
-
-    public static Scope empty() {
-        return createScope(UriSupport.emptyUri());
     }
 
     @Override
