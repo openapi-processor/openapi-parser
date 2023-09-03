@@ -27,13 +27,6 @@ public class OpenApiResult31 implements OpenApiResult {
 
     private Collection<ValidationError> validationErrors;
 
-    @Deprecated
-    public OpenApiResult31 (Context context, Bucket root) {
-        this.context = context;
-        this.root = root;
-        this.documents = new DocumentStore ();
-    }
-
     public OpenApiResult31 (Context context, Bucket root, DocumentStore documents) {
         this.context = context;
         this.root = root;
