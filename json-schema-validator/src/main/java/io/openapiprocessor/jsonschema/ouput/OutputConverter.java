@@ -122,7 +122,7 @@ public class OutputConverter {
         }
     }
 
-    private boolean hasAnnotationValue (Object annotation) {
+    private boolean hasAnnotationValue (@Nullable Object annotation) {
         if (annotation == null)
             return false;
 
