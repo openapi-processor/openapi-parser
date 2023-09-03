@@ -10,8 +10,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.net.URI;
 import java.util.*;
 
-import static io.openapiprocessor.jsonschema.schema.UriSupport.hasEmptyFragment;
-import static io.openapiprocessor.jsonschema.schema.UriSupport.stripFragment;
+import static io.openapiprocessor.jsonschema.support.UriSupport.hasEmptyFragment;
+import static io.openapiprocessor.jsonschema.support.UriSupport.stripFragment;
 
 /**
  * holds all resolved references of a document.

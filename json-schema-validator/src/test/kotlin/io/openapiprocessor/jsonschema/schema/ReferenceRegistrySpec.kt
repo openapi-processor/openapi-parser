@@ -8,12 +8,8 @@ package io.openapiprocessor.jsonschema.schema
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
-import io.openapiprocessor.jsonschema.schema.Ref
-import io.openapiprocessor.jsonschema.schema.ReferenceRegistry
-import io.openapiprocessor.jsonschema.schema.SchemaVersion
-import io.openapiprocessor.jsonschema.schema.Scope
-import io.openapiprocessor.jsonschema.schema.UriSupport.emptyFragment
-import io.openapiprocessor.jsonschema.schema.UriSupport.emptyUri
+import io.openapiprocessor.jsonschema.support.UriSupport.emptyFragment
+import io.openapiprocessor.jsonschema.support.UriSupport.emptyUri
 
 class ReferenceRegistrySpec : StringSpec({
     val dummyScope = Scope(

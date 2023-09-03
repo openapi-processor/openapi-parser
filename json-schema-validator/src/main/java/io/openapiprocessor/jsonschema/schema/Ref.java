@@ -5,10 +5,12 @@
 
 package io.openapiprocessor.jsonschema.schema;
 
+import io.openapiprocessor.jsonschema.support.UriSupport;
+
 import java.net.URI;
 
 import static io.openapiprocessor.jsonschema.schema.Keywords.HASH;
-import static io.openapiprocessor.jsonschema.schema.UriSupport.*;
+import static io.openapiprocessor.jsonschema.support.UriSupport.*;
 
 /**
  * $ref support.

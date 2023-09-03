@@ -16,7 +16,7 @@ import io.kotest.matchers.types.shouldBeInstanceOf
 import io.openapiprocessor.jsonschema.converter.NoValueException
 import io.openapiprocessor.jsonschema.converter.TypeMismatchException
 import io.openapiprocessor.jsonschema.schema.Scope.createScope
-import io.openapiprocessor.jsonschema.schema.UriSupport.*
+import io.openapiprocessor.jsonschema.support.UriSupport.*
 import java.net.URI
 
 class BucketSpec: StringSpec({

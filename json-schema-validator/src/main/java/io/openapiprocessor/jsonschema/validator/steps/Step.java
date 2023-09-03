@@ -8,12 +8,12 @@ package io.openapiprocessor.jsonschema.validator.steps;
 import io.openapiprocessor.jsonschema.schema.JsonPointer;
 import io.openapiprocessor.jsonschema.schema.JsonPointerSupport;
 import io.openapiprocessor.jsonschema.schema.Scope;
-import io.openapiprocessor.jsonschema.schema.UriSupport;
+import io.openapiprocessor.jsonschema.support.UriSupport;
 
 import java.net.URI;
 import java.util.stream.Collectors;
 
-import static io.openapiprocessor.jsonschema.schema.UriSupport.resolve;
+import static io.openapiprocessor.jsonschema.support.UriSupport.resolve;
 
 /**
  * common step functions.

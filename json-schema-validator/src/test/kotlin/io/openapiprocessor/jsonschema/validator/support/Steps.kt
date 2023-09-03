@@ -7,7 +7,7 @@ package io.openapiprocessor.jsonschema.validator.support
 
 import io.openapiprocessor.jsonschema.schema.*
 import io.openapiprocessor.jsonschema.schema.Scope.createScope
-import io.openapiprocessor.jsonschema.schema.UriSupport.createUri
+import io.openapiprocessor.jsonschema.support.UriSupport.createUri
 
 fun createSchema(document: Map<String, Any>, location: JsonPointer, documentUri: String): JsonSchema {
     val scope = createScope(createUri(documentUri), document, SchemaVersion.Draft201909)

@@ -5,6 +5,8 @@
 
 package io.openapiprocessor.jsonschema.schema;
 
+import io.openapiprocessor.jsonschema.support.UriSupport;
+
 import java.net.URI;
 import java.util.Map;
 

@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 
-import static io.openapiprocessor.jsonschema.schema.UriSupport.createUri;
+import static io.openapiprocessor.jsonschema.support.UriSupport.createUri;
 
 public class SetupExampleTest {
 

@@ -8,6 +8,7 @@ package io.openapiprocessor.jsonschema.validator.string
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldHaveSingleElement
 import io.openapiprocessor.jsonschema.schema.*
+import io.openapiprocessor.jsonschema.support.UriSupport
 import io.openapiprocessor.jsonschema.validator.ValidatorSettingsDefaults
 import io.openapiprocessor.jsonschema.validator.steps.SchemaStep
 import java.net.URI

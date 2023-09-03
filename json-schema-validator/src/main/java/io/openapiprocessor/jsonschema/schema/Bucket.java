@@ -7,6 +7,7 @@ package io.openapiprocessor.jsonschema.schema;
 
 import io.openapiprocessor.jsonschema.converter.*;
 import io.openapiprocessor.jsonschema.support.Types;
+import io.openapiprocessor.jsonschema.support.UriSupport;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;

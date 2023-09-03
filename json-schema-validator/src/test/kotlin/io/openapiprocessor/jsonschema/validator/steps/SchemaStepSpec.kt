@@ -8,7 +8,7 @@ package io.openapiprocessor.jsonschema.validator.steps
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.openapiprocessor.jsonschema.schema.JsonPointer
-import io.openapiprocessor.jsonschema.schema.UriSupport.createUri
+import io.openapiprocessor.jsonschema.support.UriSupport.createUri
 import io.openapiprocessor.jsonschema.validator.support.createInstance
 import io.openapiprocessor.jsonschema.validator.support.createSchema
 

@@ -7,10 +7,7 @@ package io.openapiprocessor.jsonschema.schema
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
-import io.openapiprocessor.jsonschema.schema.Ref
-import io.openapiprocessor.jsonschema.schema.SchemaVersion
-import io.openapiprocessor.jsonschema.schema.Scope
-import io.openapiprocessor.jsonschema.schema.UriSupport.emptyUri
+import io.openapiprocessor.jsonschema.support.UriSupport.emptyUri
 import java.net.URI
 
 class RefSpec: StringSpec({

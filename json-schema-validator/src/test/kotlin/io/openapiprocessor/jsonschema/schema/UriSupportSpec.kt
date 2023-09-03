@@ -7,7 +7,7 @@ package io.openapiprocessor.jsonschema.schema
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
-import io.openapiprocessor.jsonschema.schema.UriSupport.*
+import io.openapiprocessor.jsonschema.support.UriSupport.*
 
 class UriSupportSpec : StringSpec({
 

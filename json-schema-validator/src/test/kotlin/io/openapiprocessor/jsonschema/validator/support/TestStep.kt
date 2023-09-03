@@ -6,7 +6,7 @@
 package io.openapiprocessor.jsonschema.validator.support
 
 import io.openapiprocessor.jsonschema.schema.JsonPointer
-import io.openapiprocessor.jsonschema.schema.UriSupport
+import io.openapiprocessor.jsonschema.support.UriSupport
 import io.openapiprocessor.jsonschema.validator.Annotation
 import io.openapiprocessor.jsonschema.validator.ValidationMessage
 import io.openapiprocessor.jsonschema.validator.steps.ValidationStep

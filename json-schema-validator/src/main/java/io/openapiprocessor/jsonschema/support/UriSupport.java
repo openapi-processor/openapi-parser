@@ -3,7 +3,7 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiprocessor.jsonschema.schema;
+package io.openapiprocessor.jsonschema.support;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -17,8 +17,6 @@ import static io.openapiprocessor.jsonschema.support.Nullness.nullable;
 
 /**
  * Uri support functions.
- *
- * todo move to support package
  */
 public class UriSupport {
     public static final String EMPTY_FRAGMENT = "#";

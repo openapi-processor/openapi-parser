@@ -15,7 +15,7 @@ import io.mockk.verify
 import io.openapiparser.OpenApiSchemas.OPENAPI_SCHEMA_30_ID
 import io.openapiparser.OpenApiSchemas.OPENAPI_SCHEMA_31_ID
 import io.openapiprocessor.jsonschema.schema.*
-import io.openapiprocessor.jsonschema.schema.UriSupport.emptyUri
+import io.openapiprocessor.jsonschema.support.UriSupport.emptyUri
 import io.openapiprocessor.jsonschema.validator.Validator
 import io.openapiprocessor.jsonschema.validator.steps.ValidationStep
 import io.openapiparser.model.v30.OpenApi as OpenApi30

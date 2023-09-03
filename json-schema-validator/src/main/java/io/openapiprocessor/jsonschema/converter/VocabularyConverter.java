@@ -15,7 +15,7 @@ import java.util.Map;
 
 import static io.openapiprocessor.jsonschema.support.Types.asBoolean;
 import static io.openapiprocessor.jsonschema.support.Types.convertMapOrNull;
-import static io.openapiprocessor.jsonschema.schema.UriSupport.createUri;
+import static io.openapiprocessor.jsonschema.support.UriSupport.createUri;
 
 public class VocabularyConverter implements PropertyConverter<Vocabularies> {
     private final JsonSchemaContext context;

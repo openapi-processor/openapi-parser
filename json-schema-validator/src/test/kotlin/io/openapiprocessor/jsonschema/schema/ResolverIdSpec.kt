@@ -10,6 +10,7 @@ import io.kotest.matchers.booleans.shouldBeTrue
 import io.openapiprocessor.interfaces.Converter
 import io.openapiprocessor.interfaces.Reader
 import io.openapiprocessor.jsonschema.reader.UriReader
+import io.openapiprocessor.jsonschema.support.UriSupport
 import io.openapiprocessor.snakeyaml.SnakeYamlConverter
 import java.net.URI
 

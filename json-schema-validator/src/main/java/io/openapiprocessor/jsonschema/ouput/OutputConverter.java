@@ -6,7 +6,7 @@
 package io.openapiprocessor.jsonschema.ouput;
 
 import io.openapiprocessor.jsonschema.schema.Output;
-import io.openapiprocessor.jsonschema.schema.UriSupport;
+import io.openapiprocessor.jsonschema.support.UriSupport;
 import io.openapiprocessor.jsonschema.validator.Annotation;
 import io.openapiprocessor.jsonschema.validator.ValidationMessage;
 import io.openapiprocessor.jsonschema.validator.steps.DynamicRefStep;
