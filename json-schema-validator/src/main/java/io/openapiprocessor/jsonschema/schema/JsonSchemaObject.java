@@ -365,7 +365,7 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     public @Nullable Map<String, Set<String>> getDependentRequired () {
-        return schemaObject.convert (DEPENDENT_REQUIRED, new MapSetStringsOrEmptyConverter (ResponseType.Null));
+        return schemaObject.convert (DEPENDENT_REQUIRED, new MapSetStringsOrEmptyConverter (ResponseType.NULL));
     }
 
     @Override

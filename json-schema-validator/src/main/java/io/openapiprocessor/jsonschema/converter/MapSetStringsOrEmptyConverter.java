@@ -23,7 +23,7 @@ public class MapSetStringsOrEmptyConverter implements PropertyConverter<Map<Stri
     private final ResponseType responseType;
 
     public MapSetStringsOrEmptyConverter () {
-        responseType = ResponseType.Empty;
+        responseType = ResponseType.EMPTY;
     }
 
     public MapSetStringsOrEmptyConverter (ResponseType responseType) {
@@ -33,7 +33,7 @@ public class MapSetStringsOrEmptyConverter implements PropertyConverter<Map<Stri
     @Override
     public @Nullable Map<String, Set<String>> convert (String name, @Nullable Object value, String location) {
         if (value == null)
-            return responseType == ResponseType.Empty ? Collections.emptyMap () : null;
+            return responseType == ResponseType.EMPTY ? Collections.emptyMap () : null;
 
         Map<String, Object> values = Types.convertMap (location, value);
 

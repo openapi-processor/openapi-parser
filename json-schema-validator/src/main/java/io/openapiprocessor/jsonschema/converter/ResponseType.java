@@ -6,5 +6,5 @@
 package io.openapiprocessor.jsonschema.converter;
 
 public enum ResponseType {
-    Null, Empty
+    NULL, EMPTY
 }
