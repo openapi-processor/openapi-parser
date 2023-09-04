@@ -39,6 +39,7 @@ public interface Keywords {
 
     // vocabulary: applicators - sub-schema array
     String ITEMS = "items";
+    String PREFIX_ITEMS = "prefixItems";
     String ADDITIONAL_ITEMS = "additionalItems";
     String UNEVALUATED_ITEMS = "unevaluatedItems";
     String CONTAINS = "contains";

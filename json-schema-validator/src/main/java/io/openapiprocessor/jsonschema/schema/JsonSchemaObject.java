@@ -228,7 +228,7 @@ public class JsonSchemaObject implements JsonSchema {
 
     @Override
     public Collection<JsonSchema> getPrefixItems () {
-        Collection<JsonSchema> prefixItems = getJsonSchemasOf ("prefixItems");
+        Collection<JsonSchema> prefixItems = getJsonSchemasOf (PREFIX_ITEMS);
         if (prefixItems == null)
             return Collections.emptyList ();
 
