@@ -14,6 +14,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.net.URI;
 import java.util.*;
 
+import static io.openapiprocessor.jsonschema.schema.Keywords.*;
+
 public class JsonSchemaObject implements JsonSchema {
     private final JsonSchemaContext context;
 
@@ -46,48 +48,48 @@ public class JsonSchemaObject implements JsonSchema {
 
     @Override
     public boolean isRef () {
-        return schemaObject.hasProperty (Keywords.REF);
+        return schemaObject.hasProperty (REF);
     }
 
     @Override
     public @Nullable URI getRef () {
-        return schemaObject.convert (Keywords.REF, new UriConverter ());
+        return schemaObject.convert (REF, new UriConverter ());
     }
 
     @Override
     public @Nullable String getAnchor () {
-        return schemaObject.convert ("$anchor", new StringNullableConverter ());
+        return schemaObject.convert (ANCHOR, new StringNullableConverter ());
     }
 
     @Override
     public boolean isDynamicRef () {
         if (context.getVersion () == SchemaVersion.Draft201909) {
-            return schemaObject.hasProperty (Keywords.RECURSIVE_REF);
+            return schemaObject.hasProperty (RECURSIVE_REF);
         }
 
-        return schemaObject.hasProperty (Keywords.DYNAMIC_REF);
+        return schemaObject.hasProperty (DYNAMIC_REF);
     }
 
     @Override
     public @Nullable URI getDynamicRef () {
         if (context.getVersion () == SchemaVersion.Draft201909) {
-            return schemaObject.convert (Keywords.RECURSIVE_REF, new UriConverter ());
+            return schemaObject.convert (RECURSIVE_REF, new UriConverter ());
         }
 
-        return schemaObject.convert (Keywords.DYNAMIC_REF, new UriConverter ());
+        return schemaObject.convert (DYNAMIC_REF, new UriConverter ());
     }
 
     @Override
     public @Nullable String getDynamicAnchor () {
         if (context.getVersion () == SchemaVersion.Draft201909) {
-            Boolean anchor = schemaObject.convert (Keywords.RECURSIVE_ANCHOR, new BooleanConverter ());
+            Boolean anchor = schemaObject.convert (RECURSIVE_ANCHOR, new BooleanConverter ());
             if (anchor == null || !anchor)
                 return null;
 
-            return Keywords.HASH;
+            return HASH;
         }
 
-        return schemaObject.convert ("$dynamicAnchor", new StringNullableConverter ());
+        return schemaObject.convert (DYNAMIC_ANCHOR, new StringNullableConverter ());
     }
 
     @Override
@@ -96,9 +98,9 @@ public class JsonSchemaObject implements JsonSchema {
         JsonSchemaContext refContext = context.withScope (reference.getValueScope ());
 
         JsonSchema schema = new JsonSchemaRefConverter (refContext)
-            .convert (Keywords.REF, reference.getValue (), reference.getPointer ());
+            .convert (REF, reference.getValue (), reference.getPointer ());
         if (schema == null)
-            throw new NoValueException (getLocation ().append (Keywords.REF));
+            throw new NoValueException (getLocation ().append (REF));
 
         return schema;
     }
@@ -111,10 +113,10 @@ public class JsonSchemaObject implements JsonSchema {
             Reference reference = context.getReference (Null.nonNull (getDynamicRef ()));
             JsonSchemaContext refContext = context.withScope (reference.getValueScope ());
             JsonSchema schema = new JsonSchemaRefConverter (refContext)
-                .convert (Keywords.DYNAMIC_REF, reference.getValue (), reference.getPointer ());
+                .convert (DYNAMIC_REF, reference.getValue (), reference.getPointer ());
 
             if (schema == null)
-                throw new NoValueException (getLocation ().append (Keywords.DYNAMIC_REF));
+                throw new NoValueException (getLocation ().append (DYNAMIC_REF));
 
             return schema;
         } else {
@@ -126,10 +128,10 @@ public class JsonSchemaObject implements JsonSchema {
 
             JsonSchemaContext refContext = context.withScope (reference.getValueScope ());
             JsonSchema schema = new JsonSchemaRefConverter (refContext)
-                .convert (Keywords.DYNAMIC_REF, reference.getValue (), reference.getPointer ());
+                .convert (DYNAMIC_REF, reference.getValue (), reference.getPointer ());
 
             if (schema == null)
-                throw new NoValueException (getLocation ().append (Keywords.DYNAMIC_REF));
+                throw new NoValueException (getLocation ().append (DYNAMIC_REF));
 
             return schema;
         }
@@ -137,7 +139,7 @@ public class JsonSchemaObject implements JsonSchema {
 
     @Override
     public @Nullable URI getMetaSchema () {
-        return schemaObject.convert (Keywords.SCHEMA, new UriConverter ());
+        return schemaObject.convert (SCHEMA, new UriConverter ());
     }
 
     public @Nullable JsonSchema getMetaSchemaSchema () {
@@ -149,36 +151,36 @@ public class JsonSchemaObject implements JsonSchema {
         Reference reference = context.getReference (metaSchemaUri);
 
         return new JsonSchemaConverter (context)
-            .convert (Keywords.SCHEMA, reference.getValue (), reference.getPointer ());
+            .convert (SCHEMA, reference.getValue (), reference.getPointer ());
     }
 
     @Override
     public @Nullable Vocabularies getVocabulary () {
-        return schemaObject.convert (Keywords.VOCABULARY, new VocabularyConverter (context));
+        return schemaObject.convert (VOCABULARY, new VocabularyConverter (context));
     }
 
     @Override
     public @Nullable URI getId () {
         if (context.getVersion () == SchemaVersion.Draft4) {
-            return schemaObject.convert (Keywords.ID4, new UriConverter ());
+            return schemaObject.convert (ID4, new UriConverter ());
         }
 
-        return schemaObject.convert (Keywords.ID, new UriConverter ());
+        return schemaObject.convert (ID, new UriConverter ());
     }
 
     @Override
     public @Nullable Number getMultipleOf () {
-        return schemaObject.convert ("multipleOf", new NumberConverter ());
+        return schemaObject.convert (MULTIPLE_OF, new NumberConverter ());
     }
 
     @Override
     public @Nullable Number getMaximum () {
-        return schemaObject.convert ("maximum", new NumberConverter ());
+        return schemaObject.convert (MAXIMUM, new NumberConverter ());
     }
 
     @Override
     public Boolean getExclusiveMaximumB () {
-        Boolean exclusive = schemaObject.convert ("exclusiveMaximum", new BooleanConverter ());
+        Boolean exclusive = schemaObject.convert (EXCLUSIVE_MAXIMUM, new BooleanConverter ());
         if (exclusive == null)
             return false;
 
@@ -187,17 +189,17 @@ public class JsonSchemaObject implements JsonSchema {
 
     @Override
     public @Nullable Number getExclusiveMaximum () {
-        return schemaObject.convert ("exclusiveMaximum", new NumberConverter ());
+        return schemaObject.convert (EXCLUSIVE_MAXIMUM, new NumberConverter ());
     }
 
     @Override
     public @Nullable Number getMinimum () {
-        return schemaObject.convert ("minimum", new NumberConverter ());
+        return schemaObject.convert (MINIMUM, new NumberConverter ());
     }
 
     @Override
     public Boolean getExclusiveMinimumB () {
-        Boolean exclusive = schemaObject.convert ("exclusiveMinimum", new BooleanConverter ());
+        Boolean exclusive = schemaObject.convert (EXCLUSIVE_MINIMUM, new BooleanConverter ());
         if (exclusive == null)
             return false;
 
@@ -206,22 +208,22 @@ public class JsonSchemaObject implements JsonSchema {
 
     @Override
     public @Nullable Number getExclusiveMinimum () {
-        return schemaObject.convert ("exclusiveMinimum", new NumberConverter ());
+        return schemaObject.convert (EXCLUSIVE_MINIMUM, new NumberConverter ());
     }
 
     @Override
     public @Nullable Integer getMaxLength () {
-        return schemaObject.convert ("maxLength", new IntegerConverter ());
+        return schemaObject.convert (MAX_LENGTH, new IntegerConverter ());
     }
 
     @Override
     public @Nullable Integer getMinLength () {
-        return schemaObject.convert ("minLength", new IntegerConverter ());
+        return schemaObject.convert (MIN_LENGTH, new IntegerConverter ());
     }
 
     @Override
     public @Nullable String getPattern () {
-        return schemaObject.convert ("pattern", new StringNullableConverter ());
+        return schemaObject.convert (PATTERN, new StringNullableConverter ());
     }
 
     @Override
@@ -235,63 +237,63 @@ public class JsonSchemaObject implements JsonSchema {
 
     @Override
     public JsonSchemas getItems () {
-        boolean exists = schemaObject.hasProperty ("items");
+        boolean exists = schemaObject.hasProperty (ITEMS);
         if (!exists)
             return new JsonSchemas();
 
-        Object raw = schemaObject.getRawValue ("items");
+        Object raw = schemaObject.getRawValue (ITEMS);
         if (Types.isSchema (raw)) {
-            return new JsonSchemas (getJsonSchemaOf ("items"));
+            return new JsonSchemas (getJsonSchemaOf (ITEMS));
 
         } else if (Types.isArray (raw)) {
-            Collection<JsonSchema> items = getJsonSchemasOf ("items");
+            Collection<JsonSchema> items = getJsonSchemasOf (ITEMS);
             if (items != null) {
                 return new JsonSchemas (items);
             }
         }
 
-        throw new InvalidPropertyException (getLocation ().append ("items"));
+        throw new InvalidPropertyException (getLocation ().append (ITEMS));
     }
 
     @Override
     public JsonSchemas getAdditionalItems () {
-        boolean exists = schemaObject.hasProperty ("additionalItems");
+        boolean exists = schemaObject.hasProperty (ADDITIONAL_ITEMS);
         if (!exists)
             return new JsonSchemas();
 
-        Object raw = schemaObject.getRawValue ("additionalItems");
+        Object raw = schemaObject.getRawValue (ADDITIONAL_ITEMS);
         if (raw == null)
             return new JsonSchemas ((JsonSchema) null);
 
         else
-            return new JsonSchemas (getJsonSchemaOf ("additionalItems"));
+            return new JsonSchemas (getJsonSchemaOf (ADDITIONAL_ITEMS));
     }
 
     public @Nullable JsonSchema getUnevaluatedItems () {
-        return getJsonSchemaOf ("unevaluatedItems");
+        return getJsonSchemaOf (UNEVALUATED_ITEMS);
     }
 
     @Override
     public @Nullable Integer getMaxItems () {
-        return schemaObject.convert ("maxItems", new IntegerConverter ());
+        return schemaObject.convert (MAX_ITEMS, new IntegerConverter ());
     }
 
     @Override
     public @Nullable Integer getMinItems () {
-        return schemaObject.convert ("minItems", new IntegerConverter ());
+        return schemaObject.convert (MIN_ITEMS, new IntegerConverter ());
     }
 
     @Override
     public @Nullable Boolean isUniqueItems () {
-        return schemaObject.convert ("uniqueItems", new BooleanConverter ());
+        return schemaObject.convert (UNIQUE_ITEMS, new BooleanConverter ());
     }
 
     public @Nullable JsonSchema getContains () {
-        return getJsonSchemaOf ("contains");
+        return getJsonSchemaOf (CONTAINS);
     }
 
     public Integer getMinContains () {
-        Integer minContains = schemaObject.convert ("minContains", new IntegerConverter ());
+        Integer minContains = schemaObject.convert (MIN_CONTAINS, new IntegerConverter ());
         if (minContains == null)
             return 1;
 
@@ -299,22 +301,22 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     public @Nullable Integer getMaxContains () {
-        return schemaObject.convert ("maxContains", new IntegerConverter ());
+        return schemaObject.convert (MAX_CONTAINS, new IntegerConverter ());
     }
 
     @Override
     public @Nullable Integer getMaxProperties () {
-        return schemaObject.convert ("maxProperties", new IntegerConverter ());
+        return schemaObject.convert (MAX_PROPERTIES, new IntegerConverter ());
     }
 
     @Override
     public @Nullable Integer getMinProperties () {
-        return schemaObject.convert ("minProperties", new IntegerConverter ());
+        return schemaObject.convert (MIN_PROPERTIES, new IntegerConverter ());
     }
 
     @Override
     public @Nullable Collection<String> getRequired () {
-        Object raw = schemaObject.getRawValue ("required");
+        Object raw = schemaObject.getRawValue (REQUIRED);
         if (raw == null)
             return null;
 
@@ -322,7 +324,7 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     public Map<String, JsonSchema> getProperties () {
-        Map<String, JsonSchema> properties = schemaObject.convert ("properties", new MapJsonSchemasConverter (context));
+        Map<String, JsonSchema> properties = schemaObject.convert (PROPERTIES, new MapJsonSchemasConverter (context));
         if (properties == null)
             return Collections.emptyMap ();
 
@@ -333,7 +335,7 @@ public class JsonSchemaObject implements JsonSchema {
     public Map<String, JsonSchema> getPatternProperties () {
         // todo escape regex \
         Map<String, JsonSchema> patternProperties = schemaObject.convert (
-            "patternProperties", new MapJsonSchemasConverter (context));
+            PATTERN_PROPERTIES, new MapJsonSchemasConverter (context));
 
         if (patternProperties == null) {
             return Collections.emptyMap ();
@@ -344,31 +346,31 @@ public class JsonSchemaObject implements JsonSchema {
 
     @Override
     public @Nullable JsonSchema getAdditionalProperties () {
-        return getJsonSchemaOf ("additionalProperties");
+        return getJsonSchemaOf (ADDITIONAL_PROPERTIES);
     }
 
     @Override
     public @Nullable JsonSchema getUnevaluatedProperties () {
-        return getJsonSchemaOf ("unevaluatedProperties");
+        return getJsonSchemaOf (UNEVALUATED_PROPERTIES);
     }
 
     @Override
     public @Nullable Map<String, JsonDependency> getDependencies () {
-        return schemaObject.convert ("dependencies", new MapDependencyConverter (context));
+        return schemaObject.convert (DEPENDENCIES, new MapDependencyConverter (context));
     }
 
     @Override
     public @Nullable Map<String, JsonSchema> getDependentSchemas () {
-        return schemaObject.convert ("dependentSchemas", new MapJsonSchemasConverter (context));
+        return schemaObject.convert (DEPENDENT_SCHEMAS, new MapJsonSchemasConverter (context));
     }
 
     public @Nullable Map<String, Set<String>> getDependentRequired () {
-        return schemaObject.convert ("dependentRequired", new MapSetStringsOrEmptyConverter (ResponseType.Null));
+        return schemaObject.convert (DEPENDENT_REQUIRED, new MapSetStringsOrEmptyConverter (ResponseType.Null));
     }
 
     @Override
     public @Nullable JsonSchema getPropertyNames () {
-        return getJsonSchemaOf ("propertyNames");
+        return getJsonSchemaOf (PROPERTY_NAMES);
     }
 
     @Override
@@ -378,7 +380,7 @@ public class JsonSchemaObject implements JsonSchema {
 
     @Override
     public Collection<JsonInstance> getEnum () {
-        Object raw = schemaObject.getRawValue ("enum");
+        Object raw = schemaObject.getRawValue (ENUM);
         if (raw == null)
             return  Collections.emptyList ();
 
@@ -387,7 +389,7 @@ public class JsonSchemaObject implements JsonSchema {
 
             int index = 0;
             for (Object o : Types.asCol (raw)) {
-                JsonInstance instance = new JsonInstance (getLocation ().append ("enum").append (index), o);
+                JsonInstance instance = new JsonInstance (getLocation ().append (ENUM).append (index), o);
                 instances.add (instance);
                 index++;
             }
@@ -401,21 +403,21 @@ public class JsonSchemaObject implements JsonSchema {
 
     @Override
     public @Nullable JsonInstance getConst () {
-        if (!schemaObject.hasProperty ("const")) {
+        if (!schemaObject.hasProperty (CONST)) {
             return null;
         }
 
-        Object raw = schemaObject.getRawValue ("const");
-        return new JsonInstance (getLocation ().append ("const"), raw);
+        Object raw = schemaObject.getRawValue (CONST);
+        return new JsonInstance (getLocation ().append (CONST), raw);
     }
 
     @Override
     public Collection<String> getType () {
-        boolean exists = schemaObject.hasProperty ("type");
+        boolean exists = schemaObject.hasProperty (TYPE);
         if (!exists)
             return Collections.emptyList ();
 
-        Object raw = schemaObject.getRawValue ("type");
+        Object raw = schemaObject.getRawValue (TYPE);
         if (raw instanceof String) {
             String type = Types.convert ("", raw, String.class);
             return Collections.singletonList (type);
@@ -431,7 +433,7 @@ public class JsonSchemaObject implements JsonSchema {
 
     @Override
     public Collection<JsonSchema> getAllOf () {
-        Collection<JsonSchema> allOf = getJsonSchemasOf ("allOf");
+        Collection<JsonSchema> allOf = getJsonSchemasOf (ALL_OF);
         if (allOf == null)
             return Collections.emptyList ();
 
@@ -440,7 +442,7 @@ public class JsonSchemaObject implements JsonSchema {
 
     @Override
     public Collection<JsonSchema> getAnyOf () {
-        Collection<JsonSchema> anyOf = getJsonSchemasOf ("anyOf");
+        Collection<JsonSchema> anyOf = getJsonSchemasOf (ANY_OF);
         if (anyOf == null)
             return Collections.emptyList ();
 
@@ -449,7 +451,7 @@ public class JsonSchemaObject implements JsonSchema {
 
     @Override
     public Collection<JsonSchema> getOneOf () {
-        Collection<JsonSchema> oneOf = getJsonSchemasOf ("oneOf");
+        Collection<JsonSchema> oneOf = getJsonSchemasOf (ONE_OF);
         if (oneOf == null)
             return Collections.emptyList ();
 
@@ -458,27 +460,27 @@ public class JsonSchemaObject implements JsonSchema {
 
     @Override
     public @Nullable JsonSchema getNot () {
-        return getJsonSchemaOf ("not");
+        return getJsonSchemaOf (NOT);
     }
 
     @Override
     public @Nullable String getFormat () {
-        return schemaObject.convert ("format", new StringNullableConverter ());
+        return schemaObject.convert (FORMAT, new StringNullableConverter ());
     }
 
     @Override
     public @Nullable JsonSchema getIf () {
-        return getJsonSchemaOf ("if");
+        return getJsonSchemaOf (IF);
     }
 
     @Override
     public @Nullable JsonSchema getThen () {
-        return getJsonSchemaOf ("then");
+        return getJsonSchemaOf (THEN);
     }
 
     @Override
     public @Nullable JsonSchema getElse () {
-        return getJsonSchemaOf ("else");
+        return getJsonSchemaOf (ELSE);
     }
 
     @Override
@@ -495,7 +497,7 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     private Bucket getBucketProperties (Bucket schemaBucket) {
-        Bucket bucket = schemaBucket.convert ("properties", new BucketConverter (schemaBucket));
+        Bucket bucket = schemaBucket.convert (PROPERTIES, new BucketConverter (schemaBucket));
         if (bucket == null)
             return Bucket.empty ();
 
