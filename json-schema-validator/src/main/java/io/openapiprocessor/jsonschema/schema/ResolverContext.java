@@ -5,7 +5,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.net.URI;
 import java.util.*;
 
-class ResolverContext {
+public class ResolverContext {
 
     private final DocumentStore documents;
     private final DocumentLoader loader;
