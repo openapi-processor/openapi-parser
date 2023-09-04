@@ -247,7 +247,7 @@ class BucketSpec: StringSpec({
             )
         )
 
-        val pointer = JsonPointer.EMPTY
+        val pointer = JsonPointer.empty()
         val rawValue = bucket.getRawValue(pointer)
 
         rawValue?.scope?.baseUri.toString() shouldBe "https://host/document/self"

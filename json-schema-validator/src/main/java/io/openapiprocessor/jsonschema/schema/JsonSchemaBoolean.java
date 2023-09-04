@@ -12,7 +12,7 @@ public class JsonSchemaBoolean implements JsonSchema {
 
     public JsonSchemaBoolean (Boolean value, JsonSchemaContext context) {
         this.context = context;
-        this.pointer = JsonPointer.EMPTY;
+        this.pointer = JsonPointer.empty();
         this.value = value;
     }
 

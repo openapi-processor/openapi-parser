@@ -59,7 +59,7 @@ public class Bucket {
      */
     public Bucket (Scope scope, Map<String, Object> properties) {
         this.scope = scope;
-        this.location = JsonPointer.EMPTY;
+        this.location = JsonPointer.empty();
         this.properties = properties;
     }
 

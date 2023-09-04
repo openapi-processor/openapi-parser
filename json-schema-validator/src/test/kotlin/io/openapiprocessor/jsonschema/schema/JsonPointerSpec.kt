@@ -129,7 +129,7 @@ class JsonPointerSpec : StringSpec({
     }
 
     "get tail from pointer" {
-        JsonPointer.EMPTY.tail() shouldBe ""
+        JsonPointer.empty().tail() shouldBe ""
         JsonPointer.from("/root").tail() shouldBe "root"
         JsonPointer.from("/root/tail").tail() shouldBe "tail"
     }

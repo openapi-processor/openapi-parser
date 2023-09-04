@@ -19,12 +19,10 @@ import java.util.stream.Collectors;
 import static java.util.Collections.unmodifiableList;
 
 /**
- * JSON pointer abstraction based on <a href="https://datatracker.ietf.org/doc/html/rfc6901">
- *     rfc6901</a>.
+ * JSON pointer abstraction based on <a href="https://datatracker.ietf.org/doc/html/rfc6901">rfc6901</a>.
  */
 public class JsonPointer {
-    // todo use empty()
-    public final static JsonPointer EMPTY = new JsonPointer();
+    private final static JsonPointer EMPTY = new JsonPointer();
 
     final private @Nullable String pointer;
     final private List<String> tokens;

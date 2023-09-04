@@ -96,7 +96,7 @@ public class ResolverRef {
             context.setProcessedDocument (uri);
 
             Scope docScope = scope.move (uri, document);  // todo document != null
-            Bucket bucket = Bucket.createBucket(docScope, document, JsonPointer.EMPTY);
+            Bucket bucket = Bucket.createBucket(docScope, document, JsonPointer.empty());
             if (bucket == null) {
                 return; // todo error
             }

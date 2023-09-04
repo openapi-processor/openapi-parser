@@ -20,7 +20,7 @@ public class JsonInstance {
 
     public JsonInstance (@Nullable Object value) {
         this.value = value;
-        this.location = JsonPointer.EMPTY;
+        this.location = JsonPointer.empty();
     }
 
     public JsonInstance (JsonPointer location, @Nullable Object value) {
