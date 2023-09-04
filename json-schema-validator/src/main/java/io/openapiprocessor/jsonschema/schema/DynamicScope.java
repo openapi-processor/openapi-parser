@@ -29,7 +29,7 @@ public final class DynamicScope {
             return context.hasDynamicReference (anchor);
         }
 
-        boolean equal (JsonSchema other) {
+        boolean equalsBaseUri(JsonSchema other) {
             return getBaseUri (schema).equals (getBaseUri (other));
         }
 
@@ -58,7 +58,7 @@ public final class DynamicScope {
         }
 
         Scope last = scopes.get (scopes.size () - 1);
-        if (last.equal (schema)) {
+        if (last.equalsBaseUri(schema)) {
             return this;
         }
 
