@@ -233,6 +233,10 @@ public class SchemaStore {
             return version;
 
         URI metaSchemaUri = getMetaSchemaUri(document);
+        if (metaSchemaUri == null) {
+            return version;
+        }
+
         SchemaVersion metaVersion = SchemaVersion.getVersion (metaSchemaUri);
         if (metaVersion != null)
             return metaVersion;
