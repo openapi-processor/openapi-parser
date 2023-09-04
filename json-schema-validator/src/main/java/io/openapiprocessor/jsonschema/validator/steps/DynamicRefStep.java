@@ -47,7 +47,7 @@ public class DynamicRefStep extends CompositeStep {
             isValid ());
     }
 
-    private boolean isDraft201909 (JsonSchema schema) {
+    private static boolean isDraft201909 (JsonSchema schema) {
         return SchemaVersion.Draft201909.equals (schema.getContext ().getVersion ());
     }
 
