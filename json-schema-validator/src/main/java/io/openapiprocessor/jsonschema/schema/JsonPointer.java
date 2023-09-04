@@ -22,13 +22,13 @@ import static java.util.Collections.unmodifiableList;
  * JSON pointer abstraction based on <a href="https://datatracker.ietf.org/doc/html/rfc6901">rfc6901</a>.
  */
 public class JsonPointer {
-    private final static JsonPointer EMPTY = new JsonPointer();
+    private final static JsonPointer EMPTY_JSON_POINTER = new JsonPointer();
 
     final private @Nullable String pointer;
     final private List<String> tokens;
 
     static public JsonPointer empty () {
-        return EMPTY;
+        return EMPTY_JSON_POINTER;
     }
 
     /**
@@ -45,7 +45,7 @@ public class JsonPointer {
 
     static public JsonPointer from (@Nullable String jsonPointer) {
         if (jsonPointer == null) {
-            return EMPTY;
+            return EMPTY_JSON_POINTER;
         }
 
         String pointer = jsonPointer;
