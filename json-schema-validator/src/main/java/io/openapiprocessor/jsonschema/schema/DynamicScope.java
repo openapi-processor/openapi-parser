@@ -53,7 +53,7 @@ public final class DynamicScope {
     }
 
     public DynamicScope add (JsonSchema schema) {
-        if (scopes.size () == 0) {
+        if (scopes.isEmpty()) {
             return this;
         }
 
