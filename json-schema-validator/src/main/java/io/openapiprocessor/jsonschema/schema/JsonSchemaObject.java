@@ -106,6 +106,7 @@ public class JsonSchemaObject implements JsonSchema {
     }
 
     // recursiveRef/ref
+    @Override
     public JsonSchema getRefSchema (@Nullable URI dynamicScope) {
         if (dynamicScope == null) {
             // like $ref
@@ -142,6 +143,7 @@ public class JsonSchemaObject implements JsonSchema {
         return schemaObject.convert (SCHEMA, new UriConverter ());
     }
 
+    @Override
     public @Nullable JsonSchema getMetaSchemaSchema () {
         URI metaSchemaUri = getMetaSchema ();
         if (metaSchemaUri == null) {
@@ -269,6 +271,7 @@ public class JsonSchemaObject implements JsonSchema {
             return new JsonSchemas (getJsonSchemaOf (ADDITIONAL_ITEMS));
     }
 
+    @Override
     public @Nullable JsonSchema getUnevaluatedItems () {
         return getJsonSchemaOf (UNEVALUATED_ITEMS);
     }
@@ -288,10 +291,12 @@ public class JsonSchemaObject implements JsonSchema {
         return schemaObject.convert (UNIQUE_ITEMS, new BooleanConverter ());
     }
 
+    @Override
     public @Nullable JsonSchema getContains () {
         return getJsonSchemaOf (CONTAINS);
     }
 
+    @Override
     public Integer getMinContains () {
         Integer minContains = schemaObject.convert (MIN_CONTAINS, new IntegerConverter ());
         if (minContains == null)
@@ -300,6 +305,7 @@ public class JsonSchemaObject implements JsonSchema {
         return minContains;
     }
 
+    @Override
     public @Nullable Integer getMaxContains () {
         return schemaObject.convert (MAX_CONTAINS, new IntegerConverter ());
     }
@@ -323,6 +329,7 @@ public class JsonSchemaObject implements JsonSchema {
         return Collections.unmodifiableCollection(Types.asCol(raw));
     }
 
+    @Override
     public Map<String, JsonSchema> getProperties () {
         Map<String, JsonSchema> properties = schemaObject.convert (PROPERTIES, new MapJsonSchemasConverter (context));
         if (properties == null)
@@ -364,6 +371,7 @@ public class JsonSchemaObject implements JsonSchema {
         return schemaObject.convert (DEPENDENT_SCHEMAS, new MapJsonSchemasConverter (context));
     }
 
+    @Override
     public @Nullable Map<String, Set<String>> getDependentRequired () {
         return schemaObject.convert (DEPENDENT_REQUIRED, new MapSetStringsOrEmptyConverter (ResponseType.NULL));
     }
