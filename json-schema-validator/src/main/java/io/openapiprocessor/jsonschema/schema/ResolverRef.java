@@ -35,34 +35,34 @@ public class ResolverRef {
             JsonPointer propLocation = location.append (name);
             Keyword keyword = version.getKeyword (name);
 
-            boolean navigable = keyword != null && keyword.isNavigable ();
+            boolean navigable = isNavigable(keyword);
 
-            if (name.equals (Keywords.SCHEMA) && Types.isString (value)) {
+            if (isMetaSchema(name, value)) {
                 Ref ref = createRef (scope, name, value);
                 walkRef (ref, propLocation);
 
-            } else if (name.equals (Keywords.REF) && Types.isString (value)) {
+            } else if (isRef(name, value)) {
                 Ref ref = createRef (scope, name, value);
                 walkRef (ref, propLocation);
 
-            } else if (name.equals (Keywords.DYNAMIC_REF) && Types.isString (value)) {
+            } else if (isDynamicRef(name, value)) {
                 Ref ref = createRef (scope, name, value);
                 walkRef (ref, propLocation);
 
-            } else if (name.equals (Keywords.RECURSIVE_REF) && Types.isString (value)) {
+            } else if (isRecursiveRef(name, value)) {
                 Ref ref = createRef (scope, name, value);
                 walkRef (ref, propLocation);
 
-            } else if (navigable && keyword.isSchema () && Types.isObject (value)) {
+            } else if (navigable && isObject(keyword, value)) {
                     walkSchema (scope, value, propLocation);
 
-            } else if (navigable && keyword.isSchemaArray () && Types.isArray (value)) {
+            } else if (navigable && isSchemaArray(keyword, value)) {
                 walkSchemaArray (scope, value, propLocation);
 
-            } else if (navigable && keyword.isSchemaMap ()) {
+            } else if (navigable && isSchemaMap(keyword)) {
                 walkSchemaMap (scope, value, propLocation);
 
-            } else if (name.equals (Keywords.DEFAULT) && Types.isObject (value)) {
+            } else if (isDefaultObject(name, value)) {
                 walkSchema (scope, value, propLocation);
 
             } else if (keyword == null && Types.isObject (value)) {
@@ -72,6 +72,42 @@ public class ResolverRef {
                 walkSchemaArray (scope, value, propLocation);
             }
         });
+    }
+
+    private static boolean isDefaultObject(String name, Object value) {
+        return name.equals(Keywords.DEFAULT) && Types.isObject(value);
+    }
+
+    private static boolean isSchemaMap(Keyword keyword) {
+        return keyword.isSchemaMap();
+    }
+
+    private static boolean isSchemaArray(Keyword keyword, Object value) {
+        return keyword.isSchemaArray() && Types.isArray(value);
+    }
+
+    private static boolean isObject(Keyword keyword, Object value) {
+        return keyword.isSchema() && Types.isObject(value);
+    }
+
+    private static boolean isRecursiveRef(String name, Object value) {
+        return name.equals(Keywords.RECURSIVE_REF) && Types.isString(value);
+    }
+
+    private static boolean isDynamicRef(String name, Object value) {
+        return name.equals(Keywords.DYNAMIC_REF) && Types.isString(value);
+    }
+
+    private static boolean isRef(String name, Object value) {
+        return name.equals(Keywords.REF) && Types.isString(value);
+    }
+
+    private static boolean isMetaSchema(String name, Object value) {
+        return name.equals(Keywords.SCHEMA) && Types.isString(value);
+    }
+
+    private static boolean isNavigable(Keyword keyword) {
+        return keyword != null && keyword.isNavigable();
     }
 
     private Ref createRef (Scope scope, String name, Object value) {
