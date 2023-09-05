@@ -30,26 +30,7 @@ public class Type {
 
         boolean matches = false;
         for (String type : types) {
-            if ("null".equals (type) && instance.isNull ()) {
-                matches = true;
-
-            } else if ("array".equals (type) && isArray (instance))
-                matches = true;
-
-            else if ("boolean".equals (type) && isBoolean (instance))
-                matches = true;
-
-            else if ("integer".equals (type) && isInteger (schema, instance))
-                matches = true;
-
-            else if ("number".equals (type) && isNumber (instance))
-                matches = true;
-
-            else if ("object".equals (type) && isObject (instance))
-                matches = true;
-
-            else if ("string".equals (type) && isString (instance))
-                matches = true;
+            matches |= matches(type, schema, instance);
         }
 
         if (!matches) {
@@ -57,6 +38,28 @@ public class Type {
         }
 
         parentStep.add (step);
+    }
+
+    private boolean matches(String type, JsonSchema schema, JsonInstance instance) {
+        if ("null".equals (type) && instance.isNull ()) {
+            return true;
+
+        } else if ("array".equals (type) && isArray (instance))
+            return true;
+
+        else if ("boolean".equals (type) && isBoolean (instance))
+            return true;
+
+        else if ("integer".equals (type) && isInteger (schema, instance))
+            return true;
+
+        else if ("number".equals (type) && isNumber (instance))
+            return true;
+
+        else if ("object".equals (type) && isObject (instance))
+            return true;
+
+        else return "string".equals(type) && isString(instance);
     }
 
     private boolean isBoolean (JsonInstance instance) {
