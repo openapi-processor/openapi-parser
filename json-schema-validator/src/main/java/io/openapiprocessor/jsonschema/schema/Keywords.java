@@ -5,103 +5,105 @@
 
 package io.openapiprocessor.jsonschema.schema;
 
-public interface Keywords {
+public class Keywords {
     // misc
-    String HASH = "#";
+    public static String HASH = "#";
 
     // vocabulary: core
-    String ANCHOR = "$anchor";
-    String COMMENT = "$comment";
-    String DEFS = "$defs";
-    String DEFINITIONS = "definitions";
-    String ID = "$id";
-    String ID4 = "id";
-    String SCHEMA = "$schema";
+    public static String ANCHOR = "$anchor";
+    public static String COMMENT = "$comment";
+    public static String DEFS = "$defs";
+    public static String DEFINITIONS = "definitions";
+    public static String ID = "$id";
+    public static String ID4 = "id";
+    public static String SCHEMA = "$schema";
 
-    String REF = "$ref";
-    String DYNAMIC_ANCHOR = "$dynamicAnchor";
-    String DYNAMIC_REF = "$dynamicRef";
-    String RECURSIVE_ANCHOR = "$recursiveAnchor";
-    String RECURSIVE_REF = "$recursiveRef";
-    String VOCABULARY = "$vocabulary";
+    public static String REF = "$ref";
+    public static String DYNAMIC_ANCHOR = "$dynamicAnchor";
+    public static String DYNAMIC_REF = "$dynamicRef";
+    public static String RECURSIVE_ANCHOR = "$recursiveAnchor";
+    public static String RECURSIVE_REF = "$recursiveRef";
+    public static String VOCABULARY = "$vocabulary";
 
     // vocabulary: applicators - boolean
-    String ALL_OF = "allOf";
-    String ANY_OF = "anyOf";
-    String ONE_OF = "oneOf";
-    String NOT = "not";
+    public static String ALL_OF = "allOf";
+    public static String ANY_OF = "anyOf";
+    public static String ONE_OF = "oneOf";
+    public static String NOT = "not";
 
     // vocabulary: applicators - conditionally
-    String IF = "if";
-    String THEN = "then";
-    String ELSE = "else";
-    String DEPENDENT_SCHEMAS = "dependentSchemas";
+    public static String IF = "if";
+    public static String THEN = "then";
+    public static String ELSE = "else";
+    public static String DEPENDENT_SCHEMAS = "dependentSchemas";
 
     // vocabulary: applicators - sub-schema array
-    String ITEMS = "items";
-    String PREFIX_ITEMS = "prefixItems";
-    String ADDITIONAL_ITEMS = "additionalItems";
-    String UNEVALUATED_ITEMS = "unevaluatedItems";
-    String CONTAINS = "contains";
+    public static String ITEMS = "items";
+    public static String PREFIX_ITEMS = "prefixItems";
+    public static String ADDITIONAL_ITEMS = "additionalItems";
+    public static String UNEVALUATED_ITEMS = "unevaluatedItems";
+    public static String CONTAINS = "contains";
 
     // vocabulary: applicators sub-schema object
-    String PROPERTIES = "properties";
-    String PATTERN_PROPERTIES = "patternProperties";
-    String ADDITIONAL_PROPERTIES = "additionalProperties";
-    String UNEVALUATED_PROPERTIES = "unevaluatedProperties";
-    String PROPERTY_NAMES = "propertyNames";
+    public static String PROPERTIES = "properties";
+    public static String PATTERN_PROPERTIES = "patternProperties";
+    public static String ADDITIONAL_PROPERTIES = "additionalProperties";
+    public static String UNEVALUATED_PROPERTIES = "unevaluatedProperties";
+    public static String PROPERTY_NAMES = "propertyNames";
 
     // vocabulary: validation - any
-    String CONST = "const";
-    String ENUM = "enum";
-    String TYPE = "type";
+    public static String CONST = "const";
+    public static String ENUM = "enum";
+    public static String TYPE = "type";
 
     // vocabulary: validation - numeric (number & integer)
-    String MULTIPLE_OF = "multipleOf";
-    String MAXIMUM = "maximum";
-    String EXCLUSIVE_MAXIMUM = "exclusiveMaximum";
-    String MINIMUM = "minimum";
-    String EXCLUSIVE_MINIMUM = "exclusiveMinimum";
+    public static String MULTIPLE_OF = "multipleOf";
+    public static String MAXIMUM = "maximum";
+    public static String EXCLUSIVE_MAXIMUM = "exclusiveMaximum";
+    public static String MINIMUM = "minimum";
+    public static String EXCLUSIVE_MINIMUM = "exclusiveMinimum";
 
     // vocabulary: validation - strings
-    String MAX_LENGTH = "maxLength";
-    String MIN_LENGTH = "minLength";
-    String PATTERN = "pattern";
+    public static String MAX_LENGTH = "maxLength";
+    public static String MIN_LENGTH = "minLength";
+    public static String PATTERN = "pattern";
 
     // vocabulary: validation - arrays
-    String MAX_ITEMS = "maxItems";
-    String MIN_ITEMS = "minItems";
-    String UNIQUE_ITEMS = "uniqueItems";
-    String MAX_CONTAINS = "maxContains";
-    String MIN_CONTAINS = "minContains";
+    public static String MAX_ITEMS = "maxItems";
+    public static String MIN_ITEMS = "minItems";
+    public static String UNIQUE_ITEMS = "uniqueItems";
+    public static String MAX_CONTAINS = "maxContains";
+    public static String MIN_CONTAINS = "minContains";
 
     // vocabulary: validation - objects
-    String MAX_PROPERTIES = "maxProperties";
-    String MIN_PROPERTIES = "minProperties";
-    String REQUIRED = "required";
-    String DEPENDENT_REQUIRED = "dependentRequired";
+    public static String MAX_PROPERTIES = "maxProperties";
+    public static String MIN_PROPERTIES = "minProperties";
+    public static String REQUIRED = "required";
+    public static String DEPENDENT_REQUIRED = "dependentRequired";
 
     // vocabulary: format
-    String FORMAT = "format";
+    public static String FORMAT = "format";
 
     // vocabulary: content
-    String CONTENT_MEDIA_TYPE = "contentMediaType";
-    String CONTENT_ENCODING = "contentEncoding";
-    String CONTENT_SCHEMA = "contentSchema";
+    public static String CONTENT_MEDIA_TYPE = "contentMediaType";
+    public static String CONTENT_ENCODING = "contentEncoding";
+    public static String CONTENT_SCHEMA = "contentSchema";
 
     // vocabulary: meta data
-    String TITLE = "title";
-    String DESCRIPTION = "description";
-    String DEFAULT = "default";
-    String DEPRECATED = "deprecated";
-    String READ_ONLY = "readOnly";
-    String WRITE_ONLY = "writeOnly";
-    String EXAMPLES = "examples";
+    public static String TITLE = "title";
+    public static String DESCRIPTION = "description";
+    public static String DEFAULT = "default";
+    public static String DEPRECATED = "deprecated";
+    public static String READ_ONLY = "readOnly";
+    public static String WRITE_ONLY = "writeOnly";
+    public static String EXAMPLES = "examples";
 
     // vocabulary: hyper-schema
-    String BASE = "base";
-    String LINKS = "links";
+    public static String BASE = "base";
+    public static String LINKS = "links";
 
     // other
-    String DEPENDENCIES = "dependencies";
+    public static String DEPENDENCIES = "dependencies";
+
+    private Keywords() {}
 }
