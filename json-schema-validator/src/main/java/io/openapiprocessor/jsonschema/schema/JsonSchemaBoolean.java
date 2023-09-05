@@ -39,7 +39,7 @@ public class JsonSchemaBoolean implements JsonSchema {
 
     @Override
     public boolean isTrue () {
-        return value;
+        return getBoolean();
     }
 
     @Override
