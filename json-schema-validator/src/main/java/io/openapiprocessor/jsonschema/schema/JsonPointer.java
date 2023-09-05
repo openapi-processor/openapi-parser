@@ -31,18 +31,6 @@ public class JsonPointer {
         return EMPTY_JSON_POINTER;
     }
 
-    /**
-     * creates a json pointer from a uri fragment string. Throws if the fragment is not a valid json
-     * pointer.
-     *
-     * @param fragment json pointer fragment
-     * @return a json pointer object
-     */
-    @Deprecated
-    public static JsonPointer fromFragment (String fragment) {
-        return from (fragment);
-    }
-
     public static JsonPointer from (@Nullable String jsonPointer) {
         if (jsonPointer == null) {
             return EMPTY_JSON_POINTER;
