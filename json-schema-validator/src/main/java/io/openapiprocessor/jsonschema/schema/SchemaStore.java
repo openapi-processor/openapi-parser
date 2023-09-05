@@ -43,7 +43,7 @@ public class SchemaStore {
         // check absolute?
 
         if (documents.contains (schemaUri)) {
-            log.warn ("id is already registered: {}", schemaUri.toString ());
+            warnDuplicateId(schemaUri);
             return;
         }
 
@@ -62,7 +62,7 @@ public class SchemaStore {
         // check absolute?
 
         if (documents.contains (schemaUri)) {
-            log.warn ("id is already registered: {}", schemaUri.toString ());
+            warnDuplicateId(schemaUri);
             return;
         }
 
@@ -92,7 +92,7 @@ public class SchemaStore {
      */
     public void register (URI schemaUri, String resourcePath) {
         if (documents.contains (schemaUri)) {
-            log.warn ("id is already registered: {}", schemaUri.toString ());
+            warnDuplicateId(schemaUri);
             return;
         }
 
@@ -286,5 +286,9 @@ public class SchemaStore {
 
     public DocumentStore getDocuments () {
         return documents;
+    }
+
+    private static void warnDuplicateId(URI schemaUri) {
+        log.warn ("id is already registered: {}", schemaUri.toString ());
     }
 }
