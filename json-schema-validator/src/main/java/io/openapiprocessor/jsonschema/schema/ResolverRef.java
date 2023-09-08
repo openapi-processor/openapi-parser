@@ -53,13 +53,13 @@ public class ResolverRef {
                 Ref ref = createRef (scope, name, value);
                 walkRef (ref, propLocation);
 
-            } else if (navigable && isObject(keyword, value)) {
+            } else if (isNavigableObject(keyword, value)) {
                     walkSchema (scope, value, propLocation);
 
-            } else if (navigable && isSchemaArray(keyword, value)) {
+            } else if (isNavigableSchemaArray(keyword, value)) {
                 walkSchemaArray (scope, value, propLocation);
 
-            } else if (navigable && isSchemaMap(keyword)) {
+            } else if (isNavigableSchemaMap(keyword, value)) {
                 walkSchemaMap (scope, value, propLocation);
 
             } else if (isDefaultObject(name, value)) {
@@ -78,16 +78,25 @@ public class ResolverRef {
         return name.equals(Keywords.DEFAULT) && Types.isObject(value);
     }
 
-    private static boolean isSchemaMap(Keyword keyword) {
-        return keyword.isSchemaMap();
+    private static boolean isNavigableSchemaMap(Keyword keyword, Object value) {
+        if (keyword == null)
+            return false;
+
+        return keyword.isNavigable() && keyword.isSchemaMap() && Types.isObject(value);
     }
 
-    private static boolean isSchemaArray(Keyword keyword, Object value) {
-        return keyword.isSchemaArray() && Types.isArray(value);
+    private static boolean isNavigableSchemaArray(@Nullable Keyword keyword, Object value) {
+        if (keyword == null)
+            return false;
+
+        return keyword.isNavigable() && keyword.isSchemaArray() && Types.isArray(value);
     }
 
-    private static boolean isObject(Keyword keyword, Object value) {
-        return keyword.isSchema() && Types.isObject(value);
+    private static boolean isNavigableObject(@Nullable Keyword keyword, Object value) {
+        if (keyword == null)
+            return false;
+
+        return  keyword.isNavigable() && keyword.isSchema() && Types.isObject(value);
     }
 
     private static boolean isRecursiveRef(String name, Object value) {
