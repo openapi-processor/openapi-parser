@@ -33,6 +33,8 @@ public class Vocabularies202012 {
     public static final Vocabulary validation = new Vocabulary (
         "https://json-schema.org/draft/2020-12/vocab/validation", getKeywordsValidation ());
 
+    private Vocabularies202012() {}
+
     static Map<String, Keyword> getKeywordsCore () {
         Map<String, Keyword> keywords = new HashMap<> ();
 

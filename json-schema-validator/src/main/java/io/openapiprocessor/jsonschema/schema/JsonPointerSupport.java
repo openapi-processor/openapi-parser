@@ -7,6 +7,8 @@ package io.openapiprocessor.jsonschema.schema;
 
 public class JsonPointerSupport {
 
+    private JsonPointerSupport() {}
+
     public static String encode (String source) {
         return source
             .replace ("~", "~0")

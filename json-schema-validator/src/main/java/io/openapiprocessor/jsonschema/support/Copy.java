@@ -19,6 +19,8 @@ import java.util.function.Function;
  */
 public class Copy {
 
+    private Copy() {}
+
     public static @PolyNull Object deep (@PolyNull Object source) {
         if (source == null)
             return null;

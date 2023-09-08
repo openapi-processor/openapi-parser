@@ -15,6 +15,8 @@ import static io.openapiprocessor.jsonschema.schema.Keyword.keyword;
 @SuppressWarnings("DuplicatedCode")
 public class Vocabularies201909 {
 
+    private Vocabularies201909() {}
+
     public static final Vocabulary applicator = new Vocabulary (
         "https://json-schema.org/draft/2019-09/vocab/applicator", getKeywordsApplicator ());
     public static final Vocabulary content = new Vocabulary (

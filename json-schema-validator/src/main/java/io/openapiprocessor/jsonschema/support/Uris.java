@@ -21,6 +21,8 @@ import static io.openapiprocessor.jsonschema.support.Null.nullable;
 public class Uris {
     public static final String EMPTY_FRAGMENT = "#";
 
+    private Uris() {}
+
     public static URI emptyUri () {
         return URI.create ("");
     }

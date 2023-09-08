@@ -11,6 +11,8 @@ import java.nio.charset.StandardCharsets;
 public class Strings {
     private static final int EOF = -1;
 
+    private Strings() {}
+
     public static String of(InputStream source) throws IOException {
         StringBuilder content = new StringBuilder();
         try (Reader reader = new BufferedReader (new InputStreamReader (source, StandardCharsets.UTF_8))) {

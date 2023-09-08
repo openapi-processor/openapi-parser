@@ -16,6 +16,8 @@ import java.util.Map;
  */
 public class Types {
 
+    private Types() {}
+
     @SuppressWarnings ("unchecked")
     public static <T> T convert (String path, @Nullable Object value, Class<T> type) {
         if (!type.isInstance (value))

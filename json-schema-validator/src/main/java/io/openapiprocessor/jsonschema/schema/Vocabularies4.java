@@ -14,6 +14,8 @@ public class Vocabularies4 {
 
     public static final Vocabulary all = new Vocabulary(getKeywords ());
 
+    private Vocabularies4() {}
+
     @SuppressWarnings("DuplicatedCode")
     static Map<String, Keyword> getKeywords () {
         Map<String, Keyword> keywords = new HashMap<> ();
