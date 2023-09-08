@@ -272,7 +272,7 @@ public class Validator {
         if (isBeforeDraft202012 (schema)) {
             new Items (this).validate (schema, instance, dynamicScope, parentStep);
         } else {
-            new ItemsX (this).validate (schema, instance, dynamicScope, parentStep);
+            new Items202012(this).validate (schema, instance, dynamicScope, parentStep);
         }
     }
 

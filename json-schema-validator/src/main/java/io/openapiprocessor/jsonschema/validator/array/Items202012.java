@@ -25,10 +25,10 @@ import java.util.stream.IntStream;
  * validates prefixItems and items.
  * <p>Specifications: Since Draft 2020-12
  */
-public class ItemsX {
+public class Items202012 {
     private final Validator validator;
 
-    public ItemsX (Validator validator) {
+    public Items202012(Validator validator) {
         this.validator = validator;
     }
 
