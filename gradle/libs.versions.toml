@@ -1,5 +1,5 @@
 [versions]
-openapiparser = "2023.3-SNAPSHOT"
+openapiparser = "2023.3"
 
 build-jdk = "11"
 test-jdk = "17"
