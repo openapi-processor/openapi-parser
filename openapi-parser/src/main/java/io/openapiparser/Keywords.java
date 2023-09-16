@@ -6,6 +6,7 @@
 package io.openapiparser;
 
 import java.util.Collection;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public interface Keywords {
@@ -106,6 +107,8 @@ public interface Keywords {
     String WEBHOOKS = "webhooks";
     String WRITE_ONLY = "writeOnly";
     String XML = "xml";
+
+    Set<String> OPERATIONS = Set.of(DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT, TRACE);
 
     static Collection<String> getProperties(Collection<Keyword> keywords) {
         return keywords

@@ -6,11 +6,11 @@
 package io.openapiparser.model.v31;
 
 import io.openapiparser.*;
+import io.openapiparser.Properties;
 import io.openapiprocessor.jsonschema.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
 
 import static io.openapiparser.Keywords.*;
 
@@ -80,6 +80,16 @@ public class PathItem extends Properties implements Extensions, Reference {
 
     public @Nullable Operation getTrace () {
         return getOperation (TRACE);
+    }
+
+    public Map<String, Operation> getOperations () {
+        Map<String, Operation> operations = new LinkedHashMap<>();
+        bucket.forEach ((operation, value) -> {
+            if (OPERATIONS.contains (operation)) {
+                operations.put(operation, getOperation (operation));
+            }
+        });
+        return Collections.unmodifiableMap (operations);
     }
 
     public Collection<Server> getServers () {
