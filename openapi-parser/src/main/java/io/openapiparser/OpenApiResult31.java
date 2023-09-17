@@ -14,6 +14,7 @@ import io.openapiprocessor.jsonschema.validator.steps.ValidationStep;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static io.openapiparser.OpenApiSchemas.OPENAPI_SCHEMA_31;
@@ -25,7 +26,7 @@ public class OpenApiResult31 implements OpenApiResult {
 
     private final DocumentStore documents;
 
-    private Collection<ValidationError> validationErrors;
+    private Collection<ValidationError> validationErrors = List.of();
 
     public OpenApiResult31 (Context context, Bucket root, DocumentStore documents) {
         this.context = context;
