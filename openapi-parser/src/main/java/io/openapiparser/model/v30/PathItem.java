@@ -49,42 +49,42 @@ public class PathItem extends Properties implements Reference, Extensions {
     }
 
     public @Nullable Operation getGet () {
-        return getOperation (GET);
+        return getOperationOrNull(GET);
     }
 
     public @Nullable Operation getPut () {
-        return getOperation (PUT);
+        return getOperationOrNull(PUT);
     }
 
     public @Nullable Operation getPost () {
-        return getOperation (POST);
+        return getOperationOrNull(POST);
     }
 
     public @Nullable Operation getDelete () {
-        return getOperation (DELETE);
+        return getOperationOrNull(DELETE);
     }
 
     public @Nullable Operation getOptions () {
-        return getOperation (OPTIONS);
+        return getOperationOrNull(OPTIONS);
     }
 
     public @Nullable Operation getHead () {
-        return getOperation (HEAD);
+        return getOperationOrNull(HEAD);
     }
 
     public @Nullable Operation getPatch () {
-        return getOperation (PATCH);
+        return getOperationOrNull(PATCH);
     }
 
     public @Nullable Operation getTrace () {
-        return getOperation (TRACE);
+        return getOperationOrNull(TRACE);
     }
 
     public Map<String, Operation> getOperations () {
         Map<String, Operation> operations = new LinkedHashMap<>();
         bucket.forEach ((operation, value) -> {
             if (OPERATIONS.contains (operation)) {
-                operations.put(operation, getOperation (operation));
+                operations.put(operation, getOperation(operation));
             }
         });
         return Collections.unmodifiableMap (operations);
@@ -98,7 +98,11 @@ public class PathItem extends Properties implements Reference, Extensions {
         return getObjectsOrEmpty (PARAMETERS, Parameter.class);
     }
 
-    private @Nullable Operation getOperation(String property) {
+    private Operation getOperation(String property) {
+        return getObjectOrThrow (property, Operation.class);
+    }
+
+    private @Nullable Operation getOperationOrNull(String property) {
         return getObjectOrNull (property, Operation.class);
     }
 
