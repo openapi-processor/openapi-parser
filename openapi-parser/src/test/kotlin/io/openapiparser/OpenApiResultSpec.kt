@@ -9,20 +9,16 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
-import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
-import io.openapiparser.OpenApiSchemas.OPENAPI_SCHEMA_30_ID
-import io.openapiparser.OpenApiSchemas.OPENAPI_SCHEMA_31_ID
 import io.openapiparser.support.ApiBuilder
 import io.openapiprocessor.jackson.JacksonConverter
 import io.openapiprocessor.jsonschema.reader.UriReader
-import io.openapiprocessor.jsonschema.schema.*
-import io.openapiprocessor.jsonschema.support.Uris
+import io.openapiprocessor.jsonschema.schema.Bucket
+import io.openapiprocessor.jsonschema.schema.DocumentLoader
+import io.openapiprocessor.jsonschema.schema.DocumentStore
+import io.openapiprocessor.jsonschema.schema.SchemaStore
 import io.openapiprocessor.jsonschema.support.Uris.emptyUri
 import io.openapiprocessor.jsonschema.validator.Validator
-import io.openapiprocessor.jsonschema.validator.steps.ValidationStep
-import java.net.URI
 import io.openapiparser.model.v30.OpenApi as OpenApi30
 import io.openapiparser.model.v31.OpenApi as OpenApi31
 
@@ -79,6 +75,7 @@ class OpenApiResultSpec: StringSpec({
         val result = parser.parse(emptyUri())
 
         val schemaStore = SchemaStore(DocumentLoader(UriReader(), JacksonConverter ()))
+        schemaStore.registerDraft4()
         val validator = Validator()
 
         val valid = result.validate(validator, schemaStore)
@@ -96,6 +93,7 @@ class OpenApiResultSpec: StringSpec({
         val result = parser.parse(emptyUri())
 
         val schemaStore = SchemaStore(DocumentLoader(UriReader(), JacksonConverter ()))
+        schemaStore.registerDraft202012()
         val validator = Validator()
 
         val valid = result.validate(validator, schemaStore)
