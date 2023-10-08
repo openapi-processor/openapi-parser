@@ -27,12 +27,7 @@ public class UriReader implements Reader {
     @Override
     public InputStream read (URI uri) throws IOException {
         Objects.requireNonNull (uri);
-
         URL root = uri.toURL ();
-//        root.openStream ();
-        URLConnection connection = root.openConnection ();
-        connection.connect ();
-        return connection.getInputStream ();
+        return root.openStream ();
     }
-
 }
