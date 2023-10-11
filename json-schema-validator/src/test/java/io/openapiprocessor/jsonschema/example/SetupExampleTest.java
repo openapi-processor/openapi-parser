@@ -33,13 +33,13 @@ public class SetupExampleTest {
 
         // 2. create a json schema store, register a schema and get the schema.
         // the store creates a JsonSchema object from the schema document. A
-        // JsonSchema object is a required parameter of the Validator.
-        // There are several register() methods and convenience functions to
-        // register json schema draft versions (e.g. 2029-09 etc.).
-        // Here the store will download the schema from the given uri.
+        // JsonSchema object is a required parameter of the Validator. There are
+        // several register() methods and convenience functions to register json
+        // schema draft versions (e.g. 2029-09 etc.). Here the store will
+        // download the schema and meta schema from the given uri.
         URI schemaUri = createUri ("https://openapiprocessor.io/schemas/mapping/mapping-v4.json");
         SchemaStore store = new SchemaStore (loader);
-        store.registerDraft7();
+        //store.registerDraft7();
         store.register(schemaUri);
 
         // get the json schema object
