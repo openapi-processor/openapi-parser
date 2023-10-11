@@ -9,7 +9,13 @@ import io.openapiprocessor.interfaces.Reader;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.*;
+import java.net.URI;
+import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpClient.Redirect;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
 import java.util.Objects;
 
 /**
@@ -27,7 +33,45 @@ public class UriReader implements Reader {
     @Override
     public InputStream read (URI uri) throws IOException {
         Objects.requireNonNull (uri);
+
+        if (!isHttp(uri)) {
+            return readFromUri(uri);
+        }
+
+        return readFromHttp(uri);
+    }
+
+    private static InputStream readFromUri(URI uri) throws IOException {
         URL root = uri.toURL ();
-        return root.openStream ();
+        return root.openStream();
+    }
+
+    private static InputStream readFromHttp(URI uri) throws IOException {
+        HttpClient client = buildHttpClient();
+        HttpRequest request = buildHttpRequest(uri);
+
+        try {
+            return client.send(request, HttpResponse.BodyHandlers.ofInputStream()).body();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static HttpRequest buildHttpRequest(URI uri) {
+        return HttpRequest.newBuilder(uri)
+                //.header("Accept", "application/json")
+                .GET()
+                .timeout(Duration.ofSeconds(30))
+                .build();
+    }
+
+    private static HttpClient buildHttpClient() {
+        return HttpClient.newBuilder()
+            .followRedirects(Redirect.NORMAL)
+            .build();
+    }
+
+    private static boolean isHttp(URI uri) {
+        return uri.getScheme().startsWith("http");
     }
 }
