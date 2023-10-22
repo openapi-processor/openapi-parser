@@ -8,3 +8,5 @@ include("io-jackson")
 include("io-snakeyaml")
 include("io-interfaces")
 include("memory-protocol")
+
+System.setProperty("sonar.gradle.skipCompile", "true")
