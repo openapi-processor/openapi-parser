@@ -16,7 +16,7 @@ plugin-outdated = "com.github.ben-manes:gradle-versions-plugin:0.46.0"
 checker = "org.checkerframework:checker:3.40.0"
 checkerq = "org.checkerframework:checker-qual:3.40.0"
 slf4j = "org.slf4j:slf4j-api:2.0.9"
-logback = "ch.qos.logback:logback-classic:1.4.11"
+logback = "ch.qos.logback:logback-classic:1.4.13"
 
 jackson-bom = "com.fasterxml.jackson:jackson-bom:2.16.0"
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind" }
