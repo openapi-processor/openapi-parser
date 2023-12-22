@@ -4,7 +4,7 @@ openapiparser = "2023.7-SNAPSHOT"
 build-jdk = "11"
 test-jdk = "17"
 
-kotlin = "1.9.21"
+kotlin = "1.9.22"
 
 [libraries]
 
