@@ -69,7 +69,7 @@ tasks.withType<JavaExec>().configureEach {
 }
 
 jacoco {
-    toolVersion = "0.8.7"
+    toolVersion = libs.versions.jacoco.get()
 }
 
 tasks.jacocoTestReport {
