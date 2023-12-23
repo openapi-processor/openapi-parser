@@ -5,16 +5,19 @@ build-jdk = "11"
 test-jdk = "17"
 
 kotlin = "1.9.22"
+checker = "3.42.0"
+jacoco = "0.8.11"
 
 [libraries]
 
 # buildSrc
 plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-plugin-checker = "org.checkerframework:checkerframework-gradle-plugin:0.6.29"
+plugin-checker = "org.checkerframework:checkerframework-gradle-plugin:0.6.37"
 plugin-outdated = "com.github.ben-manes:gradle-versions-plugin:0.46.0"
 
-checker = "org.checkerframework:checker:3.42.0"
-checkerq = "org.checkerframework:checker-qual:3.42.0"
+checker = { module = "org.checkerframework:checker", version.ref = "checker" }
+checkerq = { module = "org.checkerframework:checker", version.ref = "checker" }
+
 slf4j = "org.slf4j:slf4j-api:2.0.9"
 logback = "ch.qos.logback:logback-classic:1.4.14"
 
