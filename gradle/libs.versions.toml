@@ -14,7 +14,7 @@ plugin-checker = "org.checkerframework:checkerframework-gradle-plugin:0.6.29"
 plugin-outdated = "com.github.ben-manes:gradle-versions-plugin:0.46.0"
 
 checker = "org.checkerframework:checker:3.42.0"
-checkerq = "org.checkerframework:checker-qual:3.41.0"
+checkerq = "org.checkerframework:checker-qual:3.42.0"
 slf4j = "org.slf4j:slf4j-api:2.0.9"
 logback = "ch.qos.logback:logback-classic:1.4.14"
 
