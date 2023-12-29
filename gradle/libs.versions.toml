@@ -18,7 +18,7 @@ plugin-outdated = "com.github.ben-manes:gradle-versions-plugin:0.46.0"
 checker = { module = "org.checkerframework:checker", version.ref = "checker" }
 checkerq = { module = "org.checkerframework:checker", version.ref = "checker" }
 
-slf4j = "org.slf4j:slf4j-api:2.0.9"
+slf4j = "org.slf4j:slf4j-api:2.0.10"
 logback = "ch.qos.logback:logback-classic:1.4.14"
 
 jackson-bom = "com.fasterxml.jackson:jackson-bom:2.16.0"
