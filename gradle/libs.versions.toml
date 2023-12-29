@@ -21,7 +21,7 @@ checkerq = { module = "org.checkerframework:checker", version.ref = "checker" }
 slf4j = "org.slf4j:slf4j-api:2.0.9"
 logback = "ch.qos.logback:logback-classic:1.4.14"
 
-jackson-bom = "com.fasterxml.jackson:jackson-bom:2.16.0"
+jackson-bom = "com.fasterxml.jackson:jackson-bom:2.16.1"
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind" }
 jackson-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml" }
 jackson-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin" }
