@@ -63,7 +63,7 @@ jobs:
           17
 
     - name: set up gradle
-      uses: gradle/gradle-build-action@v3.0.0
+      uses: gradle/actions/setup-gradle@v3
 
     - name: run tests
       run: |
@@ -96,7 +96,7 @@ jobs:
           17
 
     - name: set up gradle
-      uses: gradle/gradle-build-action@v3.0.0
+      uses: gradle/actions/setup-gradle@v3
 
     - name: publish snapshot
       env:
@@ -139,7 +139,7 @@ jobs:
           17
 
     - name: set up gradle
-      uses: gradle/gradle-build-action@v3.0.0
+      uses: gradle/actions/setup-gradle@v3
 
     - name: run tests
       run: |
