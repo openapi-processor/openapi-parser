@@ -96,11 +96,17 @@ fun draftSpec(
         return JsonInstance(JsonPointer.empty(), instance)
     }
 
+    fun createTestName(testPath: Path): String {
+        val path = testPath.toAbsolutePath().toString()
+        val draftPathIndex = path.indexOf(draftPath)
+        return path.substring(draftPathIndex + draftPath.length + 1)
+    }
+
     Files.walk(root)
         .filter { path -> !Files.isDirectory(path) }
         .filter { path -> !excludes.contains(path.name) }
         .forEach { path ->
-            path.name - {
+            createTestName(path) - {
                 val suites = loadSuites(path)
 
                 for (suite in suites) {
