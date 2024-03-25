@@ -12,6 +12,49 @@ import java.util.*;
 
 public enum SchemaVersion {
 
+    DraftNext (
+        new SchemaResource (
+            "https://json-schema.org/draft/next/schema",
+            "/json-schema.org/draft/next/schema"
+        ),
+        SchemaKeywords.draftNext,
+        IdProvider.DRAFT201909,
+        Arrays.asList (
+            new SchemaResource (
+                "https://json-schema.org/draft/next/meta/applicator",
+                "/json-schema.org/draft/next/meta/applicator"
+            ),
+            new SchemaResource (
+                "https://json-schema.org/draft/next/meta/content",
+                "/json-schema.org/draft/next/meta/content"
+            ),
+            new SchemaResource (
+                "https://json-schema.org/draft/next/meta/core",
+                "/json-schema.org/draft/next/meta/core"
+            ),
+            new SchemaResource (
+                "https://json-schema.org/draft/next/meta/format-annotation",
+                "/json-schema.org/draft/next/meta/format-annotation"
+            ),
+            new SchemaResource (
+                "https://json-schema.org/draft/next/meta/format-assertion",
+                "/json-schema.org/draft/next/meta/format-assertion"
+            ),
+            new SchemaResource (
+                "https://json-schema.org/draft/next/meta/meta-data",
+                "/json-schema.org/draft/next/meta/meta-data"
+            ),
+            new SchemaResource (
+                "https://json-schema.org/draft/next/meta/unevaluated",
+                "/json-schema.org/draft/next/meta/unevaluated"
+            ),
+            new SchemaResource (
+                "https://json-schema.org/draft/next/meta/validation",
+                "/json-schema.org/draft/next/meta/validation"
+            )
+        )
+    ),
+
     Draft202012 (
         new SchemaResource (
             "https://json-schema.org/draft/2020-12/schema",

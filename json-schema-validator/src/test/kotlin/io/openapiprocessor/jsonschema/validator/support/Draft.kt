@@ -62,6 +62,7 @@ fun draftSpec(
         val store = SchemaStore(loader)
 
         when (settings.version) {
+            SchemaVersion.DraftNext -> store.registerDraftNext()
             SchemaVersion.Draft202012 -> store.registerDraft202012()
             SchemaVersion.Draft201909 -> {
                 store.registerDraft7()

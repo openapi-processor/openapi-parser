@@ -11,6 +11,14 @@ import io.openapiprocessor.jsonschema.schema.Format;
 
 public class ValidatorSettingsDefaults {
 
+    public static ValidatorSettings draftNext () {
+        ValidatorSettings settings = new ValidatorSettings ();
+        settings.setVersion (SchemaVersion.DraftNext);
+        //settings.setOutput(Output.FLAG);
+        settings.disableFormat();
+        return settings;
+    }
+
     public static ValidatorSettings draft202012 () {
         ValidatorSettings settings = new ValidatorSettings ();
         settings.setVersion (SchemaVersion.Draft202012);

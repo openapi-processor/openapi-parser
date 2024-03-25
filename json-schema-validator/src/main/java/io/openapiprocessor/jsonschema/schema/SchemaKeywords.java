@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SchemaKeywords {
+    public static final SchemaKeywords draftNext = new SchemaKeywords (initDraftNext ());
     public static final SchemaKeywords draft202012 = new SchemaKeywords (initDraft202012 ());
     public static final SchemaKeywords draft201909 = new SchemaKeywords (initDraft201909 ());
     public static final SchemaKeywords draft7 = new SchemaKeywords (Vocabularies7.getKeywords ());
@@ -38,6 +39,22 @@ public class SchemaKeywords {
             return false;
 
         return match.isNavigable ();
+    }
+
+    private static Map<String, Keyword> initDraftNext () {
+        Map<String, Keyword> keywords = new HashMap<> ();
+
+        keywords.putAll (VocabulariesNext.getKeywordsApplicator ());
+        keywords.putAll (VocabulariesNext.getKeywordsContent ());
+        keywords.putAll (VocabulariesNext.getKeywordsCore ());
+        keywords.putAll (VocabulariesNext.getKeywordsFormatAnnotation ());
+        keywords.putAll (VocabulariesNext.getKeywordsFormatAssertion ());
+        keywords.putAll (VocabulariesNext.getKeywordsHyperSchema ());
+        keywords.putAll (VocabulariesNext.getKeywordsMetaData ());
+        keywords.putAll (VocabulariesNext.getKeywordsUnevaluated ());
+        keywords.putAll (VocabulariesNext.getKeywordsValidation ());
+
+        return Collections.unmodifiableMap (keywords);
     }
 
     private static Map<String, Keyword> initDraft202012 () {

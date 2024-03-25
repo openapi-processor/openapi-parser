@@ -106,6 +106,14 @@ public class SchemaStore {
     }
 
     /**
+     * register draft-next json schema.
+     */
+    public void registerDraftNext () {
+        register (SchemaVersion.DraftNext.getSchemaResource ());
+        SchemaVersion.DraftNext.getVocabularyResources ().forEach (this::register);
+    }
+
+    /**
      * register draft-202012 json schema.
      */
     public void registerDraft202012 () {
