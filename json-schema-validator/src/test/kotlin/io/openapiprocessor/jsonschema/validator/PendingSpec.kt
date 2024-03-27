@@ -16,13 +16,15 @@ class PendingSpec : FreeSpec({
 //    val settings = ValidatorSettingsDefaults.draft4()
 //    val settings = ValidatorSettingsDefaults.draft7()
 //    val settings = ValidatorSettingsDefaults.draft201909()
-    val settings = ValidatorSettingsDefaults.draft202012()
-    settings.enableFormats(*Format.values())
+//    val settings = ValidatorSettingsDefaults.draft202012()
+    val settings = ValidatorSettingsDefaults.draftNext()
+    settings.enableFormats(*Format.entries.toTypedArray())
 //    settings.version = SchemaVersion.Draft4
 //    settings.version = SchemaVersion.Draft6
 //    settings.version = SchemaVersion.Draft7
 //    settings.version = SchemaVersion.Draft201909
-    settings.version = SchemaVersion.Draft202012
+//    settings.version = SchemaVersion.Draft202012
+    settings.version = SchemaVersion.DraftNext
 
     include(
         draftSpec(
@@ -32,7 +34,8 @@ class PendingSpec : FreeSpec({
 //        draft6Extras
 //        draft7Extras
 //        draft201909Extras
-        draft202012Extras
-    )
+//        draft202012Extras
+        draftNextExtras
+        )
     )
 })
