@@ -58,6 +58,7 @@ A "bill of materials" POM for openapi-parser dependencies.
 === link:{validator}[json-schema-validator]
 
 link:{central-search}[image:{validator-central-badge}[]]
+image:https://img.shields.io/endpoint?url=https%3A%2F%2Fbowtie.report%2Fbadges%2Fjava-io.openapiprocessor.json-schema-validator%2Fsupported_versions.json[Supported Dialects]
 
 the JSON Schema validator used by the `openapi-parser`.
 
