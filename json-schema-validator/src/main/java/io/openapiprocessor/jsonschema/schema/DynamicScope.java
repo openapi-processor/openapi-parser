@@ -43,12 +43,15 @@ public final class DynamicScope {
     }
 
     private final List<Scope> scopes = new ArrayList<> ();
+    private final boolean checkFirst;
 
-    public DynamicScope (JsonSchema schema) {
+    public DynamicScope (JsonSchema schema, boolean checkFirst) {
+        this.checkFirst = checkFirst;
         scopes.add (new Scope (schema));
     }
 
     private DynamicScope (DynamicScope source) {
+        checkFirst = source.checkFirst;
         scopes.addAll (source.scopes);
     }
 
@@ -82,7 +85,7 @@ public final class DynamicScope {
         while(lit.hasPrevious()) {
             Scope previous = lit.previous ();
 
-            if (first) {
+            if (checkFirst && first) {
                 first = false;
 
                 // find start scope, full dynamic ref

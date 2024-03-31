@@ -332,7 +332,7 @@ public class Validator {
 
     private DynamicScope calcDynamicScope (JsonSchema schema, @Nullable DynamicScope parentScope) {
         if (parentScope == null) {
-            return new DynamicScope (schema);
+            return new DynamicScope (schema, isBeforeOrEqualDraft202012(schema));
         }
 
         return parentScope.add (schema);
@@ -360,6 +360,10 @@ public class Validator {
 
     private boolean isBeforeDraft202012 (JsonSchema schema) {
         return schema.getContext ().getVersion ().isBefore202012 ();
+    }
+
+    private boolean isBeforeOrEqualDraft202012 (JsonSchema schema) {
+        return schema.getContext ().getVersion ().isBeforeOrEqual202012 ();
     }
 
     private boolean isDraft4 (JsonSchema schema) {

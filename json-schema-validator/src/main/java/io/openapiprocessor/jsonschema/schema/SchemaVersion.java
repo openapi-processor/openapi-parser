@@ -205,6 +205,10 @@ public enum SchemaVersion {
      * @return the detected schema version or null
      */
     public static @Nullable SchemaVersion getVersion (URI schemaUri) {
+        if (SchemaVersion.DraftNext.getSchemaUri ().equals (schemaUri)) {
+            return DraftNext;
+        }
+
         if (SchemaVersion.Draft202012.getSchemaUri ().equals (schemaUri)) {
             return Draft202012;
         }
@@ -266,6 +270,10 @@ public enum SchemaVersion {
 
     public boolean validatesRefSiblings () {
         return isLaterOrEqualTo201909 ();
+    }
+
+    public boolean isBeforeOrEqual202012 () {
+        return compareTo(Draft202012) >= 0;
     }
 
     public boolean isLaterOrEqualTo201909 () {
