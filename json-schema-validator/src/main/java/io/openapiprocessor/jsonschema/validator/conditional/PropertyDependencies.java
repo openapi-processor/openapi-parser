@@ -43,6 +43,9 @@ public class PropertyDependencies {
             }
 
             JsonSchema valueSchema = keySchema.getPropertyJsonSchema(asString(value));
+            if (valueSchema == null) {
+                return;
+            }
 
             DependentSchemaStep depStep = new DependentSchemaStep(valueSchema, instance);
             validator.validate(valueSchema, instance, dynamicScope, depStep);
