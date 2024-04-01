@@ -286,10 +286,10 @@ public class Validator {
         new Required ().validate (schema, instance, parentStep);
         new DependentRequired ().validate (schema, instance, parentStep);
         new DependentSchemas (this).validate (schema, instance, dynamicScope, parentStep);
+        new PropertyDependencies(this).validate (schema, instance, dynamicScope, parentStep);
         new Properties (this).validate (schema, instance, dynamicScope, parentStep);
         new Dependencies (this).validate (schema, instance, dynamicScope, parentStep);
         new PropertyNames (this).validate (schema, instance, dynamicScope, parentStep);
-        new PropertyDependencies(this).validate (schema, instance, dynamicScope, parentStep);
     }
 
     private void validateNumber (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
