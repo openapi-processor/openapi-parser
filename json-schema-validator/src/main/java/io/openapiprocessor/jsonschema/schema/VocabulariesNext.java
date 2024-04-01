@@ -71,6 +71,7 @@ public class VocabulariesNext {
 
         // applicator sub-schema array
         keywords.put (Keywords.ITEMS, keyword (KeywordType.SCHEMA, KeywordType.SCHEMA_ARRAY));
+        keywords.put (Keywords.PREFIX_ITEMS, Keyword.keyword (KeywordType.SCHEMA_ARRAY));
         keywords.put (Keywords.CONTAINS, Keyword.keyword (KeywordType.SCHEMA));
 
         // applicator sub-schema object
@@ -78,11 +79,7 @@ public class VocabulariesNext {
         keywords.put (Keywords.PATTERN_PROPERTIES, Keyword.keyword (KeywordType.SCHEMA_MAP));
         keywords.put (Keywords.ADDITIONAL_PROPERTIES, Keyword.keyword (KeywordType.SCHEMA));
         keywords.put (Keywords.PROPERTY_NAMES, Keyword.keyword (KeywordType.SCHEMA));
-
-        // todo missing prefixItems
-
-        // todo not here anymore
-        // keywords.put (ADDITIONAL_ITEMS, keyword (KeywordType.SCHEMA, KeywordType.BOOLEAN));
+        keywords.put (Keywords.PROPERTY_DEPENDENCIES, Keyword.keyword (KeywordType.SCHEMA_MAP));
 
         return Collections.unmodifiableMap (keywords);
     }

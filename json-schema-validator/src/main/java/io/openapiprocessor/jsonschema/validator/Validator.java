@@ -10,6 +10,7 @@ import io.openapiprocessor.jsonschema.validator.any.*;
 import io.openapiprocessor.jsonschema.validator.array.*;
 import io.openapiprocessor.jsonschema.validator.bool.Boolean;
 import io.openapiprocessor.jsonschema.validator.conditional.DependentSchemas;
+import io.openapiprocessor.jsonschema.validator.conditional.PropertyDependencies;
 import io.openapiprocessor.jsonschema.validator.number.*;
 import io.openapiprocessor.jsonschema.validator.number.draft4.Maximum4;
 import io.openapiprocessor.jsonschema.validator.number.draft4.Minimum4;
@@ -288,6 +289,7 @@ public class Validator {
         new Properties (this).validate (schema, instance, dynamicScope, parentStep);
         new Dependencies (this).validate (schema, instance, dynamicScope, parentStep);
         new PropertyNames (this).validate (schema, instance, dynamicScope, parentStep);
+        new PropertyDependencies(this).validate (schema, instance, dynamicScope, parentStep);
     }
 
     private void validateNumber (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {

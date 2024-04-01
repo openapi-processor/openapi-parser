@@ -49,6 +49,7 @@ public class Keywords {
     public static String PATTERN_PROPERTIES = "patternProperties";
     public static String ADDITIONAL_PROPERTIES = "additionalProperties";
     public static String UNEVALUATED_PROPERTIES = "unevaluatedProperties";
+    public static String PROPERTY_DEPENDENCIES = "propertyDependencies";
     public static String PROPERTY_NAMES = "propertyNames";
 
     // vocabulary: validation - any

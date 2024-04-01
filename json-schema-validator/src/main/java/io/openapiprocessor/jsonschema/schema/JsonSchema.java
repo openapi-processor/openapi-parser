@@ -205,7 +205,15 @@ public interface JsonSchema {
         return null;
     }
 
+    default @Nullable Map<String, JsonSchema> getPropertyDependencies () {
+        return null;
+    }
+
     default @Nullable JsonSchema getJsonSchema (String propName) {
+        return null;
+    }
+
+    default @Nullable JsonSchema getPropertyJsonSchema (String propName) {
         return null;
     }
 
