@@ -13,6 +13,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.net.URI;
 import java.util.Collection;
 
+import static io.openapiprocessor.jsonschema.support.Types.isObject;
+
 public class ResolverId {
 
     private final ResolverContext context;
@@ -57,7 +59,7 @@ public class ResolverId {
 
             boolean navigable = keyword != null && keyword.isNavigable ();
 
-            if (navigable && keyword.isSchema () && Types.isObject (value)) {
+            if (navigable && keyword.isSchema () && isObject (value)) {
                 walkSchema (scope, value, propLocation);
 
             } else if (navigable && keyword.isSchemaArray () && Types.isArray (value)) {
@@ -66,10 +68,11 @@ public class ResolverId {
             } else if (navigable && keyword.isSchemaMap ()) {
                 walkSchemaMap (scope, value, propLocation);
 
-            } /* else if (keyword == null && isObject (value)) {
+            }  else if (keyword == null && isObject (value)) {
+                // required to detect $dynamicAnchor in propertyDependencies
                 walkSchema (scope, value, propLocation);
 
-            } else if (keyword == null && isArray (value)) {
+            } /* else if (keyword == null && isArray (value)) {
                 walkSchemaArray (scope, value, propLocation);
             } */
         });
