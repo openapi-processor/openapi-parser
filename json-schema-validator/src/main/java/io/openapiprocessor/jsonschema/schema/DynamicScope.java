@@ -45,6 +45,11 @@ public final class DynamicScope {
     private final List<Scope> scopes = new ArrayList<> ();
     private final boolean checkFirst;
 
+    DynamicScope (JsonSchema schema) {
+        this.checkFirst = true;
+        scopes.add (new Scope (schema));
+    }
+
     public DynamicScope (JsonSchema schema, boolean checkFirst) {
         this.checkFirst = checkFirst;
         scopes.add (new Scope (schema));
