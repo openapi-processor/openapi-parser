@@ -60,8 +60,8 @@ public class SchemaStore {
     }
 
     /**
-     * register a schema document. {@code schemaUri} is schema id of the given {@code document}.
-     * The {@code document} must be a {@code Boolean} or a {@code Map<String, Object>}.
+     * register a schema document. {@code schemaUri} is schema id of the given {@code document}. The {@code document}
+     * must be a {@code Boolean} or a {@code Map<String, Object>}.
      *
      * @param schemaUri schema uri/id
      * @param document the document,
@@ -78,9 +78,9 @@ public class SchemaStore {
     }
 
     /**
-     * register a schema document. Similar to {@code register()} with {@code schemaUri}, except
-     * that the {@code schemaUri} gets generated. The {@code document} must be a {@code Boolean} or
-     * a {@code Map<String, Object>}.
+     * register a schema document. Similar to {@code register()} with {@code schemaUri}, except that the
+     * {@code schemaUri} gets generated. The {@code document} must be a {@code Boolean} or a
+     * {@code Map<String, Object>}.
      *
      * @param document the document
      * @return the generated schema uri
@@ -92,8 +92,8 @@ public class SchemaStore {
     }
 
     /**
-     * register a schema document. {@code resourcePath} should be a json schema document available
-     * on the classpath (resource).
+     * register a schema document. {@code resourcePath} should be a json schema document available on the classpath
+     * (resource).
      *
      * @param schemaUri schema uri/id
      * @param resourcePath resource path
