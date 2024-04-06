@@ -181,8 +181,7 @@ public class SchemaStore {
 
         Object document = documents.get (schemaUri);
         if (document == null) {
-            // todo NotRegisteredException
-            throw new RuntimeException ();
+            throw new NotRegisteredException (schemaUri);
         }
 
         // create schema
