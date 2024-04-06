@@ -25,11 +25,19 @@ public class SchemaStore {
 
     private final Map<URI, JsonSchema> schemaCache = new HashMap<> ();
 
+    private final Settings settings;
     private final DocumentStore documents;
     private final DocumentLoader loader;
 
-    public SchemaStore (DocumentLoader loader) {
-        this.documents = new DocumentStore ();
+    public SchemaStore(DocumentLoader loader) {
+        this.settings = new Settings().version(SchemaVersion.getLatest());
+        this.documents = new DocumentStore();
+        this.loader = loader;
+    }
+
+    public SchemaStore(DocumentLoader loader, Settings settings) {
+        this.settings = settings;
+        this.documents = new DocumentStore();
         this.loader = loader;
     }
 
