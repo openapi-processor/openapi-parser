@@ -16,8 +16,7 @@ class RefSpec: StringSpec({
 
     "parses ref into another file" {
         val api = ApiBuilder()
-            .withResource("/v30/ref-into-another-file/openapi.yaml")
-            .buildOpenApi30()
+            .buildOpenApi30("/v30/ref-into-another-file/openapi.yaml")
 
         val schema = api.getResponseSchema("/foo", "200", "application/json")
         schema.ref shouldBe "foo.yaml#/Foo"
@@ -30,8 +29,7 @@ class RefSpec: StringSpec({
 
     "parses ref array items with nested ref" {
         val api = ApiBuilder()
-            .withResource("/v30/ref-array-items-nested/openapi.yaml")
-            .buildOpenApi30()
+            .buildOpenApi30("/v30/ref-array-items-nested/openapi.yaml")
 
         val schema = api.getResponseSchema("/array", "200", "application/json")
         schema.type shouldBe "array"
@@ -54,8 +52,7 @@ class RefSpec: StringSpec({
 
     "parses ref loop" {
         val api = ApiBuilder()
-            .withResource("/v30/ref-loop/openapi.yaml")
-            .buildOpenApi30()
+            .buildOpenApi30("/v30/ref-loop/openapi.yaml")
 
         val schema = api.getResponseSchema("/self-reference", "200", "application/json")
         schema.ref shouldBe "#/components/schemas/Self"
@@ -73,8 +70,7 @@ class RefSpec: StringSpec({
 
     "parses array ref items with nested array and ref items loop" {
         val api = ApiBuilder()
-            .withResource("/v30/ref-loop-array/openapi.yaml")
-            .buildOpenApi30()
+            .buildOpenApi30("/v30/ref-loop-array/openapi.yaml")
 
         val schema = api.getResponseSchema("/response-ref", "200", "application/json")
 
@@ -115,8 +111,7 @@ class RefSpec: StringSpec({
 
     "parses ref in parameter" {
         val api = ApiBuilder()
-            .withResource("/v30/ref-parameter/openapi.yaml")
-            .buildOpenApi30()
+            .buildOpenApi30("/v30/ref-parameter/openapi.yaml")
 
         val parameters = api.getParameters("/foo")
         parameters.size shouldBe 1
@@ -131,8 +126,7 @@ class RefSpec: StringSpec({
 
     "parses ref relative to current file" {
         val api = ApiBuilder()
-            .withResource("/v30/ref-is-relative-to-current-file/openapi.yaml")
-            .buildOpenApi30()
+            .buildOpenApi30("/v30/ref-is-relative-to-current-file/openapi.yaml")
 
         val schema = api.getResponseSchema("/foo", "200", "application/json")
         schema.ref shouldBe "schemas/foo.yaml#/Foo"
@@ -151,8 +145,7 @@ class RefSpec: StringSpec({
 
     "parses ref into another file without pointer" {
         val api = ApiBuilder()
-            .withResource("/v30/ref-into-another-file-path/openapi.yaml")
-            .buildOpenApi30()
+            .buildOpenApi30("/v30/ref-into-another-file-path/openapi.yaml")
 
         val paths = api.paths
         val pathItem = paths.getPathItem("/foo")
@@ -169,8 +162,7 @@ class RefSpec: StringSpec({
 
     "parses ~ escaped ref path into another file" {
         val api = ApiBuilder()
-            .withResource("/v30/ref-to-escaped-path-name/openapi.yaml")
-            .buildOpenApi30()
+            .buildOpenApi30("/v30/ref-to-escaped-path-name/openapi.yaml")
 
         val paths = api.paths
 

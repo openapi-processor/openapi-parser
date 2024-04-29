@@ -17,8 +17,8 @@ import io.openapiprocessor.jsonschema.schema.Bucket
 import io.openapiprocessor.jsonschema.schema.DocumentLoader
 import io.openapiprocessor.jsonschema.schema.DocumentStore
 import io.openapiprocessor.jsonschema.schema.SchemaStore
-import io.openapiprocessor.jsonschema.support.Uris.emptyUri
 import io.openapiprocessor.jsonschema.validator.Validator
+import java.net.URI
 import io.openapiparser.model.v30.OpenApi as OpenApi30
 import io.openapiparser.model.v31.OpenApi as OpenApi31
 
@@ -72,7 +72,7 @@ class OpenApiResultSpec: StringSpec({
             """.trimIndent())
             .buildParser()
 
-        val result = parser.parse(emptyUri())
+        val result = parser.parse(URI("file:///openapi.yaml"))
 
         val schemaStore = SchemaStore(DocumentLoader(UriReader(), JacksonConverter ()))
         schemaStore.registerDraft4()
@@ -90,7 +90,7 @@ class OpenApiResultSpec: StringSpec({
             """.trimIndent())
             .buildParser()
 
-        val result = parser.parse(emptyUri())
+        val result = parser.parse(URI("file:///openapi.yaml"))
 
         val schemaStore = SchemaStore(DocumentLoader(UriReader(), JacksonConverter ()))
         schemaStore.registerDraft202012()

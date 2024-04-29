@@ -19,7 +19,7 @@ class OpenApiParserSpec: StringSpec({
             """.trimIndent())
             .buildParser()
 
-        val result = parser.parse(URI(""))
+        val result = parser.parse(URI("file:///openapi.yaml"))
 
         result.version shouldBe OpenApiResult.Version.V30
     }
@@ -31,7 +31,7 @@ class OpenApiParserSpec: StringSpec({
             """.trimIndent())
             .buildParser()
 
-        val result = parser.parse(URI(""))
+        val result = parser.parse(URI("file:///openapi.yaml"))
 
         result.version shouldBe OpenApiResult.Version.V31
     }
