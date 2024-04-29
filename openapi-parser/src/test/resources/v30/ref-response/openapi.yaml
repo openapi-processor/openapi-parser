@@ -1,0 +1,20 @@
+openapi: 3.0.3
+info:
+  title: ref responses
+  version: 1.0.0
+
+paths:
+  /foo:
+    get:
+      responses:
+        '200':
+          $ref: '#/components/responses/Bar'
+
+components:
+  responses:
+    Bar:
+      description: plain text response
+      content:
+        plain/text:
+          schema:
+            type: string

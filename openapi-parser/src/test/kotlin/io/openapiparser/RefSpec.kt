@@ -6,10 +6,12 @@
 package io.openapiparser
 
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.shouldBe
 import io.openapiparser.support.ApiBuilder
 import io.openapiparser.support.getParameters
 import io.openapiparser.support.getResponseSchema
+import io.openapiparser.support.getResponses
 import io.openapiparser.model.v30.Schema as Schema30
 
 class RefSpec: StringSpec({
@@ -122,6 +124,21 @@ class RefSpec: StringSpec({
         val parameterRef = parameter.refObject
         parameterRef.`in` shouldBe "query"
         parameterRef.name shouldBe "bar"
+    }
+
+    "parses ref in response" {
+        val api = ApiBuilder()
+            .buildOpenApi30("/v30/ref-response/openapi.yaml")
+
+        val responses = api.getResponses("/foo")
+        val responseRef = responses.getResponse("200")!!
+
+        responseRef.isRef.shouldBeTrue()
+        val response = responseRef.refObject
+
+        val content = response.content
+        content.size shouldBe 1
+        content.containsKey("plain/text") shouldBe true
     }
 
     "parses ref relative to current file" {

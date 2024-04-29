@@ -38,6 +38,10 @@ public class Response extends Properties implements Reference, Extensions {
         return getStringOrThrow (REF);
     }
 
+    public Response getRefObject () {
+        return getRefObjectOrThrow (Response.class);
+    }
+
     @Required
     public String getDescription () {
         return getStringOrThrow (DESCRIPTION);
