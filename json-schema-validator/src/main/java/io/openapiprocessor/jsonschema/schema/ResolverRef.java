@@ -115,7 +115,7 @@ public class ResolverRef {
         return name.equals(Keywords.SCHEMA) && Types.isString(value);
     }
 
-    private static boolean isNavigable(Keyword keyword) {
+    private static boolean isNavigable(@Nullable Keyword keyword) {
         return keyword != null && keyword.isNavigable();
     }
 
