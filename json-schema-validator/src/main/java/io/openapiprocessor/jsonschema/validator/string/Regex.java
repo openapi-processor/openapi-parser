@@ -46,7 +46,7 @@ public class Regex {
     private boolean shouldValidate (@Nullable String format) {
         return format != null
             && format.equals (Format.REGEX.getFormat ())
-            && settings.validateFormat (Format.REGEX);
+            && settings.assertFormat (Format.REGEX);
     }
 
     private String getInstanceValue (JsonInstance instance) {

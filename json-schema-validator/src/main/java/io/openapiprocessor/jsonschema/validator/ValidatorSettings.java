@@ -112,11 +112,6 @@ public class ValidatorSettings {
      * @param format the format
      * @return true if it should be validated, else false
      */
-    @Deprecated
-    public boolean validateFormat (Format format) {
-        return assertFormat(format);
-    }
-
     public boolean assertFormat (Format format) {
         return assertFormat() && formats.contains (format);
     }
