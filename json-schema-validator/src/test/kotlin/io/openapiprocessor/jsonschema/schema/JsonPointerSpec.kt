@@ -36,7 +36,7 @@ class JsonPointerSpec : StringSpec({
 
         val converter = JacksonConverter()
         val document = asMap(converter.convert(source))
-        val bucket = createBucket(empty(), document)!!
+        val bucket = createBucket(empty(), document)
 
         listOf(
             Pointer("", document!!),
@@ -76,7 +76,7 @@ class JsonPointerSpec : StringSpec({
 
         val converter = JacksonConverter()
         val document = asMap(converter.convert(source))
-        val bucket = createBucket(empty(), document)!!
+        val bucket = createBucket(empty(), document)
 
         listOf(
             Pointer("#", document!!),
