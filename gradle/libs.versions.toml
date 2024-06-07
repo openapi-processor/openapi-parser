@@ -5,7 +5,7 @@ build-jdk = "11"
 test-jdk = "17"
 
 kotlin = "1.9.24"
-checker = "3.43.0"
+checker = "3.44.0"
 jacoco = "0.8.11"
 
 [libraries]
