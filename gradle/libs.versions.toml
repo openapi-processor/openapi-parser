@@ -4,7 +4,7 @@ openapiparser = "2024.4-SNAPSHOT"
 build-jdk = "11"
 test-jdk = "17"
 
-kotlin = "1.9.24"
+kotlin = "2.0.0"
 checker = "3.44.0"
 jacoco = "0.8.11"
 
