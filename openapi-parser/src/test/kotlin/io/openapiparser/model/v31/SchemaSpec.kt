@@ -70,6 +70,14 @@ class SchemaSpec: StringSpec({
         schema().minContains shouldBe 1
     }
 
+    "gets schema exclusiveMaximum is null if missing" {
+        schema().exclusiveMaximum.shouldBeNull()
+    }
+
+    "gets schema exclusiveMinimum is null if missing" {
+        schema().exclusiveMinimum.shouldBeNull()
+    }
+
     "gets schema dependentRequired" {
         val required = schema("dependentRequired: {bar: [foo]}").dependentRequired
         required shouldContainKey "bar"

@@ -37,6 +37,14 @@ class SchemaSpec: StringSpec({
         schema().nullable.shouldBeFalse()
     }
 
+    "gets schema exclusiveMaximum is false if missing" {
+        schema().exclusiveMaximum.shouldBeFalse()
+    }
+
+    "gets schema exclusiveMinimum is false if missing" {
+        schema().exclusiveMinimum.shouldBeFalse()
+    }
+
     "gets schema additionalProperties" {
         schema("additionalProperties: false").additionalProperties.shouldBeInstanceOf<Boolean>()
         schema("additionalProperties: {}").additionalProperties.shouldBeInstanceOf<Schema>()

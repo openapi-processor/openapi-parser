@@ -42,12 +42,7 @@ class SchemaSpec: StringSpec({
 
     "gets schema exclusiveMaximum" {
         schema30("exclusiveMaximum: true").exclusiveMaximum.shouldBeTrue()
-        schema31("exclusiveMaximum: true").exclusiveMaximum.shouldBeTrue()
-    }
-
-    "gets schema exclusiveMaximum is false if missing" {
-        schema30().exclusiveMaximum.shouldBeFalse()
-        schema31().exclusiveMaximum.shouldBeFalse()
+        schema31("exclusiveMaximum: 9.9").exclusiveMaximum shouldBe 9.9
     }
 
     "gets schema minimum" {
@@ -62,12 +57,7 @@ class SchemaSpec: StringSpec({
 
     "gets schema exclusiveMinimum" {
         schema30("exclusiveMinimum: true").exclusiveMinimum.shouldBeTrue()
-        schema31("exclusiveMinimum: true").exclusiveMinimum.shouldBeTrue()
-    }
-
-    "gets schema exclusiveMinimum is false if missing" {
-        schema30().exclusiveMinimum.shouldBeFalse()
-        schema31().exclusiveMinimum.shouldBeFalse()
+        schema31("exclusiveMinimum: 9.9").exclusiveMinimum shouldBe 9.9
     }
 
     "gets schema maxLength" {

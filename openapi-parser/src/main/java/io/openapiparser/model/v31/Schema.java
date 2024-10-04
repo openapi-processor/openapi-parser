@@ -234,10 +234,10 @@ public class Schema extends Properties implements Reference, Extensions {
     /**
      * JSON Schema Validation: validation Keywords for numeric instances (number and integer)
      *
-     * @return exclusive maximum or false if missing
+     * @return exclusive maximum or null if missing
      */
-    public Boolean getExclusiveMaximum () {
-        return getBooleanOrDefault (EXCLUSIVE_MAXIMUM, false);
+    public @Nullable Number getExclusiveMaximum () {
+        return getNumberOrNull (EXCLUSIVE_MAXIMUM);
     }
 
     /**
@@ -252,10 +252,10 @@ public class Schema extends Properties implements Reference, Extensions {
     /**
      * JSON Schema Validation: validation Keywords for numeric instances (number and integer)
      *
-     * @return exclusive minimum or false if missing
+     * @return exclusive minimum or null if missing
      */
-    public Boolean getExclusiveMinimum () {
-        return getBooleanOrDefault (EXCLUSIVE_MINIMUM, false);
+    public  Number getExclusiveMinimum () {
+        return getNumberOrNull (EXCLUSIVE_MINIMUM);
     }
 
     /**
