@@ -254,7 +254,7 @@ public class Schema extends Properties implements Reference, Extensions {
      *
      * @return exclusive minimum or null if missing
      */
-    public  Number getExclusiveMinimum () {
+    public @Nullable Number getExclusiveMinimum () {
         return getNumberOrNull (EXCLUSIVE_MINIMUM);
     }
 
