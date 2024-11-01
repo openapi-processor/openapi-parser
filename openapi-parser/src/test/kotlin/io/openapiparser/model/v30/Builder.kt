@@ -5,6 +5,7 @@
 
 package io.openapiparser.model.v30
 
+import io.openapiparser.model.ov10.Overlay
 import io.openapiparser.support.buildObject
 
 fun callback(content: String = "{}"): Callback {
@@ -97,4 +98,8 @@ fun serverVariable(content: String = "{}"): ServerVariable {
 
 fun xml(content: String = "{}"): Xml {
     return buildObject(Xml::class.java, content)
+}
+
+fun overlay(content: String = "{}"): Overlay {
+    return buildObject(Overlay::class.java, content)
 }

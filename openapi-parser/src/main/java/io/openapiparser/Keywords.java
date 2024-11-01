@@ -110,6 +110,9 @@ public interface Keywords {
 
     Set<String> OPERATIONS = Set.of(DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT, TRACE);
 
+    // overlay
+    String OVERLAY = "overlay";
+
     static Collection<String> getProperties(Collection<Keyword> keywords) {
         return keywords
             .stream ()
