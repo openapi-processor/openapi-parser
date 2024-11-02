@@ -8,11 +8,13 @@ package io.openapiparser.model.ov10;
 import io.openapiparser.Context;
 import io.openapiparser.Properties;
 import io.openapiparser.support.Required;
+import io.openapiprocessor.jsonschema.converter.NoValueException;
 import io.openapiprocessor.jsonschema.schema.Bucket;
 
+import java.util.Collection;
 import java.util.Map;
 
-import static io.openapiparser.Keywords.OVERLAY;
+import static io.openapiparser.Keywords.*;
 
 /**
  * the <em>Overlay</em> object.
@@ -29,6 +31,24 @@ public class Overlay extends Properties implements Extensions {
     @Required
     public String getOverlay () {
         return getStringOrThrow (OVERLAY);
+    }
+
+    public String getExtends () {
+        return getStringOrNull (EXTENDS);
+    }
+
+    @Required
+    public Info getInfo () {
+        return getObjectOrThrow (INFO, Info.class);
+    }
+
+    @Required
+    public Collection<Action> getActions () {
+        Collection<Action> actions = getObjectsOrEmpty(ACTIONS, Action.class);
+        if (actions == null || actions.isEmpty()) {
+            throw new NoValueException(bucket.getLocation().append(ACTIONS));
+        }
+        return actions;
     }
 
     @Override

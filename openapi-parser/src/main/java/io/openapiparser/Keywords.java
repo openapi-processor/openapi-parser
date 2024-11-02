@@ -112,6 +112,11 @@ public interface Keywords {
 
     // overlay
     String OVERLAY = "overlay";
+    String EXTENDS = "extends";
+    String TARGET = "target";
+    String UPDATE = "update";
+    String REMOVE = "remove";
+    String ACTIONS = "actions";
 
     static Collection<String> getProperties(Collection<Keyword> keywords) {
         return keywords
