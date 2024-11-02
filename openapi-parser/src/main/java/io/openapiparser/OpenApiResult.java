@@ -6,7 +6,6 @@
 package io.openapiparser;
 
 import io.openapiprocessor.jsonschema.schema.SchemaStore;
-import io.openapiprocessor.jsonschema.validator.ValidationMessage;
 import io.openapiprocessor.jsonschema.validator.Validator;
 
 import java.util.Collection;
