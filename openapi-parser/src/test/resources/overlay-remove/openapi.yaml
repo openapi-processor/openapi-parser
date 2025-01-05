@@ -1,0 +1,32 @@
+openapi: "3.1.0"
+info:
+  version: 1.0.0
+  title: overlay
+paths:
+  /foo:
+    get:
+      parameters:
+        - in: query
+          name: p1
+          schema:
+            type: string
+      summary: foo
+      responses:
+        '200':
+          description: result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Foo'
+
+components:
+  schemas:
+    Foo:
+      type: object
+      properties:
+        foo:
+          type: string
+        bar:
+          type: array
+          items:
+            type: string

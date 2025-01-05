@@ -14,6 +14,9 @@ public class OpenApiSchemas {
     static URI    OPENAPI_SCHEMA_31_ID = id("https://spec.openapis.org/oas/3.1/schema/2022-02-27");
     static String OPENAPI_SCHEMA_31 = "/openapi/schemas/v3.1/schema.yaml";
 
+    static URI    OVERLAY_SCHEMA_10_ID = id("https://spec.openapis.org/overlay/1.0/schema");
+    static String OVERLAY_SCHEMA_10 = "/overlay/schemas/v1.0/schema.yaml";
+
     private static URI id (String uri) {
         return URI.create (uri);
     }
