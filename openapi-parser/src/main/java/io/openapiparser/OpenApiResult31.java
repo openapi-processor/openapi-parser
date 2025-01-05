@@ -5,12 +5,16 @@
 
 package io.openapiparser;
 
+import com.jayway.jsonpath.JsonPath;
+import io.openapiparser.model.ov10.Overlay;
 import io.openapiparser.model.v31.OpenApi;
 import io.openapiprocessor.jsonschema.ouput.OutputConverter;
 import io.openapiprocessor.jsonschema.ouput.OutputUnit;
 import io.openapiprocessor.jsonschema.schema.*;
 import io.openapiprocessor.jsonschema.validator.Validator;
 import io.openapiprocessor.jsonschema.validator.steps.ValidationStep;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -21,6 +25,8 @@ import static io.openapiparser.OpenApiSchemas.OPENAPI_SCHEMA_31;
 import static io.openapiparser.OpenApiSchemas.OPENAPI_SCHEMA_31_ID;
 
 public class OpenApiResult31 implements OpenApiResult {
+    private static final Logger log = LoggerFactory.getLogger (Resolver.class);
+
     private final Context context;
     private final Bucket root;
 
@@ -47,6 +53,22 @@ public class OpenApiResult31 implements OpenApiResult {
         }
 
         return (T) new OpenApi (context, root);
+    }
+
+    @Override
+    public void apply(OverlayResult overlayResult) {
+        Overlay overlay = overlayResult.getModel(Overlay.class);
+
+        overlay.getActions().forEach(action -> {
+            String target = action.getTarget();
+
+            if (Boolean.TRUE.equals(action.getRemove())) {
+                JsonPath.parse(root.getRawValues()).delete(target);
+
+            } else {
+
+            }
+        });
     }
 
     @Override

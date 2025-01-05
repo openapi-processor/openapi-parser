@@ -39,6 +39,12 @@ public interface OpenApiResult {
     <T> T getModel (Class<T> api);
 
     /**
+     * apply an OpenAPI overlay to the OpenAPI document.
+     * @param overlay the overlay document
+     */
+    void apply(OverlayResult overlay);
+
+    /**
      * run schema validation. Retrieve the collection of validation messages from
      * {@link #getValidationErrors()}.
      *

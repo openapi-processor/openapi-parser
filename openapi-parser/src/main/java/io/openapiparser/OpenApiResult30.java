@@ -50,6 +50,11 @@ public class OpenApiResult30 implements OpenApiResult {
     }
 
     @Override
+    public void apply(OverlayResult overlayResult) {
+        // todo
+    }
+
+    @Override
     public Collection<ValidationError> getValidationErrors () {
         return validationErrors;
     }

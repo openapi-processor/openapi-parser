@@ -7,6 +7,8 @@ plugins {
 dependencies {
     api(project(":json-schema-validator"))
     api(project(":io-interfaces"))
+    compileOnly(libs.jsonpath)
+    implementation(libs.slf4j)
 
     testImplementation(project(":io-jackson"))
     testImplementation(project(":io-snakeyaml"))
@@ -15,6 +17,7 @@ dependencies {
     testImplementation(libs.jackson.databind)
     testImplementation(libs.jackson.yaml)
     testImplementation(libs.jackson.kotlin)
+    testImplementation(libs.jsonpath)
     testImplementation(libs.logback)
 
     constraints {
