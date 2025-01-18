@@ -56,6 +56,11 @@ public class OpenApiResult31 implements OpenApiResult {
     }
 
     @Override
+    public Object bundle () {
+        return new OpenApiBundler (context, documents, root).bundle ();
+    }
+
+    @Override
     public void apply(OverlayResult overlayResult) {
         Overlay overlay = overlayResult.getModel(Overlay.class);
 
@@ -113,9 +118,5 @@ public class OpenApiResult31 implements OpenApiResult {
         } catch (Exception ex) {
             return true;
         }
-    }
-
-    Object bundle () {
-        return new OpenApiBundler (context, documents, root).bundle ();
     }
 }

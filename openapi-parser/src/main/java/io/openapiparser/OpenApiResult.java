@@ -39,6 +39,13 @@ public interface OpenApiResult {
     <T> T getModel (Class<T> api);
 
     /**
+     * bundle the document. The bundled document has to be parsed again to navigate the OpenAPI model.
+     *
+     * @return the bundled document tree.
+     */
+    Object bundle();
+
+    /**
      * apply an OpenAPI overlay to the OpenAPI document.
      * @param overlay the overlay document
      */
