@@ -21,7 +21,7 @@ checker = { module = "org.checkerframework:checker", version.ref = "checker" }
 checkerq = { module = "org.checkerframework:checker-qual", version.ref = "checker" }
 
 slf4j = "org.slf4j:slf4j-api:2.0.16"
-logback = "ch.qos.logback:logback-classic:1.5.15"
+logback = "ch.qos.logback:logback-classic:1.5.16"
 
 jackson-bom = "com.fasterxml.jackson:jackson-bom:2.18.2"
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind" }
