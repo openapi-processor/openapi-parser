@@ -49,5 +49,6 @@ class JacksonJsonWriterSpec : StringSpec({
               }
             }
         """.trimIndent()
+           .replace("\n", System.lineSeparator())
     }
 })
