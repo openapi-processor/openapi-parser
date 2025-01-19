@@ -8,6 +8,7 @@ package io.openapiparser;
 import com.jayway.jsonpath.JsonPath;
 import io.openapiparser.model.ov10.Overlay;
 import io.openapiparser.model.v31.OpenApi;
+import io.openapiprocessor.interfaces.Writer;
 import io.openapiprocessor.jsonschema.ouput.OutputConverter;
 import io.openapiprocessor.jsonschema.ouput.OutputUnit;
 import io.openapiprocessor.jsonschema.schema.*;
@@ -16,6 +17,7 @@ import io.openapiprocessor.jsonschema.validator.steps.ValidationStep;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -58,6 +60,11 @@ public class OpenApiResult31 implements OpenApiResult {
     @Override
     public Object bundle () {
         return new OpenApiBundler (context, documents, root).bundle ();
+    }
+
+    @Override
+    public void write(Writer writer) throws IOException {
+        writer.write(root.getRawValues());
     }
 
     @Override

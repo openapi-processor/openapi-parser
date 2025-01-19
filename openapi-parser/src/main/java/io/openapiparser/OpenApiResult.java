@@ -5,9 +5,11 @@
 
 package io.openapiparser;
 
+import io.openapiprocessor.interfaces.Writer;
 import io.openapiprocessor.jsonschema.schema.SchemaStore;
 import io.openapiprocessor.jsonschema.validator.Validator;
 
+import java.io.IOException;
 import java.util.Collection;
 
 /**
@@ -44,6 +46,14 @@ public interface OpenApiResult {
      * @return the bundled document tree.
      */
     Object bundle();
+
+    /**
+     * Experimental. Write the document. This will produce useful results only if the document is a single file
+     * document. Bundling can be used to create a single file document.
+     *
+     * @param writer the target writer
+     */
+    void write(Writer writer) throws IOException;
 
     /**
      * apply an OpenAPI overlay to the OpenAPI document.
