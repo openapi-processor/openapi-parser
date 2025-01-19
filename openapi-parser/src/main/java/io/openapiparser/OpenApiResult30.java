@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static io.openapiparser.OpenApiSchemas.OPENAPI_SCHEMA_30;
@@ -52,7 +53,7 @@ public class OpenApiResult30 implements OpenApiResult {
     }
 
     @Override
-    public Object bundle () {
+    public Map<String, Object> bundle () {
         return new OpenApiBundler (context, documents, root).bundle ();
     }
 

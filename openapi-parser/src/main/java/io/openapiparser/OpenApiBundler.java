@@ -42,7 +42,7 @@ public class OpenApiBundler {
         this.rootDocumentUri = root.getScope ().getDocumentUri ();
     }
 
-    public Object bundle () {
+    public Map<String, Object> bundle () {
         URI documentUri = root.getScope ().getDocumentUri ();
         Object document = documents.get (documentUri);
 

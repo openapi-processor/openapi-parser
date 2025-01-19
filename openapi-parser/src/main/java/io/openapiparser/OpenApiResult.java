@@ -11,6 +11,7 @@ import io.openapiprocessor.jsonschema.validator.Validator;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * OpenAPI parser result.
@@ -41,11 +42,11 @@ public interface OpenApiResult {
     <T> T getModel (Class<T> api);
 
     /**
-     * bundle the document. The bundled document has to be parsed again to navigate the OpenAPI model.
+     * Experimental. Bundle the document. The bundled document has to be parsed to navigate its OpenAPI model.
      *
-     * @return the bundled document tree.
+     * @return a raw bundled copy of the OpenAPI document.
      */
-    Object bundle();
+    Map<String, Object> bundle();
 
     /**
      * Experimental. Write the document. This will produce useful results only if the document is a single file
