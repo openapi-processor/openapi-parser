@@ -63,8 +63,9 @@ public class OpenApiResult30 implements OpenApiResult {
     }
 
     @Override
-    public void apply(OverlayResult overlayResult) {
-        // todo
+    public Map<String, Object> apply(OverlayResult overlayResult) {
+        OverlayApplier overlay = new OverlayApplier(root.getRawValues());
+        return overlay.apply(overlayResult);
     }
 
     @Override

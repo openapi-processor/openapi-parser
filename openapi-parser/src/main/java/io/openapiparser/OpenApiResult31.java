@@ -5,8 +5,6 @@
 
 package io.openapiparser;
 
-import com.jayway.jsonpath.JsonPath;
-import io.openapiparser.model.ov10.Overlay;
 import io.openapiparser.model.v31.OpenApi;
 import io.openapiprocessor.interfaces.Writer;
 import io.openapiprocessor.jsonschema.ouput.OutputConverter;
@@ -69,19 +67,9 @@ public class OpenApiResult31 implements OpenApiResult {
     }
 
     @Override
-    public void apply(OverlayResult overlayResult) {
-        Overlay overlay = overlayResult.getModel(Overlay.class);
-
-        overlay.getActions().forEach(action -> {
-            String target = action.getTarget();
-
-            if (Boolean.TRUE.equals(action.getRemove())) {
-                JsonPath.parse(root.getRawValues()).delete(target);
-
-            } else {
-
-            }
-        });
+    public Map<String, Object> apply(OverlayResult overlayResult) {
+        OverlayApplier overlay = new OverlayApplier(root.getRawValues());
+        return overlay.apply(overlayResult);
     }
 
     @Override

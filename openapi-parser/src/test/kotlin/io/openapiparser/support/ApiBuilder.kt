@@ -14,6 +14,7 @@ import io.openapiprocessor.jsonschema.schema.Resolver
 import io.openapiprocessor.jsonschema.schema.SchemaVersion
 import io.openapiprocessor.snakeyaml.SnakeYamlConverter
 import io.openapiprocessor.interfaces.Converter
+import io.openapiprocessor.jsonschema.schema.ResolverResult
 import java.net.URI
 import io.openapiparser.model.v30.OpenApi as OpenApi30
 import io.openapiparser.model.v31.OpenApi as OpenApi31
@@ -35,6 +36,11 @@ class ApiBuilder {
 
     fun withConverter(converter: Converter): ApiBuilder {
         this.converter = converter
+        return this
+    }
+
+    fun withDocument(document: Any): ApiBuilder {
+        documents.addId(URI("file:///openapi.yaml"), document)
         return this
     }
 
@@ -65,8 +71,21 @@ class ApiBuilder {
             Bucket(result.scope, Types.asMap(result.document)!!))
     }
 
+
     fun buildOpenApi31(): OpenApi31 {
         return buildOpenApi31("file:///openapi.yaml")
+    }
+
+    fun buildOpenApiRaw31(uri: String): Any {
+        var source = URI(uri)
+        if (!source.isAbsolute) {
+           source =  this::class.java.getResource(uri)!!.toURI()
+        }
+
+        val resolver = createResolver()
+        val result = resolver.resolve(source, Resolver.Settings(SchemaVersion.Draft202012))
+
+        return result.document
     }
 
     fun buildOpenApi31(uri: String): OpenApi31 {
@@ -76,7 +95,12 @@ class ApiBuilder {
         }
 
         val resolver = createResolver()
-        val result = resolver.resolve(source, Resolver.Settings(SchemaVersion.Draft201909))
+        val document = documents.get(source)
+        val result: ResolverResult = if (document != null) {
+            resolver.resolve(source, document, Resolver.Settings(SchemaVersion.Draft202012))
+        } else {
+            resolver.resolve(source, Resolver.Settings(SchemaVersion.Draft202012))
+        }
 
         return OpenApi31(
             Context(result.scope, result.registry),

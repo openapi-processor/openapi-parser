@@ -23,14 +23,11 @@ public class OverlayResult10 implements OverlayResult {
     private final Context context;
     private final Bucket root;
 
-    private final DocumentStore documents;
-
     private Collection<ValidationError> validationErrors = List.of();
 
-    public OverlayResult10 (Context context, Bucket root, DocumentStore documents) {
+    public OverlayResult10 (Context context, Bucket root) {
         this.context = context;
         this.root = root;
-        this.documents = documents;
     }
 
     @Override

@@ -98,6 +98,11 @@ public class Types {
     }
 
     @EnsuresNonNullIf(expression = "#1", result = true)
+    public static boolean isNumber (@Nullable Object o) {
+        return o instanceof Number;
+    }
+
+    @EnsuresNonNullIf(expression = "#1", result = true)
     public static boolean isMap (@Nullable Object o) {
         return o instanceof Map;
     }

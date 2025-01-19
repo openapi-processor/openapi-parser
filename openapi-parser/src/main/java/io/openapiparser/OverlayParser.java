@@ -53,8 +53,7 @@ public class OverlayParser {
             Scope scope = Scope.empty();
             return new OverlayResult10(
                     new Context(scope, new ReferenceRegistry()),
-                    Bucket.createBucket(scope, document),
-                    documents);
+                    Bucket.createBucket(scope, document));
         } else {
             throw new UnknownVersionException(version);
         }

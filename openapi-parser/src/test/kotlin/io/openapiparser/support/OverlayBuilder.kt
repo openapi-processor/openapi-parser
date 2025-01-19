@@ -6,6 +6,7 @@
 package io.openapiparser.support
 
 import io.openapiparser.OverlayParser
+import io.openapiparser.OverlayResult
 import io.openapiprocessor.interfaces.Converter
 import io.openapiprocessor.jsonschema.schema.DocumentLoader
 import io.openapiprocessor.jsonschema.schema.DocumentStore
@@ -20,6 +21,10 @@ class OverlayBuilder {
     fun withOverlay(apiYaml: String): OverlayBuilder {
         reader.addApi(URI("file:///overlay.yaml"), apiYaml.trimIndent())
         return this
+    }
+
+    fun buildOverlay10(): OverlayResult {
+        return buildParser().parse(URI("file:///overlay.yaml"))
     }
 
     fun buildParser(): OverlayParser {
