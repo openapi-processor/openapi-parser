@@ -8,10 +8,9 @@ package io.openapiparser.support;
 import java.lang.annotation.*;
 
 /**
- * marks experimental apis that should not (yet..) be used in production code. It is used for
- * documentation only.
+ * Marks an experimental api (it has to show that it works in real life). Use at your own risk.
  */
 @Documented
 @Retention (RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD})
+@Target({ElementType.TYPE, ElementType.METHOD})
 public @interface Experimental {}
