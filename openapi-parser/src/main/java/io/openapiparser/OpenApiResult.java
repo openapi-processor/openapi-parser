@@ -61,8 +61,8 @@ public interface OpenApiResult {
     void write(Writer writer) throws IOException;
 
     /**
-     * Apply an OpenAPI overlay to the OpenAPI document. The result document has to be parse to navigate its OpenAPI
-     * model.
+     * Apply an OpenAPI overlay to the OpenAPI document. The result document has to be parsed to navigate its OpenAPI
+     * model. The document should be bundled before applying an overlay.
      *
      * @param overlay the overlay document
      * @return a raw copy of the OpenAPI document with the applied overlay.
