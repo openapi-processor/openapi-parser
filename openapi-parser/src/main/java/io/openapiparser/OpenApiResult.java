@@ -56,6 +56,7 @@ public interface OpenApiResult {
      * can be used to create a single file document.
      *
      * @param writer the target writer
+     * @throws IOException if writing failed
      */
     @Experimental
     void write(Writer writer) throws IOException;

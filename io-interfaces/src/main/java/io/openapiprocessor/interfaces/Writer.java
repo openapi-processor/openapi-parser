@@ -18,6 +18,5 @@ public interface Writer {
      * @param document the document
      * @throws IOException if writing fails.
      */
-
     void write(Object document) throws IOException;
 }

@@ -35,6 +35,8 @@ public interface ValidationStep {
     /**
      * If true this step is used to calculate the final validation result. 'if' is the only keyword that is not
      * validatable.
+     *
+     * @return true if validatable, else false
      */
     default boolean isValidatable () {
         return true;

@@ -12,22 +12,30 @@ import java.util.Collection;
 public interface OutputUnit {
 
     /**
-     * validation result
+     * The validation result.
+     *
+     * @return the validation result.
      */
     boolean isValid ();
 
     /**
-     * relative location of the validating keyword
+     * The relative location of the validating keyword.
+     *
+     * @return the relative location of the validating keyword.
      */
     String getKeywordLocation ();
 
     /**
-     * The location of the validated JSON value within the instance
+     * The location of the validated JSON value within the instance.
+     *
+     * @return the location of the validated JSON value within the instance.
      */
     String getInstanceLocation ();
 
     /**
-     * The absolute, dereferenced location of the validating keyword
+     * The absolute, dereferenced location of the validating keyword.
+     *
+     * @return the absolute, dereferenced location of the validating keyword.
      */
     String getAbsoluteKeywordLocation ();
 
@@ -36,12 +44,16 @@ public interface OutputUnit {
     @Nullable Object getAnnotation ();
 
     /**
-     * errors or annotation produced by a failed validation
+     * The errors or annotation produced by a failed validation.
+     *
+     * @return the errors or annotation produced by a failed validation.
      */
     @Nullable Collection<OutputUnit> getErrors ();
 
     /**
-     * errors or annotation produced by a successful validation
+     * The errors or annotation produced by a successful validation.
+     *
+     * @return the errors or annotation produced by a successful validation.
      */
     @Nullable Collection<OutputUnit> getAnnotations ();
 }
