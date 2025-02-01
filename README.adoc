@@ -32,6 +32,7 @@ a Java 11 based link:{openapi}[OpenAPI] 3.0.x & 3.1 parser with validation and p
 * validate OpenAPI 3.0.x & 3.1 (json schema validation, can follow $ref's in the OpenAPI document)
 * separate apis for OpenAPI 3.0 & 3.1
 * easily get resolved $ref object
+* bundle & write (single file) OpenAPI document
 * minimal dependencies
 * pluggable document reader
 * pluggable json/yaml converter
