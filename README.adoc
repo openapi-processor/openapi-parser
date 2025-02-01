@@ -73,13 +73,13 @@ A "bill of materials" POM for json-schema-validator dependencies.
 
 link:{central-search}[image:{jackson-central-badge}[]]
 
-json/yaml `Reader` & `Converter` based on link:{jackson}[Jackson].
+json/yaml `Reader`, `Writer` & `Converter` based on link:{jackson}[Jackson].
 
 === link:{converter-snakeyaml}[io-snakeyaml]
 
 link:{central-search}[image:{snakeyaml-central-badge}[]]
 
-yaml `Reader` & `Converter` based on link:{snakeyaml}[snakeyaml].
+yaml `Reader`, `Writer` & `Converter` based on link:{snakeyaml}[snakeyaml].
 
 === link:{io-interfaces}[io-interfaces]
 

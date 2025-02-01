@@ -1,4 +1,5 @@
 :openapi: https://www.openapis.org/
+:overlay: https://spec.openapis.org/overlay/v1.0.0.html
 :converter-jackson: https://github.com/openapi-processor/openapi-parser/tree/master/io-jackson
 :converter-snakeyaml: https://github.com/openapi-processor/openapi-parser/tree/master/io-snakeyaml
 
@@ -9,7 +10,7 @@ It is usable, but has the following limitations at the moment:
 * it does support most but not all OpenAPI object properties
 * minimal documentation (just this README)
 
-source code gifts (i.e pull requests) are welcome :-)
+source code gifts (i.e. pull requests) are welcome :-)
 
 == openapi-parser & validator
 
@@ -21,6 +22,9 @@ a Java 11 based link:{openapi}[OpenAPI] 3.0.x & 3.1 parser with validation and p
 ** JSON schema draft-2020-12 validation of OpenAPI 3.1
 * separate apis for OpenAPI 3.0 & 3.1
 * easily get resolved $ref object
+* bundle multi-file OpenAPI documents (experimental)
+* write bundled single-file OpenAPI document (json or yaml) (experimental)
+// * apply link:{overlay}[Overlays] (experimental)
 * minimal dependencies
 * pluggable document reader
 * pluggable json/yaml converter
