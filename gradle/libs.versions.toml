@@ -6,7 +6,7 @@ test-jdk = "17"
 
 kotlin = "2.1.10"
 checker = "3.49.1"
-checkerp = "0.6.43"
+checkerp = "0.6.52"
 jacoco = "0.8.11"
 outdated = "0.52.0"
 
