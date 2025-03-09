@@ -38,11 +38,11 @@ kotest-datatest = { module = "io.kotest:kotest-framework-datatest" }
 mockk = "io.mockk:mockk:1.13.17"
 
 [bundles]
-jackson = ["jackson-databind", "jackson-yaml", "jackson-kotlin" ]
-kotest = ["kotest-runner", "kotest-datatest", "mockk"]
+#jackson = ["jackson-databind", "jackson-yaml", "jackson-kotlin" ]
+#kotest = ["kotest-runner", "kotest-datatest", "mockk"]
 
 [plugins]
-kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+#kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 nexus = { id = "io.github.gradle-nexus.publish-plugin", version = "2.0.0" }
 jacoco = { id = "org.barfuin.gradle.jacocolog", version = "3.1.0" }
 sonar = { id = "org.sonarqube", version =  "6.0.1.5171" }
