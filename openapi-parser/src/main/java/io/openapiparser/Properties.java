@@ -31,6 +31,11 @@ public class Properties {
     /* json pointer */
 
     @Experimental
+    public JsonPointer getLocation() {
+        return bucket.getLocation();
+    }
+
+    @Experimental
     public @Nullable Object getRawValueOf (String pointer) {
         return bucket.getRawValueValue (JsonPointer.from (pointer));
     }
