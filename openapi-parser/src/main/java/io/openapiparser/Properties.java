@@ -127,8 +127,8 @@ public class Properties {
     /* Collections */
 
     protected <T> Collection<T> getObjectsOrEmpty (String property, Class<T> clazz) {
-        return nonNull (bucket.convert (property, new ObjectsOrEmptyConverter<T> (
-            bucket.getScope (), new Factory<> (context, clazz))));
+        return nonNull (bucket.convert (property, new ObjectsOrEmptyConverter<>(
+                bucket.getScope(), new Factory<>(context, clazz))));
     }
 
     /* String Collections */
@@ -149,19 +149,15 @@ public class Properties {
 
     protected <T> Map<String, T> getMapObjectsOrEmpty (Class<T> clazz) {
         Map<String, T> objects = new LinkedHashMap<> ();
-
-        bucket.forEachProperty (property -> {
-            objects.put (property, getObjectOrThrow (bucket, property, clazz));
-        });
-
+        bucket.forEachProperty (property -> objects.put (property, getObjectOrThrow (bucket, property, clazz)));
         return Collections.unmodifiableMap (objects);
     }
 
     protected <T> Map<String, T> getMapObjectsOrEmpty (String property, Class<T> clazz) {
         return nonNull (bucket.convert (
             property,
-            new MapObjectsOrEmptyConverter<T> (bucket.getScope (),
-            new Factory<T> (context, clazz))));
+            new MapObjectsOrEmptyConverter<>(bucket.getScope(),
+                    new Factory<>(context, clazz))));
     }
 
     protected Map<String, Set<String>> getMapSetStringsOrEmpty (String property) {
@@ -182,12 +178,12 @@ public class Properties {
         if (ref == null)
             return null;
 
-        return new Factory<T> (context, clazz).create (ref);
+        return new Factory<>(context, clazz).create (ref);
     }
 
     protected <T> T getRefObjectOrThrow (Class<T> clazz) {
         final Bucket refObjectOrThrow = context.getRefObjectOrThrow (bucket);
-        return new Factory<T> (context, clazz).create (refObjectOrThrow);
+        return new Factory<>(context, clazz).create (refObjectOrThrow);
     }
 
     /* helper */
@@ -197,7 +193,7 @@ public class Properties {
         if (value == null)
             return null;
 
-        return new Factory<T> (context, clazz).create (value);
+        return new Factory<>(context, clazz).create (value);
     }
 
     private <T> T getObjectOrThrow (Bucket source, String property, Class<T> clazz) {
@@ -205,6 +201,6 @@ public class Properties {
         if (value == null)
             throw new NoValueException (property);
 
-        return new Factory<T> (context, clazz).create (value);
+        return new Factory<>(context, clazz).create (value);
     }
 }
