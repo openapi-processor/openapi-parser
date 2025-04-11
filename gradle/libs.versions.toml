@@ -35,7 +35,7 @@ jsonpath = "com.jayway.jsonpath:json-path:2.9.0"
 kotest-bom = "io.kotest:kotest-bom:5.9.1"
 kotest-runner = { module = "io.kotest:kotest-runner-junit5" }
 kotest-datatest = { module = "io.kotest:kotest-framework-datatest" }
-mockk = "io.mockk:mockk:1.13.17"
+mockk = "io.mockk:mockk:1.14.0"
 
 [bundles]
 #jackson = ["jackson-databind", "jackson-yaml", "jackson-kotlin" ]
