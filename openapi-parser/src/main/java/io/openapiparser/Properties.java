@@ -12,6 +12,7 @@ import io.openapiprocessor.jsonschema.schema.JsonPointer;
 import io.openapiparser.support.Experimental;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.net.URI;
 import java.util.*;
 
 import static io.openapiprocessor.jsonschema.support.Null.nonNull;
@@ -26,6 +27,16 @@ public class Properties {
     protected Properties (Context context, Bucket bucket) {
         this.context = context;
         this.bucket = bucket;
+    }
+
+    /**
+     * Retrieves the document URI of the document in which the current object is defined.
+     *
+     * @return the URI of the document
+     */
+    @Experimental
+    public URI getDocumentUri() {
+        return bucket.getScope().getDocumentUri();
     }
 
     /* json pointer */
