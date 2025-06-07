@@ -1,3 +1,5 @@
+import com.github.benmanes.gradle.versions.reporter.PlainTextReporter
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.gradle.accessors.dm.LibrariesForLibs
 
 plugins {
@@ -94,3 +96,45 @@ configure<org.checkerframework.gradle.plugin.CheckerFrameworkExtension> {
     )
 }
 
+
+
+
+
+tasks.withType<DependencyUpdatesTask> {
+    rejectVersionIf {
+        candidate.version.isNonStable()
+    }
+
+    outputFormatter {
+        exceeded.dependencies.removeIf { d -> ignore.contains("${d.group}:${d.name}") }
+
+        val plainTextReporter = PlainTextReporter(
+            project,
+            revision,
+            gradleReleaseChannel
+        )
+        plainTextReporter.write(System.out, this)
+    }
+}
+
+
+fun String.isNonStable(): Boolean {
+    val nonStable = listOf(
+        ".M[0-9]+$",
+        ".RC[0-9]*$",
+        ".alpha[0-9]+$",
+        ".beta[0-9]+$",
+    )
+
+    for (n in nonStable) {
+       if (this.contains("(?i)$n".toRegex())) {
+           return true
+       }
+    }
+
+    return false
+}
+
+val ignore = listOf(
+    "org.checkerframework:jdk8"
+)
