@@ -5,8 +5,8 @@ build-jdk = "11"
 test-jdk = "17"
 
 kotlin = "2.1.21"
-checker = "3.49.3"
-checkerp = "0.6.52"
+checker = "3.49.4"
+checkerp = "0.6.55"
 jacoco = "0.8.11"
 outdated = "0.52.0"
 
