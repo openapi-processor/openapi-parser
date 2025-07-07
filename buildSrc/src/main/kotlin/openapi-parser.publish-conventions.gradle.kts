@@ -47,13 +47,20 @@ publishing {
 
     repositories {
         maven {
-            val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
-            val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
-            url = uri(if (isReleaseVersion()) releasesRepoUrl else snapshotsRepoUrl)
+            val releaseRepository = uri("https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2")
+            val snapshotRepository = uri("https://central.sonatype.com/repository/maven-snapshots")
+            url = uri(if (isReleaseVersion()) releaseRepository else snapshotRepository)
 
             credentials {
                 username = buildProperty("PUBLISH_USER")
                 password = buildProperty("PUBLISH_KEY")
+            }
+        }
+
+        repositories {
+            maven {
+                name = "central"
+                url = uri(rootProject.layout.buildDirectory.dir("central"))
             }
         }
     }
@@ -76,7 +83,11 @@ tasks.withType<GenerateModuleMetadata>().configureEach {
 // ORG_GRADLE_PROJECT_signPwd=...
 
 signing {
-    setRequired({ gradle.taskGraph.hasTask("${project.path}:publishToSonatype") })
+    setRequired({
+        gradle.taskGraph.allTasks.any {
+            it.name.contains("ToSonatype") || it.name.contains("ToCentral")
+        }
+    })
 
     val signKey: String? by project
     val signPwd: String? by project
