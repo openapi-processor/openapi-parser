@@ -2,6 +2,7 @@ plugins {
     java
     alias(libs.plugins.jacoco)
     alias(libs.plugins.nexus)
+    id("openapi-parser.publish-central")
 }
 
 repositories {
@@ -21,6 +22,12 @@ extra["publishUser"] = buildProperty("PUBLISH_USER")
 extra["publishKey"] = buildProperty("PUBLISH_KEY")
 val publishUser: String by extra
 val publishKey: String by extra
+
+centralPublishing {
+    username = publishUser
+    password = publishKey
+    stagingDir = layout.buildDirectory.dir("central")
+}
 
 nexusPublishing {
     this.repositories {
