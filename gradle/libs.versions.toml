@@ -15,7 +15,7 @@ outdated = "0.52.0"
 # buildSrc
 plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 plugin-checker = { module = "org.checkerframework:checkerframework-gradle-plugin", version.ref = "checkerp" }
-plugin-outdated = { module = "com.github.ben-manes:gradle-versions-plugin", version.ref = "outdated"}
+plugin-outdated = { module = "com.github.ben-manes:gradle-versions-plugin", version.ref = "outdated" }
 
 checker = { module = "org.checkerframework:checker", version.ref = "checker" }
 checkerq = { module = "org.checkerframework:checker-qual", version.ref = "checker" }
