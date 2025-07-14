@@ -14,14 +14,12 @@ import io.openapiprocessor.jsonschema.validator.Validator;
 import io.openapiprocessor.jsonschema.validator.steps.ValidationStep;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static io.openapiparser.OpenApiSchemas.OPENAPI_SCHEMA_30;
 import static io.openapiparser.OpenApiSchemas.OPENAPI_SCHEMA_30_ID;
+import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 
 public class OpenApiResult30 implements OpenApiResult {
     private final Context context;
@@ -90,9 +88,7 @@ public class OpenApiResult30 implements OpenApiResult {
                 return true;
             }
 
-            Collection<OutputUnit> errors = output.getErrors ();
-            assert errors != null;
-
+            Collection<OutputUnit> errors = nonNull(output.getErrors ());
             validationErrors = errors
                 .stream ()
                 .map (e -> {
@@ -100,7 +96,7 @@ public class OpenApiResult30 implements OpenApiResult {
                         e.getInstanceLocation (),
                         e.getKeywordLocation (),
                         e.getAbsoluteKeywordLocation (),
-                        e.getError ()
+                        nonNull(e.getError ())
                     );
                 })
                 .collect (Collectors.toList ());

@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static io.openapiparser.OpenApiSchemas.*;
+import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 
 public class OverlayResult10 implements OverlayResult {
     private final Context context;
@@ -62,9 +63,7 @@ public class OverlayResult10 implements OverlayResult {
                 return true;
             }
 
-            Collection<OutputUnit> errors = output.getErrors ();
-            assert errors != null;
-
+            Collection<OutputUnit> errors = nonNull(output.getErrors ());
             validationErrors = errors
                 .stream ()
                 .map (e -> {
@@ -72,7 +71,7 @@ public class OverlayResult10 implements OverlayResult {
                         e.getInstanceLocation (),
                         e.getKeywordLocation (),
                         e.getAbsoluteKeywordLocation (),
-                        e.getError ()
+                        nonNull(e.getError ())
                     );
                 })
                 .collect (Collectors.toList ());

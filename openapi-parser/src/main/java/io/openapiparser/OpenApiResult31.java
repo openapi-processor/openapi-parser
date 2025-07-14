@@ -24,6 +24,8 @@ import java.util.stream.Collectors;
 
 import static io.openapiparser.OpenApiSchemas.OPENAPI_SCHEMA_31;
 import static io.openapiparser.OpenApiSchemas.OPENAPI_SCHEMA_31_ID;
+import static io.openapiprocessor.jsonschema.support.Null.nonNull;
+import static java.util.Objects.requireNonNull;
 
 public class OpenApiResult31 implements OpenApiResult {
     private static final Logger log = LoggerFactory.getLogger (Resolver.class);
@@ -95,9 +97,7 @@ public class OpenApiResult31 implements OpenApiResult {
                 return true;
             }
 
-            Collection<OutputUnit> errors = output.getErrors ();
-            assert errors != null;
-
+            Collection<OutputUnit> errors = nonNull(output.getErrors ());
             validationErrors = errors
                 .stream ()
                 .map (e -> {
@@ -105,7 +105,7 @@ public class OpenApiResult31 implements OpenApiResult {
                         e.getInstanceLocation (),
                         e.getKeywordLocation (),
                         e.getAbsoluteKeywordLocation (),
-                        e.getError ()
+                        nonNull(e.getError ())
                     );
                 })
                 .collect (Collectors.toList ());
