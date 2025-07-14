@@ -221,16 +221,16 @@ public class SchemaStore {
             return Vocabularies.ALL;
         }
 
-        SchemaVersion metaVersion = getMetaSchemaVersion(metaSchemaUri, version);
         Map<String, Object> metaObject = getDocument(metaSchemaUri);
         if (metaObject == null) {
             return Vocabularies.ALL;
         }
 
+        SchemaVersion metaVersion = getMetaSchemaVersion(metaSchemaUri, version);
         return getVocabularies(metaObject, metaVersion);
     }
 
-    private @Nullable SchemaVersion getMetaSchemaVersion(URI schemaUri, SchemaVersion version) {
+    private SchemaVersion getMetaSchemaVersion(URI schemaUri, SchemaVersion version) {
         SchemaVersion schemaVersion = SchemaVersion.getVersion(schemaUri);
         if (schemaVersion != null)
             return schemaVersion;

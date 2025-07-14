@@ -29,9 +29,6 @@ public class Resolver {
         private SchemaVersion version;
         private boolean autoLoadSchemas = false;
 
-        public Settings () {
-        }
-
         public Settings (SchemaVersion version) {
             this.version = version;
         }

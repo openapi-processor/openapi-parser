@@ -35,8 +35,6 @@ public class ResolverRef {
             JsonPointer propLocation = location.append (name);
             Keyword keyword = version.getKeyword (name);
 
-            boolean navigable = isNavigable(keyword);
-
             if (isMetaSchema(name, value)) {
                 Ref ref = createRef (scope, name, value);
                 walkRef (ref, propLocation);
@@ -78,7 +76,7 @@ public class ResolverRef {
         return name.equals(Keywords.DEFAULT) && Types.isObject(value);
     }
 
-    private static boolean isNavigableSchemaMap(Keyword keyword, Object value) {
+    private static boolean isNavigableSchemaMap(@Nullable Keyword keyword, Object value) {
         if (keyword == null)
             return false;
 

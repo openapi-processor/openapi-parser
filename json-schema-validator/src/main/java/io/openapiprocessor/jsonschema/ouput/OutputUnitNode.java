@@ -12,9 +12,9 @@ import java.util.Collection;
 public class OutputUnitNode implements OutputUnit, OutputUnitWrite {
 
     private boolean valid;
-    private String keywordLocation;
-    private String instanceLocation;
-    private String absoluteKeywordLocation;
+    private String keywordLocation = "";
+    private String instanceLocation = "";
+    private String absoluteKeywordLocation = "";
     private @Nullable String error;
     private @Nullable Object annotation;
     private @Nullable Collection<OutputUnit> errors;
