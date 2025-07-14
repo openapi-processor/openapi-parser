@@ -333,7 +333,7 @@ public class JsonSchemaObject implements JsonSchema {
     public Map<String, JsonSchema> getProperties () {
         Map<String, JsonSchema> properties = schemaObject.convert (PROPERTIES, new MapJsonSchemasConverter (context));
         if (properties == null)
-            return Collections.emptyMap ();
+            return emptyMap ();
 
         return properties;
     }
@@ -345,7 +345,7 @@ public class JsonSchemaObject implements JsonSchema {
             PATTERN_PROPERTIES, new MapJsonSchemasConverter (context));
 
         if (patternProperties == null) {
-            return Collections.emptyMap ();
+            return emptyMap ();
         }
 
         return patternProperties;
@@ -402,7 +402,7 @@ public class JsonSchemaObject implements JsonSchema {
                 index++;
             }
 
-            return Collections.unmodifiableCollection(instances);
+            return unmodifiableCollection(instances);
         }
 
         // todo
