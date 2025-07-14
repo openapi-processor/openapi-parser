@@ -199,31 +199,6 @@ public class Bucket {
     }
 
     /**
-     * get the raw value at the given property pointer position.
-     *
-     * @param pointer property location
-     * @return property value or null if the property does not exist
-     */
-//    @Deprecated // replace with getRawValueX
-//    public @Nullable Object getRawValue (JsonPointer pointer) {
-//        JsonPointer current = JsonPointer.EMPTY;
-//        Object value = properties;
-//
-//        for (String token: pointer.getTokens ()) {
-//            current = current.append (token);
-//
-//            if (isObject (value)) {
-//                value = getObjectValue (asMap (value), current);
-//
-//            } else if (isArray (value)) {
-//                value = getArrayValue (asCol (value), current);
-//            }
-//        }
-//
-//        return value;
-//    }
-
-    /**
      * get the raw value with scope at the given property pointer position.
      *
      * @param pointer property location
