@@ -10,27 +10,37 @@ import org.checkerframework.checker.nullness.qual.*;
 /**
  * based on org/checkerframework/checker/nullness/util/NullnessUtil.java
  */
+
+@SuppressWarnings({"nullness", "cast"})
 public class Null {
 
     private Null() {}
 
-    @SuppressWarnings({"nullness"})
+    /**
+     * suppress nullable warning for a value that is never null.
+     *
+     * @param value the non-null value
+     * @return {@code value}
+     * @param <T> the type of {@code value}
+     */
     @EnsuresNonNull (value = "#1")
-    public static <T> @NonNull T nonNull (@Nullable T value) {
-        assert value != null : "must not be null!";
-        return value;
+    public static <T extends @Nullable Object> @NonNull T nonNull (@Nullable T value) {
+        if (value == null) {
+            throw new NullPointerException();
+        }
+
+        return (@NonNull T) value;
     }
 
     /**
-     * suppress nullable warning for values that may be null.
+     * suppress nullable warning for a value that can be null.
      *
      * @param value the value that may be null
      * @return {@code value}
      * @param <T> the type of {@code value}
      */
-    @SuppressWarnings({"nullness"})
     @EnsuresNonNull (value = "#1")
     public static <T> T nullable (@Nullable T value) {
-        return value;
+        return (@NonNull T) value;
     }
 }
