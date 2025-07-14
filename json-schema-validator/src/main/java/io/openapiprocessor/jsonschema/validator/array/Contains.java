@@ -11,6 +11,7 @@ import io.openapiprocessor.jsonschema.schema.JsonSchema;
 import io.openapiprocessor.jsonschema.validator.Validator;
 import io.openapiprocessor.jsonschema.validator.steps.SchemaStep;
 import io.openapiprocessor.jsonschema.validator.steps.ValidationStep;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,7 +35,7 @@ public class Contains {
 
         Collection<Integer> containsAnnotation = new ArrayList<> ();
 
-        Collection<Object> instanceValue = getInstanceValue (instance);
+        Collection<@Nullable Object> instanceValue = getInstanceValue (instance);
         int instanceSize = instanceValue.size ();
 
         ContainsStep containsStep = new ContainsStep (schema, instance);
@@ -85,7 +86,7 @@ public class Contains {
         parentStep.add (containsStep);
     }
 
-    private Collection<Object> getInstanceValue (JsonInstance instance) {
-        return nonNull (instance.asCollection ());
+    private Collection<@Nullable Object> getInstanceValue (JsonInstance instance) {
+        return nonNull (instance.asCollection());
     }
 }

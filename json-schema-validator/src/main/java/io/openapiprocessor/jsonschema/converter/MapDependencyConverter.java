@@ -46,7 +46,7 @@ public class MapDependencyConverter implements PropertyConverter<Map<String, Jso
                     create (name, propValue, getLocation (parentLocation, propKey)))
                 );
             } else if (Types.isArray (propValue)) {
-                Collection<String> property = Types.asCol (propValue);
+                Collection<@Nullable String> property = Types.asCol (propValue);
                 result.put (propKey, new JsonDependency (property));
             }
         });

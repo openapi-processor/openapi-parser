@@ -66,7 +66,7 @@ public class JsonInstance {
         return Types.asMap (value);
     }
 
-    public @Nullable Collection<Object> asCollection () {
+    public @Nullable Collection<@Nullable Object> asCollection () {
         return Types.asCol (value);
     }
 
@@ -134,7 +134,7 @@ public class JsonInstance {
         if (value == null || !isArray ())
             throw new TypeMismatchException (location, Collection.class);
 
-        Object[] items = Types.asCol (value).toArray ();
+        @Nullable Object[] items = Types.asCol (value).toArray ();
         return items[idx];
     }
 

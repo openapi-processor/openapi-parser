@@ -8,6 +8,7 @@ package io.openapiprocessor.jsonschema.validator.array;
 import io.openapiprocessor.jsonschema.schema.JsonInstance;
 import io.openapiprocessor.jsonschema.schema.JsonSchema;
 import io.openapiprocessor.jsonschema.validator.steps.ValidationStep;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Collection;
 
@@ -25,7 +26,7 @@ public class MinItems {
 
         MinItemsStep step = new MinItemsStep (schema, instance);
 
-        Collection<Object> instanceValue = getInstanceValue (instance);
+        Collection<@Nullable Object> instanceValue = getInstanceValue (instance);
         if (instanceValue.size () < minItems) {
             step.setInvalid ();
         }
@@ -33,7 +34,7 @@ public class MinItems {
         parentStep.add (step);
     }
 
-    private Collection<Object> getInstanceValue (JsonInstance instance) {
+    private Collection<@Nullable Object> getInstanceValue (JsonInstance instance) {
         return nonNull (instance.asCollection ());
     }
 }

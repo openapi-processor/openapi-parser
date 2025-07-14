@@ -8,6 +8,7 @@ package io.openapiprocessor.jsonschema.validator.array;
 import io.openapiprocessor.jsonschema.schema.JsonInstance;
 import io.openapiprocessor.jsonschema.schema.JsonSchema;
 import io.openapiprocessor.jsonschema.validator.steps.ValidationStep;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -28,8 +29,8 @@ public class UniqueItems {
         UniqueItemsStep step = new UniqueItemsStep (schema, instance);
 
         if (uniqueItems) {
-            Collection<Object> instanceValue = getInstanceValue (instance);
-            Set<Object> items = new HashSet<> ();
+            Collection<@Nullable Object> instanceValue = getInstanceValue (instance);
+            Set<@Nullable Object> items = new HashSet<> ();
             for (Object item : instanceValue) {
                 if (!items.add (item)) {
                     step.setInvalid ();
@@ -41,7 +42,7 @@ public class UniqueItems {
         parentStep.add (step);
     }
 
-    private Collection<Object> getInstanceValue (JsonInstance instance) {
+    private Collection<@Nullable Object> getInstanceValue (JsonInstance instance) {
         return nonNull (instance.asCollection ());
     }
 }

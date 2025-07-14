@@ -20,7 +20,7 @@ public class JsonDependency {
 
     private final Kind kind;
     private final @Nullable JsonSchema schema;
-    private final @Nullable Collection<String> properties;
+    private final @Nullable Collection<@Nullable String> properties;
 
     public JsonDependency (JsonSchema schema) {
         this.kind = Kind.SCHEMA;
@@ -28,7 +28,7 @@ public class JsonDependency {
         this.properties = null;
     }
 
-    public JsonDependency (Collection<String> values) {
+    public JsonDependency (Collection<@Nullable String> values) {
         this.kind = Kind.ARRAY;
         this.schema = null;
         this.properties = values;
@@ -42,7 +42,7 @@ public class JsonDependency {
         return nonNull(schema);
     }
 
-    public Collection<String> getProperties () {
+    public Collection<@Nullable String> getProperties () {
         return nonNull(properties);
     }
 }

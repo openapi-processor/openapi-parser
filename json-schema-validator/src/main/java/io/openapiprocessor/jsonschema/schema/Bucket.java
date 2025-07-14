@@ -223,7 +223,7 @@ public class Bucket {
                 scope = scope.move (value);
 
             } else if (Types.isArray (value)) {
-                Collection<Object> array = Types.asCol (value);
+                Collection<@Nullable Object> array = Types.asCol (value);
 
                 value = getArrayValue (array, current);
                 scope = scope.move (value);
@@ -249,7 +249,7 @@ public class Bucket {
         return value;
     }
 
-    private Object getArrayValue (Collection<Object> array, JsonPointer pointer) {
+    private Object getArrayValue (Collection<@Nullable Object> array, JsonPointer pointer) {
         Object value = array.toArray ()[pointer.tailIndex ()];
         if (value == null) {
             throw new NoValueException(pointer.toString ());

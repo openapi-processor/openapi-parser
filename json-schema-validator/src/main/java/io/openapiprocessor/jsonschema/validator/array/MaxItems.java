@@ -8,6 +8,7 @@ package io.openapiprocessor.jsonschema.validator.array;
 import io.openapiprocessor.jsonschema.schema.JsonInstance;
 import io.openapiprocessor.jsonschema.schema.JsonSchema;
 import io.openapiprocessor.jsonschema.validator.steps.ValidationStep;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Collection;
 
@@ -19,7 +20,7 @@ import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 public class MaxItems {
 
     public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
-        Collection<Object> instanceValue = getInstanceValue (instance);
+        Collection<@Nullable Object> instanceValue = getInstanceValue (instance);
         Integer maxItems = schema.getMaxItems ();
         if (maxItems == null)
             return;
@@ -32,7 +33,7 @@ public class MaxItems {
         parentStep.add (step);
     }
 
-    private Collection<Object> getInstanceValue (JsonInstance instance) {
+    private Collection<@Nullable Object> getInstanceValue (JsonInstance instance) {
         return nonNull (instance.asCollection ());
     }
 }
