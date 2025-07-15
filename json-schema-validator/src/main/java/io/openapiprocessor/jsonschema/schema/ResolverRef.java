@@ -11,6 +11,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.net.URI;
 import java.util.Collection;
 
+import static io.openapiprocessor.jsonschema.support.Null.nonNull;
+
 public class ResolverRef {
     private final ResolverContext context;
 
@@ -138,7 +140,7 @@ public class ResolverRef {
         if (!context.isProcessedDocument (uri)) {
             context.setProcessedDocument (uri);
 
-            Scope docScope = scope.move (uri, document);  // todo document != null
+            Scope docScope = scope.move (uri, nonNull(document));
             Bucket bucket = Bucket.createBucket(docScope, document, JsonPointer.empty());
             if (bucket == null) {
                 return; // todo error
@@ -211,13 +213,11 @@ public class ResolverRef {
             // no, try to resolve by document and pointer
             URI documentUri = ref.getDocumentUri ();
             Object document = context.getDocument (documentUri);
-            // todo check null
-            Scope scope = ref.getScope ().move (documentUri, document);
+            Scope scope = ref.getScope ().move (documentUri, nonNull(document));
             Bucket bucket = Bucket.createBucket(scope, document);
 
             // no object -> to (simple) value
             if (bucket == null) {
-                assert document != null;
                 context.addRef (ref, scope, document);
                 return;
             }
@@ -233,7 +233,7 @@ public class ResolverRef {
                 throw new ResolverException (String.format ("failed to resolve ref <%s/%s>.", documentUri, ref));
             }
 
-            context.addRef (ref, referenced.getScope (), referenced.getValue ()); // todo value is null ?
+            context.addRef (ref, referenced.getScope (), nonNull(referenced.getValue ()));
         });
     }
 

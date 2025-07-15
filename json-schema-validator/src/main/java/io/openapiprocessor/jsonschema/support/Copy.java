@@ -5,6 +5,7 @@
 
 package io.openapiprocessor.jsonschema.support;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.PolyNull;
 
 import java.util.Collection;
@@ -44,6 +45,6 @@ public class Copy {
             return copy;
         }
 
-        return Function.identity ().apply (source);
+        return source;
     }
 }
