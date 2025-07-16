@@ -15,6 +15,9 @@ import java.net.URI;
 import java.util.*;
 
 import static io.openapiprocessor.jsonschema.schema.Keywords.*;
+import static io.openapiprocessor.jsonschema.support.Types.asColNonNull;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.unmodifiableCollection;
 
 public class JsonSchemaObject implements JsonSchema {
     private final JsonSchemaContext context;
@@ -326,7 +329,7 @@ public class JsonSchemaObject implements JsonSchema {
         if (raw == null)
             return null;
 
-        return Collections.unmodifiableCollection(Types.asCol(raw));
+        return unmodifiableCollection(asColNonNull(raw));
     }
 
     @Override
@@ -432,7 +435,7 @@ public class JsonSchemaObject implements JsonSchema {
         }
 
         else if (raw instanceof Collection) {
-            return Collections.unmodifiableCollection(Types.asCol(raw));
+            return unmodifiableCollection(asColNonNull(raw));
         }
 
         // todo

@@ -47,7 +47,7 @@ public class Dependencies {
                     Set<String> instanceProperties = new HashSet<> (instanceObject.keySet ());
 
                     propDependency.getProperties ().forEach ( p -> {
-                        if (!instanceProperties.contains (p)) {
+                        if (!instanceProperties.contains (nonNull(p))) {
                             DependencyStep depStep = new DependencyStep (schema, instance, p);
                             depStep.setInvalid ();
                             step.add (depStep);

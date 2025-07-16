@@ -66,7 +66,12 @@ public class Types {
     }
 
     @SuppressWarnings ("unchecked")
-    public static <T> @PolyNull Collection<T> asCol (@PolyNull Object o) {
+    public static <T> @PolyNull Collection<@Nullable T> asCol (@PolyNull Object o) {
+        return (Collection<@Nullable T>) o;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> @PolyNull Collection<T> asColNonNull(@PolyNull Object o) {
         return (Collection<T>) o;
     }
 
