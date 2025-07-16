@@ -27,7 +27,7 @@ class OverlayApplierSpec : StringSpec({
     fun createOpenApi(): OpenApiResult {
         return ApiBuilder()
             .withApi("file:///openapi.yaml",
-                """
+                $$"""
                 openapi: "3.1.0"
                 info:
                   version: 1.0.0
@@ -51,7 +51,7 @@ class OverlayApplierSpec : StringSpec({
                           content:
                             application/json:
                               schema:
-                                ${'$'}ref: '#/components/schemas/Foo'
+                                $ref: '#/components/schemas/Foo'
                 
                 components:
                   schemas:
@@ -81,14 +81,15 @@ class OverlayApplierSpec : StringSpec({
     "remove from object" {
         val openapi = createOpenApi()
         val overlay = OverlayBuilder()
-            .withOverlay("""
+            .withOverlay(
+                """
                 overlay: 1.0.0
                 info:
                   title: Remove
                   version: 1.0.0
                 actions:
                   - description: remove property from object
-                    target: '${'$'}.components.schemas.Foo.properties.foo'
+                    target: '$.components.schemas.Foo.properties.foo'
                     remove: true
             """.trimIndent())
             .buildOverlay10()
