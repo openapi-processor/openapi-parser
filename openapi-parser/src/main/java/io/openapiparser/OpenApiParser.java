@@ -66,7 +66,7 @@ public class OpenApiParser {
 
         return new OpenApiResult31(
                 new Context(result.getScope(), result.getRegistry()),
-                Bucket.createBucket(result.getScope(), document),
+                nonNull(Bucket.createBucket(result.getScope(), document)),
                 documents);
     }
 
@@ -76,14 +76,14 @@ public class OpenApiParser {
 
         return new OpenApiResult30(
                 new Context(result.getScope(), result.getRegistry()),
-                Bucket.createBucket(result.getScope(), document),
+                nonNull(Bucket.createBucket(result.getScope(), document)),
                 documents);
     }
 
     private String getVersion(URI baseUri, Object document) {
         Scope scope = Scope.createScope(baseUri, document, SchemaVersion.getLatest());
         Bucket api = nonNull(Bucket.createBucket(scope, document));
-        return  api.convert (OPENAPI, new StringNotNullConverter ());
+        return  nonNull(api.convert (OPENAPI, new StringNotNullConverter ()));
     }
 
     private boolean isVersion30(String version) {

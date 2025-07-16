@@ -10,6 +10,7 @@ import io.openapiparser.Properties;
 import io.openapiparser.support.Required;
 import io.openapiprocessor.jsonschema.converter.NoValueException;
 import io.openapiprocessor.jsonschema.schema.Bucket;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Collection;
 import java.util.Map;
@@ -33,7 +34,7 @@ public class Overlay extends Properties implements Extensions {
         return getStringOrThrow (OVERLAY);
     }
 
-    public String getExtends () {
+    public @Nullable String getExtends () {
         return getStringOrNull (EXTENDS);
     }
 

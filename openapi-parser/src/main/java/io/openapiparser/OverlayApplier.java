@@ -19,6 +19,8 @@ import org.slf4j.LoggerFactory;
 import java.io.InputStream;
 import java.util.*;
 
+import static io.openapiprocessor.jsonschema.support.Null.nonNull;
+
 @Experimental
 public class OverlayApplier {
     private static final Logger log = LoggerFactory.getLogger (OverlayApplier.class);
@@ -64,7 +66,7 @@ public class OverlayApplier {
 
                     } else if (Types.isArray(target)) {
                         Collection<Object> targetArray = Types.asArray(target);
-                        targetArray.add(action.getUpdate());
+                        targetArray.add(nonNull(action.getUpdate()));
 
                     } else {
                         log.warn("target json path {} is not an object or array!", location);
@@ -138,11 +140,12 @@ public class OverlayApplier {
         });
     }
 
-    private Map<String, Object> deepCopy(Map<String, Object> object) {
+    @SuppressWarnings("unchecked")
+    private static Map<String, Object> deepCopy(Map<String, Object> object) {
         return (Map<String, Object>) deepCopy((Object)object);
     }
 
-    private Object deepCopy (Object object) {
+    private static Object deepCopy (Object object) {
         if (Types.isObject(object)) {
             return deepCopyMap(Types.asObject(object));
 
@@ -154,7 +157,7 @@ public class OverlayApplier {
         }
     }
 
-    private Map<String, Object> deepCopyMap(Map<String, Object> source) {
+    private static Map<String, Object> deepCopyMap(Map<String, Object> source) {
         Map<String, Object> copy = new LinkedHashMap<>(source.size());
         source.forEach((key, value) -> {
             copy.put(key, deepCopy(value));
@@ -162,7 +165,7 @@ public class OverlayApplier {
         return copy;
     }
 
-    private Collection<Object> deepCopyArray(Collection<Object> source) {
+    private static Collection<Object> deepCopyArray(Collection<Object> source) {
         Collection<Object> copy = new ArrayList<>(source.size());
         source.forEach(item -> {
            copy.add(deepCopy(item));
