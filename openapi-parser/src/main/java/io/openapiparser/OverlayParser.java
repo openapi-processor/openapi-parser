@@ -7,6 +7,7 @@ package io.openapiparser;
 
 import io.openapiprocessor.jsonschema.converter.StringNotNullConverter;
 import io.openapiprocessor.jsonschema.schema.*;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
 
@@ -53,19 +54,23 @@ public class OverlayParser {
             Scope scope = Scope.empty();
             return new OverlayResult10(
                     new Context(scope, new ReferenceRegistry()),
-                    Bucket.createBucket(scope, document));
+                    nonNull(Bucket.createBucket(scope, document)));
         } else {
             throw new UnknownVersionException(version);
         }
     }
 
-    private String getVersion(URI baseUri, Object document) {
+    private @Nullable String getVersion(URI baseUri, Object document) {
         Scope scope = Scope.empty();
         Bucket api = nonNull(Bucket.createBucket(scope, document));
         return  api.convert (OVERLAY, new StringNotNullConverter());
     }
 
-    private boolean isVersion10(String version) {
+    private boolean isVersion10(@Nullable String version) {
+        if (version == null) {
+            return false;
+        }
+
         return checkVersion (version, "1.0");
     }
 

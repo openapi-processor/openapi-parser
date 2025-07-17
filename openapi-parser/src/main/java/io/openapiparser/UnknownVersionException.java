@@ -5,8 +5,10 @@
 
 package io.openapiparser;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 public class UnknownVersionException extends RuntimeException {
-    public UnknownVersionException (String version) {
-        super(version);
+    public UnknownVersionException (@Nullable String version) {
+        super(version != null ? version : "null");
     }
 }
