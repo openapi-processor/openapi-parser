@@ -31,7 +31,7 @@ public class JsonSchemaRefConverter implements PropertyConverter<JsonSchema> {
             return new JsonSchemaBoolean (JsonPointer.from (location), (Boolean) value, refContext);
 
         } else if (value instanceof Map) {
-            Map<String, Object> props = Types.asMap (value);
+            Map<String, @Nullable Object> props = Types.asMap (value);
             return new JsonSchemaObject (JsonPointer.from (location), props, refContext);
         } else {
             throw new TypeMismatchException (location, JsonSchema.class);

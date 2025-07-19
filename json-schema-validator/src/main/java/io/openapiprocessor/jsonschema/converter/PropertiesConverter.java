@@ -23,5 +23,5 @@ public interface PropertiesConverter<T> {
      * @param location property location, json pointer
      * @return T converted value
      */
-    @Nullable T convert (Map<String, Object> value, String location);
+    @Nullable T convert (Map<String, @Nullable Object> value, String location);
 }

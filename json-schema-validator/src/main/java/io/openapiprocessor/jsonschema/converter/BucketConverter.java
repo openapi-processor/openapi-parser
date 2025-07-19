@@ -30,7 +30,7 @@ public class BucketConverter implements PropertyConverter<Bucket> {
         if (!(value instanceof Map))
             throw new TypeMismatchException (location, Map.class);
 
-        Map<String, Object> props = Types.asMap (value);
+        Map<String, @Nullable Object> props = Types.asMap (value);
         Scope scope = parent.getScope ().move (props);
         return new Bucket (scope, location, props);
     }

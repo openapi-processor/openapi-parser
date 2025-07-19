@@ -31,7 +31,7 @@ public class JsonSchemaConverter implements PropertyConverter<JsonSchema> {
             return new JsonSchemaBoolean (JsonPointer.from (location), (Boolean) value, parentContext);
 
         } else if (Types.isObject (value)) {
-            Map<String, Object> props = Types.asObject (value);
+            Map<String, @Nullable Object> props = Types.asObject (value);
             return new JsonSchemaObject (JsonPointer.from (location), props, parentContext.withId (props));
         } else {
             throw new TypeMismatchException (location, JsonSchema.class);

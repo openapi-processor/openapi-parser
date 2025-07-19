@@ -12,7 +12,9 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.net.URI;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
+import static io.openapiprocessor.jsonschema.support.Null.requiresNonNull;
 import static io.openapiprocessor.jsonschema.support.Types.asBoolean;
 import static io.openapiprocessor.jsonschema.support.Types.convertMapOrNull;
 import static io.openapiprocessor.jsonschema.support.Uris.createUri;
@@ -26,13 +28,13 @@ public class VocabularyConverter implements PropertyConverter<Vocabularies> {
 
     @Override
     public @Nullable Vocabularies convert (String name, @Nullable Object value, String location) {
-        Map<String, Object> objects = convertMapOrNull (location, value);
+        Map<String, @Nullable Object> objects = convertMapOrNull (location, value);
         if (objects == null)
             return null;
 
         Map<URI, Boolean> vocabularies = new LinkedHashMap<> ();
         objects.forEach ((propKey, propValue) -> {
-            vocabularies.put (createUri (propKey), asBoolean (propValue));
+            vocabularies.put (createUri (propKey), requiresNonNull(asBoolean(propValue)));
         });
 
         return Vocabularies.create (vocabularies, context.getVersion ());

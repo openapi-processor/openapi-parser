@@ -46,23 +46,23 @@ public class Types {
     }
 
     @SuppressWarnings ("unchecked")
-    public static Map<String, Object> convertMap (String path, @Nullable Object value) {
+    public static Map<String, @Nullable Object> convertMap (String path, @Nullable Object value) {
         return convert (path, value, Map.class);
     }
 
     @SuppressWarnings ("unchecked")
-    public static @Nullable Map<String, Object> convertMapOrNull (String path, @Nullable Object value) {
+    public static @Nullable Map<String, @Nullable Object> convertMapOrNull (String path, @Nullable Object value) {
         return convertOrNull (path, value, Map.class);
     }
 
     @SuppressWarnings ("unchecked")
-    public static @PolyNull Map<String, Object> asMap (@PolyNull Object o) {
-        return (Map<String, Object>) o;
+    public static @PolyNull Map<String, @Nullable Object> asMap (@PolyNull Object o) {
+        return (Map<String, @Nullable Object>) o;
     }
 
     @SuppressWarnings ("unchecked")
-    public static @PolyNull Map<String, Object> asObject (@PolyNull Object o) {
-        return (Map<String, Object>) o;
+    public static @PolyNull Map<String, @Nullable Object> asObject (@PolyNull Object o) {
+        return (Map<String, @Nullable Object>) o;
     }
 
     @SuppressWarnings ("unchecked")

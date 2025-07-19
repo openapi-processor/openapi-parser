@@ -33,6 +33,22 @@ public class Null {
     }
 
     /**
+     * like Objects.requireNonNull() but with checkerframework annotations.
+     *
+     * @param value the non-null value
+     * @return {@code value}
+     * @param <T> the type of {@code value}
+     */
+    @EnsuresNonNull(value = "#1")
+    public static <T extends @Nullable Object> @NonNull T requiresNonNull(@Nullable T value) {
+        if (value == null) {
+            throw new NullPointerException();
+        }
+
+        return (@NonNull T) value;
+    }
+
+    /**
      * suppress nullable warning for a value that can be null.
      *
      * @param value the value that may be null

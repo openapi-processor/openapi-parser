@@ -29,7 +29,7 @@ public class MapJsonSchemasConverter implements PropertyConverter<Map<String, Js
 
     @Override
     public @Nullable Map<String, JsonSchema> convert (String name, @Nullable Object value, String location) {
-        Map<String, Object> objects = Types.convertMapOrNull (location, value);
+        Map<String, @Nullable Object> objects = Types.convertMapOrNull (location, value);
         if (objects == null)
             return null;
 
@@ -45,7 +45,7 @@ public class MapJsonSchemasConverter implements PropertyConverter<Map<String, Js
         return Collections.unmodifiableMap (result);
     }
 
-    private @Nullable JsonSchema create (String name, Object value, String location) {
+    private @Nullable JsonSchema create (String name, @Nullable Object value, String location) {
         return new JsonSchemaConverter (parentContext).convert (name, value, location);
     }
 

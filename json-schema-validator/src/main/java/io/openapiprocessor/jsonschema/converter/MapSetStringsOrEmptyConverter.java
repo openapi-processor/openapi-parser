@@ -35,7 +35,7 @@ public class MapSetStringsOrEmptyConverter implements PropertyConverter<Map<Stri
         if (value == null)
             return responseType == ResponseType.EMPTY ? Collections.emptyMap () : null;
 
-        Map<String, Object> values = Types.convertMap (location, value);
+        Map<String, @Nullable Object> values = Types.convertMap (location, value);
 
         Map<String, Set<String>> required = new LinkedHashMap<> ();
         values.forEach ((propName, propValue) -> {

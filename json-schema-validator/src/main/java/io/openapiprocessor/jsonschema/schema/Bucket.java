@@ -25,7 +25,7 @@ import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 public class Bucket {
     private final Scope scope;
     private final JsonPointer location;
-    private final Map<String, Object> properties;
+    private final Map<String, @Nullable Object> properties;
 
     public static Bucket empty() {
         return createBucket(Scope.empty(), Collections.emptyMap());
@@ -57,7 +57,7 @@ public class Bucket {
      * @param scope the scope of the document
      * @param properties the document properties
      */
-    public Bucket (Scope scope, Map<String, Object> properties) {
+    public Bucket (Scope scope, Map<String, @Nullable Object> properties) {
         this.scope = scope;
         this.location = JsonPointer.empty();
         this.properties = properties;
@@ -70,7 +70,7 @@ public class Bucket {
      * @param location the location (json pointer) inside {@code source}
      * @param properties the document properties
      */
-    public Bucket (Scope scope, JsonPointer location, Map<String, Object> properties) {
+    public Bucket (Scope scope, JsonPointer location, Map<String, @Nullable Object> properties) {
         this.scope = scope;
         this.location = location;
         this.properties = properties;
@@ -83,7 +83,7 @@ public class Bucket {
      * @param location the location (json pointer) inside {@code source}
      * @param properties the document properties
      */
-    public Bucket (Scope scope, String location, Map<String, Object> properties) {
+    public Bucket (Scope scope, String location, Map<String, @Nullable Object> properties) {
         this.scope = scope;
         this.location = JsonPointer.from (location);
         this.properties = properties;
@@ -180,7 +180,7 @@ public class Bucket {
      *
      * @return the property map
      */
-    public Map<String, Object> getRawValues () {
+    public Map<String, @Nullable Object> getRawValues () {
         return properties;
     }
 
@@ -213,11 +213,11 @@ public class Bucket {
             current = current.append (token);
 
             if (value == properties) {
-                Map<String, Object> self = Types.asObject (value);
+                Map<String, @Nullable Object> self = Types.asObject (value);
                 value = getObjectValue (self, current);
 
             } else if (Types.isObject (value)) {
-                Map<String, Object> object = Types.asObject (value);
+                Map<String, @Nullable Object> object = Types.asObject (value);
 
                 value = getObjectValue (object, current);
                 scope = scope.move (value);
@@ -241,7 +241,7 @@ public class Bucket {
         return value.getValue ();
     }
 
-    private Object getObjectValue (Map<String, Object> object, JsonPointer pointer) {
+    private Object getObjectValue (Map<String, @Nullable Object> object, JsonPointer pointer) {
         Object value = object.get (pointer.tail ());
         if (value == null) {
             throw new NoValueException (pointer.toString ());
@@ -310,7 +310,7 @@ public class Bucket {
         return location.getJsonPointer (property);
     }
 
-    public void forEach (BiConsumer<String, Object> action) {
+    public void forEach (BiConsumer<String, @Nullable Object> action) {
         properties.forEach (action);
     }
 

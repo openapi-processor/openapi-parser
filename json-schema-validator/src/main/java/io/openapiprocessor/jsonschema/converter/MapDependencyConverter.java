@@ -33,7 +33,7 @@ public class MapDependencyConverter implements PropertyConverter<Map<String, Jso
     public @Nullable Map<String, JsonDependency> convert (
         String name, @Nullable Object value, String location)
     {
-        Map<String, Object> objects = Types.convertMapOrNull (location, value);
+        Map<String, @Nullable Object> objects = Types.convertMapOrNull (location, value);
         if (objects == null)
             return null;
 
