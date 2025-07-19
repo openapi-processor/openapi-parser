@@ -17,7 +17,7 @@ import static io.openapiprocessor.jsonschema.support.Types.isString;
  */
 public class IdProvider201909 implements IdProvider {
     @Override
-    public @Nullable String getId (Map<String, Object> properties) {
+    public @Nullable String getId (Map<String, @Nullable Object> properties) {
         Object rawId = properties.get (Keywords.ID);
         if (!isString (rawId))
             return null;

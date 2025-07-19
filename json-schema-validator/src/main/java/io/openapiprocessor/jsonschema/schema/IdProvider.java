@@ -21,5 +21,5 @@ public interface IdProvider {
      * @param properties the object properties
      * @return scope id or null
      */
-    @Nullable String getId (Map<String, Object> properties);
+    @Nullable String getId (Map<String, @Nullable Object> properties);
 }

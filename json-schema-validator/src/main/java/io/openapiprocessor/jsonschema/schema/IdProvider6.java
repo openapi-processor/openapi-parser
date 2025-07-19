@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class IdProvider6 implements IdProvider {
     @Override
-    public @Nullable String getId (Map<String, Object> properties) {
+    public @Nullable String getId (Map<String, @Nullable Object> properties) {
         Object ref = properties.get (Keywords.REF);
         if (Types.isString (ref))
             return null;

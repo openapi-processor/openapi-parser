@@ -52,7 +52,7 @@ class JsonPointerSpec : StringSpec({
             Pointer("/ ", 7),
             Pointer("/m~0n", 8),
         ).forEach {
-            bucket.getRawValueValue(JsonPointer.from(it.pointer)) shouldBe it.expected
+            bucket!!.getRawValueValue(JsonPointer.from(it.pointer)) shouldBe it.expected
         }
     }
 
@@ -93,7 +93,7 @@ class JsonPointerSpec : StringSpec({
             Pointer("#/m~0n", 8),
             Pointer(null, document)
         ).forEach {
-            bucket.getRawValueValue(JsonPointer.from(it.pointer)) shouldBe it.expected
+            bucket?.getRawValueValue(JsonPointer.from(it.pointer)) shouldBe it.expected
         }
     }
 
