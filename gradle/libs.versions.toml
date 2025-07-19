@@ -4,19 +4,23 @@ openapiparser = "2025.4-SNAPSHOT"
 build-jdk = "11"
 test-jdk = "17"
 
-kotlin = "2.2.0"
+# using the embedded kotlin version of gradle to avoid mixed versions
+kotlin = "2.0.21"
+kotlinx-json = "1.7.3"
+
 checker = "3.49.5"
 checkerp = "0.6.56"
 jacoco = "0.8.11"
 outdated = "0.52.0"
 
 [libraries]
-
 # buildSrc
 plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 plugin-checker = { module = "org.checkerframework:checkerframework-gradle-plugin", version.ref = "checkerp" }
 plugin-outdated = { module = "com.github.ben-manes:gradle-versions-plugin", version.ref = "outdated" }
+kotlinx-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-json" }
 
+# src
 checker = { module = "org.checkerframework:checker", version.ref = "checker" }
 checkerq = { module = "org.checkerframework:checker-qual", version.ref = "checker" }
 
@@ -29,7 +33,6 @@ jackson-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-y
 jackson-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin" }
 
 snakeyaml = "org.yaml:snakeyaml:2.4"
-
 jsonpath = "com.jayway.jsonpath:json-path:2.9.0"
 
 kotest-bom = "io.kotest:kotest-bom:5.9.1"
@@ -44,5 +47,6 @@ mockk = "io.mockk:mockk:1.14.5"
 [plugins]
 #kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 nexus = { id = "io.github.gradle-nexus.publish-plugin", version = "2.0.0" }
+checker = { id = "org.checkerframework", version.ref = "checkerp" }
 jacoco = { id = "org.barfuin.gradle.jacocolog", version = "3.1.0" }
 sonar = { id = "org.sonarqube", version =  "6.2.0.5505" }

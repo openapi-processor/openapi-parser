@@ -16,5 +16,6 @@ dependencies {
     implementation(libs.plugin.kotlin)
     implementation(libs.plugin.checker)
     implementation(libs.plugin.outdated)
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
+
+    implementation(libs.kotlinx.json)
 }
