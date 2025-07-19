@@ -52,6 +52,10 @@ public class Context {
         return ctx.getReference (nonNull (getRef (bucket)));
     }
 
+    public SchemaVersion getVersion() {
+        return scope.getVersion ();
+    }
+
     public JsonInstanceContext getInstanceContext () {
         return new JsonInstanceContext (scope, references);
     }

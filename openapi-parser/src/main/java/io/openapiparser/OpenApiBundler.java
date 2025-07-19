@@ -46,10 +46,7 @@ public class OpenApiBundler {
         URI documentUri = root.getScope ().getDocumentUri ();
         Object document = documents.get (documentUri);
 
-        Bucket bundled = Bucket.createBucket(root.getScope (), document, root.getLocation ());
-        if (bundled == null)
-            return null;  // nullable: throw??
-
+        Bucket bundled = createBucket(root.getScope(), document, root.getLocation());
         walkBucket (bundled);
 
         Map<String, Object> rawValues = bundled.getRawValues ();
@@ -106,33 +103,35 @@ public class OpenApiBundler {
         bucket.forEach ((name, value) -> {
             JsonPointer propLocation = location.append (name);
             Keyword keyword = version.getKeyword (name);
-            boolean navigable = keyword != null && keyword.isNavigable ();
 
-            if (name.equals (Keywords.REF) && isString (value)) {
-                Runnable modify = walkRef (bucket, propLocation);
-                if (modify != null) {
-                    modifications.add (modify);
+            if (keyword != null) {
+                if (name.equals (Keywords.REF) && isString (value)) {
+                    Runnable modify = walkRef (bucket, propLocation);
+                    if (modify != null) {
+                        modifications.add (modify);
+                    }
+
+                  // not OpenAPI 3.0
+    //            } else if (name.equals (Keywords.RECURSIVE_REF) && isString (value)) {
+    //                Ref ref = createRef (scope, name, value);
+    //                walkRef (ref, propLocation);
+
+                } else if (keyword.isNavigable() && keyword.isSchema () && isObject (value)) {
+                    walkSchema (scope, value, propLocation);
+
+                } else if (keyword.isNavigable() && keyword.isSchemaArray () && isArray (value)) {
+                    walkSchemaArray (scope, value, propLocation);
+
+                } else if (keyword.isNavigable() && keyword.isSchemaMap ()) {
+                    walkSchemaMap (scope, value, propLocation);
                 }
+            } else {
+                if (isObject(value)) {
+                    walkSchema(scope, value, propLocation);
 
-              // not OpenAPI 3.0
-//            } else if (name.equals (Keywords.RECURSIVE_REF) && isString (value)) {
-//                Ref ref = createRef (scope, name, value);
-//                walkRef (ref, propLocation);
-
-            } else if (navigable && keyword.isSchema () && isObject (value)) {
-                walkSchema (scope, value, propLocation);
-
-            } else if (navigable && keyword.isSchemaArray () && isArray (value)) {
-                walkSchemaArray (scope, value, propLocation);
-
-            } else if (navigable && keyword.isSchemaMap ()) {
-                walkSchemaMap (scope, value, propLocation);
-
-            } else if (keyword == null && isObject (value)) {
-                walkSchema (scope, value, propLocation);
-
-            } else if (keyword == null && isArray (value)) {
-                walkSchemaArray (scope, value, propLocation);
+                } else if (isArray(value)) {
+                    walkSchemaArray(scope, value, propLocation);
+                }
             }
         });
 
@@ -152,7 +151,7 @@ public class OpenApiBundler {
 
         URI documentUri = reference.getDocumentUri ();
         boolean external = isExternalDocument (documentUri);
-        Bucket documentBucket = getDocumentBucket (documentUri);
+        Bucket documentBucket = createDocumentBucket(documentUri);
 
         JsonPointer refPointer = reference.getPointer ();
         String refName = refPointer.tail ();
@@ -288,14 +287,31 @@ public class OpenApiBundler {
         return refValue;
     }
 
-    private Bucket getDocumentBucket (URI documentUri) {
+    private Bucket getRefBucket(JsonPointer refPointer, RawValue refValue) {
+        return createBucket(refValue.getScope(), refValue.getValue(), refPointer);
+    }
+
+    private Bucket createDocumentBucket(URI documentUri) {
         Object document = documents.get (documentUri);
         if (document == null) {
-            throw new RuntimeException ();
+            throw new BundleException (documentUri);
         }
 
-        Scope scope = createScope (documentUri, document, SchemaVersion.Draft4);
-        return Bucket.createBucket(scope, document);
+        return createBucket(documentUri, document);
+    }
+
+    private Bucket createBucket(URI documentUri, Object document) {
+        Scope scope = createScope (documentUri, document, context.getVersion());
+        return createBucket(scope, document, JsonPointer.empty());
+    }
+
+    private Bucket createBucket(Scope scope, @Nullable Object source, JsonPointer location) {
+        Bucket bucket = Bucket.createBucket(scope, source, location);
+        if (bucket == null) {
+            throw new BucketException(scope.getDocumentUri());
+        }
+
+        return bucket;
     }
 
     private String createRefPointer (String type, String refName) {
@@ -306,7 +322,7 @@ public class OpenApiBundler {
         Scope scope = currentScope.move (value);
         Bucket bucket = Bucket.createBucket(scope, value, location);
         if (bucket == null) {
-            return; // todo error
+            throw new BucketException(currentScope.getDocumentUri());
         }
 
         walkBucket (bucket);
