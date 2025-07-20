@@ -13,6 +13,7 @@ import io.openapiparser.model.ov10.Overlay;
 import io.openapiparser.support.Experimental;
 import io.openapiprocessor.jsonschema.schema.NotImplementedException;
 import io.openapiprocessor.jsonschema.support.Types;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,9 +26,9 @@ import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 public class OverlayApplier {
     private static final Logger log = LoggerFactory.getLogger (OverlayApplier.class);
 
-    private final Map<String, Object> document;
+    private final Map<String, @Nullable Object> document;
 
-    public OverlayApplier(Map<String, Object> document) {
+    public OverlayApplier(Map<String, @Nullable Object> document) {
         this.document = deepCopy(document);
     }
 

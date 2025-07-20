@@ -18,7 +18,7 @@ public class ExtensionsConverter implements PropertiesConverter<Map<String, Obje
     private static final Pattern EXTENSION_PATTERN = Pattern.compile("^x-");
 
     @Override
-    public @Nullable Map<String, Object> convert (Map<String, Object> properties, String location) {
+    public @Nullable Map<String, Object> convert (Map<String, @Nullable Object> properties, String location) {
         Map<String, Object> extensions = new LinkedHashMap<> ();
 
         properties.forEach ((property, value) -> {

@@ -9,6 +9,7 @@ import io.openapiparser.Factory;
 import io.openapiprocessor.jsonschema.converter.PropertiesConverter;
 import io.openapiprocessor.jsonschema.schema.JsonPointer;
 import io.openapiprocessor.jsonschema.schema.Scope;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.*;
 
@@ -29,7 +30,7 @@ public class MapObjectsOrEmptySelfConverter<T> implements PropertiesConverter<Ma
     }
 
     @Override
-    public Map<String, T> convert (Map<String, Object> properties, String location) {
+    public Map<String, T> convert (Map<String, @Nullable Object> properties, String location) {
         Map<String, T> objects = new LinkedHashMap<> ();
 
         properties.forEach ((property, value) -> {

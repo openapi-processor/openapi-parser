@@ -42,7 +42,7 @@ class OpenApiBundlerSpec : StringSpec({
         return Bucket.createBucket(result.scope, bundle)!!
     }
 
-    fun getObject(bucket: Bucket, jsonPointer: String): Map<String, Any> {
+    fun getObject(bucket: Bucket, jsonPointer: String): Map<String, Any?> {
         return asObject(bucket.getRawValue(from(jsonPointer))!!.value)
     }
 

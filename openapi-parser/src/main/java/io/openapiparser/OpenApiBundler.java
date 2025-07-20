@@ -42,19 +42,19 @@ public class OpenApiBundler {
         this.rootDocumentUri = root.getScope ().getDocumentUri ();
     }
 
-    public Map<String, Object> bundle () {
+    public Map<String, @Nullable Object> bundle () {
         URI documentUri = root.getScope ().getDocumentUri ();
         Object document = documents.get (documentUri);
 
         Bucket bundled = createBucket(root.getScope(), document, root.getLocation());
         walkBucket (bundled);
 
-        Map<String, Object> rawValues = bundled.getRawValues ();
+        Map<String, @Nullable Object> rawValues = bundled.getRawValues ();
         mergeComponents (rawValues);
         return rawValues;
     }
 
-    private void mergeComponents (Map<String, Object> bundle) {
+    private void mergeComponents (Map<String, @Nullable Object> bundle) {
         Map<String, Object> bundleComponents = asObject(bundle.get ("components"));
         if (bundleComponents == null) {
             bundleComponents = new LinkedHashMap<> ();
@@ -143,7 +143,7 @@ public class OpenApiBundler {
     }
 
     private @Nullable Runnable walkRef (Bucket bucket, JsonPointer location) {
-        Map<String, Object> bucketValues = bucket.getRawValues ();
+        Map<String, @Nullable Object> bucketValues = bucket.getRawValues ();
         Reference reference = context.getReference (bucket);
 
         URI refUri = reference.getAbsoluteRefUri ();
@@ -199,15 +199,7 @@ public class OpenApiBundler {
         return result;
     }
 
-    private static Bucket getRefBucket (JsonPointer refPointer, RawValue refValue) {
-        Bucket ref = Bucket.createBucket(refValue.getScope (), refValue.getValue (), refPointer);
-        if (ref == null) {
-            throw new RuntimeException ();
-        }
-        return ref;
-    }
-
-    private void bundleSchema (Map<String, Object> rawValues, String refName, RawValue refValue, boolean loop) {
+    private void bundleSchema (Map<String, @Nullable Object> rawValues, String refName, RawValue refValue, boolean loop) {
         if (!loop) {
             schemas.put (refName, refValue.getValue ());
         }
@@ -257,7 +249,7 @@ public class OpenApiBundler {
         rawValues.put (Keywords.REF, createRefPointer ("links", refName));
     }
 
-    private void bundleCallback (Map<String, Object> rawValues, String refName, RawValue refValue) {
+    private void bundleCallback (Map<String, @Nullable Object> rawValues, String refName, RawValue refValue) {
         callbacks.put (refName, refValue.getValue ());
         rawValues.put (Keywords.REF, createRefPointer ("callbacks", refName));
     }
