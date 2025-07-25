@@ -40,7 +40,7 @@ public class MapObjectsOrEmptySelfConverter<T> implements PropertiesConverter<Ma
         return Collections.unmodifiableMap (objects);
     }
 
-    private T create (String name, Object item, String location) {
+    private T create (String name, @Nullable Object item, String location) {
         return nonNull (converter.convert (name, item, location));
     }
 

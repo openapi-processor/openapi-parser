@@ -12,6 +12,7 @@ import io.openapiprocessor.jsonschema.ouput.OutputUnit;
 import io.openapiprocessor.jsonschema.schema.*;
 import io.openapiprocessor.jsonschema.validator.Validator;
 import io.openapiprocessor.jsonschema.validator.steps.ValidationStep;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,7 +60,7 @@ public class OpenApiResult31 implements OpenApiResult {
     }
 
     @Override
-    public Map<String, Object> bundle () {
+    public Map<String, @Nullable Object> bundle () {
         return new OpenApiBundler (context, documents, root).bundle ();
     }
 

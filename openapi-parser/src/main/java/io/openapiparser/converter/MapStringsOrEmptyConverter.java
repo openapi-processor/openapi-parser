@@ -21,7 +21,7 @@ public class MapStringsOrEmptyConverter implements PropertyConverter<Map<String,
 
     @Override
     public @Nullable Map<String, String> convert (String name, @Nullable Object value, String location) {
-        final Map<String, Object> values = Types.convertMapOrNull (location, value);
+        final Map<String, @Nullable Object> values = Types.convertMapOrNull (location, value);
         if (value == null)
             return Collections.emptyMap ();
 
@@ -29,7 +29,7 @@ public class MapStringsOrEmptyConverter implements PropertyConverter<Map<String,
     }
 
     @SuppressWarnings ({"unchecked", "rawtypes"})
-    private static Map<String, String> asMap (@Nullable Map<String, Object> value) {
+    private static Map<String, String> asMap (@Nullable Map<String, @Nullable Object> value) {
         return (Map<String, String>) nonNull ((Map) value);
     }
 }
