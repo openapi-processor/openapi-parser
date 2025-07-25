@@ -8,6 +8,7 @@ package io.openapiparser.model.v30;
 import io.openapiparser.Context;
 import io.openapiparser.Properties;
 import io.openapiprocessor.jsonschema.schema.Bucket;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
 
@@ -24,7 +25,7 @@ public class Link extends Properties implements Extensions {
     }
 
     @Override
-    public Map<String, Object> getExtensions () {
+    public Map<String, @Nullable Object> getExtensions () {
         return super.getExtensions ();
     }
 }

@@ -8,6 +8,7 @@ package io.openapiparser.model.v30;
 import io.openapiparser.*;
 import io.openapiprocessor.jsonschema.schema.Bucket;
 import io.openapiparser.support.Required;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
 
@@ -60,7 +61,7 @@ public class Response extends Properties implements Reference, Extensions {
     }
 
     @Override
-    public Map<String, Object> getExtensions () {
+    public Map<String, @Nullable Object> getExtensions () {
         return super.getExtensions ();
     }
 }

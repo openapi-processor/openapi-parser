@@ -10,12 +10,13 @@ import io.openapiprocessor.jsonschema.schema.JsonInstance;
 import io.openapiprocessor.jsonschema.schema.JsonSchema;
 import io.openapiprocessor.jsonschema.validator.Validator;
 import io.openapiprocessor.jsonschema.validator.steps.ValidationStep;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static io.openapiprocessor.jsonschema.support.Null.nonNull;
+import static io.openapiprocessor.jsonschema.support.Null.requiresNonNull;
 
 /**
  * validates propertyNames. Since Draft 6.
@@ -34,7 +35,7 @@ public class PropertyNames {
 
         PropertyNamesStep step = new PropertyNamesStep (schema, instance);
 
-        Map<String, Object> instanceObject = nonNull(instance.asObject ());
+        Map<String, @Nullable Object> instanceObject = requiresNonNull(instance.asObject ());
         Set<String> instanceProperties = new HashSet<>(instanceObject.keySet ());
         for (String instanceProperty : instanceProperties) {
             JsonInstance propertyName = instance.getPropertyName (instanceProperty);

@@ -5,6 +5,8 @@
 
 package io.openapiparser.model.ov10;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 import java.util.Map;
 
 /**
@@ -22,6 +24,6 @@ public interface Extensions {
      *
      * @return map of extension properties
      */
-    Map<String, Object> getExtensions ();
+    Map<String, @Nullable Object> getExtensions ();
 
 }

@@ -27,14 +27,14 @@ public class JsonSchemaObject implements JsonSchema {
 
 
     @SuppressWarnings("method.invocation")
-    public JsonSchemaObject (Map<String, Object> document, JsonSchemaContext context) {
+    public JsonSchemaObject (Map<String, @Nullable Object> document, JsonSchemaContext context) {
         this.context = context;
         schemaObject = new Bucket (context.getScope (), document);
         schemaProperties = getBucketProperties (schemaObject);
     }
 
     @SuppressWarnings("method.invocation")
-    public JsonSchemaObject (JsonPointer location, Map<String, Object> document, JsonSchemaContext context) {
+    public JsonSchemaObject (JsonPointer location, Map<String, @Nullable Object> document, JsonSchemaContext context) {
         this.context = context;
         this.schemaObject = new Bucket (context.getScope (), location, document);
         schemaProperties = getBucketProperties (schemaObject);

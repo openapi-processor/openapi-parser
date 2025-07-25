@@ -11,12 +11,13 @@ import io.openapiprocessor.jsonschema.schema.JsonInstance;
 import io.openapiprocessor.jsonschema.schema.JsonSchema;
 import io.openapiprocessor.jsonschema.validator.Validator;
 import io.openapiprocessor.jsonschema.validator.steps.ValidationStep;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static io.openapiprocessor.jsonschema.support.Null.nonNull;
+import static io.openapiprocessor.jsonschema.support.Null.requiresNonNull;
 
 /**
  * validates dependencies. Since Draft 4.
@@ -36,7 +37,7 @@ public class Dependencies {
 
         DependenciesStep step = new DependenciesStep (schema, instance);
 
-        Map<String, Object> instanceObject = nonNull(instance.asObject ());
+        Map<String, @Nullable Object> instanceObject = requiresNonNull(instance.asObject ());
 
         instanceObject.keySet ().forEach (propName -> {
             JsonDependency propDependency = dependencies.get (propName);
@@ -47,7 +48,7 @@ public class Dependencies {
                     Set<String> instanceProperties = new HashSet<> (instanceObject.keySet ());
 
                     propDependency.getProperties ().forEach ( p -> {
-                        if (!instanceProperties.contains (nonNull(p))) {
+                        if (!instanceProperties.contains (requiresNonNull(p))) {
                             DependencyStep depStep = new DependencyStep (schema, instance, p);
                             depStep.setInvalid ();
                             step.add (depStep);

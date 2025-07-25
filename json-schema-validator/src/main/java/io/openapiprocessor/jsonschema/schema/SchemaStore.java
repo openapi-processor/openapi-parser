@@ -205,7 +205,7 @@ public class SchemaStore {
                 new JsonSchemaContext (scope, new ReferenceRegistry (), vocabularies));
 
         } else if (Types.isObject (document)) {
-            Map<String, Object> object = Types.asObject (document);
+            Map<String, @Nullable Object> object = Types.asObject (document);
             Vocabularies vocabularies = getVocabularies (schemaUri, version, object);
 
             return new JsonSchemaObject (object, new JsonSchemaContext (scope, result.getRegistry (), vocabularies));
@@ -215,13 +215,13 @@ public class SchemaStore {
         }
     }
 
-    private Vocabularies getVocabularies (URI schemaUri, SchemaVersion version, Map<String, Object> document) {
+    private Vocabularies getVocabularies (URI schemaUri, SchemaVersion version, Map<String, @Nullable Object> document) {
         URI metaSchemaUri = getMetaSchemaUri(document);
         if (metaSchemaUri == null) {
             return Vocabularies.ALL;
         }
 
-        Map<String, Object> metaObject = getDocument(metaSchemaUri);
+        Map<String, @Nullable Object> metaObject = getDocument(metaSchemaUri);
         if (metaObject == null) {
             return Vocabularies.ALL;
         }
@@ -235,7 +235,7 @@ public class SchemaStore {
         if (schemaVersion != null)
             return schemaVersion;
 
-        Map<String, Object> document = getDocument(schemaUri);
+        Map<String, @Nullable Object> document = getDocument(schemaUri);
         if (document == null)
             return version;
 
@@ -251,16 +251,16 @@ public class SchemaStore {
         return version;
     }
 
-    private @Nullable URI getMetaSchemaUri(Map<String, Object> schema) {
-        Object schemaValue = schema.get (Keywords.SCHEMA);
+    private @Nullable URI getMetaSchemaUri(Map<String, @Nullable Object> schema) {
+        @Nullable Object schemaValue = schema.get (Keywords.SCHEMA);
         if (!Types.isString (schemaValue))
             return null;
 
         return Uris.createUri (Types.asString(schemaValue));
     }
 
-    private @Nullable Map<String, Object> getDocument(URI schemaUri) {
-        Object document = documents.get (schemaUri);
+    private @Nullable Map<String, @Nullable Object> getDocument(URI schemaUri) {
+        @Nullable Object document = documents.get (schemaUri);
         if (document == null) {
             // todo throw unknown meta schema
             throw new RuntimeException ();
@@ -272,12 +272,12 @@ public class SchemaStore {
         return asObject(document);
     }
 
-    private Vocabularies getVocabularies (Map<String, Object> document, SchemaVersion version) {
+    private Vocabularies getVocabularies (Map<String, @Nullable Object> document, SchemaVersion version) {
         Object vocabularyValue = document.get(Keywords.VOCABULARY);
         if (!isObject(vocabularyValue))
             return Vocabularies.ALL;
 
-        Map<String, Object> vocabularyObject = asObject(vocabularyValue);
+        Map<String, Object> vocabularyObject = (Map<String, Object>)asObject(vocabularyValue);
 
         Map<URI, Boolean> vocabularies = new LinkedHashMap<> ();
         vocabularyObject.forEach ((propKey, propValue) -> {

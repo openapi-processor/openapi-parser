@@ -13,6 +13,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.net.URI;
 import java.util.Collection;
 
+import static io.openapiprocessor.jsonschema.support.Null.requiresNonNull;
+
 public class ResolverId {
 
     private final ResolverContext context;
@@ -99,8 +101,8 @@ public class ResolverId {
         }
     }
 
-    private void walkSchemaMap (Scope currentScope, Object value, JsonPointer location) {
-        Scope targetScope = currentScope.move (value);
+    private void walkSchemaMap (Scope currentScope, @Nullable Object value, JsonPointer location) {
+        Scope targetScope = currentScope.move (requiresNonNull(value));
         Bucket bucket = Bucket.createBucket(targetScope, value, location);
         if (bucket == null) {
             return; // // todo error
@@ -108,7 +110,7 @@ public class ResolverId {
 
         bucket.forEach ((propName, propValue) -> {
             JsonPointer propLocation = location.append (propName);
-            walkSchema (targetScope, propValue, propLocation);
+            walkSchema (targetScope, requiresNonNull(propValue), propLocation);
         });
     }
 

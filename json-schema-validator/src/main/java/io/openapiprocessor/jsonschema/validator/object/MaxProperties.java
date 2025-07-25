@@ -8,12 +8,13 @@ package io.openapiprocessor.jsonschema.validator.object;
 import io.openapiprocessor.jsonschema.schema.JsonInstance;
 import io.openapiprocessor.jsonschema.schema.JsonSchema;
 import io.openapiprocessor.jsonschema.validator.steps.ValidationStep;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static io.openapiprocessor.jsonschema.support.Null.nonNull;
+import static io.openapiprocessor.jsonschema.support.Null.requiresNonNull;
 
 /**
  * validates maxProperties. Since Draft 4.
@@ -21,7 +22,7 @@ import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 public class MaxProperties {
 
     public void validate (JsonSchema schema, JsonInstance instance, ValidationStep parentStep) {
-        Map<String, Object> instanceObject = nonNull(instance.asObject ());
+        Map<String, @Nullable Object> instanceObject = requiresNonNull(instance.asObject ());
         Set<String> instanceProperties = new HashSet<>(instanceObject.keySet ());
         Integer maxProperties = schema.getMaxProperties ();
         if (maxProperties == null)

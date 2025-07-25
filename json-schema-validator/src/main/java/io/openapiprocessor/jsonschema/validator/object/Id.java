@@ -9,17 +9,18 @@ import io.openapiprocessor.jsonschema.schema.JsonInstance;
 import io.openapiprocessor.jsonschema.schema.JsonSchema;
 import io.openapiprocessor.jsonschema.schema.Keywords;
 import io.openapiprocessor.jsonschema.validator.steps.CompositeStep;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
 
+import static io.openapiprocessor.jsonschema.support.Null.requiresNonNull;
 import static io.openapiprocessor.jsonschema.support.Types.asString;
 import static io.openapiprocessor.jsonschema.support.Types.isString;
-import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 
 public class Id {
 
     public void validate (JsonSchema schema, JsonInstance instance, CompositeStep parentStep) {
-        Map<String, Object> properties = getInstanceValue (instance);
+        Map<String, @Nullable Object> properties = getInstanceValue (instance);
         Object rawId = properties.get (Keywords.ID);
 
         if (rawId == null || !shouldValidateId (schema))
@@ -44,8 +45,8 @@ public class Id {
         parentStep.add (step);
     }
 
-    private Map<String, Object> getInstanceValue (JsonInstance instance) {
-        return nonNull(instance.asObject ());
+    private Map<String, @Nullable Object> getInstanceValue (JsonInstance instance) {
+        return requiresNonNull(instance.asObject ());
     }
 
     private boolean shouldValidateId (JsonSchema schema) {

@@ -22,7 +22,7 @@ public class ResolverContext {
         this.registry = registry;
     }
 
-    public void addId (URI id, Map<String, Object> document) {
+    public void addId (URI id, Map<String, @Nullable Object> document) {
         if (documents.contains (id)) {
             return;
         }
@@ -30,7 +30,7 @@ public class ResolverContext {
         documents.addId (id, document);
     }
 
-    public void addAnchor (URI anchor, Map<String, Object> document) {
+    public void addAnchor (URI anchor, Map<String, @Nullable Object> document) {
         if (documents.contains (anchor)) {
             return;
         }
@@ -38,7 +38,7 @@ public class ResolverContext {
         documents.addAnchor (anchor, document);
     }
 
-    public void addDynamicAnchor (URI anchor, Map<String, Object> document) {
+    public void addDynamicAnchor (URI anchor, Map<String, @Nullable Object> document) {
         if (documents.contains (anchor)) {
             return;
         }
@@ -58,7 +58,7 @@ public class ResolverContext {
         references.add (ref);
     }
 
-    public void addRef (Ref ref, Map<String, Object> document) {
+    public void addRef (Ref ref, Map<String, @Nullable Object> document) {
         if (registry.hasReference (ref.getAbsoluteUri ())) {
             return;
         }
@@ -66,7 +66,7 @@ public class ResolverContext {
         registry.addReference (ref, ref.getScope (), document);
     }
 
-    public void addDynamicAnchorRef (Ref ref, Map<String, Object> document) {
+    public void addDynamicAnchorRef (Ref ref, Map<String, @Nullable Object> document) {
         if (registry.hasDynamicReference (ref.getAbsoluteUri ())) {
             return;
         }

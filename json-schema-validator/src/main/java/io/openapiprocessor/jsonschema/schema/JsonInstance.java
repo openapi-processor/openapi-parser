@@ -62,7 +62,7 @@ public class JsonInstance {
         return getArraySizeX ();
     }
 
-    public @Nullable Map<String, Object> asObject () {
+    public @Nullable Map<String, @Nullable Object> asObject () {
         return Types.asMap (value);
     }
 
@@ -115,7 +115,7 @@ public class JsonInstance {
         if (value == null || !isObject ())
             throw new TypeMismatchException (location.append (property), Map.class);
 
-        Map<String, Object> object = Types.asMap (value);
+        Map<String, @Nullable Object> object = Types.asMap (value);
         if (!object.containsKey (property))
             throw new InvalidPropertyException (location.append (property));
 
@@ -126,7 +126,7 @@ public class JsonInstance {
         if (value == null || !isObject ())
             throw new TypeMismatchException (location.append (property), Map.class);
 
-        Map<String, Object> object = Types.asMap (value);
+        Map<String, @Nullable Object> object = Types.asMap (value);
         return object.get (property);
     }
 

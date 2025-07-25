@@ -7,14 +7,15 @@ package io.openapiprocessor.jsonschema.validator.object;
 
 import io.openapiprocessor.jsonschema.schema.JsonInstance;
 import io.openapiprocessor.jsonschema.schema.JsonSchema;
-import io.openapiprocessor.jsonschema.validator.steps.ValidationStep;
 import io.openapiprocessor.jsonschema.schema.Keywords;
+import io.openapiprocessor.jsonschema.validator.steps.ValidationStep;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static io.openapiprocessor.jsonschema.support.Null.nonNull;
+import static io.openapiprocessor.jsonschema.support.Null.requiresNonNull;
 
 /**
  * validates dependentRequired. Since Draft 2019-09:
@@ -33,7 +34,7 @@ public class DependentRequired {
             return;
         }
 
-        Map<String, Object> instanceObject = nonNull(instance.asObject ());
+        Map<String, @Nullable Object> instanceObject = requiresNonNull(instance.asObject ());
 
         instanceObject.keySet ().forEach (propName -> {
             Set<String> requiredProperties = required.get (propName);

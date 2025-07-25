@@ -13,6 +13,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.net.URI;
 import java.util.*;
 
+import static io.openapiprocessor.jsonschema.support.Null.requiresNonNull;
 import static io.openapiprocessor.jsonschema.support.Types.*;
 import static io.openapiprocessor.jsonschema.schema.Scope.createScope;
 
@@ -24,16 +25,16 @@ public class OpenApiBundler {
     private final Bucket root;
     private final URI rootDocumentUri;
 
-    private final Map<String, Object> schemas = new LinkedHashMap<> ();
-    private final Map<String, Object> responses = new LinkedHashMap<> ();
-    private final Map<String, Object> parameters = new LinkedHashMap<> ();
-    private final Map<String, Object> examples = new LinkedHashMap<> ();
-    private final Map<String, Object> requestBodies = new LinkedHashMap<> ();
-    private final Map<String, Object> headers = new LinkedHashMap<> ();
-    private final Map<String, Object> securitySchemes = new LinkedHashMap<> ();
-    private final Map<String, Object> links = new LinkedHashMap<> ();
-    private final Map<String, Object> callbacks = new LinkedHashMap<> ();
-    private final Map<String, Object> paths = new LinkedHashMap<> ();
+    private final Map<String, @Nullable Object> schemas = new LinkedHashMap<> ();
+    private final Map<String, @Nullable Object> responses = new LinkedHashMap<> ();
+    private final Map<String, @Nullable Object> parameters = new LinkedHashMap<> ();
+    private final Map<String, @Nullable Object> examples = new LinkedHashMap<> ();
+    private final Map<String, @Nullable Object> requestBodies = new LinkedHashMap<> ();
+    private final Map<String, @Nullable Object> headers = new LinkedHashMap<> ();
+    private final Map<String, @Nullable Object> securitySchemes = new LinkedHashMap<> ();
+    private final Map<String, @Nullable Object> links = new LinkedHashMap<> ();
+    private final Map<String, @Nullable Object> callbacks = new LinkedHashMap<> ();
+    private final Map<String, @Nullable Object> paths = new LinkedHashMap<> ();
 
     public OpenApiBundler (Context context, DocumentStore documents, Bucket root) {
         this.context = context;
@@ -55,7 +56,7 @@ public class OpenApiBundler {
     }
 
     private void mergeComponents (Map<String, @Nullable Object> bundle) {
-        Map<String, Object> bundleComponents = asObject(bundle.get ("components"));
+        Map<String, @Nullable Object> bundleComponents = asObject(bundle.get ("components"));
         if (bundleComponents == null) {
             bundleComponents = new LinkedHashMap<> ();
 
@@ -69,7 +70,7 @@ public class OpenApiBundler {
         }
     }
 
-    private void mergeMaps (Map<String, Object> components) {
+    private void mergeMaps (Map<String, @Nullable Object> components) {
         mergeMap (components, "schemas", schemas);
         mergeMap (components, "responses", responses);
         mergeMap (components, "parameters", parameters);
@@ -82,9 +83,13 @@ public class OpenApiBundler {
         mergeMap (components, "paths", paths);
     }
 
-    private void mergeMap (Map<String, Object> components, String property, Map<String, Object> propertyValues) {
+    private void mergeMap (
+            Map<String, @Nullable Object> components,
+            String property,
+            Map<String, @Nullable Object> propertyValues
+    ) {
         if (!propertyValues.isEmpty ()) {
-            Map<String, Object> bundlePaths = asObject(components.get (property));
+            Map<String, @Nullable Object> bundlePaths = asObject(components.get (property));
             if (bundlePaths == null) {
                 components.put (property, propertyValues);
             } else {
@@ -122,7 +127,7 @@ public class OpenApiBundler {
                 } else if (keyword.isNavigable() && keyword.isSchemaArray () && isArray (value)) {
                     walkSchemaArray (scope, value, propLocation);
 
-                } else if (keyword.isNavigable() && keyword.isSchemaMap ()) {
+                } else if (keyword.isNavigable() && keyword.isSchemaMap () && value != null) {
                     walkSchemaMap (scope, value, propLocation);
                 }
             } else {
@@ -206,33 +211,33 @@ public class OpenApiBundler {
         rawValues.put (Keywords.REF, createRefPointer ("schemas", refName));
     }
 
-    private void bundleResponse (Map<String, Object> rawValues, String refName, RawValue refValue) {
+    private void bundleResponse (Map<String, @Nullable Object> rawValues, String refName, RawValue refValue) {
         responses.put (refName, refValue.getValue ());
         rawValues.put (Keywords.REF, createRefPointer ("responses", refName));
     }
 
-    private void bundleParameter (Map<String, Object> rawValues, String refName, RawValue refValue) {
+    private void bundleParameter (Map<String, @Nullable Object> rawValues, String refName, RawValue refValue) {
         parameters.put (refName, refValue.getValue ());
         rawValues.put (Keywords.REF, createRefPointer ("parameters", refName));
     }
 
-    private void bundleExample (Map<String, Object> rawValues, String refName, RawValue refValue) {
+    private void bundleExample (Map<String, @Nullable Object> rawValues, String refName, RawValue refValue) {
         examples.put (refName, refValue.getValue ());
         rawValues.put (Keywords.REF, createRefPointer ("examples", refName));
     }
 
-    private void bundleRequestBody (Map<String, Object> rawValues, String refName, RawValue refValue) {
+    private void bundleRequestBody (Map<String, @Nullable Object> rawValues, String refName, RawValue refValue) {
         requestBodies.put (refName, refValue.getValue ());
         rawValues.put (Keywords.REF, createRefPointer ("requestBodies", refName));
     }
 
-    private void bundleHeader (Map<String, Object> rawValues, String refName, RawValue refValue) {
+    private void bundleHeader (Map<String, @Nullable Object> rawValues, String refName, RawValue refValue) {
         headers.put (refName, refValue.getValue ());
         rawValues.put (Keywords.REF, createRefPointer ("headers", refName));
     }
 
-    private Runnable bundleSecurityScheme (Map<String, Object> rawValues, RawValue refValue) {
-        Map<String, Object> replacement = asObject (refValue.getValue ());
+    private Runnable bundleSecurityScheme (Map<String, @Nullable Object> rawValues, RawValue refValue) {
+        Map<String, @Nullable Object> replacement = asObject (refValue.getValue ());
         if (replacement == null) {
             throw new RuntimeException ();
         }
@@ -244,7 +249,7 @@ public class OpenApiBundler {
         };
     }
 
-    private void bundleLink (Map<String, Object> rawValues, String refName, RawValue refValue) {
+    private void bundleLink (Map<String, @Nullable Object> rawValues, String refName, RawValue refValue) {
         links.put (refName, refValue.getValue ());
         rawValues.put (Keywords.REF, createRefPointer ("links", refName));
     }
@@ -254,10 +259,10 @@ public class OpenApiBundler {
         rawValues.put (Keywords.REF, createRefPointer ("callbacks", refName));
     }
 
-    private Runnable bundlePath30 (Map<String, Object> rawValues, RawValue refValue) {
+    private Runnable bundlePath30 (Map<String, @Nullable Object> rawValues, RawValue refValue) {
         // OpenAPI 3.0 has no /components/paths => inline it
 
-        Map<String, Object> replacement = asObject (refValue.getValue ());
+        Map<String, @Nullable Object> replacement = asObject (refValue.getValue ());
         if (replacement == null) {
             throw new RuntimeException ();
         }
@@ -343,7 +348,7 @@ public class OpenApiBundler {
 
         bucket.forEach ((propName, propValue) -> {
             JsonPointer propLocation = location.append (propName);
-            walkSchema (targetScope, propValue, propLocation);
+            walkSchema (targetScope, requiresNonNull(propValue), propLocation);
         });
     }
 

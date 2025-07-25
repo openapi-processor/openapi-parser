@@ -5,14 +5,13 @@
 
 package io.openapiprocessor.jsonschema.support;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.function.Function;
 
 /**
  * "deep" copy an object tree. It only handles the types to represent a json document. Map and Collection are cloned,
@@ -27,8 +26,8 @@ public class Copy {
             return null;
 
         if (source instanceof Map) {
-            Map<String, Object> items = Types.asObject (source);
-            Map<String, Object> copy = new LinkedHashMap<> ();
+            Map<String, @Nullable Object> items = Types.asObject (source);
+            Map<String, @Nullable Object> copy = new LinkedHashMap<> ();
 
             items.forEach ((key, value) -> {
                 copy.put (key, deep (value));

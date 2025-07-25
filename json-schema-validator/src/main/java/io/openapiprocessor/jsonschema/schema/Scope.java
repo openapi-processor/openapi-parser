@@ -159,7 +159,7 @@ public class Scope {
         if (!Types.isObject(document))
             return null;
 
-        Map<String, Object> object = Types.asObject(document);
+        Map<String, @Nullable Object> object = Types.asObject(document);
         Object schema = object.get(Keywords.SCHEMA);
         if (!Types.isString(schema))
             return null;

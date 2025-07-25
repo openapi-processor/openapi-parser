@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 import java.io.InputStream;
 import java.util.*;
 
-import static io.openapiprocessor.jsonschema.support.Null.nonNull;
+import static io.openapiprocessor.jsonschema.support.Null.requiresNonNull;
 
 @Experimental
 public class OverlayApplier {
@@ -32,7 +32,7 @@ public class OverlayApplier {
         this.document = deepCopy(document);
     }
 
-    public Map<String, Object> apply(OverlayResult overlayResult) {
+    public Map<String, @Nullable Object> apply(OverlayResult overlayResult) {
         OverlayResult.Version version = overlayResult.getVersion();
 
         if (version == OverlayResult.Version.V10) {
@@ -43,7 +43,7 @@ public class OverlayApplier {
         }
     }
 
-    private Map<String, Object> apply10(OverlayResult overlayResult) {
+    private Map<String, @Nullable Object> apply10(OverlayResult overlayResult) {
         Overlay overlay = overlayResult.getModel(Overlay.class);
         DocumentContext context = createContext();
 
@@ -61,13 +61,13 @@ public class OverlayApplier {
                 }
 
                 targets.forEach(target -> {
-                    if(Types.isObject(target) && Types.isObject(action.getUpdate())) {
-                        Map<String, Object> targetObject = Types.asObject(target);
+                    if (Types.isObject(target) && Types.isObject(action.getUpdate())) {
+                        Map<String, @Nullable Object> targetObject = Types.asObject(target);
                         mergeObject(targetObject, action);
 
                     } else if (Types.isArray(target)) {
                         Collection<Object> targetArray = Types.asArray(target);
-                        targetArray.add(nonNull(action.getUpdate()));
+                        targetArray.add(requiresNonNull(action.getUpdate()));
 
                     } else {
                         log.warn("target json path {} is not an object or array!", location);
@@ -89,8 +89,8 @@ public class OverlayApplier {
         return JsonPath.using(conf).parse(document);
     }
 
-    private void mergeObject(Map<String, Object> targetRoot, Action action) {
-        Map<String, Object> actionRoot = Types.asObject(action.getUpdate());
+    private void mergeObject(Map<String, @Nullable Object> targetRoot, Action action) {
+        Map<String, @Nullable Object> actionRoot = Types.asObject(action.getUpdate());
         if (actionRoot == null) {
             log.warn("target json path {} update is empty!", action.getTarget());
             return;
@@ -103,11 +103,11 @@ public class OverlayApplier {
                 mergeObject(Types.asObject(target), Types.asObject(value));
 
             } else if (Types.isArray(target)) {
-                Collection<Object> targetArray = Types.asArray(value);
+                Collection<@Nullable Object> targetArray = requiresNonNull(Types.asArray(value));
                 targetArray.add(deepCopy(value));
             } else {
                 Object oldValue = targetRoot.get(key);
-                if (oldValue != null && oldValue.getClass() != value.getClass()) {
+                if (oldValue != null && value != null && oldValue.getClass() != value.getClass()) {
                     log.warn("target json path {} does not have same type ({} vs {}). ",
                             action.getTarget(),
                             oldValue.getClass().getName(),
@@ -120,7 +120,7 @@ public class OverlayApplier {
         });
     }
 
-    private void mergeObject(Map<String, Object> targetRoot, Map<String, Object> actionRoot) {
+    private void mergeObject(Map<String, @Nullable Object> targetRoot, Map<String, @Nullable Object> actionRoot) {
         actionRoot.forEach((key, value) -> {
             Object target = targetRoot.get(key);
 
@@ -128,11 +128,11 @@ public class OverlayApplier {
                 mergeObject(Types.asObject(target), Types.asObject(value));
 
             } else if (Types.isArray(target)) {
-                Collection<Object> targetArray = Types.asArray(value);
+                Collection<@Nullable Object> targetArray = requiresNonNull(Types.asArray(value));
                 targetArray.add(deepCopy(value));
             } else {
                 Object oldValue = targetRoot.get(key);
-                if (oldValue != null && oldValue.getClass() != value.getClass()) {
+                if (oldValue != null && value != null && oldValue.getClass() != value.getClass()) {
                     log.warn("ignoring action property {}. It has not the same ", key);
                 }
 
@@ -142,11 +142,11 @@ public class OverlayApplier {
     }
 
     @SuppressWarnings("unchecked")
-    private static Map<String, Object> deepCopy(Map<String, Object> object) {
-        return (Map<String, Object>) deepCopy((Object)object);
+    private static Map<String, @Nullable Object> deepCopy(Map<String, @Nullable Object> object) {
+        return (Map<String, @Nullable Object>) requiresNonNull(deepCopy((@Nullable Object) object));
     }
 
-    private static Object deepCopy (Object object) {
+    private static @Nullable Object deepCopy (@Nullable Object object) {
         if (Types.isObject(object)) {
             return deepCopyMap(Types.asObject(object));
 
@@ -158,16 +158,16 @@ public class OverlayApplier {
         }
     }
 
-    private static Map<String, Object> deepCopyMap(Map<String, Object> source) {
-        Map<String, Object> copy = new LinkedHashMap<>(source.size());
+    private static Map<String, @Nullable Object> deepCopyMap(Map<String, @Nullable Object> source) {
+        Map<String, @Nullable Object> copy = new LinkedHashMap<>(source.size());
         source.forEach((key, value) -> {
             copy.put(key, deepCopy(value));
         });
         return copy;
     }
 
-    private static Collection<Object> deepCopyArray(Collection<Object> source) {
-        Collection<Object> copy = new ArrayList<>(source.size());
+    private static Collection<@Nullable Object> deepCopyArray(Collection<@Nullable Object> source) {
+        Collection<@Nullable Object> copy = new ArrayList<>(source.size());
         source.forEach(item -> {
            copy.add(deepCopy(item));
         });

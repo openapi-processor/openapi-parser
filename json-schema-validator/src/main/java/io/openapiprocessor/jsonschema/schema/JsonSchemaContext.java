@@ -6,6 +6,7 @@
 package io.openapiprocessor.jsonschema.schema;
 
 import io.openapiprocessor.jsonschema.support.Uris;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
 import java.util.Map;
@@ -69,7 +70,7 @@ public class JsonSchemaContext {
         return new JsonSchemaContext (targetScope, references, vocabularies);
     }
 
-    public JsonSchemaContext withId (Map<String, Object> properties) {
+    public JsonSchemaContext withId (Map<String, @Nullable Object> properties) {
         return new JsonSchemaContext (scope.move (properties), references, vocabularies);
     }
 

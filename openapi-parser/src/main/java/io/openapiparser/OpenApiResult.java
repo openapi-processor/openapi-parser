@@ -9,6 +9,7 @@ import io.openapiparser.support.Experimental;
 import io.openapiprocessor.interfaces.Writer;
 import io.openapiprocessor.jsonschema.schema.SchemaStore;
 import io.openapiprocessor.jsonschema.validator.Validator;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -49,7 +50,7 @@ public interface OpenApiResult {
      * @return a raw bundled copy of the OpenAPI document.
      */
     @Experimental
-    Map<String, Object> bundle();
+    Map<String, @Nullable Object> bundle();
 
     /**
      * Write the document. This will produce useful results only if the document is a single file document. Bundling
@@ -69,7 +70,7 @@ public interface OpenApiResult {
      * @return a raw copy of the OpenAPI document with the applied overlay.
      */
     @Experimental
-    Map<String, Object> apply(OverlayResult overlay);
+    Map<String, @Nullable Object> apply(OverlayResult overlay);
 
     /**
      * run schema validation. Retrieve the collection of validation messages from

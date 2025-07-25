@@ -14,12 +14,12 @@ import java.util.regex.Pattern;
 /**
  * get a map of the extension properties.
  */
-public class ExtensionsConverter implements PropertiesConverter<Map<String, Object>> {
+public class ExtensionsConverter implements PropertiesConverter<Map<String, @Nullable Object>> {
     private static final Pattern EXTENSION_PATTERN = Pattern.compile("^x-");
 
     @Override
-    public @Nullable Map<String, Object> convert (Map<String, @Nullable Object> properties, String location) {
-        Map<String, Object> extensions = new LinkedHashMap<> ();
+    public @Nullable Map<String, @Nullable Object> convert (Map<String, @Nullable Object> properties, String location) {
+        Map<String, @Nullable Object> extensions = new LinkedHashMap<> ();
 
         properties.forEach ((property, value) -> {
             if (isExtension (property)) {

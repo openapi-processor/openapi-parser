@@ -109,7 +109,7 @@ public class PathItem extends Properties implements Extensions, Reference {
     }
 
     @Override
-    public Map<String, Object> getExtensions () {
+    public Map<String, @Nullable Object> getExtensions () {
         return super.getExtensions ();
     }
 }

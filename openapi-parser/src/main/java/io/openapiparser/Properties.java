@@ -16,6 +16,7 @@ import java.net.URI;
 import java.util.*;
 
 import static io.openapiprocessor.jsonschema.support.Null.nonNull;
+import static io.openapiprocessor.jsonschema.support.Null.requiresNonNull;
 
 /**
  * base class of OpenAPI model objects to reduce duplication.
@@ -177,8 +178,8 @@ public class Properties {
 
     /* other */
 
-    protected Map<String, Object> getExtensions () {
-        return nonNull (bucket.convert (new ExtensionsConverter ()));
+    protected Map<String, @Nullable Object> getExtensions () {
+        return requiresNonNull (bucket.convert (new ExtensionsConverter ()));
     }
 
     /* ref */

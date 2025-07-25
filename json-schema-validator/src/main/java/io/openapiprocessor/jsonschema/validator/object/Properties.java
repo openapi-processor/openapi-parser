@@ -12,13 +12,14 @@ import io.openapiprocessor.jsonschema.schema.JsonSchemaBoolean;
 import io.openapiprocessor.jsonschema.validator.Annotation;
 import io.openapiprocessor.jsonschema.validator.Validator;
 import io.openapiprocessor.jsonschema.validator.steps.ValidationStep;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static io.openapiprocessor.jsonschema.support.Null.nonNull;
+import static io.openapiprocessor.jsonschema.support.Null.requiresNonNull;
 
 /**
  * validates additionalProperties, properties and patternProperties. Since Draft 4.
@@ -41,7 +42,7 @@ public class Properties {
         JsonSchema additionalProperties = schema.getAdditionalProperties ();
         JsonSchema unevaluatedProperties = schema.getUnevaluatedProperties ();
 
-        Map<String, Object> instanceObject = nonNull(instance.asObject ());
+        Map<String, @Nullable Object> instanceObject = requiresNonNull(instance.asObject ());
         Set<String> instanceProperties = new HashSet<>(instanceObject.keySet ());
 
         Set<String> propertiesAnnotations = new HashSet<> ();

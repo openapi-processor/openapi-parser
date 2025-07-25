@@ -7,6 +7,7 @@ package io.openapiparser.model.v31;
 
 import io.openapiparser.*;
 import io.openapiprocessor.jsonschema.schema.Bucket;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
 
@@ -23,7 +24,7 @@ public class Tag extends Properties implements Extensions {
     }
 
     @Override
-    public Map<String, Object> getExtensions () {
+    public Map<String, @Nullable Object> getExtensions () {
         return super.getExtensions ();
     }
 }

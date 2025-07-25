@@ -54,7 +54,7 @@ public class RequestBody extends Properties implements Reference, Extensions {
     }
 
     @Override
-    public Map<String, Object> getExtensions () {
+    public Map<String, @Nullable Object> getExtensions () {
         return super.getExtensions ();
     }
 }

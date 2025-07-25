@@ -11,7 +11,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.net.URI;
 import java.util.Collection;
 
-import static io.openapiprocessor.jsonschema.support.Null.nonNull;
+import static io.openapiprocessor.jsonschema.support.Null.requiresNonNull;
 
 public class ResolverRef {
     private final ResolverContext context;
@@ -54,16 +54,16 @@ public class ResolverRef {
                 walkRef (ref, propLocation);
 
             } else if (isNavigableObject(keyword, value)) {
-                    walkSchema (scope, value, propLocation);
+                    walkSchema (scope, requiresNonNull(value), propLocation);
 
             } else if (isNavigableSchemaArray(keyword, value)) {
-                walkSchemaArray (scope, value, propLocation);
+                walkSchemaArray (scope, requiresNonNull(value), propLocation);
 
             } else if (isNavigableSchemaMap(keyword, value)) {
-                walkSchemaMap (scope, value, propLocation);
+                walkSchemaMap (scope, requiresNonNull(value), propLocation);
 
             } else if (isDefaultObject(name, value)) {
-                walkSchema (scope, value, propLocation);
+                walkSchema (scope, requiresNonNull(value), propLocation);
 
             } else if (keyword == null && Types.isObject (value)) {
                 walkSchema (scope, value, propLocation);
@@ -74,44 +74,44 @@ public class ResolverRef {
         });
     }
 
-    private static boolean isDefaultObject(String name, Object value) {
+    private static boolean isDefaultObject(String name, @Nullable Object value) {
         return name.equals(Keywords.DEFAULT) && Types.isObject(value);
     }
 
-    private static boolean isNavigableSchemaMap(@Nullable Keyword keyword, Object value) {
+    private static boolean isNavigableSchemaMap(@Nullable Keyword keyword, @Nullable Object value) {
         if (keyword == null)
             return false;
 
         return keyword.isNavigable() && keyword.isSchemaMap() && Types.isObject(value);
     }
 
-    private static boolean isNavigableSchemaArray(@Nullable Keyword keyword, Object value) {
+    private static boolean isNavigableSchemaArray(@Nullable Keyword keyword, @Nullable Object value) {
         if (keyword == null)
             return false;
 
         return keyword.isNavigable() && keyword.isSchemaArray() && Types.isArray(value);
     }
 
-    private static boolean isNavigableObject(@Nullable Keyword keyword, Object value) {
+    private static boolean isNavigableObject(@Nullable Keyword keyword, @Nullable Object value) {
         if (keyword == null)
             return false;
 
         return  keyword.isNavigable() && keyword.isSchema() && Types.isObject(value);
     }
 
-    private static boolean isRecursiveRef(String name, Object value) {
+    private static boolean isRecursiveRef(String name, @Nullable Object value) {
         return name.equals(Keywords.RECURSIVE_REF) && Types.isString(value);
     }
 
-    private static boolean isDynamicRef(String name, Object value) {
+    private static boolean isDynamicRef(String name, @Nullable Object value) {
         return name.equals(Keywords.DYNAMIC_REF) && Types.isString(value);
     }
 
-    private static boolean isRef(String name, Object value) {
+    private static boolean isRef(String name, @Nullable Object value) {
         return name.equals(Keywords.REF) && Types.isString(value);
     }
 
-    private static boolean isMetaSchema(String name, Object value) {
+    private static boolean isMetaSchema(String name, @Nullable Object value) {
         return name.equals(Keywords.SCHEMA) && Types.isString(value);
     }
 
@@ -119,7 +119,7 @@ public class ResolverRef {
         return keyword != null && keyword.isNavigable();
     }
 
-    private Ref createRef (Scope scope, String name, Object value) {
+    private Ref createRef (Scope scope, String name, @Nullable Object value) {
         String ref = Types.convertOrNull (name, value, String.class);
         if (ref == null) {
             throw new ResolverException (String.format ("failed to resolve empty $ref in '%s'.", scope));
@@ -140,7 +140,7 @@ public class ResolverRef {
         if (!context.isProcessedDocument (uri)) {
             context.setProcessedDocument (uri);
 
-            Scope docScope = scope.move (uri, nonNull(document));
+            Scope docScope = scope.move (uri, requiresNonNull(document));
             Bucket bucket = Bucket.createBucket(docScope, document, JsonPointer.empty());
             if (bucket == null) {
                 return; // todo error
@@ -195,7 +195,7 @@ public class ResolverRef {
 
         bucket.forEach ((propName, propValue) -> {
             JsonPointer propLocation = location.append (propName);
-            walkSchema (targetScope, propValue, propLocation);
+            walkSchema (targetScope, requiresNonNull(propValue), propLocation);
         });
     }
 
@@ -213,7 +213,7 @@ public class ResolverRef {
             // no, try to resolve by document and pointer
             URI documentUri = ref.getDocumentUri ();
             Object document = context.getDocument (documentUri);
-            Scope scope = ref.getScope ().move (documentUri, nonNull(document));
+            Scope scope = ref.getScope ().move (documentUri, requiresNonNull(document));
             Bucket bucket = Bucket.createBucket(scope, document);
 
             // no object -> to (simple) value
@@ -233,7 +233,7 @@ public class ResolverRef {
                 throw new ResolverException (String.format ("failed to resolve ref <%s/%s>.", documentUri, ref));
             }
 
-            context.addRef (ref, referenced.getScope (), nonNull(referenced.getValue ()));
+            context.addRef (ref, referenced.getScope (), requiresNonNull(referenced.getValue ()));
         });
     }
 
