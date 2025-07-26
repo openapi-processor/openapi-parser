@@ -27,7 +27,7 @@ class OverlayApplierSpec : StringSpec({
     fun createOpenApi(): OpenApiResult {
         return ApiBuilder()
             .withApi("file:///openapi.yaml",
-                $$"""
+                """
                 openapi: "3.1.0"
                 info:
                   version: 1.0.0
@@ -51,7 +51,7 @@ class OverlayApplierSpec : StringSpec({
                           content:
                             application/json:
                               schema:
-                                $ref: '#/components/schemas/Foo'
+                                ${'$'}ref: '#/components/schemas/Foo'
                 
                 components:
                   schemas:

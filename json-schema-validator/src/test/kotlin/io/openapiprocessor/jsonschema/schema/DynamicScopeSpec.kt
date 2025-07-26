@@ -22,7 +22,7 @@ class DynamicScopeSpec : StringSpec({
     fun createSchema (id: String? = null, recursiveAnchor: Boolean? = null): JsonSchema {
         val uri = if(id != null) createUri(id) else emptyUri()
 
-        val map = mutableMapOf<String, Any>()
+        val map = mutableMapOf<String, Any?>()
         if (id != null) {
             map["\$id"] = id
         }
@@ -48,7 +48,7 @@ class DynamicScopeSpec : StringSpec({
     fun createSchema2 (id: String? = null, dynamicAnchor: String? = null): JsonSchema {
         val uri = if(id != null) createUri(id) else emptyUri()
 
-        val map = mutableMapOf<String, Any>()
+        val map = mutableMapOf<String, Any?>()
         if (id != null) {
             map["\$id"] = id
         }

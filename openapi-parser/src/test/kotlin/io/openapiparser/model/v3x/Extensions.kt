@@ -13,7 +13,7 @@ import io.kotest.matchers.shouldBe
 fun <O> testExtensions(
     name: String,
     build: (content: String) -> O,
-    extract: (o: O) -> Map<String, Any>
+    extract: (o: O) -> Map<String, Any?>
 ) = stringSpec {
 
         "gets $name extension values" {
