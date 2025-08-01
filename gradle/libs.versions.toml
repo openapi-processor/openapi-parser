@@ -6,7 +6,7 @@ test-jdk = "17"
 
 # using the embedded kotlin version of gradle to avoid mixed versions
 kotlin = "2.0.21"
-kotlinx-json = "1.7.3"
+kotlinx-json = "1.9.0"
 
 checker = "3.49.5"
 checkerp = "0.6.56"
