@@ -10,8 +10,8 @@ import io.openapiprocessor.jsonschema.support.Uris;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
-import java.util.Map;
 
+import static io.openapiprocessor.jsonschema.schema.SchemaVersionUtil.getSchemaVersion;
 import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 
 
@@ -144,26 +144,5 @@ public class Scope {
     @Override
     public String toString () {
         return String.format ("base: %s (%s) (doc: %s)", baseUri, version, documentUri);
-    }
-
-    private static SchemaVersion getSchemaVersion(URI documentUri, Object document, SchemaVersion fallback) {
-        URI metaSchema = getMetaSchema(document);
-        if (metaSchema != null) {
-            return SchemaVersion.getVersion(metaSchema, fallback);
-        }
-
-        return SchemaVersion.getVersion(documentUri, fallback);
-    }
-
-    private static @Nullable URI getMetaSchema(Object document) {
-        if (!Types.isObject(document))
-            return null;
-
-        Map<String, @Nullable Object> object = Types.asObject(document);
-        Object schema = object.get(Keywords.SCHEMA);
-        if (!Types.isString(schema))
-            return null;
-
-        return Uris.createUri(Types.asString(schema));
     }
 }
