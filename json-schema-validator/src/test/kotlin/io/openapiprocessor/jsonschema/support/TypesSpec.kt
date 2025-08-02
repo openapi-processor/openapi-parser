@@ -31,4 +31,10 @@ class TypesSpec: StringSpec({
     "casts object to object" {
         asObject(emptyMap<String, String>() as Any).shouldNotBeNull()
     }
+
+    "check and cast to object" {
+        asObjectOrNull(null).shouldBeNull()
+        asObjectOrNull(emptyList<Any>()).shouldBeNull()
+        asObjectOrNull(emptyMap<String, Any>()).shouldNotBeNull()
+    }
 })
