@@ -54,6 +54,10 @@ public class Scope {
         return new Scope (documentUri, Uris.resolve(documentUri, id), version);
     }
 
+    public static Scope createScope (URI documentUri, @Nullable URI baseUri, SchemaVersion version) {
+        return new Scope (documentUri, baseUri, version);
+    }
+
     /**
      * create the scope for the {@code document}. If {@code document} contains an id, it is the base uri, otherwise the
      * scope is the {@code documentUri}. If the {@code documentUri} matches a know json schema the result scope will use

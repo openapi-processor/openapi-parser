@@ -182,4 +182,22 @@ class ResolverSpec: StringSpec({
             resolver.resolve(URI("memory:/instant.yaml"), settings)
         }
     }
+
+    "baseUri customizer can change base uri" {
+        Memory.add("/schema.yaml", "${'$'}self: /base.yaml")
+
+        val store = DocumentStore()
+        val loader = DocumentLoader(UriReader(), JacksonConverter())
+
+        val settings = Resolver.Settings (SchemaVersion.Draft4)
+            .baseUriCustomizer { documentUri, document ->
+                URI.create("/base.yaml")
+            }
+
+        val resolver = Resolver(store, loader)
+        val result = resolver.resolve(URI("memory:/schema.yaml"), settings)
+
+        result.scope.documentUri shouldBe URI("memory:/schema.yaml")
+        result.scope.baseUri shouldBe URI("memory:/base.yaml")
+    }
 })
