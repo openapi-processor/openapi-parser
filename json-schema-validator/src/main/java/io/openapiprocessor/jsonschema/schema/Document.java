@@ -5,8 +5,8 @@
 
 package io.openapiprocessor.jsonschema.schema;
 
-class Document {
-    enum Source {
+public class Document {
+    public enum Source {
         ID, ANCHOR, DYNAMIC_ANCHOR
     }
 
