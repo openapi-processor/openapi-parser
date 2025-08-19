@@ -19,35 +19,66 @@ public class ResolverId {
 
     private final ResolverContext context;
 
+    interface SchemaDetector {
+        boolean isSchema();
+        boolean isSchemaArray();
+        boolean isSchemaMap();
+    }
+
+    static class JsonSchemaDetector implements SchemaDetector {
+        private final @Nullable Keyword keyword;
+
+        public JsonSchemaDetector(SchemaVersion version, String propertyName) {
+            this.keyword = version.getKeyword(propertyName);
+        }
+
+        @Override
+        public boolean isSchema() {
+            return keyword != null && keyword.isNavigable() && keyword.isSchema();
+        }
+
+        @Override
+        public boolean isSchemaArray() {
+            return keyword != null && keyword.isNavigable() && keyword.isSchemaArray();
+        }
+
+        @Override
+        public boolean isSchemaMap() {
+            return keyword != null && keyword.isNavigable() && keyword.isSchemaMap();
+        }
+    }
+
     public ResolverId (ResolverContext context) {
         this.context = context;
     }
 
     public void resolve (Bucket bucket) {
         resolveId (bucket);
-        walkBucket (bucket);
+        walkBucket (bucket, true);
     }
 
     @SuppressWarnings({"dereference.of.nullable"})
-    private void walkBucket (Bucket bucket) {
-        URI currentId = getId (bucket);
-        registerId (currentId, bucket);
-        resolveId (bucket);
+    private void walkBucket (Bucket bucket, boolean detectId) {
+        if (detectId) {
+            URI currentId = getId(bucket);
+            registerId(currentId, bucket);
+            resolveId(bucket);
 
-        // since 2019-09
-        URI currentAnchor = getAnchor (bucket);
-        registerAnchor (currentAnchor, bucket);
-        resolveAnchor (currentAnchor, bucket);
+            // since 2019-09
+            URI currentAnchor = getAnchor(bucket);
+            registerAnchor(currentAnchor, bucket);
+            resolveAnchor(currentAnchor, bucket);
 
-        // only 2019-09
-        URI recursiveAnchor = getRecursiveAnchor (bucket);
-        registerDynamicAnchor (recursiveAnchor, bucket);
-        resolveDynamicAnchor (recursiveAnchor, bucket);
+            // only 2019-09
+            URI recursiveAnchor = getRecursiveAnchor(bucket);
+            registerDynamicAnchor(recursiveAnchor, bucket);
+            resolveDynamicAnchor(recursiveAnchor, bucket);
 
-        // since 2020-12
-        URI dynamicAnchor = getDynamicAnchor (bucket);
-        registerDynamicAnchor (dynamicAnchor, bucket);
-        resolveDynamicAnchor (dynamicAnchor, bucket);
+            // since 2020-12
+            URI dynamicAnchor = getDynamicAnchor(bucket);
+            registerDynamicAnchor(dynamicAnchor, bucket);
+            resolveDynamicAnchor(dynamicAnchor, bucket);
+        }
 
         Scope scope = bucket.getScope ();
         JsonPointer location = bucket.getLocation ();
@@ -55,53 +86,53 @@ public class ResolverId {
 
         bucket.forEach ((name, value) -> {
             JsonPointer propLocation = location.append (name);
-            Keyword keyword = version.getKeyword (name);
 
-            boolean navigable = keyword != null && keyword.isNavigable ();
+            // we only want to detect $id's in schema objects
+            JsonSchemaDetector schemaDetector = new JsonSchemaDetector(version, name);
 
-            if (navigable && keyword.isSchema () && Types.isObject (value)) {
-                walkSchema (scope, value, propLocation);
+            if (schemaDetector.isSchema () && Types.isObject(value)) {
+                walkObject(scope, value, propLocation, true);
 
-            } else if (navigable && keyword.isSchemaArray () && Types.isArray (value)) {
-                walkSchemaArray (scope, value, propLocation);
+            } else if (schemaDetector.isSchemaArray () && Types.isArray(value)) {
+                walkArray(scope, value, propLocation, true);
 
-            } else if (navigable && keyword.isSchemaMap ()) {
-                walkSchemaMap (scope, value, propLocation);
+            } else if (schemaDetector.isSchemaMap() && Types.isObject(value)) {
+                walkMap(scope, value, propLocation, true);
 
-            } /* else if (keyword == null && isObject (value)) {
-                walkSchema (scope, value, propLocation);
+            } else if (Types.isObject (value)) {
+                walkObject(scope, value, propLocation, false);
 
-            } else if (keyword == null && isArray (value)) {
-                walkSchemaArray (scope, value, propLocation);
-            } */
+            } else if (Types.isArray (value)) {
+                walkArray(scope, value, propLocation, false);
+            }
         });
     }
 
-    private void walkSchema (Scope currentScope, Object value, JsonPointer location) {
+    private void walkObject (Scope currentScope, Object value, JsonPointer location, boolean detectId) {
         Scope scope = currentScope.move (value);
         Bucket bucket = Bucket.createBucket(scope, value, location);
         if (bucket == null) {
             return; // todo error
         }
 
-        walkBucket (bucket);
+        walkBucket (bucket, detectId);
     }
 
-    private void walkSchemaArray (Scope currentScope, Object value, JsonPointer location) {
-        Collection<Object> items = Types.asArray (value);
+    private void walkArray(Scope currentScope, Object value, JsonPointer location, boolean detectId) {
+        Collection<Object> items = Types.asArray(value);
         if (items == null) {
             return; // todo error
         }
 
         int index = 0;
         for (Object item : items) {
-            JsonPointer itemLocation = location.append (index);
-            walkSchema (currentScope, item, itemLocation);
+            JsonPointer itemLocation = location.append(index);
+            walkObject(currentScope, item, itemLocation, detectId);
             index++;
         }
     }
 
-    private void walkSchemaMap (Scope currentScope, @Nullable Object value, JsonPointer location) {
+    private void walkMap (Scope currentScope, @Nullable Object value, JsonPointer location, boolean detectId) {
         Scope targetScope = currentScope.move (requiresNonNull(value));
         Bucket bucket = Bucket.createBucket(targetScope, value, location);
         if (bucket == null) {
@@ -110,7 +141,7 @@ public class ResolverId {
 
         bucket.forEach ((propName, propValue) -> {
             JsonPointer propLocation = location.append (propName);
-            walkSchema (targetScope, requiresNonNull(propValue), propLocation);
+            walkObject (targetScope, requiresNonNull(propValue), propLocation, detectId);
         });
     }
 
