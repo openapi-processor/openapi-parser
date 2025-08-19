@@ -55,6 +55,7 @@ public class Resolver {
         /**
          * get a base uri from a document if available.
          *
+         * @param documentUri document url
          * @param document the document
          * @return base uri or null
          */
