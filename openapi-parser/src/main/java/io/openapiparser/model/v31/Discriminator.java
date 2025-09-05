@@ -19,7 +19,7 @@ import static io.openapiparser.Keywords.PROPERTY_NAME;
  * the <em>Discriminator</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.1.0.html#discriminator-object">4.8.25 Discriminator Object</a>
+ * <a href="https://spec.openapis.org/oas/v3.1.1.html#discriminator-object">4.8.25 Discriminator Object</a>
  */
 public class Discriminator extends Properties implements Extensions {
 

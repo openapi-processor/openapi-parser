@@ -15,7 +15,7 @@ import java.util.Map;
  * the <em>Callback</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.1.0.html#callback-object">4.8.18 Callback Object</a>
+ * <a href="https://spec.openapis.org/oas/v3.1.1.html#callback-object">4.8.18 Callback Object</a>
  */
 public class Callback extends Properties implements Extensions {
 

@@ -17,7 +17,7 @@ import static io.openapiparser.Keywords.*;
  * the <em>Example</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.1.0.html#example-object">4.8.19 Example Object</a>
+ * <a href="https://spec.openapis.org/oas/v3.1.1.html#example-object">4.8.19 Example Object</a>
  */
 public class Example extends Properties implements Reference, Extensions {
 

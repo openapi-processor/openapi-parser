@@ -20,7 +20,7 @@ import static io.openapiparser.Keywords.*;
  * the <em>Schema</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.1.0.html#schema-object">4.8.24 Schema Object</a>
+ * <a href="https://spec.openapis.org/oas/v3.1.1.html#schema-object">4.8.24 Schema Object</a>
  * <a href="https://tools.ietf.org/html/draft-bhutton-json-schema-00">JSON Schema</a>
  * <a href="https://tools.ietf.org/html/draft-bhutton-json-schema-validation-00">JSON Schema
  * Validation</a>
