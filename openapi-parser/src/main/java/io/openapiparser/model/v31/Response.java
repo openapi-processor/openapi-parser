@@ -18,7 +18,7 @@ import static io.openapiparser.Keywords.*;
  * the <em>Response</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.1.0.html#response-object">4.8.16 Response Object</a>
+ * <a href="https://spec.openapis.org/oas/v3.1.1.html#response-object">4.8.16 Response Object</a>
  */
 public class Response extends Properties implements Reference, Extensions {
 

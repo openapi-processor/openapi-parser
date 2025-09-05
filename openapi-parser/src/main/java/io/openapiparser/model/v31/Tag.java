@@ -15,7 +15,7 @@ import java.util.Map;
  * the <em>Tag</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.1.0.html#tag-object">4.8.22 Tag Object</a>
+ * <a href="https://spec.openapis.org/oas/v3.1.1.html#tag-object">4.8.22 Tag Object</a>
  */
 public class Tag extends Properties implements Extensions {
 

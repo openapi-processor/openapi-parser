@@ -16,7 +16,7 @@ import java.util.Map;
  * the <em>Paths</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.1.0.html#paths-object">4.8.8 Paths Object</a>
+ * <a href="https://spec.openapis.org/oas/v3.1.1.html#paths-object">4.8.8 Paths Object</a>
  */
 public class Paths extends Properties implements Extensions {
 

@@ -18,7 +18,7 @@ import static io.openapiparser.Keywords.*;
  * the <em>Components</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.1.0.html#components-object">4.8.7 Components Object</a>
+ * <a href="https://spec.openapis.org/oas/v3.1.1.html#components-object">4.8.7 Components Object</a>
  */
 public class Components extends Properties implements Extensions {
 

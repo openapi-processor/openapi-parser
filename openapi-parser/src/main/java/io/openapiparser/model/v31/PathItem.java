@@ -18,7 +18,7 @@ import static io.openapiparser.Keywords.*;
  * the <em>Path Item</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.1.0.html#path-item-object">4.8.9 Path Item Object</a>
+ * <a href="https://spec.openapis.org/oas/v3.1.1.html#path-item-object">4.8.9 Path Item Object</a>
  */
 public class PathItem extends Properties implements Extensions, Reference {
 

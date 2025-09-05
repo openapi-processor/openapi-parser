@@ -19,7 +19,7 @@ import static io.openapiparser.Keywords.*;
  * the <em>OpenAPI</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.1.0.html#openapi-object">4.7.1 OpenAPI Object</a>
+ * <a href="https://spec.openapis.org/oas/v3.1.1.html#openapi-object">4.7.1 OpenAPI Object</a>
  */
 public class OpenApi extends Properties implements Extensions {
 

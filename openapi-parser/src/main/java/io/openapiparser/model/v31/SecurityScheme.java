@@ -16,7 +16,7 @@ import java.util.Map;
  * the <em>Security Scheme</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.1.0.html#security-scheme-object">
+ * <a href="https://spec.openapis.org/oas/v3.1.1.html#security-scheme-object">
  *   4.8.28 Security Scheme Object
  * </a>
  */

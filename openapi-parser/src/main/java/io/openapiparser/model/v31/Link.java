@@ -16,7 +16,7 @@ import java.util.Map;
  * the <em>Link</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.1.0.html#link-object">4.8.20 Link Object</a>
+ * <a href="https://spec.openapis.org/oas/v3.1.1.html#link-object">4.8.20 Link Object</a>
  */
 public class Link extends Properties implements Extensions {
 

@@ -18,7 +18,7 @@ import static io.openapiparser.Keywords.*;
  * the <em>Operation</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.1.0.html#operation-object">4.8.10 Operation Object</a>
+ * <a href="https://spec.openapis.org/oas/v3.1.1.html#operation-object">4.8.10 Operation Object</a>
  */
 public class Operation extends Properties implements Extensions {
 
