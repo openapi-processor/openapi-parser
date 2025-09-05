@@ -19,7 +19,7 @@ import static io.openapiparser.Keywords.*;
  * the <em>Server Variable</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.0.3.html#server-variable-object">4.7.6 Server Variable Object</a>
+ * <a href="https://spec.openapis.org/oas/v3.0.4.html#server-variable-object">4.7.6 Server Variable Object</a>
  */
 public class ServerVariable extends Properties implements Extensions {
 

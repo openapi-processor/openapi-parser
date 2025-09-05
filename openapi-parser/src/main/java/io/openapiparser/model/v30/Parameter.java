@@ -18,7 +18,7 @@ import static io.openapiparser.Keywords.*;
  * the <em>Parameter</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.0.3.html#parameter-object">4.7.12 Parameter Object</a>
+ * <a href="https://spec.openapis.org/oas/v3.0.4.html#parameter-object">4.7.12 Parameter Object</a>
  */
 public class Parameter extends Properties implements Reference, Extensions {
 

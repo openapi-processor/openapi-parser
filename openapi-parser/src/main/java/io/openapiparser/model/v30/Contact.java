@@ -18,7 +18,7 @@ import static io.openapiparser.Keywords.*;
  * the <em>Contact</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.0.3.html#contact-object">4.7.3 Contact Object</a>
+ * <a href="https://spec.openapis.org/oas/v3.0.4.html#contact-object">4.7.3 Contact Object</a>
  */
 public class Contact extends Properties implements Extensions {
 

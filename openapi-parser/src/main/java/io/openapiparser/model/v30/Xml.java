@@ -15,7 +15,7 @@ import java.util.Map;
  * the <em>XML</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.0.3.html#xml-object">4.7.26 XML Object</a>
+ * <a href="https://spec.openapis.org/oas/v3.0.4.html#xml-object">4.7.26 XML Object</a>
  */
 public class Xml extends Properties implements Extensions {
 

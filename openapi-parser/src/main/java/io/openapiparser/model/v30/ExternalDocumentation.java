@@ -19,7 +19,7 @@ import static io.openapiparser.Keywords.URL;
  * the <em>External Documentation</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.0.3.html#external-documentation-object">
+ * <a href="https://spec.openapis.org/oas/v3.0.4.html#external-documentation-object">
  *  4.7.11 External Documentation Object
  * </a>
  */

@@ -17,7 +17,7 @@ import static io.openapiparser.Keywords.*;
  * the <em>Header</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.0.3.html#header-object">4.7.21 Header Object</a>
+ * <a href="https://spec.openapis.org/oas/v3.0.4.html#header-object">4.7.21 Header Object</a>
  */
 public class Header extends Properties implements Reference, Extensions {
 
