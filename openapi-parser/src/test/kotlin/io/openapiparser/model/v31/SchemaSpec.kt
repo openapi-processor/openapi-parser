@@ -13,6 +13,8 @@ import io.kotest.matchers.maps.shouldContainKey
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import io.openapiparser.model.v31.schema as schema31
+import io.openapiparser.model.v31.schema as schema32
 
 /**
  * @see [io.openapiparser.model.v3x.SchemaSpec]
@@ -38,8 +40,8 @@ class SchemaSpec: StringSpec({
     // xml
 
     "gets schema type" {
-        schema("type: string").type shouldBe listOf("string")
-        schema("type: [string, object]").type shouldBe listOf("string", "object")
+        schema31("type: string").type shouldBe listOf("string")
+        schema31("type: [string, object]").type shouldBe listOf("string", "object")
     }
 
 //    "gets schema type throws if missing" {
@@ -47,45 +49,45 @@ class SchemaSpec: StringSpec({
 //    }
 
     "gets schema const" {
-        schema("const: foo").const shouldBe "foo"
+        schema31("const: foo").const shouldBe "foo"
     }
 
     "gets schema const is null if missing" {
-        schema().const.shouldBeNull()
+        schema31().const.shouldBeNull()
     }
 
     "gets schema maxContains" {
-        schema("maxContains: 9").maxContains shouldBe 9
+        schema31("maxContains: 9").maxContains shouldBe 9
     }
 
     "gets schema maxContains is null if missing" {
-        schema().maxContains.shouldBeNull()
+        schema31().maxContains.shouldBeNull()
     }
 
     "gets schema minContains" {
-        schema("minContains: 9").minContains shouldBe 9
+        schema31("minContains: 9").minContains shouldBe 9
     }
 
     "gets schema minContains is 1 if missing" {
-        schema().minContains shouldBe 1
+        schema31().minContains shouldBe 1
     }
 
     "gets schema exclusiveMaximum is null if missing" {
-        schema().exclusiveMaximum.shouldBeNull()
+        schema31().exclusiveMaximum.shouldBeNull()
     }
 
     "gets schema exclusiveMinimum is null if missing" {
-        schema().exclusiveMinimum.shouldBeNull()
+        schema31().exclusiveMinimum.shouldBeNull()
     }
 
     "gets schema dependentRequired" {
-        val required = schema("dependentRequired: {bar: [foo]}").dependentRequired
+        val required = schema31("dependentRequired: {bar: [foo]}").dependentRequired
         required shouldContainKey "bar"
         required["bar"].shouldContainExactly("foo")
     }
 
     "gets schema dependentRequired is empty if missing" {
-        schema().dependentRequired.shouldNotBeNull()
+        schema31().dependentRequired.shouldNotBeNull()
     }
 
     "gets schema patternProperties" {
@@ -95,45 +97,45 @@ class SchemaSpec: StringSpec({
             bar: {}
         """
 
-        val properties = schema(source).patternProperties
+        val properties = schema31(source).patternProperties
         properties.size shouldBe 2
         properties["foo"].shouldNotBeNull()
         properties["bar"].shouldNotBeNull()
     }
 
     "gets schema patternProperties is empty if missing" {
-        schema().patternProperties.shouldBeEmpty()
+        schema31().patternProperties.shouldBeEmpty()
     }
 
     "gets schema additionalProperties" {
-        schema("additionalProperties: {}").additionalProperties.shouldNotBeNull()
+        schema31("additionalProperties: {}").additionalProperties.shouldNotBeNull()
     }
 
     "gets schema additionalProperties is null if missing" {
-        schema().additionalProperties.shouldBeNull()
+        schema31().additionalProperties.shouldBeNull()
     }
 
     "gets schema propertyNames" {
-        schema("propertyNames: {}").propertyNames.shouldNotBeNull()
+        schema31("propertyNames: {}").propertyNames.shouldNotBeNull()
     }
 
     "gets schema propertyNames is null if missing" {
-        schema().propertyNames.shouldBeNull()
+        schema31().propertyNames.shouldBeNull()
     }
 
     "gets schema prefixItems" {
-        schema("prefixItems: [{}]").prefixItems.size shouldBe 1
+        schema31("prefixItems: [{}]").prefixItems.size shouldBe 1
     }
 
     "gets schema prefixItems is empty if missing" {
-        schema().prefixItems.shouldBeEmpty()
+        schema31().prefixItems.shouldBeEmpty()
     }
 
     "gets schema contains" {
-        schema("contains: {}").contains.shouldNotBeNull()
+        schema31("contains: {}").contains.shouldNotBeNull()
     }
 
     "gets schema contains is null if missing" {
-        schema().contains.shouldBeNull()
+        schema31().contains.shouldBeNull()
     }
 })

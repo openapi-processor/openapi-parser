@@ -8,6 +8,8 @@ package io.openapiparser.model.v31
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
+import io.openapiparser.model.v31.operation as operation31
+import io.openapiparser.model.v31.operation as operation32
 
 /**
  * @see [io.openapiparser.model.v3x.OperationSpec]
@@ -15,11 +17,12 @@ import io.kotest.matchers.nulls.shouldNotBeNull
 class OperationSpec: StringSpec({
 
     "gets operation responses" {
-        operation("responses: {}").responses.shouldNotBeNull()
+        operation31("responses: {}").responses.shouldNotBeNull()
+        operation32("responses: {}").responses.shouldNotBeNull()
     }
 
     "gets operation responses is null if missing" {
-        operation().responses.shouldBeNull()
+        operation31().responses.shouldBeNull()
+        operation32().responses.shouldBeNull()
     }
-
 })
