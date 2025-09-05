@@ -18,7 +18,7 @@ import static io.openapiparser.Keywords.*;
  * the <em>Info</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.0.3.html#info-object">4.7.2 Info Object</a>
+ * <a href="https://spec.openapis.org/oas/v3.0.4.html#info-object">4.7.2 Info Object</a>
  */
 public class Info extends Properties implements Extensions {
 

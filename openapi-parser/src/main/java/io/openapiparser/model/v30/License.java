@@ -19,7 +19,7 @@ import static io.openapiparser.Keywords.URL;
  * the <em>License</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.0.3.html#license-object">4.7.4 License Object</a>
+ * <a href="https://spec.openapis.org/oas/v3.0.4.html#license-object">4.7.4 License Object</a>
  */
 public class License extends Properties implements Extensions {
 

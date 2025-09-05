@@ -17,7 +17,7 @@ import static io.openapiparser.Keywords.DEFAULT;
  * the <em>Responses</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.0.3.html#responses-object">4.7.16 Responses Object</a>
+ * <a href="https://spec.openapis.org/oas/v3.0.4.html#responses-object">4.7.16 Responses Object</a>
  */
 public class Responses extends Properties implements Extensions {
 

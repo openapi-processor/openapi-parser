@@ -13,7 +13,7 @@ import java.util.Map;
  * the <em>Specification Extensions</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.0.3.html#specification-extensions">
+ * <a href="https://spec.openapis.org/oas/v3.0.4.html#specification-extensions">
  *   4.8 Specification Extensions
  * </a>
  */

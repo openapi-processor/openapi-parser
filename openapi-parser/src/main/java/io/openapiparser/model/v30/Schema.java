@@ -19,7 +19,7 @@ import static io.openapiparser.Keywords.*;
  * the <em>Schema</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.0.3.html#schema-object">4.7.24 Schema Object</a>
+ * <a href="https://spec.openapis.org/oas/v3.0.4.html#schema-object">4.7.24 Schema Object</a>
  * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-00">JSON Schema</a>
  * <a href="https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-00">JSON
  * Schema Validation</a>

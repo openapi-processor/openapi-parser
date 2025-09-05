@@ -17,7 +17,7 @@ import static io.openapiparser.Keywords.*;
  * the <em>Request Body</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.0.3.html#request-body-object">4.7.13 Request Body Object</a>
+ * <a href="https://spec.openapis.org/oas/v3.0.4.html#request-body-object">4.7.13 Request Body Object</a>
  */
 public class RequestBody extends Properties implements Reference, Extensions {
 

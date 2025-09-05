@@ -17,7 +17,7 @@ import static io.openapiparser.Keywords.*;
  * the <em>Media Type</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.0.3.html#media-type-object">4.7.14 Media Type Object</a>
+ * <a href="https://spec.openapis.org/oas/v3.0.4.html#media-type-object">4.7.14 Media Type Object</a>
  */
 public class MediaType extends Properties implements Extensions {
 

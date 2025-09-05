@@ -18,7 +18,7 @@ import static io.openapiparser.Keywords.*;
  * the <em>Encoding</em> object.
  *
  * <p>See specification:
- * <a href="https://spec.openapis.org/oas/v3.0.3.html#encoding-object">4.7.15 Encoding Object</a>
+ * <a href="https://spec.openapis.org/oas/v3.0.4.html#encoding-object">4.7.15 Encoding Object</a>
  */
 public class Encoding extends Properties implements Extensions {
 
