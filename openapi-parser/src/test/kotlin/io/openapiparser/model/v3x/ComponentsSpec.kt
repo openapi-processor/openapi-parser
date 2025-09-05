@@ -11,6 +11,7 @@ import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.openapiparser.model.v30.components as components30
 import io.openapiparser.model.v31.components as components31
+import io.openapiparser.model.v32.components as components32
 
 class ComponentsSpec: StringSpec({
 
@@ -29,11 +30,13 @@ class ComponentsSpec: StringSpec({
 
         assertMap(components30(source).schemas)
         assertMap(components31(source).schemas)
+        assertMap(components32(source).schemas)
     }
 
     "gets components schemas is empty if missing" {
         components30().schemas.shouldBeEmpty()
         components31().schemas.shouldBeEmpty()
+        components32().schemas.shouldBeEmpty()
     }
 
     "gets components responses" {
@@ -45,11 +48,13 @@ class ComponentsSpec: StringSpec({
 
         assertMap(components30(source).responses)
         assertMap(components31(source).responses)
+        assertMap(components32(source).responses)
     }
 
     "gets components responses is empty if missing" {
         components30().responses.shouldBeEmpty()
         components31().responses.shouldBeEmpty()
+        components32().responses.shouldBeEmpty()
     }
 
     "gets components parameters" {
@@ -61,11 +66,13 @@ class ComponentsSpec: StringSpec({
 
         assertMap(components30(source).parameters)
         assertMap(components31(source).parameters)
+        assertMap(components32(source).parameters)
     }
 
     "gets components parameters is empty if missing" {
         components30().parameters.shouldBeEmpty()
         components31().parameters.shouldBeEmpty()
+        components32().parameters.shouldBeEmpty()
     }
 
     "gets components examples" {
@@ -77,11 +84,13 @@ class ComponentsSpec: StringSpec({
 
         assertMap(components30(source).examples)
         assertMap(components31(source).examples)
+        assertMap(components32(source).examples)
     }
 
     "gets components examples is empty if missing" {
         components30().examples.shouldBeEmpty()
         components31().examples.shouldBeEmpty()
+        components32().examples.shouldBeEmpty()
     }
 
     "gets components requestBodies" {
@@ -93,11 +102,13 @@ class ComponentsSpec: StringSpec({
 
         assertMap(components30(source).requestBodies)
         assertMap(components31(source).requestBodies)
+        assertMap(components32(source).requestBodies)
     }
 
     "gets components requestBodies is empty if missing" {
         components30().requestBodies.shouldBeEmpty()
         components31().requestBodies.shouldBeEmpty()
+        components32().requestBodies.shouldBeEmpty()
     }
 
     "gets components headers" {
@@ -109,11 +120,13 @@ class ComponentsSpec: StringSpec({
 
         assertMap(components30(source).headers)
         assertMap(components31(source).headers)
+        assertMap(components32(source).headers)
     }
 
     "gets components headers is empty if missing" {
         components30().headers.shouldBeEmpty()
         components31().headers.shouldBeEmpty()
+        components32().headers.shouldBeEmpty()
     }
 
     "gets components securitySchemes" {
@@ -125,11 +138,13 @@ class ComponentsSpec: StringSpec({
 
         assertMap(components30(source).securitySchemes)
         assertMap(components31(source).securitySchemes)
+        assertMap(components32(source).securitySchemes)
     }
 
     "gets components securitySchemes is empty if missing" {
         components30().securitySchemes.shouldBeEmpty()
         components31().securitySchemes.shouldBeEmpty()
+        components32().securitySchemes.shouldBeEmpty()
     }
 
     "gets components links" {
@@ -141,11 +156,13 @@ class ComponentsSpec: StringSpec({
 
         assertMap(components30(source).links)
         assertMap(components31(source).links)
+        assertMap(components32(source).links)
     }
 
     "gets components links is empty if missing" {
         components30().links.shouldBeEmpty()
         components31().links.shouldBeEmpty()
+        components32().links.shouldBeEmpty()
     }
 
     "gets components callbacks" {
@@ -157,13 +174,16 @@ class ComponentsSpec: StringSpec({
 
         assertMap(components30(source).callbacks)
         assertMap(components31(source).callbacks)
+        assertMap(components32(source).callbacks)
     }
 
     "gets components callbacks is empty if missing" {
         components30().callbacks.shouldBeEmpty()
         components31().callbacks.shouldBeEmpty()
+        components32().callbacks.shouldBeEmpty()
     }
 
     include(testExtensions("Components 30", ::components30) { it.extensions })
     include(testExtensions("Components 31", ::components31) { it.extensions })
+    include(testExtensions("Components 32", ::components32) { it.extensions })
 })

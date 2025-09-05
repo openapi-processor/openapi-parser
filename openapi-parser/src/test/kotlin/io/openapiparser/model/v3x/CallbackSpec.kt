@@ -10,6 +10,7 @@ import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.openapiparser.model.v30.callback as callback30
 import io.openapiparser.model.v31.callback as callback31
+import io.openapiparser.model.v32.callback as callback32
 
 class CallbackSpec: StringSpec ({
 
@@ -20,6 +21,7 @@ class CallbackSpec: StringSpec ({
 
         callback30(source).getPathItem("/foo").shouldNotBeNull()
         callback31(source).getPathItem("/foo").shouldNotBeNull()
+        callback32(source).getPathItem("/foo").shouldNotBeNull()
     }
 
     fun assertPathItems (pathItems: Map<String, Any>) {
@@ -36,8 +38,10 @@ class CallbackSpec: StringSpec ({
 
         assertPathItems(callback30(source).pathItems)
         assertPathItems(callback31(source).pathItems)
+        assertPathItems(callback32(source).pathItems)
     }
 
     include(testExtensions("Callback 30", ::callback30) { it.extensions })
     include(testExtensions("Callback 31", ::callback31) { it.extensions })
+    include(testExtensions("Callback 32", ::callback32) { it.extensions })
 })

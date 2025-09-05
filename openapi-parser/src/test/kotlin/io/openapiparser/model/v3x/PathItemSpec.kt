@@ -15,6 +15,8 @@ import io.openapiparser.model.v30.openapi as openapi30
 import io.openapiparser.model.v30.pathItem as pathItem30
 import io.openapiparser.model.v31.openapi as openapi31
 import io.openapiparser.model.v31.pathItem as pathItem31
+import io.openapiparser.model.v32.openapi as openapi32
+import io.openapiparser.model.v32.pathItem as pathItem32
 
 class PathItemSpec: StringSpec({
 
@@ -30,9 +32,13 @@ class PathItemSpec: StringSpec({
         item30.isRef.shouldBeTrue()
         item30.ref shouldBe "#/path"
 
-        val item31 = openapi30(source).paths.getPathItem("/foo")!!
+        val item31 = openapi31(source).paths?.getPathItem("/foo")!!
         item31.isRef.shouldBeTrue()
         item31.ref shouldBe "#/path"
+
+        val item32 = openapi32(source).paths?.getPathItem("/foo")!!
+        item32.isRef.shouldBeTrue()
+        item32.ref shouldBe "#/path"
     }
 
     "get path item property from \$ref" {
@@ -50,20 +56,26 @@ class PathItemSpec: StringSpec({
 
         val parameter31 = openapi31(source).paths?.getPathItem("/foo")?.parameters?.first()
         parameter31?.refObject?.name shouldBe "ref name"
+
+        val parameter32 = openapi31(source).paths?.getPathItem("/foo")?.parameters?.first()
+        parameter32?.refObject?.name shouldBe "ref name"
     }
 
     "gets path item summary" {
         pathItem30("summary: a summary").summary shouldBe "a summary"
         pathItem31("summary: a summary").summary shouldBe "a summary"
+        pathItem32("summary: a summary").summary shouldBe "a summary"
     }
 
     "gets path item summary is null if missing" {
         pathItem30().summary.shouldBeNull()
         pathItem31().summary.shouldBeNull()
+        pathItem32().summary.shouldBeNull()
     }
 
     include(testDescription("path item 30", ::pathItem30) { it.description })
     include(testDescription("path item 31", ::pathItem31) { it.description })
+    include(testDescription("path item 32", ::pathItem32) { it.description })
 
     // todo operations
 
@@ -75,11 +87,16 @@ class PathItemSpec: StringSpec({
         val s31 = pathItem31("servers: [{}, {}]").servers
         s31.shouldNotBeNull()
         s31.size shouldBe 2
+
+        val s32 = pathItem31("servers: [{}, {}]").servers
+        s32.shouldNotBeNull()
+        s32.size shouldBe 2
     }
 
     "gets path item empty server objects if it is missing" {
         pathItem30().servers.shouldBeEmpty()
         pathItem31().servers.shouldBeEmpty()
+        pathItem32().servers.shouldBeEmpty()
     }
 
     "gets path item parameters" {
@@ -90,13 +107,19 @@ class PathItemSpec: StringSpec({
         val p31 = pathItem31("parameters: [{}, {}]").parameters
         p31.shouldNotBeNull()
         p31.size shouldBe 2
+
+        val p32 = pathItem32("parameters: [{}, {}]").parameters
+        p32.shouldNotBeNull()
+        p32.size shouldBe 2
     }
 
     "gets path item empty parameters objects if it is missing" {
         pathItem30().parameters.shouldBeEmpty()
         pathItem31().parameters.shouldBeEmpty()
+        pathItem32().parameters.shouldBeEmpty()
     }
 
     include(testExtensions("path item 30", ::pathItem30) { it.extensions })
     include(testExtensions("path item 31", ::pathItem31) { it.extensions })
+    include(testExtensions("path item 32", ::pathItem32) { it.extensions })
 })
