@@ -13,17 +13,20 @@ import io.kotest.matchers.shouldBe
 import io.openapiprocessor.jsonschema.converter.NoValueException
 import io.openapiparser.model.v30.discriminator as discriminator30
 import io.openapiparser.model.v31.discriminator as discriminator31
+import io.openapiparser.model.v32.discriminator as discriminator32
 
 class DiscriminatorSpec : StringSpec({
 
     "gets discriminator propertyName" {
         discriminator30("propertyName: foo").propertyName shouldBe "foo"
         discriminator31("propertyName: foo").propertyName shouldBe "foo"
+        discriminator32("propertyName: foo").propertyName shouldBe "foo"
     }
 
     "gets discriminator propertyName throws if it is missing" {
         shouldThrow<NoValueException> { discriminator30().propertyName }
         shouldThrow<NoValueException> { discriminator31().propertyName }
+        shouldThrow<NoValueException> { discriminator32().propertyName }
     }
 
     "gets discriminator mapping" {
@@ -39,10 +42,15 @@ class DiscriminatorSpec : StringSpec({
         val d31 = discriminator31(source).mapping
         d31.shouldNotBeNull()
         d31.size shouldBe 1
+
+        val d32 = discriminator32(source).mapping
+        d32.shouldNotBeNull()
+        d32.size shouldBe 1
     }
 
     "gets discriminator mapping is empty if it is missing" {
         discriminator30().mapping.shouldBeEmpty()
         discriminator31().mapping.shouldBeEmpty()
+        discriminator32().mapping.shouldBeEmpty()
     }
 })

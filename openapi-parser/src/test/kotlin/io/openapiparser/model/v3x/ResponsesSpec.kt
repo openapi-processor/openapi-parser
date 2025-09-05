@@ -15,17 +15,21 @@ import io.openapiparser.model.v30.Response as Response30
 import io.openapiparser.model.v30.responses as responses30
 import io.openapiparser.model.v31.Response as Response31
 import io.openapiparser.model.v31.responses as responses31
+import io.openapiparser.model.v32.Response as Response32
+import io.openapiparser.model.v32.responses as responses32
 
 class ResponsesSpec: StringSpec({
 
     "gets responses default" {
         responses30("default: {}").default.shouldNotBeNull()
         responses31("default: {}").default.shouldNotBeNull()
+        responses32("default: {}").default.shouldNotBeNull()
     }
 
     "gets responses default is null if missing" {
         responses30().default.shouldBeNull()
         responses31().default.shouldBeNull()
+        responses32().default.shouldBeNull()
     }
 
     "gets responses responses 30" {
@@ -54,11 +58,26 @@ class ResponsesSpec: StringSpec({
         responses["204"].shouldBeInstanceOf<Response31>()
     }
 
+    "gets responses responses 32" {
+        val source = """
+            '200': {}
+            '204': {}
+        """
+
+        val responses = responses32(source).responses
+        responses.shouldNotBeNull()
+        responses.size shouldBe 2
+        responses["200"].shouldBeInstanceOf<Response32>()
+        responses["204"].shouldBeInstanceOf<Response32>()
+    }
+
     "gets responses responses is empty if missing" {
         responses30().responses.shouldBeEmpty()
         responses31().responses.shouldBeEmpty()
+        responses32().responses.shouldBeEmpty()
     }
 
     include(testExtensions("responses 30", ::responses30) { it.extensions })
     include(testExtensions("responses 31", ::responses31) { it.extensions })
+    include(testExtensions("responses 32", ::responses32) { it.extensions })
 })

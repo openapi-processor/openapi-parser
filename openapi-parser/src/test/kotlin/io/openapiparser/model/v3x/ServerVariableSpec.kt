@@ -13,33 +13,40 @@ import io.kotest.matchers.shouldBe
 import io.openapiprocessor.jsonschema.converter.NoValueException
 import io.openapiparser.model.v30.serverVariable as serverVariable30
 import io.openapiparser.model.v31.serverVariable as serverVariable31
+import io.openapiparser.model.v32.serverVariable as serverVariable32
 
 class ServerVariableSpec: StringSpec({
 
     "gets server variable enum" {
         serverVariable30("enum: [one, two]").enum shouldContainExactly (listOf("one", "two"))
         serverVariable31("enum: [one, two]").enum shouldContainExactly (listOf("one", "two"))
+        serverVariable32("enum: [one, two]").enum shouldContainExactly (listOf("one", "two"))
     }
 
     "gets empty server variable enum if it is missing" {
         serverVariable30().enum.shouldBeEmpty()
         serverVariable31().enum.shouldBeEmpty()
+        serverVariable32().enum.shouldBeEmpty()
     }
 
     "gets server variable default" {
         serverVariable30("default: value").default shouldBe "value"
         serverVariable31("default: value").default shouldBe "value"
+        serverVariable32("default: value").default shouldBe "value"
     }
 
     "gets server variable default throws if it is missing" {
         shouldThrow<NoValueException> { serverVariable30().default }
         shouldThrow<NoValueException> { serverVariable31().default }
+        shouldThrow<NoValueException> { serverVariable32().default }
     }
 
     include(testDescription("server variable 30", ::serverVariable30) { it.description })
     include(testDescription("server variable 31", ::serverVariable31) { it.description })
+    include(testDescription("server variable 32", ::serverVariable32) { it.description })
 
     include(testExtensions("server variable 30", ::serverVariable30) { it.extensions })
     include(testExtensions("server variable 31", ::serverVariable31) { it.extensions })
+    include(testExtensions("server variable 32", ::serverVariable32) { it.extensions })
 })
 

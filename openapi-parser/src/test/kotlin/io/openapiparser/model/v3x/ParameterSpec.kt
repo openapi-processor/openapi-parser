@@ -21,42 +21,53 @@ import io.openapiparser.model.v30.parameter as parameter30
 import io.openapiparser.model.v31.Example as Example31
 import io.openapiparser.model.v31.MediaType as MediaType31
 import io.openapiparser.model.v31.parameter as parameter31
+import io.openapiparser.model.v32.Example as Example32
+import io.openapiparser.model.v32.MediaType as MediaType32
+import io.openapiparser.model.v32.parameter as parameter32
 
 class ParameterSpec: StringSpec({
 
     "gets parameter name" {
         parameter30("name: aName").name shouldBe "aName"
         parameter31("name: aName").name shouldBe "aName"
+        parameter32("name: aName").name shouldBe "aName"
     }
 
     "gets parameter name throws if it is missing" {
         shouldThrow<NoValueException> { parameter30().name }
         shouldThrow<NoValueException> { parameter31().name }
+        shouldThrow<NoValueException> { parameter32().name }
     }
 
     "gets parameter in" {
         parameter30("in: inType").`in` shouldBe "inType"
         parameter31("in: inType").`in` shouldBe "inType"
+        parameter32("in: inType").`in` shouldBe "inType"
     }
 
     "gets parameter in throws if it is missing" {
         shouldThrow<NoValueException> { parameter30().`in` }
         shouldThrow<NoValueException> { parameter31().`in` }
+        shouldThrow<NoValueException> { parameter32().`in` }
     }
 
     include(testDescription("parameter 30", ::parameter30) { it.description })
     include(testDescription("parameter 31", ::parameter31) { it.description })
+    include(testDescription("parameter 32", ::parameter32) { it.description })
 
     "gets parameter required" {
         parameter30("required: true").required.shouldBeTrue()
         parameter30("required: false").required.shouldBeFalse()
         parameter31("required: true").required.shouldBeTrue()
         parameter31("required: false").required.shouldBeFalse()
+        parameter32("required: true").required.shouldBeTrue()
+        parameter32("required: false").required.shouldBeFalse()
     }
 
     "gets parameter required is false if missing" {
         parameter30().required.shouldBeFalse()
         parameter31().required.shouldBeFalse()
+        parameter32().required.shouldBeFalse()
     }
 
     "gets parameter deprecated" {
@@ -64,11 +75,14 @@ class ParameterSpec: StringSpec({
         parameter30("deprecated: false").deprecated.shouldBeFalse()
         parameter31("deprecated: true").deprecated.shouldBeTrue()
         parameter31("deprecated: false").deprecated.shouldBeFalse()
+        parameter32("deprecated: true").deprecated.shouldBeTrue()
+        parameter32("deprecated: false").deprecated.shouldBeFalse()
     }
 
     "gets parameter deprecated is false if missing" {
         parameter30().deprecated.shouldBeFalse()
         parameter31().deprecated.shouldBeFalse()
+        parameter32().deprecated.shouldBeFalse()
     }
 
     "gets parameter allowEmptyValue" {
@@ -76,16 +90,20 @@ class ParameterSpec: StringSpec({
         parameter30("allowEmptyValue: false").allowEmptyValue.shouldBeFalse()
         parameter31("allowEmptyValue: true").allowEmptyValue.shouldBeTrue()
         parameter31("allowEmptyValue: false").allowEmptyValue.shouldBeFalse()
+        parameter32("allowEmptyValue: true").allowEmptyValue.shouldBeTrue()
+        parameter32("allowEmptyValue: false").allowEmptyValue.shouldBeFalse()
     }
 
     "gets parameter allowEmptyValue is false if missing" {
         parameter30().allowEmptyValue.shouldBeFalse()
         parameter31().allowEmptyValue.shouldBeFalse()
+        parameter32().allowEmptyValue.shouldBeFalse()
     }
 
     "gets parameter style" {
         parameter30("style: a Style").style shouldBe "a Style"
         parameter31("style: a Style").style shouldBe "a Style"
+        parameter32("style: a Style").style shouldBe "a Style"
     }
 
     "gets parameter style is default if missing" {
@@ -97,11 +115,16 @@ class ParameterSpec: StringSpec({
         parameter31("in: cookie").style shouldBe "form"
         parameter31("in: path").style shouldBe "simple"
         parameter31("in: header").style shouldBe "simple"
+        parameter32("in: query").style shouldBe "form"
+        parameter32("in: cookie").style shouldBe "form"
+        parameter32("in: path").style shouldBe "simple"
+        parameter32("in: header").style shouldBe "simple"
     }
 
     "gets parameter explode" {
         parameter30("explode: true").explode shouldBe true
         parameter31("explode: true").explode shouldBe true
+        parameter32("explode: true").explode shouldBe true
     }
 
     "gets parameter explode is default if missing" {
@@ -109,36 +132,44 @@ class ParameterSpec: StringSpec({
         parameter30("style: simple").explode.shouldBeFalse()
         parameter31("style: form").explode.shouldBeTrue()
         parameter31("style: simple").explode.shouldBeFalse()
+        parameter32("style: form").explode.shouldBeTrue()
+        parameter32("style: simple").explode.shouldBeFalse()
     }
 
     "gets parameter allowReserved" {
         parameter30("allowReserved: true").allowReserved.shouldBeTrue()
         parameter31("allowReserved: true").allowReserved.shouldBeTrue()
+        parameter32("allowReserved: true").allowReserved.shouldBeTrue()
     }
 
     "gets parameter allowReserved is false if missing" {
         parameter30().allowReserved.shouldBeFalse()
         parameter31().allowReserved.shouldBeFalse()
+        parameter32().allowReserved.shouldBeFalse()
     }
 
     "gets parameter schema" {
         parameter30("schema: {}").schema.shouldNotBeNull()
         parameter31("schema: {}").schema.shouldNotBeNull()
+        parameter32("schema: {}").schema.shouldNotBeNull()
     }
 
     "gets parameter schema is null if missing" {
         parameter30().schema.shouldBeNull()
         parameter31().schema.shouldBeNull()
+        parameter32().schema.shouldBeNull()
     }
 
     "gets parameter example" {
         parameter30("example: {}").example.shouldNotBeNull()
         parameter31("example: {}").example.shouldNotBeNull()
+        parameter32("example: {}").example.shouldNotBeNull()
     }
 
     "gets parameter example is null if missing" {
         parameter30().example.shouldBeNull()
         parameter31().example.shouldBeNull()
+        parameter32().example.shouldBeNull()
     }
 
     "gets parameter examples 30" {
@@ -171,9 +202,25 @@ class ParameterSpec: StringSpec({
         examples["bar"].shouldBeInstanceOf<Example31>()
     }
 
+    "gets parameter examples 32" {
+        val source = """
+            examples:
+             foo: {}
+             bar: {}
+        """
+
+        val examples = parameter32(source).examples
+
+        examples.shouldNotBeNull()
+        examples.size shouldBe 2
+        examples["foo"].shouldBeInstanceOf<Example32>()
+        examples["bar"].shouldBeInstanceOf<Example32>()
+    }
+
     "gets parameter examples is empty if missing" {
         parameter30().examples.shouldBeEmpty()
         parameter31().examples.shouldBeEmpty()
+        parameter32().examples.shouldBeEmpty()
     }
 
     "gets parameter content 30" {
@@ -206,11 +253,28 @@ class ParameterSpec: StringSpec({
         content["application/xml"].shouldBeInstanceOf<MediaType31>()
     }
 
+    "gets parameter content 32" {
+        val source = """
+            content:
+             application/json: {}
+             application/xml: {}
+        """
+
+        val content = parameter32(source).content
+
+        content.shouldNotBeNull()
+        content.size shouldBe 2
+        content["application/json"].shouldBeInstanceOf<MediaType32>()
+        content["application/xml"].shouldBeInstanceOf<MediaType32>()
+    }
+
     "gets parameter content is empty if missing" {
         parameter30().content.shouldBeEmpty()
         parameter31().content.shouldBeEmpty()
+        parameter32().content.shouldBeEmpty()
     }
 
     include(testExtensions("parameter30", ::parameter30) { it.extensions })
     include(testExtensions("parameter31", ::parameter31) { it.extensions })
+    include(testExtensions("parameter32", ::parameter32) { it.extensions })
 })

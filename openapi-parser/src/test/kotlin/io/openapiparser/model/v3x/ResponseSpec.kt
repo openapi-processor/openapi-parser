@@ -16,17 +16,21 @@ import io.openapiparser.model.v30.MediaType as MediaType30
 import io.openapiparser.model.v30.response as response30
 import io.openapiparser.model.v31.MediaType as MediaType31
 import io.openapiparser.model.v31.response as response31
+import io.openapiparser.model.v32.MediaType as MediaType32
+import io.openapiparser.model.v32.response as response32
 
 class ResponseSpec: StringSpec({
 
     "gets response description" {
         response30("description: description").description shouldBe "description"
         response31("description: description").description shouldBe "description"
+        response32("description: description").description shouldBe "description"
     }
 
     "gets response description throws if it is missing" {
         shouldThrow<NoValueException> { response30().description }
         shouldThrow<NoValueException> { response31().description }
+        shouldThrow<NoValueException> { response32().description }
     }
 
     "gets response headers" {
@@ -45,11 +49,17 @@ class ResponseSpec: StringSpec({
         h31.size shouldBe 2
         h31["foo"].shouldNotBeNull()
         h31["bar"].shouldNotBeNull()
+
+        val h32 = response32(source).headers
+        h32.size shouldBe 2
+        h32["foo"].shouldNotBeNull()
+        h32["bar"].shouldNotBeNull()
     }
 
     "gets response headers is empty if missing" {
         response30().headers.shouldBeEmpty()
         response31().headers.shouldBeEmpty()
+        response32().headers.shouldBeEmpty()
     }
 
     "gets response content 30" {
@@ -82,9 +92,25 @@ class ResponseSpec: StringSpec({
         content["application/xml"].shouldBeInstanceOf<MediaType31>()
     }
 
+    "gets response content 32" {
+        val source = """
+            content:
+             application/json: {}
+             application/xml: {}
+        """
+
+        val content = response32(source).content
+
+        content.shouldNotBeNull()
+        content.size shouldBe 2
+        content["application/json"].shouldBeInstanceOf<MediaType32>()
+        content["application/xml"].shouldBeInstanceOf<MediaType32>()
+    }
+
     "gets response content is empty if missing" {
         response30().content.shouldBeEmpty()
         response31().content.shouldBeEmpty()
+        response32().content.shouldBeEmpty()
     }
 
     "gets response links" {
@@ -103,13 +129,20 @@ class ResponseSpec: StringSpec({
         l31.size shouldBe 2
         l31["foo"].shouldNotBeNull()
         l31["bar"].shouldNotBeNull()
+
+        val l32 = response31(source).links
+        l32.size shouldBe 2
+        l32["foo"].shouldNotBeNull()
+        l32["bar"].shouldNotBeNull()
     }
 
     "gets response links is empty if missing" {
         response30().links.shouldBeEmpty()
         response31().links.shouldBeEmpty()
+        response32().links.shouldBeEmpty()
     }
 
     include(testExtensions("response 30", ::response30) { it.extensions })
     include(testExtensions("response 31", ::response31) { it.extensions })
+    include(testExtensions("response 32", ::response32) { it.extensions })
 })

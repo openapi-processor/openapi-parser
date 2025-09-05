@@ -17,27 +17,34 @@ import io.openapiparser.model.v30.mediaType as mediaType30
 import io.openapiparser.model.v31.Encoding as Encoding31
 import io.openapiparser.model.v31.Example as Example31
 import io.openapiparser.model.v31.mediaType as mediaType31
+import io.openapiparser.model.v32.Encoding as Encoding32
+import io.openapiparser.model.v32.Example as Example32
+import io.openapiparser.model.v32.mediaType as mediaType32
 
 class MediaTypeSpec: StringSpec({
 
     "gets media type schema" {
         mediaType30("schema: {}").schema.shouldNotBeNull()
         mediaType31("schema: {}").schema.shouldNotBeNull()
+        mediaType32("schema: {}").schema.shouldNotBeNull()
     }
 
     "gets media type schema is null if missing" {
         mediaType30().schema.shouldBeNull()
         mediaType31().schema.shouldBeNull()
+        mediaType32().schema.shouldBeNull()
     }
 
     "gets media type example" {
         mediaType30("example: {}").example.shouldNotBeNull()
         mediaType31("example: {}").example.shouldNotBeNull()
+        mediaType32("example: {}").example.shouldNotBeNull()
     }
 
     "gets media type example is null if missing" {
         mediaType30().example.shouldBeNull()
         mediaType31().example.shouldBeNull()
+        mediaType32().example.shouldBeNull()
     }
 
     "gets media type examples 30" {
@@ -70,9 +77,25 @@ class MediaTypeSpec: StringSpec({
         examples["bar"].shouldBeInstanceOf<Example31>()
     }
 
+    "gets media type examples 32" {
+        val source = """
+            examples:
+             foo: {}
+             bar: {}
+        """
+
+        val examples = mediaType32(source).examples
+
+        examples.shouldNotBeNull()
+        examples.size shouldBe 2
+        examples["foo"].shouldBeInstanceOf<Example32>()
+        examples["bar"].shouldBeInstanceOf<Example32>()
+    }
+
     "gets parameter examples is empty if missing" {
         mediaType30().examples.shouldBeEmpty()
         mediaType31().examples.shouldBeEmpty()
+        mediaType32().examples.shouldBeEmpty()
     }
 
     "gets media type encoding 30" {
@@ -105,11 +128,28 @@ class MediaTypeSpec: StringSpec({
         encoding["bar"].shouldBeInstanceOf<Encoding31>()
     }
 
+    "gets media type encoding 32" {
+        val source = """
+            encoding:
+             foo: {}
+             bar: {}
+        """
+
+        val encoding = mediaType32(source).encoding
+
+        encoding.shouldNotBeNull()
+        encoding.size shouldBe 2
+        encoding["foo"].shouldBeInstanceOf<Encoding32>()
+        encoding["bar"].shouldBeInstanceOf<Encoding32>()
+    }
+
     "gets media type encoding is empty if missing" {
         mediaType30().encoding.shouldBeEmpty()
         mediaType31().encoding.shouldBeEmpty()
+        mediaType32().encoding.shouldBeEmpty()
     }
 
     include(testExtensions("mediaType30", ::mediaType30) { it.extensions })
     include(testExtensions("mediaType31", ::mediaType31) { it.extensions })
+    include(testExtensions("mediaType32", ::mediaType32) { it.extensions })
 })

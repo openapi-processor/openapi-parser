@@ -12,12 +12,14 @@ import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.openapiparser.model.v30.encoding as encoding30
 import io.openapiparser.model.v31.encoding as encoding31
+import io.openapiparser.model.v32.encoding as encoding32
 
 class EncodingSpec: StringSpec({
 
     "gets encoding content type" {
         encoding30("contentType: application/json").contentType shouldBe "application/json"
         encoding31("contentType: application/json").contentType shouldBe "application/json"
+        encoding32("contentType: application/json").contentType shouldBe "application/json"
     }
 
     /* todo default values
@@ -52,27 +54,32 @@ class EncodingSpec: StringSpec({
     "gets encoding headers" {
         encoding30("headers: { X-Foo: {}}").headers["X-Foo"].shouldNotBeNull()
         encoding31("headers: { X-Foo: {}}").headers["X-Foo"].shouldNotBeNull()
+        encoding32("headers: { X-Foo: {}}").headers["X-Foo"].shouldNotBeNull()
     }
 
     "gets encoding headers is empty if missing" {
         encoding30().headers.isEmpty()
         encoding31().headers.isEmpty()
+        encoding32().headers.isEmpty()
     }
 
     // not sure if style is correct ...
     "gets encoding style" {
         encoding30("style: form").style shouldBe "form"
         encoding31("style: form").style shouldBe "form"
+        encoding32("style: form").style shouldBe "form"
     }
 
     "gets encoding style default if missing" {
         encoding30().style shouldBe "form"
         encoding31().style shouldBe "form"
+        encoding32().style shouldBe "form"
     }
 
     "gets parameter explode" {
         encoding30("explode: true").explode shouldBe true
         encoding31("explode: true").explode shouldBe true
+        encoding32("explode: true").explode shouldBe true
     }
 
     "gets parameter explode is default if missing" {
@@ -80,19 +87,23 @@ class EncodingSpec: StringSpec({
         encoding30("style: simple").explode.shouldBeFalse()
         encoding31("style: form").explode.shouldBeTrue()
         encoding31("style: simple").explode.shouldBeFalse()
+        encoding32("style: form").explode.shouldBeTrue()
+        encoding32("style: simple").explode.shouldBeFalse()
     }
 
     "gets parameter allowReserved" {
         encoding30("allowReserved: true").allowReserved.shouldBeTrue()
         encoding31("allowReserved: true").allowReserved.shouldBeTrue()
+        encoding32("allowReserved: true").allowReserved.shouldBeTrue()
     }
 
     "gets parameter allowReserved is false if missing" {
         encoding30().allowReserved.shouldBeFalse()
         encoding31().allowReserved.shouldBeFalse()
+        encoding32().allowReserved.shouldBeFalse()
     }
 
     include(testExtensions("encoding 30", ::encoding30) { it.extensions })
     include(testExtensions("encoding 31", ::encoding31) { it.extensions })
+    include(testExtensions("encoding 32", ::encoding32) { it.extensions })
 })
-

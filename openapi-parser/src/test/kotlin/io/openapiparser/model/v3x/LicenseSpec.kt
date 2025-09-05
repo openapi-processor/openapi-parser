@@ -12,29 +12,35 @@ import io.kotest.matchers.shouldBe
 import io.openapiprocessor.jsonschema.converter.NoValueException
 import io.openapiparser.model.v30.license as license30
 import io.openapiparser.model.v31.license as license31
+import io.openapiparser.model.v32.license as license32
 
 class LicenseSpec: StringSpec({
 
     "gets license name" {
         license30("name: license name").name shouldBe "license name"
         license31("name: license name").name shouldBe "license name"
+        license32("name: license name").name shouldBe "license name"
     }
 
     "gets license name throws if it missing" {
         shouldThrow<NoValueException> { license30().name }
         shouldThrow<NoValueException> { license31().name }
+        shouldThrow<NoValueException> { license32().name }
     }
 
     "gets license url" {
         license30("url: https://license").url shouldBe "https://license"
         license31("url: https://license").url shouldBe "https://license"
+        license32("url: https://license").url shouldBe "https://license"
     }
 
     "gets license url is null if missing" {
         license30().url.shouldBeNull()
         license31().url.shouldBeNull()
+        license32().url.shouldBeNull()
     }
 
     include(testExtensions("License30", ::license30) { it.extensions })
     include(testExtensions("License31", ::license31) { it.extensions })
+    include(testExtensions("License32", ::license32) { it.extensions })
 })

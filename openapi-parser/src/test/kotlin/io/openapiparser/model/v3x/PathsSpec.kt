@@ -10,6 +10,7 @@ import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.openapiparser.model.v30.paths as paths30
 import io.openapiparser.model.v31.paths as paths31
+import io.openapiparser.model.v32.paths as paths32
 
 class PathsSpec: StringSpec({
 
@@ -20,6 +21,7 @@ class PathsSpec: StringSpec({
 
         paths30(source).getPathItem("/foo").shouldNotBeNull()
         paths31(source).getPathItem("/foo").shouldNotBeNull()
+        paths32(source).getPathItem("/foo").shouldNotBeNull()
     }
 
     "gets path items objects" {
@@ -37,8 +39,14 @@ class PathsSpec: StringSpec({
         p31.size shouldBe 2
         p31["/foo"].shouldNotBeNull()
         p31["/bar"].shouldNotBeNull()
+
+        val p32 = paths32(source).pathItems
+        p32.size shouldBe 2
+        p32["/foo"].shouldNotBeNull()
+        p32["/bar"].shouldNotBeNull()
     }
 
     include(testExtensions("Paths30", ::paths30) { it.extensions })
     include(testExtensions("Paths31", ::paths31) { it.extensions })
+    include(testExtensions("Paths32", ::paths32) { it.extensions })
 })
