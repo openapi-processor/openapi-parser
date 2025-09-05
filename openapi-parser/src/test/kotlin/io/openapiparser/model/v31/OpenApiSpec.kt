@@ -10,6 +10,8 @@ import io.kotest.matchers.maps.shouldBeEmpty
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import io.openapiparser.model.v31.openapi as openapi31
+import io.openapiparser.model.v32.openapi as openapi32
 
 /**
  * @see [io.openapiparser.model.v3x.OpenApiSpec]
@@ -17,34 +19,44 @@ import io.kotest.matchers.shouldBe
 class OpenApiSpec: StringSpec({
 
     "gets json schema dialect" {
-        openapi("jsonSchemaDialect: https://schema.uri").jsonSchemaDialect.shouldNotBeNull()
+        openapi31("jsonSchemaDialect: https://schema.uri").jsonSchemaDialect.shouldNotBeNull()
+        openapi32("jsonSchemaDialect: https://schema.uri").jsonSchemaDialect.shouldNotBeNull()
     }
 
     "gets null json schema dialect if it missing" {
-        openapi().jsonSchemaDialect.shouldBeNull()
+        openapi31().jsonSchemaDialect.shouldBeNull()
+        openapi32().jsonSchemaDialect.shouldBeNull()
     }
 
     "gets paths object" {
-        openapi("paths: {}").paths.shouldNotBeNull()
+        openapi31("paths: {}").paths.shouldNotBeNull()
+        openapi32("paths: {}").paths.shouldNotBeNull()
     }
 
     "gets path object is null if it missing" {
-        openapi().paths.shouldBeNull()
+        openapi31().paths.shouldBeNull()
+        openapi32().paths.shouldBeNull()
     }
 
-    "gets webhooks objects" {
-        val webhooks = openapi("""
-            webhooks:
-              /foo: {}
-              /bar: {}
-        """).webhooks
-
+    fun assertWebhooks (webhooks: Map<String, Any?>) {
         webhooks.size shouldBe 2
         webhooks["/foo"].shouldNotBeNull()
         webhooks["/bar"].shouldNotBeNull()
     }
 
+    "gets webhooks objects" {
+        val source = """
+          webhooks:
+            /foo: {}
+            /bar: {}
+        """
+
+        assertWebhooks(openapi31(source).webhooks)
+        assertWebhooks(openapi32(source).webhooks)
+    }
+
     "gets webhooks is empty if it is missing" {
-        openapi().webhooks.shouldBeEmpty()
+        openapi31().webhooks.shouldBeEmpty()
+        openapi32().webhooks.shouldBeEmpty()
     }
 })

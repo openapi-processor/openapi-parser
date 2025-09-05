@@ -9,6 +9,8 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.maps.shouldHaveSize
 import io.openapiparser.support.ApiBuilder
+import io.openapiparser.model.v31.openapi as openapi31
+import io.openapiparser.model.v31.pathItem as pathItem31
 
 class PathItemSpec : StringSpec({
 
@@ -26,9 +28,9 @@ class PathItemSpec : StringSpec({
                     patch: {}
                     trace: {}
             """.trimIndent())
-            .buildOpenApi30()
+            .buildOpenApi31()
 
-        val path = api.paths.getPathItem("/foo")
+        val path = api.paths!!.getPathItem("/foo")
 
         val operations = path?.operations
         operations?.shouldHaveSize(8)

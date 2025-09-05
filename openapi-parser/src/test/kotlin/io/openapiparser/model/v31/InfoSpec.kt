@@ -8,6 +8,8 @@ package io.openapiparser.model.v31
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
+import io.openapiparser.model.v31.info as info31
+import io.openapiparser.model.v32.info as info32
 
 /**
  * @see [io.openapiparser.model.v3x.InfoSpec]
@@ -15,10 +17,12 @@ import io.kotest.matchers.shouldBe
 class InfoSpec : StringSpec({
 
     "gets info summary" {
-        info("summary: the summary").summary shouldBe "the summary"
+        info31("summary: the summary").summary shouldBe "the summary"
+        info32("summary: the summary").summary shouldBe "the summary"
     }
 
     "gets info summary is null if missing" {
-        info().summary.shouldBeNull()
+        info31().summary.shouldBeNull()
+        info32().summary.shouldBeNull()
     }
 })
