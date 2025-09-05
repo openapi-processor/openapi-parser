@@ -28,7 +28,7 @@ dependencies {
 
     testImplementation(platform(libs.kotest.bom))
     testImplementation(libs.kotest.runner)
-    testImplementation(libs.kotest.datatest)
+    testImplementation(libs.kotest.table)
     testImplementation(libs.mockk)
     testCompileOnly(libs.checkerq)
 }

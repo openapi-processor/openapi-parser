@@ -5,7 +5,7 @@
 
 package io.openapiparser
 
-import io.kotest.core.spec.style.StringSpec
+import io.kotest.core.spec.style.FreeSpec
 import io.kotest.datatest.withData
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
@@ -17,7 +17,7 @@ import io.openapiprocessor.jsonschema.schema.JsonPointer.from
 import io.openapiprocessor.snakeyaml.SnakeYamlConverter
 import io.openapiprocessor.jsonschema.schema.*
 
-class OpenApiBundlerSpec : StringSpec({
+class OpenApiBundlerSpec : FreeSpec({
 
     fun resolve(documentUri: String): ResolverResult {
         val documents = DocumentStore()
@@ -50,31 +50,31 @@ class OpenApiBundlerSpec : StringSpec({
 
     withData(
         mapOf(
-            "bundle handles \$ref loop, 30" to Data("/bundle-ref-loop/openapi30.yaml", ::bundle30),
-            "bundle handles \$ref loop, 31" to Data("/bundle-ref-loop/openapi31.yaml", ::bundle31)
+            $$"bundle handles $ref loop, 30" to Data("/bundle-ref-loop/openapi30.yaml", ::bundle30),
+            $$"bundle handles $ref loop, 31" to Data("/bundle-ref-loop/openapi31.yaml", ::bundle31)
         )
     ) { (api, bundle) ->
         val result = resolve(api)
         val bundled = bundle(result)
 
         val ref = getObject(bundled, "/paths/~1self-reference/get/responses/200/content/application~1json/schema")
-        ref["\$ref"].shouldBe("#/components/schemas/Self")
+        ref[$$"$ref"].shouldBe("#/components/schemas/Self")
 
         val schema = getObject(bundled, "/components/schemas/Self/properties/self")
-        schema["\$ref"].shouldBe("#/components/schemas/Self")
+        schema[$$"$ref"].shouldBe("#/components/schemas/Self")
     }
 
     withData(
         mapOf(
-            "bundle schema \$ref, 30" to Data("/bundle-ref-schema/openapi30.yaml", ::bundle30),
-            "bundle schema \$ref, 31" to Data("/bundle-ref-schema/openapi31.yaml", ::bundle31)
+            $$"bundle schema $ref, 30" to Data("/bundle-ref-schema/openapi30.yaml", ::bundle30),
+            $$"bundle schema $ref, 31" to Data("/bundle-ref-schema/openapi31.yaml", ::bundle31)
         )
     ) { (api, bundle) ->
         val result = resolve(api)
         val bundled = bundle(result)
 
         val ref = getObject(bundled, "/paths/~1foo/get/responses/200/content/application~1json/schema")
-        ref["\$ref"].shouldBe("#/components/schemas/Foo")
+        ref[$$"$ref"].shouldBe("#/components/schemas/Foo")
 
         val component = bundled.getRawValue(from("/components/schemas/Foo"))
         component.shouldNotBeNull()
@@ -82,8 +82,8 @@ class OpenApiBundlerSpec : StringSpec({
 
     withData(
         mapOf(
-            "bundle response \$ref, 30" to Data("/bundle-ref-response/openapi30.yaml", ::bundle30),
-            "bundle response \$ref, 31" to Data("/bundle-ref-response/openapi31.yaml", ::bundle31)
+            $$"bundle response $ref, 30" to Data("/bundle-ref-response/openapi30.yaml", ::bundle30),
+            $$"bundle response $ref, 31" to Data("/bundle-ref-response/openapi31.yaml", ::bundle31)
         )
     ) { (api, bundle) ->
         val result = resolve(api)
@@ -91,7 +91,7 @@ class OpenApiBundlerSpec : StringSpec({
 
         val ref = getObject(bundled, "/paths/~1foo/get/responses/200")
         ref.size shouldBe 1
-        ref["\$ref"].shouldBe("#/components/responses/Foo")
+        ref[$$"$ref"].shouldBe("#/components/responses/Foo")
 
         val component = getObject(bundled, "/components/responses/Foo")
         component.shouldNotBeNull()
@@ -99,8 +99,8 @@ class OpenApiBundlerSpec : StringSpec({
 
     withData(
         mapOf(
-            "bundle parameter \$ref, 30" to Data("/bundle-ref-parameter/openapi30.yaml", ::bundle30),
-            "bundle parameter \$ref, 31" to Data("/bundle-ref-parameter/openapi31.yaml", ::bundle31)
+            $$"bundle parameter $ref, 30" to Data("/bundle-ref-parameter/openapi30.yaml", ::bundle30),
+            $$"bundle parameter $ref, 31" to Data("/bundle-ref-parameter/openapi31.yaml", ::bundle31)
         )
     ) { (api, bundle) ->
         val result = resolve(api)
@@ -108,7 +108,7 @@ class OpenApiBundlerSpec : StringSpec({
 
         val ref = getObject(bundled, "/paths/~1foo/get/parameters/0")
         ref.size shouldBe 1
-        ref["\$ref"].shouldBe("#/components/parameters/Foo")
+        ref[$$"$ref"].shouldBe("#/components/parameters/Foo")
 
         val component = getObject(bundled, "/components/parameters/Foo")
         component.shouldNotBeNull()
@@ -116,8 +116,8 @@ class OpenApiBundlerSpec : StringSpec({
 
     withData(
         mapOf(
-            "bundle example \$ref, 30" to Data("/bundle-ref-example/openapi30.yaml", ::bundle30),
-            "bundle example \$ref, 31" to Data("/bundle-ref-example/openapi31.yaml", ::bundle31)
+            $$"bundle example $ref, 30" to Data("/bundle-ref-example/openapi30.yaml", ::bundle30),
+            $$"bundle example $ref, 31" to Data("/bundle-ref-example/openapi31.yaml", ::bundle31)
         )
     ) { (api, bundle) ->
         val result = resolve(api)
@@ -125,7 +125,7 @@ class OpenApiBundlerSpec : StringSpec({
 
         val ref = getObject(bundled, "/paths/~1foo/get/parameters/0/examples/foo")
         ref.size shouldBe 1
-        ref["\$ref"].shouldBe("#/components/examples/Foo")
+        ref[$$"$ref"].shouldBe("#/components/examples/Foo")
 
         val component = getObject(bundled, "/components/examples/Foo")
         component.shouldNotBeNull()
@@ -133,8 +133,8 @@ class OpenApiBundlerSpec : StringSpec({
 
     withData(
         mapOf(
-            "bundle request body \$ref, 30" to Data("/bundle-ref-request-body/openapi30.yaml", ::bundle30),
-            "bundle request body \$ref, 31" to Data("/bundle-ref-request-body/openapi31.yaml", ::bundle31)
+            $$"bundle request body $ref, 30" to Data("/bundle-ref-request-body/openapi30.yaml", ::bundle30),
+            $$"bundle request body $ref, 31" to Data("/bundle-ref-request-body/openapi31.yaml", ::bundle31)
         )
     ) { (api, bundle) ->
         val result = resolve(api)
@@ -142,7 +142,7 @@ class OpenApiBundlerSpec : StringSpec({
 
         val ref = getObject(bundled, "/paths/~1foo/get/requestBody")
         ref.size shouldBe 1
-        ref["\$ref"].shouldBe("#/components/requestBodies/Foo")
+        ref[$$"$ref"].shouldBe("#/components/requestBodies/Foo")
 
         val component = getObject(bundled, "/components/requestBodies/Foo")
         component.shouldNotBeNull()
@@ -150,8 +150,8 @@ class OpenApiBundlerSpec : StringSpec({
 
     withData(
         mapOf(
-            "bundle header \$ref, 30" to Data("/bundle-ref-header/openapi30.yaml", ::bundle30),
-            "bundle header \$ref, 31" to Data("/bundle-ref-header/openapi31.yaml", ::bundle31)
+            $$"bundle header $ref, 30" to Data("/bundle-ref-header/openapi30.yaml", ::bundle30),
+            $$"bundle header $ref, 31" to Data("/bundle-ref-header/openapi31.yaml", ::bundle31)
         )
     ) { (api, bundle) ->
         val result = resolve(api)
@@ -159,7 +159,7 @@ class OpenApiBundlerSpec : StringSpec({
 
         val ref = getObject(bundled, "/paths/~1foo/get/responses/204/headers/foo")
         ref.size shouldBe 1
-        ref["\$ref"].shouldBe("#/components/headers/Foo")
+        ref[$$"$ref"].shouldBe("#/components/headers/Foo")
 
         val component = getObject(bundled, "/components/headers/Foo")
         component.shouldNotBeNull()
@@ -167,8 +167,8 @@ class OpenApiBundlerSpec : StringSpec({
 
     withData(
         mapOf(
-            "bundle security scheme \$ref, 30" to Data("/bundle-ref-security-scheme/openapi30.yaml", ::bundle30),
-            "bundle security scheme \$ref, 31" to Data("/bundle-ref-security-scheme/openapi31.yaml", ::bundle31)
+            $$"bundle security scheme $ref, 30" to Data("/bundle-ref-security-scheme/openapi30.yaml", ::bundle30),
+            $$"bundle security scheme $ref, 31" to Data("/bundle-ref-security-scheme/openapi31.yaml", ::bundle31)
         )
     ) { (api, bundle) ->
         val result = resolve(api)
@@ -181,8 +181,8 @@ class OpenApiBundlerSpec : StringSpec({
 
     withData(
         mapOf(
-            "bundle link \$ref, 30" to Data("/bundle-ref-link/openapi30.yaml", ::bundle30),
-            "bundle link \$ref, 31" to Data("/bundle-ref-link/openapi31.yaml", ::bundle31)
+            $$"bundle link $ref, 30" to Data("/bundle-ref-link/openapi30.yaml", ::bundle30),
+            $$"bundle link $ref, 31" to Data("/bundle-ref-link/openapi31.yaml", ::bundle31)
         )
     ) { (api, bundle) ->
         val result = resolve(api)
@@ -190,7 +190,7 @@ class OpenApiBundlerSpec : StringSpec({
 
         val ref = getObject(bundled, "/paths/~1foo/get/responses/204/links/foo")
         ref.size shouldBe 1
-        ref["\$ref"].shouldBe("#/components/links/Foo")
+        ref[$$"$ref"].shouldBe("#/components/links/Foo")
 
         val component = getObject(bundled, "/components/links/Foo")
         component.shouldNotBeNull()
@@ -198,8 +198,8 @@ class OpenApiBundlerSpec : StringSpec({
 
     withData(
         mapOf(
-            "bundle callback \$ref, 30" to Data("/bundle-ref-callback/openapi30.yaml", ::bundle30),
-            "bundle callback \$ref, 31" to Data("/bundle-ref-callback/openapi31.yaml", ::bundle31)
+            $$"bundle callback $ref, 30" to Data("/bundle-ref-callback/openapi30.yaml", ::bundle30),
+            $$"bundle callback $ref, 31" to Data("/bundle-ref-callback/openapi31.yaml", ::bundle31)
         )
     ) { (api, bundle) ->
         val result = resolve(api)
@@ -207,7 +207,7 @@ class OpenApiBundlerSpec : StringSpec({
 
         val ref = getObject(bundled, "/paths/~1foo/get/callbacks/\$url")
         ref.size shouldBe 1
-        ref["\$ref"].shouldBe("#/components/callbacks/Foo")
+        ref[$$"$ref"].shouldBe("#/components/callbacks/Foo")
 
         val component = getObject(bundled, "/components/callbacks/Foo")
         component.shouldNotBeNull()
@@ -215,8 +215,8 @@ class OpenApiBundlerSpec : StringSpec({
 
     withData(
         mapOf(
-            "bundle path \$ref, 30" to Data("/bundle-ref-path-item/openapi30.yaml", ::bundle30),
-            "bundle path \$ref, 31" to Data("/bundle-ref-path-item/openapi31.yaml", ::bundle31)
+            $$"bundle path $ref, 30" to Data("/bundle-ref-path-item/openapi30.yaml", ::bundle30),
+            $$"bundle path $ref, 31" to Data("/bundle-ref-path-item/openapi31.yaml", ::bundle31)
         )
     ) { (api, bundle) ->
         val result = resolve(api)
@@ -229,8 +229,8 @@ class OpenApiBundlerSpec : StringSpec({
 
     withData(
         mapOf(
-            "bundle nested \$ref, 30" to Data("/bundle-ref-nested/openapi30.yaml", ::bundle30),
-            "bundle nested \$ref, 31" to Data("/bundle-ref-nested/openapi31.yaml", ::bundle31)
+            $$"bundle nested $ref, 30" to Data("/bundle-ref-nested/openapi30.yaml", ::bundle30),
+            $$"bundle nested $ref, 31" to Data("/bundle-ref-nested/openapi31.yaml", ::bundle31)
         )
     ) { (api, bundle) ->
         val result = resolve(api)
@@ -241,12 +241,12 @@ class OpenApiBundlerSpec : StringSpec({
         pathItem.containsKey("get").shouldBeTrue()
 
         val ref = getObject(bundled, "/paths/~1foo/get/responses/200/content/application~1json/schema")
-        ref["\$ref"].shouldBe("#/components/schemas/Bar")
+        ref[$$"$ref"].shouldBe("#/components/schemas/Bar")
         val component = bundled.getRawValue(from("/components/schemas/Bar"))
         component.shouldNotBeNull()
 
         val refNested = getObject(bundled, "/components/schemas/Bar/properties/bar")
-        refNested["\$ref"].shouldBe("#/components/schemas/Bar2")
+        refNested[$$"$ref"].shouldBe("#/components/schemas/Bar2")
         val componentNested = bundled.getRawValue(from("/components/schemas/Bar2"))
         componentNested.shouldNotBeNull()
     }

@@ -5,19 +5,18 @@
 
 package io.openapiprocessor.jsonschema.schema
 
-import io.kotest.core.spec.style.StringSpec
+import io.kotest.core.spec.style.FreeSpec
 import io.kotest.datatest.withData
 import io.kotest.matchers.shouldBe
-import io.openapiprocessor.jsonschema.schema.SchemaKeywords
 
-class SchemaKeywordsSpec : StringSpec({
+class SchemaKeywordsSpec : FreeSpec({
 
-    data class Keyword(val keyword: String, val navigatable: Boolean)
+    data class Keyword(val keyword: String, val navigable: Boolean)
     val keywordsDraft6 = SchemaKeywords.draft6
 
     withData(
-        Keyword("\$schema", false),
-        Keyword("\$id", false),
+        Keyword($$"$schema", false),
+        Keyword($$"$id", false),
         Keyword("multipleOf", false),
         Keyword("maximum", false),
         Keyword("minimum", false),
@@ -53,7 +52,7 @@ class SchemaKeywordsSpec : StringSpec({
         Keyword("default", false),
         Keyword("examples", false),
         Keyword("format", false)
-    ) { (keyword, navigatable) ->
-        keywordsDraft6.isNavigable (keyword) shouldBe navigatable
+    ) { (keyword, navigable) ->
+        keywordsDraft6.isNavigable (keyword) shouldBe navigable
     }
 })

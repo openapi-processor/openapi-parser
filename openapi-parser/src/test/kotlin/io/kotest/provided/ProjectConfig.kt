@@ -3,13 +3,12 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser
+package io.kotest.provided
 
 import io.kotest.core.Tag
-import io.kotest.core.TagExpression
 import io.kotest.core.config.AbstractProjectConfig
 import io.kotest.core.extensions.TagExtension
-import io.openapiparser.memory.MemoryUrlStreamHandlerFactory
+import io.kotest.engine.tags.TagExpression
 
 object Windows: Tag()
 object NotWindows: Tag()
@@ -42,5 +41,5 @@ object ProjectConfig: AbstractProjectConfig() {
         // MemoryUrlStreamHandlerFactory.register()
     }
 
-    override fun extensions() = listOf(SystemTagExtension)
+    override val extensions = listOf(SystemTagExtension)
 }
