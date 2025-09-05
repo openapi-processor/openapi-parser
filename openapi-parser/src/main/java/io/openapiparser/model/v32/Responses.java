@@ -1,0 +1,45 @@
+/*
+ * Copyright 2025 https://github.com/openapi-processor/openapi-parser
+ * PDX-License-Identifier: Apache-2.0
+ */
+
+package io.openapiparser.model.v32;
+
+import io.openapiparser.Context;
+import io.openapiparser.Properties;
+import io.openapiprocessor.jsonschema.schema.Bucket;
+import org.checkerframework.checker.nullness.qual.Nullable;
+
+import java.util.Map;
+
+import static io.openapiparser.Keywords.DEFAULT;
+
+/**
+ * the <em>Responses</em> object.
+ *
+ * <p>See specification:
+ * <a href="https://spec.openapis.org/oas/v3.2.0.html#responses-object">4.8.16 Responses Object</a>
+ */
+public class Responses extends Properties implements Extensions {
+
+    public Responses (Context context, Bucket bucket) {
+        super (context, bucket);
+    }
+
+    public Map<String, Response> getResponses () {
+        return getMapObjectsOrEmpty (Response.class);
+    }
+
+    public @Nullable Response getResponse (String httpStatus) {
+        return getObjectOrNull (httpStatus, Response.class);
+    }
+
+    public @Nullable Response getDefault () {
+        return getObjectOrNull (DEFAULT, Response.class);
+    }
+
+    @Override
+    public Map<String, @Nullable Object> getExtensions () {
+        return super.getExtensions ();
+    }
+}
