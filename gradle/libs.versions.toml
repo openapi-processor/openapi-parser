@@ -3,24 +3,19 @@ openapiparser = "2025.4-SNAPSHOT"
 
 build-jdk = "11"
 test-jdk = "17"
+build-plugins = "2025.1"
 
 # using the embedded kotlin version of gradle to avoid mixed versions
 kotlin = "2.2.10"
-kotlinx-json = "1.7.3"
+#kotlinx-json = "1.7.3"
 
-checker = "3.49.5"
+checker = "3.50.0"
 checkerp = "0.6.56"
 jacoco = "0.8.11"
-outdated = "0.52.0"
+updates = "0.52.0"
+junit = "5.13.4"
 
 [libraries]
-# buildSrc
-plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-plugin-checker = { module = "org.checkerframework:checkerframework-gradle-plugin", version.ref = "checkerp" }
-plugin-outdated = { module = "com.github.ben-manes:gradle-versions-plugin", version.ref = "outdated" }
-kotlinx-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-json" }
-
-# src
 checker = { module = "org.checkerframework:checker", version.ref = "checker" }
 checkerq = { module = "org.checkerframework:checker-qual", version.ref = "checker" }
 
@@ -40,13 +35,20 @@ kotest-runner = { module = "io.kotest:kotest-runner-junit5" }
 kotest-table = { module = "io.kotest:kotest-assertions-table" }
 mockk = "io.mockk:mockk:1.14.5"
 
+# for buildSrc convention plugins
+plugin-build = { module = "io.openapiprocessor:build-plugins", version.ref = "build-plugins" }
+plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+plugin-checker = { module = "org.checkerframework:checkerframework-gradle-plugin", version.ref = "checkerp" }
+plugin-updates = { module = "com.github.ben-manes:gradle-versions-plugin", version.ref = "updates" }
+#kotlinx-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-json" }
+
 [bundles]
 #jackson = ["jackson-databind", "jackson-yaml", "jackson-kotlin" ]
 #kotest = ["kotest-runner", "kotest-datatest", "mockk"]
 
 [plugins]
 #kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-nexus = { id = "io.github.gradle-nexus.publish-plugin", version = "2.0.0" }
+#nexus = { id = "io.github.gradle-nexus.publish-plugin", version = "2.0.0" }
 checker = { id = "org.checkerframework", version.ref = "checkerp" }
 jacoco = { id = "org.barfuin.gradle.jacocolog", version = "3.1.0" }
 sonar = { id = "org.sonarqube", version =  "6.3.1.5724" }

@@ -1,14 +1,15 @@
 plugins {
-    id("openapi-parser.java-conventions")
-    id("openapi-parser.publish-conventions")
+    id("openapiparser.test")
+    id("openapiparser.library")
+    id("openapiparser.publish")
 }
 
 publishing {
     publications {
         getByName<MavenPublication>("openapiparser") {
             pom {
-                name.set("io-interfaces")
-                description.set("OpenAPI Processor Interfaces")
+                name = "io-interfaces"
+                description = "OpenAPI Processor Interfaces"
             }
         }
     }

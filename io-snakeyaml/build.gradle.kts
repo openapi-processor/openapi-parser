@@ -1,11 +1,11 @@
 plugins {
-    id("openapi-parser.java-conventions")
-    id("openapi-parser.publish-conventions")
+    id("openapiparser.test")
+    id("openapiparser.library")
+    id("openapiparser.publish")
 }
 
 dependencies {
     implementation(project(":io-interfaces"))
-
     implementation(libs.snakeyaml)
 
     constraints {
@@ -18,8 +18,8 @@ publishing {
     publications {
         getByName<MavenPublication>("openapiparser") {
             pom {
-                name.set("io-snakeyaml")
-                description.set("OpenAPI Processor snakeyaml YAML Converter")
+                name = "io-snakeyaml"
+                description = "OpenAPI Processor snakeyaml YAML Converter"
             }
         }
     }

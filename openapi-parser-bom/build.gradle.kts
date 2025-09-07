@@ -1,7 +1,11 @@
 plugins {
     `java-platform`
-    id("openapi-parser.publish-conventions")
+    id("openapiparser.publish")
 }
+
+group = "io.openapiprocessor"
+version = libs.versions.openapiparser.get()
+println("version: $version")
 
 dependencies {
     constraints {
@@ -17,8 +21,9 @@ publishing {
     publications {
         getByName<MavenPublication>("openapiparser") {
             pom {
-                name.set("openapi-parser bom")
-                description.set("OpenAPI Parser Platform BOM")
+                name = "openapi-parser bom"
+                description = "OpenAPI Parser Platform BOM"
+                version = libs.versions.openapiparser.get()
             }
         }
     }

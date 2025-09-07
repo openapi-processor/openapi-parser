@@ -1,6 +1,7 @@
 plugins {
-    id("openapi-parser.java-conventions")
-    id("openapi-parser.publish-conventions")
+    id("openapiparser.test")
+    id("openapiparser.library")
+    id("openapiparser.publish")
     alias(libs.plugins.sonar)
 }
 
@@ -30,8 +31,8 @@ publishing {
     publications {
         getByName<MavenPublication>("openapiparser") {
             pom {
-                name.set("openapi-parser")
-                description.set("OpenAPI 3.0/3.1 parser")
+//                name.set("openapi-parser")
+                description = "OpenAPI 3.0/3.1 parser"
             }
         }
     }

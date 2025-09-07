@@ -1,3 +1,4 @@
 plugins {
-    id("openapi-parser.java-conventions")
+    id("openapiparser.test")
+    id("openapiparser.library")
 }

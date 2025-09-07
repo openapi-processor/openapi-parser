@@ -1,7 +1,11 @@
 plugins {
     `java-platform`
-    id("openapi-parser.publish-conventions")
+    id("openapiparser.publish")
 }
+
+group = "io.openapiprocessor"
+version = libs.versions.openapiparser.get()
+println("version: $version")
 
 dependencies {
     constraints {
@@ -16,8 +20,8 @@ publishing {
     publications {
         getByName<MavenPublication>("openapiparser") {
             pom {
-                name.set("json schema validator bom")
-                description.set("JSON Schema Validator Platform BOM")
+                name = "json schema validator bom"
+                description = "JSON Schema Validator Platform BOM"
             }
         }
     }

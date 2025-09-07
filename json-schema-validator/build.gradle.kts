@@ -1,6 +1,7 @@
 plugins {
-    id("openapi-parser.java-conventions")
-    id("openapi-parser.publish-conventions")
+    id("openapiparser.test")
+    id("openapiparser.library")
+    id("openapiparser.publish")
     alias(libs.plugins.sonar)
 }
 
@@ -27,8 +28,8 @@ publishing {
     publications {
         getByName<MavenPublication>("openapiparser") {
             pom {
-                name.set("json-schema-validator")
-                description.set("OpenAPI Parser JSON-Schema Validator")
+                name = "json-schema-validator"
+                description = "OpenAPI Parser JSON-Schema Validator"
             }
         }
     }

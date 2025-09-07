@@ -1,6 +1,7 @@
 plugins {
-    id("openapi-parser.java-conventions")
-    id("openapi-parser.publish-conventions")
+    id("openapiparser.test")
+    id("openapiparser.library")
+    id("openapiparser.publish")
 }
 
 dependencies {
@@ -20,8 +21,8 @@ publishing {
     publications {
         getByName<MavenPublication>("openapiparser") {
             pom {
-                name.set("io-jackson")
-                description.set("OpenAPI Processor Jackson JSON/YAML Converter")
+                name = "io-jackson"
+                description = "OpenAPI Processor Jackson JSON/YAML Converter"
             }
         }
     }
