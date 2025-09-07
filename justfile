@@ -2,7 +2,7 @@ default:
   @just --list --unsorted
 
 # update gradle wrapper
-wrapper version="8.13":
+wrapper version="9.0.0":
     ./gradlew wrapper --gradle-version={{version}}
 
 # run gradle dependencyInsight for dependency and configuration
