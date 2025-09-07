@@ -7,8 +7,6 @@ build-plugins = "2025.1"
 
 # using the embedded kotlin version of gradle to avoid mixed versions
 kotlin = "2.2.10"
-#kotlinx-json = "1.7.3"
-
 checker = "3.50.0"
 checkerp = "0.6.56"
 jacoco = "0.8.11"
@@ -40,15 +38,12 @@ plugin-build = { module = "io.openapiprocessor:build-plugins", version.ref = "bu
 plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 plugin-checker = { module = "org.checkerframework:checkerframework-gradle-plugin", version.ref = "checkerp" }
 plugin-updates = { module = "com.github.ben-manes:gradle-versions-plugin", version.ref = "updates" }
-#kotlinx-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-json" }
 
 [bundles]
 #jackson = ["jackson-databind", "jackson-yaml", "jackson-kotlin" ]
 #kotest = ["kotest-runner", "kotest-datatest", "mockk"]
 
 [plugins]
-#kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-#nexus = { id = "io.github.gradle-nexus.publish-plugin", version = "2.0.0" }
 checker = { id = "org.checkerframework", version.ref = "checkerp" }
 jacoco = { id = "org.barfuin.gradle.jacocolog", version = "3.1.0" }
 sonar = { id = "org.sonarqube", version =  "6.3.1.5724" }
