@@ -1,5 +1,6 @@
 plugins {
     `maven-publish`
+    signing
    id("io.openapiprocessor.build.plugin.publish")
 }
 
@@ -14,8 +15,8 @@ publishing {
 }
 
 publishingCentral {
-    publication = "openapiparser"
     stagingDir = rootProject.layout.buildDirectory.dir("staging")
     deploymentDir = rootProject.layout.buildDirectory.dir("deployment")
     deploymentName = "parser"
+    waitFor = "VALIDATED"
 }
