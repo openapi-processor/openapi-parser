@@ -22,13 +22,3 @@ publishingCentral {
     deploymentDir = layout.buildDirectory.dir("deployment")
     deploymentName = "parser"
 }
-
-afterEvaluate {
-    if (hasProperty("snapshot")) {
-        val publish = tasks.findByName("publishAllReleasesToMavenCentral")
-        publish?.enabled = version.toString().endsWith("SNAPSHOT")
-        if (publish?.enabled == false) {
-            logger.warn("skipping publishing because version is not a snapshot.")
-        }
-    }
-}
