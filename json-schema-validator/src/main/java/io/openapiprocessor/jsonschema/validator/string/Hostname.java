@@ -78,6 +78,10 @@ public class Hostname {
             }
         }
 
+        if(ip.isEmpty()) {
+            return false;
+        }
+
         return true;
     }
 
