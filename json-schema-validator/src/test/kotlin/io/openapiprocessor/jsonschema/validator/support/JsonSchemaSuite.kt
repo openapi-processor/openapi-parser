@@ -11,6 +11,7 @@ package io.openapiprocessor.jsonschema.validator.support
 
 data class Suite(
     val description: String,
+    val specification: Any?,
     val comment: String?,
     val schema: Any,
     val tests: List<Test>
