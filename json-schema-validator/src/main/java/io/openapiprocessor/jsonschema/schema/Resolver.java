@@ -5,9 +5,6 @@
 
 package io.openapiprocessor.jsonschema.schema;
 
-import io.openapiprocessor.jsonschema.support.Types;
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.checker.nullness.qual.PolyNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -97,7 +94,7 @@ public class Resolver {
 
         documents.addId (documentUri, document);
         Scope scope = Scope.createScope (documentUri, document, settings.version);
-        Bucket bucket = toBucket (scope, document);
+        Bucket bucket = Bucket.createBucket(scope, document);
 
         if (bucket == null) {
             return new ResolverResult (scope, document, registry, documents);
@@ -114,10 +111,4 @@ public class Resolver {
         return new ResolverResult (scope, document, registry, documents);
     }
 
-    private @Nullable Bucket toBucket (Scope scope, @PolyNull Object source) {
-        if (!Types.isObject (source)) {
-            return null;
-        }
-        return new Bucket (scope, Types.asObject (source));
-    }
 }
