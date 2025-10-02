@@ -54,7 +54,7 @@ public class ResolverRef {
                 walkRef (ref, propLocation);
 
             } else if (isNavigableObject(keyword, value)) {
-                    walkSchema (scope, requiresNonNull(value), propLocation);
+                walkSchema (scope, requiresNonNull(value), propLocation);
 
             } else if (isNavigableSchemaArray(keyword, value)) {
                 walkSchemaArray (scope, requiresNonNull(value), propLocation);
