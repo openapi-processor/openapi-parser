@@ -149,8 +149,49 @@ public class JsonPointer {
         return unmodifiableList (tokens);
     }
 
+    public JsonPointer parent() {
+        if (pointer == null) {
+            return empty();
+        }
+
+        int lastIdx = pointer.lastIndexOf("/");
+        String parent = pointer.substring(0, lastIdx);
+        return new JsonPointer (parent);
+    }
+
     public boolean isEmpty() {
         return pointer == null;
+    }
+
+    public boolean matches(String pointer) {
+        return toString().equals(pointer);
+    }
+
+    /**
+     * match the JSON pointer parts. A "null" part matches any value.
+     *
+     * @param parts the parts that should match the JSON painter
+     * @return true if it matches, else false
+     */
+    public boolean matchesParts(@Nullable String... parts) {
+        if (tokens.size() != parts.length) {
+            return false;
+        }
+
+        for (int i = 0; i < tokens.size(); i++) {
+            String ptrPart = tokens.get (i);
+            String cmpPart = parts[i];
+            // null does accept any value
+            if (cmpPart == null) {
+                continue;
+            }
+
+            if (!ptrPart.equals (cmpPart)) {
+                return false;
+            };
+        }
+
+        return true;
     }
 
     @Override

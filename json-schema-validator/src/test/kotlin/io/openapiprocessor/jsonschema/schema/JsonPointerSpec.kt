@@ -7,6 +7,8 @@ package io.openapiprocessor.jsonschema.schema
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.shouldBe
 import io.openapiprocessor.jsonschema.support.Types.asMap
 import io.openapiprocessor.jackson.JacksonConverter
@@ -151,5 +153,23 @@ class JsonPointerSpec : StringSpec({
         JsonPointer.from("/to/ke/ns").toUri() shouldBe URI.create("#/to/ke/ns")
         // todo ~ encoding
         // todo uri encoding
+    }
+
+    "get parent of pointer" {
+        JsonPointer.from(null).parent() shouldBe JsonPointer.from(null)
+        JsonPointer.from("").parent() shouldBe JsonPointer.from("")
+        JsonPointer.from("/a/b").parent() shouldBe JsonPointer.from("/a")
+        JsonPointer.from("/a/~1b").parent() shouldBe JsonPointer.from("/a")
+    }
+
+    "matches pointer" {
+        JsonPointer.from(null).matches("").shouldBeTrue()
+    }
+
+    "matches pointer parts" {
+        JsonPointer.from(null).matchesParts().shouldBeTrue()
+        JsonPointer.from(null).matchesParts(null).shouldBeFalse()
+        JsonPointer.from("/paths/foo/parameters/0/schema").matchesParts("paths", null, "parameters", null, "schema").shouldBeTrue()
+        JsonPointer.from("/paths/bar/parameters/1/schema").matchesParts("paths", null, "parameters", null, "schema").shouldBeTrue()
     }
 })
