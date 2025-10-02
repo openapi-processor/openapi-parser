@@ -5,24 +5,26 @@
 
 package io.openapiparser.support
 
-import io.openapiparser.*
-import io.openapiprocessor.jsonschema.support.Types
-import io.openapiprocessor.jsonschema.schema.Bucket
-import io.openapiprocessor.jsonschema.schema.DocumentLoader
-import io.openapiprocessor.jsonschema.schema.DocumentStore
-import io.openapiprocessor.jsonschema.schema.Resolver
-import io.openapiprocessor.jsonschema.schema.SchemaVersion
-import io.openapiprocessor.snakeyaml.SnakeYamlConverter
+//import io.openapiparser.BaseUri32
+import io.openapiparser.Context
+import io.openapiparser.OpenApiParser
+import io.openapiparser.model.v30.setVersion
+import io.openapiparser.model.v31.setVersion
+import io.openapiparser.model.v32.setVersion
 import io.openapiprocessor.interfaces.Converter
-import io.openapiprocessor.jsonschema.schema.ResolverResult
+import io.openapiprocessor.jsonschema.schema.*
+import io.openapiprocessor.jsonschema.support.Types
+import io.openapiprocessor.snakeyaml.SnakeYamlConverter
 import java.net.URI
 import io.openapiparser.model.v30.OpenApi as OpenApi30
 import io.openapiparser.model.v31.OpenApi as OpenApi31
+import io.openapiparser.model.v32.OpenApi as OpenApi32
 
-class ApiBuilder {
+class ApiBuilder(private var version: SchemaVersion = SchemaVersion.Draft4) {
     private val reader = TestReader()
     private var converter: Converter = SnakeYamlConverter()
     private var documents: DocumentStore = DocumentStore()
+    private var loader: DocumentLoader = DocumentLoader(reader, converter)
 
     fun withApi(apiYaml: String): ApiBuilder {
         reader.addApi(URI("file:///openapi.yaml"), apiYaml.trimIndent())
@@ -44,8 +46,9 @@ class ApiBuilder {
         return this
     }
 
-    fun withDocument(uri: URI, document: Any): ApiBuilder {
-        documents.addId(uri, document)
+    fun withDocument(uri: String, resourcePath: String): ApiBuilder {
+        val document = loader.loadDocument(resourcePath)
+        documents.addId(URI(uri), document)
         return this
     }
 
@@ -53,42 +56,63 @@ class ApiBuilder {
         return OpenApiParser(documents, DocumentLoader(reader, converter))
     }
 
-    fun buildOpenApi30(): OpenApi30 {
-        return buildOpenApi30("file:///openapi.yaml")
+    fun buildOpenApi30(uri: String = "file:///openapi.yaml"): OpenApi30 {
+        version = SchemaVersion.Draft4
+        val api = build(uri, OpenApi30::class.java)
+        api.setVersion()
+        return api
     }
 
-    fun buildOpenApi30(uri: String): OpenApi30 {
+    fun buildOpenApi31(uri: String = "file:///openapi.yaml"): OpenApi31 {
+        version = SchemaVersion.Draft202012
+        val api = build(uri, OpenApi31::class.java)
+        api.setVersion()
+        return api
+    }
+
+    fun buildOpenApi32(uri: String = "file:///openapi.yaml"): OpenApi32 {
+        version = SchemaVersion.Draft202012
+        val api = build32(uri, OpenApi32::class.java)
+        api.setVersion()
+        return api
+    }
+
+    fun <T> build(source: String, clazz: Class<T>): T {
+        return build(source) { ctx, bkt -> clazz
+            .getDeclaredConstructor(Context::class.java, Bucket::class.java)
+            .newInstance(ctx, bkt)
+        }
+    }
+
+    fun <T> build32(source: String, clazz: Class<T>): T {
+        return build32(source) { ctx, bkt -> clazz
+            .getDeclaredConstructor(Context::class.java, Bucket::class.java)
+            .newInstance(ctx, bkt)
+        }
+    }
+
+    private fun <T> build32(uri: String, factory: (context: Context, bucket: Bucket) -> T): T {
         var source = URI(uri)
         if (!source.isAbsolute) {
            source =  this::class.java.getResource(uri)!!.toURI()
         }
 
         val resolver = createResolver()
-        val result = resolver.resolve(source, Resolver.Settings(SchemaVersion.Draft4))
+        val settings = Resolver.Settings(version); //.baseUriCustomizer(BaseUri32())
+        val document = documents.get(source)
 
-        return OpenApi30(
+        val result = if (document != null) {
+            resolver.resolve(source, document, settings)
+        } else {
+            resolver.resolve(source, settings)
+        }
+
+        return factory(
             Context(result.scope, result.registry),
             Bucket(result.scope, Types.asMap(result.document)!!))
     }
 
-
-    fun buildOpenApi31(): OpenApi31 {
-        return buildOpenApi31("file:///openapi.yaml")
-    }
-
-    fun buildOpenApiRaw31(uri: String): Any {
-        var source = URI(uri)
-        if (!source.isAbsolute) {
-           source =  this::class.java.getResource(uri)!!.toURI()
-        }
-
-        val resolver = createResolver()
-        val result = resolver.resolve(source, Resolver.Settings(SchemaVersion.Draft202012))
-
-        return result.document
-    }
-
-    fun buildOpenApi31(uri: String): OpenApi31 {
+    private fun <T> build(uri: String, factory: (context: Context, bucket: Bucket) -> T): T {
         var source = URI(uri)
         if (!source.isAbsolute) {
            source =  this::class.java.getResource(uri)!!.toURI()
@@ -96,27 +120,11 @@ class ApiBuilder {
 
         val resolver = createResolver()
         val document = documents.get(source)
-        val result: ResolverResult = if (document != null) {
-            resolver.resolve(source, document, Resolver.Settings(SchemaVersion.Draft202012))
+        val result = if (document != null) {
+            resolver.resolve(source, document, Resolver.Settings(version))
         } else {
-            resolver.resolve(source, Resolver.Settings(SchemaVersion.Draft202012))
+            resolver.resolve(source, Resolver.Settings(version))
         }
-
-        return OpenApi31(
-            Context(result.scope, result.registry),
-            Bucket(result.scope, Types.asMap(result.document)!!))
-    }
-
-    fun <T> build(clazz: Class<T>): T {
-        return build30 { c, n -> clazz
-            .getDeclaredConstructor(Context::class.java, Bucket::class.java)
-            .newInstance(c, n)
-        }
-    }
-
-    private fun <T> build30(factory: (context: Context, bucket: Bucket) -> T): T {
-        val resolver = createResolver()
-        val result = resolver.resolve(URI("file:///openapi.yaml"), Resolver.Settings(SchemaVersion.Draft4))
 
         return factory(
             Context(result.scope, result.registry),
@@ -134,8 +142,22 @@ class ApiBuilder {
  * @param clazz model object to build
  * @param content the object properties (yaml)
  */
-fun <T> buildObject(clazz: Class<T>, content: String = "{}"): T {
-    return ApiBuilder()
+fun <T> buildObject(clazz: Class<T>, content: String = "{}", version: SchemaVersion = SchemaVersion.Draft4): T {
+    return ApiBuilder(version)
         .withApi(content)
-        .build(clazz)
+        .build("file:///openapi.yaml", clazz)
 }
+
+fun <T> buildObject30(clazz: Class<T>, content: String = "{}"): T {
+    return buildObject(clazz, content,SchemaVersion.Draft4)
+}
+
+fun <T> buildObject31(clazz: Class<T>, content: String = "{}"): T {
+    return buildObject(clazz, content,SchemaVersion.Draft202012)
+}
+
+fun <T> buildObject32(clazz: Class<T>, content: String = "{}"): T {
+    return buildObject(clazz, content,SchemaVersion.Draft202012)
+}
+
+class OpenApi
