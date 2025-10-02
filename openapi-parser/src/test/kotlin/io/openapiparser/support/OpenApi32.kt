@@ -6,9 +6,9 @@
 package io.openapiparser.support
 
 import io.kotest.matchers.nulls.shouldNotBeNull
-import io.openapiparser.model.v32.RequestBody as RequestBody32
 import io.openapiparser.model.v32.OpenApi as OpenApi32
 import io.openapiparser.model.v32.Parameter as Parameter32
+import io.openapiparser.model.v32.RequestBody as RequestBody32
 import io.openapiparser.model.v32.Responses as Responses32
 import io.openapiparser.model.v32.Schema as Schema32
 
