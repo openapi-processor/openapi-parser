@@ -18,9 +18,11 @@ import static io.openapiprocessor.jsonschema.support.Null.requiresNonNull;
 public class ResolverId {
 
     private final ResolverContext context;
+    private final SchemaDetector detector;
 
     public ResolverId (ResolverContext context) {
         this.context = context;
+        this.detector = new JsonSchemaDetector();
     }
 
     public void resolve (Bucket bucket) {
@@ -30,50 +32,48 @@ public class ResolverId {
 
     @SuppressWarnings({"dereference.of.nullable"})
     private void walkBucket (Bucket bucket) {
-        URI currentId = getId (bucket);
-        registerId (currentId, bucket);
-        resolveId (bucket);
+        JsonPointer location = bucket.getLocation ();
 
-        // since 2019-09
-        URI currentAnchor = getAnchor (bucket);
-        registerAnchor (currentAnchor, bucket);
-        resolveAnchor (currentAnchor, bucket);
+        if (detector.isJsonSchema(location)) {
+            // move this to the detector? by version?
+            URI currentId = getId (bucket);
+            registerId (currentId, bucket);
+            resolveId (bucket);
 
-        // only 2019-09
-        URI recursiveAnchor = getRecursiveAnchor (bucket);
-        registerDynamicAnchor (recursiveAnchor, bucket);
-        resolveDynamicAnchor (recursiveAnchor, bucket);
+            // since 2019-09
+            URI currentAnchor = getAnchor (bucket);
+            registerAnchor (currentAnchor, bucket);
+            resolveAnchor (currentAnchor, bucket);
 
-        // since 2020-12
-        URI dynamicAnchor = getDynamicAnchor (bucket);
-        registerDynamicAnchor (dynamicAnchor, bucket);
-        resolveDynamicAnchor (dynamicAnchor, bucket);
+            // only 2019-09
+            URI recursiveAnchor = getRecursiveAnchor (bucket);
+            registerDynamicAnchor (recursiveAnchor, bucket);
+            resolveDynamicAnchor (recursiveAnchor, bucket);
+
+            // since 2020-12
+            URI dynamicAnchor = getDynamicAnchor (bucket);
+            registerDynamicAnchor (dynamicAnchor, bucket);
+            resolveDynamicAnchor (dynamicAnchor, bucket);
+
+        } /*else if (detector.hasCustomId()) {
+            // todo $self as id
+        }*/
+
 
         Scope scope = bucket.getScope ();
-        JsonPointer location = bucket.getLocation ();
-        SchemaVersion version = scope.getVersion ();
 
         bucket.forEach ((name, value) -> {
             JsonPointer propLocation = location.append (name);
-            Keyword keyword = version.getKeyword (name);
 
-            boolean navigable = keyword != null && keyword.isNavigable ();
-
-            if (navigable && keyword.isSchema () && Types.isObject (value)) {
+            if (detector.shouldWalkObject(scope, value, propLocation)) {
                 walkSchema (scope, value, propLocation);
 
-            } else if (navigable && keyword.isSchemaArray () && Types.isArray (value)) {
+            } else if (detector.shouldWalkArray(scope, value, propLocation)) {
                 walkSchemaArray (scope, value, propLocation);
 
-            } else if (navigable && keyword.isSchemaMap ()) {
+            } else if (detector.shouldWalkMap(scope, value, propLocation)) {
                 walkSchemaMap (scope, value, propLocation);
-
-            } /* else if (keyword == null && isObject (value)) {
-                walkSchema (scope, value, propLocation);
-
-            } else if (keyword == null && isArray (value)) {
-                walkSchemaArray (scope, value, propLocation);
-            } */
+            }
         });
     }
 
