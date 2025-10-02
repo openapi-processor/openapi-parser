@@ -26,10 +26,9 @@ import java.util.stream.Collectors;
 import static io.openapiparser.OpenApiSchemas.OPENAPI_SCHEMA_31;
 import static io.openapiparser.OpenApiSchemas.OPENAPI_SCHEMA_31_ID;
 import static io.openapiprocessor.jsonschema.support.Null.nonNull;
-import static java.util.Objects.requireNonNull;
 
 public class OpenApiResult31 implements OpenApiResult {
-    private static final Logger log = LoggerFactory.getLogger (Resolver.class);
+    private static final Logger log = LoggerFactory.getLogger (OpenApiResult31.class);
 
     private final Context context;
     private final Bucket root;

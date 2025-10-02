@@ -15,7 +15,10 @@ import io.openapiprocessor.jsonschema.validator.steps.ValidationStep;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static io.openapiparser.OpenApiSchemas.OPENAPI_SCHEMA_30;
