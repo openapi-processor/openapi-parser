@@ -14,7 +14,7 @@ import io.openapiprocessor.jsonschema.validator.support.draftSpec
 class Draft202012Spec: FreeSpec ({
     val settings = ValidatorSettingsDefaults.draft202012()
     settings.enableFormat()
-    settings.enableFormats(*Format.values())
+    settings.enableFormats(*Format.entries.toTypedArray())
 
     include(
         draftSpec(
