@@ -25,6 +25,11 @@ public class ResolverId {
         this.detector = new JsonSchemaDetector();
     }
 
+    public ResolverId (ResolverContext context, SchemaDetector detector) {
+        this.context = context;
+        this.detector = detector;
+    }
+
     public void resolve (Bucket bucket) {
         resolveId (bucket);
         walkBucket (bucket);

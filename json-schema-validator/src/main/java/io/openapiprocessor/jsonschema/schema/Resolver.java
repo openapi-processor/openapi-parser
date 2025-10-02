@@ -25,6 +25,7 @@ public class Resolver {
     public static class Settings {
         private SchemaVersion version;
         private boolean autoLoadSchemas = false;
+        private SchemaDetector schemaDetector = new JsonSchemaDetector();
 
         public Settings (SchemaVersion version) {
             this.version = version;
@@ -35,8 +36,17 @@ public class Resolver {
             return this;
         }
 
+        public Settings schemaDetector (SchemaDetector schemaDetector) {
+            this.schemaDetector = schemaDetector;
+            return this;
+        }
+
         public SchemaVersion getVersion () {
             return version;
+        }
+
+        public SchemaDetector getSchemaDetector () {
+            return schemaDetector;
         }
     }
 
@@ -102,7 +112,7 @@ public class Resolver {
 
         ResolverContext context = new ResolverContext (documents, loader, registry);
 
-        ResolverId resolverId = new ResolverId (context);
+        ResolverId resolverId = new ResolverId (context, settings.getSchemaDetector());
         resolverId.resolve(bucket);
 
         ResolverRef resolverRef = new ResolverRef (context);

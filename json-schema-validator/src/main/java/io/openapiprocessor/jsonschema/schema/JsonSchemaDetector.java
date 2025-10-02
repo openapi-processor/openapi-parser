@@ -8,7 +8,7 @@ package io.openapiprocessor.jsonschema.schema;
 import io.openapiprocessor.jsonschema.support.Types;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-class JsonSchemaDetector implements SchemaDetector {
+public class JsonSchemaDetector implements SchemaDetector {
 
     @Override
     public boolean isJsonSchema(JsonPointer location) {
