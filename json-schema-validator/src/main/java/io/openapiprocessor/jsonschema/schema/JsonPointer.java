@@ -8,12 +8,14 @@ package io.openapiprocessor.jsonschema.schema;
 import io.openapiprocessor.jsonschema.support.Uris;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.unmodifiableList;
@@ -174,17 +176,13 @@ public class JsonPointer {
     }
 
     private static String encode (String pointer) {
-        try {
-            return URLEncoder.encode (pointer, StandardCharsets.UTF_8.name());
-        } catch (UnsupportedEncodingException ex) {
-            throw new JsonPointerInvalidException (pointer, ex);
-        }
+        return URLEncoder.encode (pointer, StandardCharsets.UTF_8);
     }
 
     private static String decode (String pointer) {
         try {
             String encoded = JsonPointerSupport.encodePath (pointer);
-            return URLDecoder.decode (encoded, StandardCharsets.UTF_8.name());
+            return URLDecoder.decode (encoded, StandardCharsets.UTF_8);
         } catch (Exception ex) {
             throw new JsonPointerInvalidException (pointer, ex);
         }
