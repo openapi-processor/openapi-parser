@@ -8,6 +8,7 @@ package io.openapiparser.support
 //import io.openapiparser.BaseUri32
 import io.openapiparser.Context
 import io.openapiparser.OpenApiParser
+import io.openapiparser.OpenApiSchemaDetector
 import io.openapiparser.model.v30.setVersion
 import io.openapiparser.model.v31.setVersion
 import io.openapiparser.model.v32.setVersion
@@ -120,10 +121,11 @@ class ApiBuilder(private var version: SchemaVersion = SchemaVersion.Draft4) {
 
         val resolver = createResolver()
         val document = documents.get(source)
+        val settings = Resolver.Settings(version).schemaDetector(OpenApiSchemaDetector())
         val result = if (document != null) {
-            resolver.resolve(source, document, Resolver.Settings(version))
+            resolver.resolve(source, document, settings)
         } else {
-            resolver.resolve(source, Resolver.Settings(version))
+            resolver.resolve(source, settings)
         }
 
         return factory(

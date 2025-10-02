@@ -7,7 +7,7 @@ package io.openapiprocessor.jsonschema.schema;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-interface SchemaDetector {
+public interface SchemaDetector {
     boolean isJsonSchema(JsonPointer location);
 
     boolean shouldWalkObject(Scope currentScope, @Nullable Object value, JsonPointer location);

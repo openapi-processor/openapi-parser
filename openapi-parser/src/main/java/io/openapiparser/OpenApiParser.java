@@ -65,8 +65,8 @@ public class OpenApiParser {
 
     private OpenApiResult32 parse32(URI baseUri, Object document) {
         Resolver resolver = new Resolver(documents, loader);
-        Resolver.Settings settings = new Resolver
-                .Settings(SchemaVersion.Draft202012);
+        Resolver.Settings settings = new Resolver.Settings(SchemaVersion.Draft202012)
+                .schemaDetector(new OpenApiSchemaDetector());
 
         ResolverResult result = resolver.resolve(baseUri, document, settings);
 
@@ -78,7 +78,10 @@ public class OpenApiParser {
 
     private OpenApiResult31 parse31(URI baseUri, Object document) {
         Resolver resolver = new Resolver(documents, loader);
-        ResolverResult result = resolver.resolve(baseUri, document, new Resolver.Settings(SchemaVersion.Draft202012));
+        Resolver.Settings settings = new Resolver.Settings(SchemaVersion.Draft202012)
+                .schemaDetector(new OpenApiSchemaDetector());
+
+        ResolverResult result = resolver.resolve(baseUri, document, settings);
 
         return new OpenApiResult31(
                 new Context(result.getScope(), result.getRegistry()),
@@ -88,7 +91,11 @@ public class OpenApiParser {
 
     private OpenApiResult30 parse30(URI baseUri, Object document) {
         Resolver resolver = new Resolver(documents, loader);
-        ResolverResult result = resolver.resolve(baseUri, document, new Resolver.Settings(SchemaVersion.Draft4));
+
+        Resolver.Settings settings = new Resolver.Settings(SchemaVersion.Draft4)
+                .schemaDetector(new OpenApiSchemaDetector());
+
+        ResolverResult result = resolver.resolve(baseUri, document, settings);
 
         return new OpenApiResult30(
                 new Context(result.getScope(), result.getRegistry()),
