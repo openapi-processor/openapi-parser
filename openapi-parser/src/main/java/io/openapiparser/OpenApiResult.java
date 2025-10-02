@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public interface OpenApiResult {
 
-    enum Version { V30, V31 }
+    enum Version { V30, V31, V32 }
 
     /**
      * get the OpenAPI {@link Version} of the OpenAPI description.
@@ -34,6 +34,7 @@ public interface OpenApiResult {
      * <ul>
      *   <li>{@link io.openapiparser.model.v30.OpenApi}  if the version is {@code V30}</li>
      *   <li>{@link io.openapiparser.model.v31.OpenApi}  if the version is {@code V31}</li>
+     *   <li>{@link io.openapiparser.model.v32.OpenApi}  if the version is {@code V32}</li>
      * </ul>
      * otherwise, it will throw an {@link IllegalArgumentException}
      *

@@ -55,9 +55,25 @@ public class OpenApiParser {
         } else if (isVersion31(version)) {
             return parse31(baseUri, document);
 
+        } else if (isVersion32(version)) {
+            return parse32(baseUri, document);
+
         } else {
             throw new UnknownVersionException(version);
         }
+    }
+
+    private OpenApiResult32 parse32(URI baseUri, Object document) {
+        Resolver resolver = new Resolver(documents, loader);
+        Resolver.Settings settings = new Resolver
+                .Settings(SchemaVersion.Draft202012);
+
+        ResolverResult result = resolver.resolve(baseUri, document, settings);
+
+        return new OpenApiResult32(
+                new Context(result.getScope(), result.getRegistry()),
+                nonNull(Bucket.createBucket(result.getScope(), document)),
+                documents);
     }
 
     private OpenApiResult31 parse31(URI baseUri, Object document) {
@@ -92,6 +108,10 @@ public class OpenApiParser {
 
     private boolean isVersion31(String version) {
         return checkVersion (version, "3.1");
+    }
+
+    private boolean isVersion32(String version) {
+        return checkVersion (version, "3.2");
     }
 
     private boolean checkVersion (String version, String prefix) {
