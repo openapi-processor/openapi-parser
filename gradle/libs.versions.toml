@@ -31,7 +31,7 @@ jsonpath = "com.jayway.jsonpath:json-path:2.9.0"
 kotest-bom = "io.kotest:kotest-bom:6.0.3"
 kotest-runner = { module = "io.kotest:kotest-runner-junit5" }
 kotest-table = { module = "io.kotest:kotest-assertions-table" }
-mockk = "io.mockk:mockk:1.14.5"
+mockk = "io.mockk:mockk:1.14.6"
 
 # for buildSrc convention plugins
 plugin-build = { module = "io.openapiprocessor:build-plugins", version.ref = "build-plugins" }
