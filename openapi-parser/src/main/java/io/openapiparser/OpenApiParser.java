@@ -66,7 +66,8 @@ public class OpenApiParser {
     private OpenApiResult32 parse32(URI baseUri, Object document) {
         Resolver resolver = new Resolver(documents, loader);
         Resolver.Settings settings = new Resolver.Settings(SchemaVersion.Draft202012)
-                .schemaDetector(new OpenApiSchemaDetector());
+                .schemaDetector(new OpenApiSchemaDetector())
+                .baseUriProvider(new OpenApiBaseUriProvider());
 
         ResolverResult result = resolver.resolve(baseUri, document, settings);
 

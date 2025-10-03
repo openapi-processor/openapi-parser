@@ -71,22 +71,26 @@ public class OpenApiSchemaDetector extends JsonSchemaDetector {
             return super.shouldWalkObject(scope, value, location);
         }
 
+        return shouldWalk(location);
+    }
 
-        // todo check for OpenAPI objects that do not contain schemas to avoid unnecessary walks.
+    @Override
+    public boolean shouldWalkArray(Scope scope, @Nullable Object value, JsonPointer location) {
+        return Types.isArray(value) && shouldWalk(location);
+    }
+
+    @Override
+    public boolean shouldWalkMap(Scope scope, @Nullable Object value, JsonPointer location) {
+        return Types.isMap(value) && shouldWalk(location);
+    }
+
+    private boolean shouldWalk(JsonPointer location) {
+        // check for OpenAPI objects that do not contain schemas to avoid unnecessary walks.
+
         if (location.matches("/info")) {
             return false;
         }
 
         return true;
-    }
-
-    @Override
-    public boolean shouldWalkArray(Scope scope, @Nullable Object value, JsonPointer location) {
-        return Types.isArray(value);
-    }
-
-    @Override
-    public boolean shouldWalkMap(Scope scope, @Nullable Object value, JsonPointer location) {
-        return Types.isMap(value);
     }
 }

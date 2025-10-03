@@ -70,6 +70,18 @@ public class Types {
         return (Collection<@Nullable T>) o;
     }
 
+    /**
+     * Returns {@code o} as {@code @Nullable Map<String, @Nullable Object>} or null if it not a map.
+     * @param o the potential map
+     * @return the map or null if {@code o} is not a map
+     */
+    public static @Nullable Map<String, @Nullable Object> asObjectOrNull(@PolyNull Object o) {
+        if (!isObject(o))
+            return null;
+
+        return asObject(o);
+    }
+
     @SuppressWarnings("unchecked")
     public static <T> @PolyNull Collection<T> asColNonNull(@PolyNull Object o) {
         return (Collection<T>) o;

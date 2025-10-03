@@ -91,6 +91,7 @@ public interface Keywords {
     String SCHEMAS = "schemas";
     String SECURITY = "security";
     String SECURITY_SCHEMES = "securitySchemes";
+    String SELF = "$self";
     String SERVERS = "servers";
     String STYLE = "style";
     String SUMMARY = "summary";

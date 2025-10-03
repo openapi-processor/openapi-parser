@@ -5,8 +5,8 @@
 
 package io.openapiparser.support
 
-//import io.openapiparser.BaseUri32
 import io.openapiparser.Context
+import io.openapiparser.OpenApiBaseUriProvider
 import io.openapiparser.OpenApiParser
 import io.openapiparser.OpenApiSchemaDetector
 import io.openapiparser.model.v30.setVersion
@@ -99,7 +99,9 @@ class ApiBuilder(private var version: SchemaVersion = SchemaVersion.Draft4) {
         }
 
         val resolver = createResolver()
-        val settings = Resolver.Settings(version); //.baseUriCustomizer(BaseUri32())
+        val settings = Resolver.Settings(version)
+            .schemaDetector(OpenApiSchemaDetector())
+            .baseUriProvider(OpenApiBaseUriProvider())
         val document = documents.get(source)
 
         val result = if (document != null) {
