@@ -15,19 +15,19 @@ import static io.openapiprocessor.jsonschema.support.Null.requiresNonNull;
 
 public class ResolverRef {
     private final ResolverContext context;
-    private final SchemaDetector detector;
-    private final Resolver.BaseUriProvider baseUriProvider;
+    private final ResolverId resolverId;
+    private final DocumentScope documentScope;
 
-    public ResolverRef (ResolverContext context, SchemaDetector schemaDetector, Resolver.BaseUriProvider baseUriProvider) {
+    public ResolverRef(ResolverContext context, ResolverId resolverId, DocumentScope documentScope) {
         this.context = context;
-        this.detector = schemaDetector;
-        this.baseUriProvider = baseUriProvider;
+        this.resolverId = resolverId;
+        this.documentScope = documentScope;
     }
 
-    public void resolve (Bucket bucket) {
+    public void resolve(Bucket bucket) {
         context.addDocument(bucket.getScope(), bucket.getRawValues());
-        walkBucket (bucket);
-        resolve ();
+        walkBucket(bucket);
+        resolve();
     }
 
     @SuppressWarnings({"dereference.of.nullable"})
@@ -143,12 +143,7 @@ public class ResolverRef {
         if (!context.isProcessedDocument (uri)) {
             context.setProcessedDocument (uri);
 
-            @Nullable URI baseUri = baseUriProvider.get(uri, requiresNonNull(document), scope.getVersion());
-            if (baseUri != null) {
-                uri = baseUri;
-            }
-
-            Scope docScope = scope.move (uri, requiresNonNull(document));
+            Scope docScope = documentScope.createScope(uri, requiresNonNull(document), scope);
             Bucket bucket = Bucket.createBucket(docScope, document, JsonPointer.empty());
             if (bucket == null) {
                 return; // todo error
@@ -166,8 +161,6 @@ public class ResolverRef {
     }
 
     private void walkIds (Bucket bucket) {
-        // todo maybe get ResolverId from constructor?
-        ResolverId resolverId = new ResolverId (context, detector);
         resolverId.resolve(bucket);
     }
 

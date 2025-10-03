@@ -114,7 +114,8 @@ public class Resolver {
 
         documents.addId (documentUri, document);
 
-        Scope scope = Scope.createScope (documentUri, document, settings.version, settings.baseUriProvider);
+        DocumentScope documentScope = new DocumentScope(settings.baseUriProvider);
+        Scope scope = documentScope.createScope(documentUri, document, settings.version);
         Bucket bucket = Bucket.createBucket(scope, document);
 
         if (bucket == null) {
@@ -126,7 +127,7 @@ public class Resolver {
         ResolverId resolverId = new ResolverId (context, settings.getSchemaDetector());
         resolverId.resolve(bucket);
 
-        ResolverRef resolverRef = new ResolverRef (context, settings.getSchemaDetector(), settings.baseUriProvider);
+        ResolverRef resolverRef = new ResolverRef (context, resolverId, documentScope);
         resolverRef.resolve(bucket);
 
         return new ResolverResult (scope, document, registry, documents);
