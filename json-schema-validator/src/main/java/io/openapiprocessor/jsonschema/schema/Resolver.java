@@ -5,6 +5,7 @@
 
 package io.openapiprocessor.jsonschema.schema;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,18 +27,24 @@ public class Resolver {
         private SchemaVersion version;
         private boolean autoLoadSchemas = false;
         private SchemaDetector schemaDetector = new JsonSchemaDetector();
+        private BaseUriProvider baseUriProvider = new JsonBaseUriProvider();
 
-        public Settings (SchemaVersion version) {
+        public Settings(SchemaVersion version) {
             this.version = version;
         }
 
-        public Settings autoLoadSchemas (boolean load) {
+        public Settings autoLoadSchemas(boolean load) {
             this.autoLoadSchemas = load;
             return this;
         }
 
-        public Settings schemaDetector (SchemaDetector schemaDetector) {
+        public Settings schemaDetector(SchemaDetector schemaDetector) {
             this.schemaDetector = schemaDetector;
+            return this;
+        }
+
+        public Settings baseUriProvider(BaseUriProvider baseUriProvider) {
+            this.baseUriProvider = baseUriProvider;
             return this;
         }
 
@@ -48,6 +55,22 @@ public class Resolver {
         public SchemaDetector getSchemaDetector () {
             return schemaDetector;
         }
+
+        public BaseUriProvider getBaseUriProvider () {
+            return baseUriProvider;
+        }
+    }
+
+    public interface BaseUriProvider {
+        /**
+         * get a base uri from a document if available.
+         *
+         * @param documentUri document url
+         * @param document the document
+         * @param version the JSON schema version
+         * @return base uri or null
+         */
+        @Nullable URI get (URI documentUri, Object document, SchemaVersion version);
     }
 
     private final DocumentStore documents;
@@ -103,7 +126,8 @@ public class Resolver {
         ReferenceRegistry registry = new ReferenceRegistry ();
 
         documents.addId (documentUri, document);
-        Scope scope = Scope.createScope (documentUri, document, settings.version);
+
+        Scope scope = Scope.createScope (documentUri, document, settings.version, settings.baseUriProvider);
         Bucket bucket = Bucket.createBucket(scope, document);
 
         if (bucket == null) {
@@ -115,7 +139,7 @@ public class Resolver {
         ResolverId resolverId = new ResolverId (context, settings.getSchemaDetector());
         resolverId.resolve(bucket);
 
-        ResolverRef resolverRef = new ResolverRef (context);
+        ResolverRef resolverRef = new ResolverRef (context, settings.getSchemaDetector(), settings.baseUriProvider);
         resolverRef.resolve(bucket);
 
         return new ResolverResult (scope, document, registry, documents);

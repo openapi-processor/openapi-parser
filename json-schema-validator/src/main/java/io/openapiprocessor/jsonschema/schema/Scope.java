@@ -54,6 +54,20 @@ public class Scope {
         return new Scope (documentUri, Uris.resolve(documentUri, id), version);
     }
 
+    public static Scope createScope (URI documentUri, Object document, SchemaVersion fallback, Resolver.BaseUriProvider baseUriProvider) {
+        SchemaVersion version = getSchemaVersion(documentUri, document, fallback);
+
+        if (!Types.isObject (document))
+            return new Scope (documentUri, null, version);
+
+        @Nullable URI baseUri = baseUriProvider.get(documentUri, document, version);
+        if (baseUri == null) {
+            return new Scope (documentUri, null, version);
+        }
+
+        return new Scope (documentUri, Uris.resolve(documentUri, baseUri), version);
+    }
+
     /**
      * create the scope for the {@code document}. If {@code document} contains an id, it is the base uri, otherwise the
      * scope is the {@code documentUri}. If the {@code documentUri} matches a know json schema the result scope will use

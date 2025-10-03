@@ -15,11 +15,14 @@ import static io.openapiprocessor.jsonschema.support.Null.requiresNonNull;
 
 public class ResolverRef {
     private final ResolverContext context;
+    private final SchemaDetector detector;
+    private final Resolver.BaseUriProvider baseUriProvider;
 
-    public ResolverRef (ResolverContext context) {
+    public ResolverRef (ResolverContext context, SchemaDetector schemaDetector, Resolver.BaseUriProvider baseUriProvider) {
         this.context = context;
+        this.detector = schemaDetector;
+        this.baseUriProvider = baseUriProvider;
     }
-
 
     public void resolve (Bucket bucket) {
         context.addDocument(bucket.getScope(), bucket.getRawValues());
@@ -140,6 +143,11 @@ public class ResolverRef {
         if (!context.isProcessedDocument (uri)) {
             context.setProcessedDocument (uri);
 
+            @Nullable URI baseUri = baseUriProvider.get(uri, requiresNonNull(document), scope.getVersion());
+            if (baseUri != null) {
+                uri = baseUri;
+            }
+
             Scope docScope = scope.move (uri, requiresNonNull(document));
             Bucket bucket = Bucket.createBucket(docScope, document, JsonPointer.empty());
             if (bucket == null) {
@@ -158,7 +166,8 @@ public class ResolverRef {
     }
 
     private void walkIds (Bucket bucket) {
-        ResolverId resolverId = new ResolverId (context);
+        // todo maybe get ResolverId from constructor?
+        ResolverId resolverId = new ResolverId (context, detector);
         resolverId.resolve(bucket);
     }
 
