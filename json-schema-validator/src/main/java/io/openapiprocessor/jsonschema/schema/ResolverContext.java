@@ -6,11 +6,8 @@ import java.net.URI;
 import java.util.*;
 
 public class ResolverContext {
-
     private final DocumentStore documents;
     private final DocumentLoader loader;
-
-
     Set<URI> processedDocuments = new HashSet<> ();
 
     public final References references = new References ();
