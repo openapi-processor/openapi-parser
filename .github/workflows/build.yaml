@@ -63,7 +63,7 @@ jobs:
           17
 
     - name: set up gradle
-      uses: gradle/actions/setup-gradle@v4
+      uses: gradle/actions/setup-gradle@v5
 
     - name: run tests
       run: |
@@ -96,7 +96,7 @@ jobs:
           17
 
     - name: set up gradle
-      uses: gradle/actions/setup-gradle@v4
+      uses: gradle/actions/setup-gradle@v5
 
     - name: publish snapshot
       env:
@@ -139,7 +139,7 @@ jobs:
           17
 
     - name: set up gradle
-      uses: gradle/actions/setup-gradle@v4
+      uses: gradle/actions/setup-gradle@v5
 
     - name: run tests
       run: |
