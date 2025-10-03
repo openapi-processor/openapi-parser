@@ -59,11 +59,7 @@ public class ResolverId {
             URI dynamicAnchor = getDynamicAnchor (bucket);
             registerDynamicAnchor (dynamicAnchor, bucket);
             resolveDynamicAnchor (dynamicAnchor, bucket);
-
-        } /*else if (detector.hasCustomId()) {
-            // todo $self as id
-        }*/
-
+        }
 
         Scope scope = bucket.getScope ();
 
