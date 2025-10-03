@@ -11,7 +11,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
 
-public class JsonBaseUriProvider implements Resolver.BaseUriProvider {
+public class JsonBaseUriProvider implements BaseUriProvider {
 
     @Override
     public @Nullable URI get(URI documentUri, Object document, SchemaVersion version) {
