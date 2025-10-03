@@ -56,7 +56,7 @@ public class Scope {
 
     /**
      * create the scope for the {@code document}. If {@code document} contains an id, it is the base uri, otherwise the
-     * scope is the {@code documentUri}. If the {@code documentUri} matches a know json schema the result scope will use
+     * scope is the {@code documentUri}. If the {@code documentUri} matches a know JSON schema the result scope will use
      * its version, otherwise it will use the {@code fallback} version.
      *
      * @param documentUri uri of the document
