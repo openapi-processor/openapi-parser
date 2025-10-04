@@ -86,6 +86,7 @@ public interface Keywords {
     String PATH_ITEMS = "pathItems";
     String PATTERN = "pattern";
     String PATTERN_PROPERTIES = "patternProperties";
+    String PREFIX = "prefix";
     String PREFIX_ENCODING = "prefixEncoding";
     String PREFIX_ITEMS = "prefixItems";
     String POST = "post";
