@@ -21,7 +21,7 @@ class TagSpec: StringSpec({
         tag32("name: the name").name shouldBe "the name"
     }
 
-    "gets tag name is null if missing" {
+    "gets tag name throws if missing" {
         shouldThrow<NoValueException> { tag31().name }
         shouldThrow<NoValueException> { tag32().name }
     }
