@@ -36,6 +36,10 @@ public class Server extends Properties implements Extensions {
         return getStringOrNull (DESCRIPTION);
     }
 
+    public @Nullable String getName () {
+        return getStringOrNull (NAME);
+    }
+
     public Map<String, ServerVariable> getVariables () {
         return getMapObjectsOrEmpty (VARIABLES, ServerVariable.class);
     }
