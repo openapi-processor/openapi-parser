@@ -48,12 +48,20 @@ public class Example extends Properties implements Reference, Extensions {
         return getStringOrNull (DESCRIPTION);
     }
 
-    public @Nullable Object getValue () {
-        return getRawValue (VALUE);
+    public @Nullable Object getDataValue () {
+        return getRawValue (DATA_VALUE);
+    }
+
+    public @Nullable String getSerializedValue () {
+        return getStringOrNull (SERIALIZED_VALUE);
     }
 
     public @Nullable String getExternalValue () {
         return getStringOrNull (EXTERNAL_VALUE);
+    }
+
+    public @Nullable Object getValue () {
+        return getRawValue (VALUE);
     }
 
     @Override

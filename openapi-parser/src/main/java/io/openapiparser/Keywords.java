@@ -24,6 +24,7 @@ public interface Keywords {
     String CONTAINS = "contains";
     String CONTENT = "content";
     String CONTENT_TYPE = "contentType";
+    String DATA_VALUE = "dataValue";
     String DEFAULT = "default";
     String DELETE = "delete";
     String DEPENDENT_REQUIRED = "dependentRequired";
@@ -99,6 +100,7 @@ public interface Keywords {
     String SECURITY = "security";
     String SECURITY_SCHEMES = "securitySchemes";
     String SELF = "$self";
+    String SERIALIZED_VALUE = "serializedValue";
     String SERVERS = "servers";
     String STYLE = "style";
     String SUMMARY = "summary";
