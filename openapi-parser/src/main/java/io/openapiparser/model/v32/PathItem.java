@@ -85,6 +85,10 @@ public class PathItem extends Properties implements Extensions, Reference {
         return getOperationOrNull(TRACE);
     }
 
+    public @Nullable Operation getQuery () {
+        return getOperationOrNull(QUERY);
+    }
+
     public Map<String, Operation> getOperations () {
         Map<String, Operation> operations = new LinkedHashMap<>();
         bucket.forEach ((operation, value) -> {
@@ -93,6 +97,10 @@ public class PathItem extends Properties implements Extensions, Reference {
             }
         });
         return Collections.unmodifiableMap (operations);
+    }
+
+    public Map<String, Operation> getAdditionalOperations() {
+        return getMapObjectsOrEmpty (ADDITIONAL_OPERATIONS, Operation.class);
     }
 
     public Collection<Server> getServers () {

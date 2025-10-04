@@ -1,9 +1,9 @@
 /*
- * Copyright 2021 https://github.com/openapi-processor/openapi-parser
+ * Copyright 2025 https://github.com/openapi-processor/openapi-parser
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiparser.model.v31
+package io.openapiparser.model.v32
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.booleans.shouldBeFalse
@@ -29,6 +29,7 @@ class PathItemSpec : StringSpec({
                     head: {}
                     patch: {}
                     trace: {}
+                    query: {}
                     servers:
                       - {}
                       - {}
@@ -36,7 +37,7 @@ class PathItemSpec : StringSpec({
                       - {}
                       - {}
             """.trimIndent())
-            .buildOpenApi31()
+            .buildOpenApi32()
 
         val path = api.paths?.getPathItem("/foo")
         path?.isRef?.shouldBeFalse()
@@ -49,6 +50,7 @@ class PathItemSpec : StringSpec({
         path?.head.shouldNotBeNull()
         path?.patch.shouldNotBeNull()
         path?.trace.shouldNotBeNull()
+        path?.query.shouldNotBeNull()
         path?.servers.shouldNotBeNull()
         path?.servers?.size shouldBe 2
         path?.parameters.shouldNotBeNull()
@@ -64,7 +66,7 @@ class PathItemSpec : StringSpec({
                       - ${'$'}ref: '#/parameter'
                 parameter: {}
             """.trimIndent())
-            .buildOpenApi31()
+            .buildOpenApi32()
 
         val path = api.paths?.getPathItem("/foo")
         val params = path?.parameters
@@ -81,7 +83,7 @@ class PathItemSpec : StringSpec({
                   summary: a summary
                   description: a description
             """.trimIndent())
-            .buildOpenApi31()
+            .buildOpenApi32()
 
         var path = api.paths?.getPathItem("/foo")
         path?.ref shouldBe "#/path"
@@ -103,16 +105,38 @@ class PathItemSpec : StringSpec({
                     head: {}
                     patch: {}
                     trace: {}
+                    query: {}
             """.trimIndent())
-            .buildOpenApi31()
+            .buildOpenApi32()
 
         val path = api.paths?.getPathItem("/foo")
 
         val operations = path?.operations
-        operations?.shouldHaveSize(8)
+        operations?.shouldHaveSize(9)
 
         operations?.keys.shouldContainExactly(linkedSetOf(
-            "get", "put", "post", "delete", "options", "head", "patch", "trace"
+            "get", "put", "post", "delete", "options", "head", "patch", "trace", "query"
+        ))
+    }
+
+    "get additional operations map" {
+        val api = ApiBuilder()
+            .withApi("""
+                paths:
+                  /foo:
+                    additionalOperations:
+                        one: {}
+                        two: {}
+            """.trimIndent())
+            .buildOpenApi32()
+
+        val path = api.paths?.getPathItem("/foo")
+
+        val operations = path?.additionalOperations
+        operations?.shouldHaveSize(2)
+
+        operations?.keys.shouldContainExactly(linkedSetOf(
+            "one", "two"
         ))
     }
 })

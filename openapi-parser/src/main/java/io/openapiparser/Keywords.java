@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 public interface Keywords {
 
+    String ADDITIONAL_OPERATIONS = "additionalOperations";
     String ADDITIONAL_PROPERTIES = "additionalProperties";
     String ALL_OF = "allOf";
     String ALLOW_EMPTY_VALUE = "allowEmptyValue";
@@ -82,6 +83,7 @@ public interface Keywords {
     String PROPERTY_NAME = "propertyName";
     String PROPERTY_NAMES = "propertyNames";
     String PUT = "put";
+    String QUERY = "query";
     String READ_ONLY = "readOnly";
     String REF = "$ref";
     String REQUEST_BODY = "requestBody";
@@ -110,7 +112,7 @@ public interface Keywords {
     String WRITE_ONLY = "writeOnly";
     String XML = "xml";
 
-    Set<String> OPERATIONS = Set.of(DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT, TRACE);
+    Set<String> OPERATIONS = Set.of(DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT, TRACE, QUERY);
 
     // overlay
     String OVERLAY = "overlay";
