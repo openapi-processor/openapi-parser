@@ -71,6 +71,7 @@ public class Parameter extends Properties implements Reference, Extensions {
         return getBooleanOrFalse (DEPRECATED);
     }
 
+    @Deprecated
     public Boolean getAllowEmptyValue () {
         return getBooleanOrFalse (ALLOW_EMPTY_VALUE);
     }
