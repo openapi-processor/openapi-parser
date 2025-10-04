@@ -95,6 +95,10 @@ fun serverVariable(content: String = "{}"): ServerVariable {
     return buildObject(ServerVariable::class.java, content)
 }
 
+fun tag(content: String = "{}"): Tag {
+    return buildObject(Tag::class.java, content)
+}
+
 fun xml(content: String = "{}"): Xml {
     return buildObject(Xml::class.java, content)
 }

@@ -7,10 +7,14 @@ package io.openapiparser.model.v32;
 
 import io.openapiparser.Context;
 import io.openapiparser.Properties;
+import io.openapiparser.model.v31.ExternalDocumentation;
+import io.openapiparser.support.Required;
 import io.openapiprocessor.jsonschema.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
+
+import static io.openapiparser.Keywords.*;
 
 /**
  * the <em>Tag</em> object.
@@ -22,6 +26,31 @@ public class Tag extends Properties implements Extensions {
 
     public Tag (Context context, Bucket bucket) {
         super (context, bucket);
+    }
+
+    @Required
+    public String getName() {
+        return getStringOrThrow(NAME);
+    }
+
+    public @Nullable String getSummary () {
+        return getStringOrNull (SUMMARY);
+    }
+
+    public @Nullable String getDescription () {
+        return getStringOrNull (DESCRIPTION);
+    }
+
+    public @Nullable ExternalDocumentation getExternalDocs () {
+        return getObjectOrNull (EXTERNAL_DOCS, ExternalDocumentation.class);
+    }
+
+    public @Nullable String getParent () {
+        return getStringOrNull (PARENT);
+    }
+
+    public @Nullable String getKind () {
+        return getStringOrNull (KIND);
     }
 
     @Override

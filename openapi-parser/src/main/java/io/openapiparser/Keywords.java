@@ -53,6 +53,7 @@ public interface Keywords {
     String ITEM_ENCODING = "itemEncoding";
     String ITEMS = "items";
     String JSON_SCHEMA_DIALECT = "jsonSchemaDialect";
+    String KIND = "kind";
     String LICENSE = "license";
     String LINKS = "links";
     String MAPPING = "mapping";
@@ -76,6 +77,7 @@ public interface Keywords {
     String OPERATION_ID = "operationId";
     String OPTIONS = "options";
     String PARAMETERS = "parameters";
+    String PARENT = "parent";
     String PATCH = "patch";
     String PATHS = "paths";
     String PATH_ITEMS = "pathItems";
