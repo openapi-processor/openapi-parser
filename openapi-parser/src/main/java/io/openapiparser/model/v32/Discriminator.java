@@ -13,8 +13,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
 
-import static io.openapiparser.Keywords.MAPPING;
-import static io.openapiparser.Keywords.PROPERTY_NAME;
+import static io.openapiparser.Keywords.*;
 
 /**
  * the <em>Discriminator</em> object.
@@ -35,6 +34,10 @@ public class Discriminator extends Properties implements Extensions {
 
     public Map<String, String> getMapping () {
         return getMapStringsOrEmpty (MAPPING);
+    }
+
+    public String getDefaultMapping () {
+        return getStringOrNull (DEFAULT_MAPPING);
     }
 
     @Override

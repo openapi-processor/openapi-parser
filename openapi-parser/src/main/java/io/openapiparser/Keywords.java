@@ -26,6 +26,7 @@ public interface Keywords {
     String CONTENT_TYPE = "contentType";
     String DATA_VALUE = "dataValue";
     String DEFAULT = "default";
+    String DEFAULT_MAPPING = "defaultMapping";
     String DELETE = "delete";
     String DEPENDENT_REQUIRED = "dependentRequired";
     String DEPRECATED = "deprecated";
