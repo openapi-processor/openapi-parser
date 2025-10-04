@@ -47,6 +47,8 @@ public interface Keywords {
     String IDENTIFIER = "identifier";
     String IN = "in";
     String INFO = "info";
+    String ITEM_SCHEMA = "itemSchema";
+    String ITEM_ENCODING = "itemEncoding";
     String ITEMS = "items";
     String JSON_SCHEMA_DIALECT = "jsonSchemaDialect";
     String LICENSE = "license";
@@ -77,6 +79,7 @@ public interface Keywords {
     String PATH_ITEMS = "pathItems";
     String PATTERN = "pattern";
     String PATTERN_PROPERTIES = "patternProperties";
+    String PREFIX_ENCODING = "prefixEncoding";
     String PREFIX_ITEMS = "prefixItems";
     String POST = "post";
     String PROPERTIES = "properties";

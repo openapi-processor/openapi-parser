@@ -10,6 +10,7 @@ import io.openapiparser.Properties;
 import io.openapiprocessor.jsonschema.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.util.Collection;
 import java.util.Map;
 
 import static io.openapiparser.Keywords.*;
@@ -30,6 +31,10 @@ public class MediaType extends Properties implements Extensions {
         return getObjectOrNull (SCHEMA, Schema.class);
     }
 
+    public @Nullable Schema getItemSchema () {
+        return getObjectOrNull (ITEM_SCHEMA, Schema.class);
+    }
+
     public @Nullable Object getExample () {
         return getRawValue (EXAMPLE);
     }
@@ -40,6 +45,14 @@ public class MediaType extends Properties implements Extensions {
 
     public Map<String, Encoding> getEncoding () {
         return getMapObjectsOrEmpty (ENCODING, Encoding.class);
+    }
+
+    public Collection<Encoding> getPrefixEncoding () {
+        return getObjectsOrEmpty (PREFIX_ENCODING, Encoding.class);
+    }
+
+    public @Nullable Encoding getItemEncoding () {
+        return getObjectOrNull (ITEM_ENCODING, Encoding.class);
     }
 
     @Override
