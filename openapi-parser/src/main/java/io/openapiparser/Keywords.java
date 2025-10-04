@@ -17,6 +17,7 @@ public interface Keywords {
     String ALLOW_EMPTY_VALUE = "allowEmptyValue";
     String ALLOW_RESERVED = "allowReserved";
     String ANY_OF = "anyOf";
+    String ATTRIBUTE = "attribute";
     String CALLBACKS = "callbacks";
     String COMPONENTS = "components";
     String CONST = "const";
@@ -71,6 +72,8 @@ public interface Keywords {
     String MINIMUM = "minimum";
     String MULTIPLE_OF = "multipleOf";
     String NAME = "name";
+    String NAMESPACE = "namespace";
+    String NODE_TYPE = "nodeType";
     String NOT = "not";
     String NULLABLE = "nullable";
     String ONE_OF = "oneOf";
@@ -118,6 +121,7 @@ public interface Keywords {
     String VARIABLES = "variables";
     String VERSION = "version";
     String WEBHOOKS = "webhooks";
+    String WRAPPED = "wrapped";
     String WRITE_ONLY = "writeOnly";
     String XML = "xml";
 

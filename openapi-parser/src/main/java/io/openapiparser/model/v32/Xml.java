@@ -12,6 +12,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
 
+import static io.openapiparser.Keywords.*;
+
 /**
  * the <em>XML</em> object.
  *
@@ -22,6 +24,37 @@ public class Xml extends Properties implements Extensions {
 
     public Xml (Context context, Bucket bucket) {
         super (context, bucket);
+    }
+
+    public @Nullable String getNodeType () {
+        return getStringOrNull (NODE_TYPE);
+    }
+
+    public @Nullable String getName () {
+        return getStringOrNull (NAME);
+    }
+
+    public @Nullable String getNamespace () {
+        return getStringOrNull (NAMESPACE);
+    }
+
+    public @Nullable String getPrefix () {
+        return getStringOrNull (PREFIX);
+    }
+
+    @Deprecated // Use nodeType: "attribute" instead of attribute: true
+    public Boolean getAttribute () {
+        return getBooleanOrFalse (ATTRIBUTE);
+    }
+
+    @Deprecated // Use nodeType: "element" instead of wrapped: true
+    public Boolean getWrapped () {
+        return getBooleanOrFalse (WRAPPED);
+    }
+
+
+    public Boolean getAllowReserved () {
+        return getBooleanOrFalse (ALLOW_RESERVED);
     }
 
     @Override
