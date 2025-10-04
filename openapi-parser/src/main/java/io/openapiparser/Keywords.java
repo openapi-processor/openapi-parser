@@ -47,6 +47,7 @@ public interface Keywords {
     String IDENTIFIER = "identifier";
     String IN = "in";
     String INFO = "info";
+    String ITEM_ENCODING = "itemEncoding";
     String ITEM_SCHEMA = "itemSchema";
     String ITEM_ENCODING = "itemEncoding";
     String ITEMS = "items";

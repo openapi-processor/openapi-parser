@@ -10,6 +10,7 @@ import io.openapiparser.Properties;
 import io.openapiprocessor.jsonschema.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.util.Collection;
 import java.util.Map;
 
 import static io.openapiparser.Keywords.*;
@@ -32,6 +33,18 @@ public class Encoding extends Properties implements Extensions {
 
     public Map<String, Header> getHeaders () {
         return getMapObjectsOrEmpty (HEADERS, Header.class);
+    }
+
+    public Map<String, Encoding> getEncoding () {
+        return getMapObjectsOrEmpty (ENCODING, Encoding.class);
+    }
+
+    public Collection<Encoding> getPrefixEncoding () {
+        return getObjectsOrEmpty (PREFIX_ENCODING, Encoding.class);
+    }
+
+    public @Nullable Encoding getItemEncoding () {
+        return getObjectOrNull (ITEM_ENCODING, Encoding.class);
     }
 
     public String getStyle () {
