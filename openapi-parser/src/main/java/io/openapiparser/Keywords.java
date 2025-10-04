@@ -52,7 +52,6 @@ public interface Keywords {
     String INFO = "info";
     String ITEM_ENCODING = "itemEncoding";
     String ITEM_SCHEMA = "itemSchema";
-    String ITEM_ENCODING = "itemEncoding";
     String ITEMS = "items";
     String JSON_SCHEMA_DIALECT = "jsonSchemaDialect";
     String KIND = "kind";
