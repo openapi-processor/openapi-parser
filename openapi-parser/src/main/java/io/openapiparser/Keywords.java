@@ -56,6 +56,7 @@ public interface Keywords {
     String MAX_LENGTH = "maxLength";
     String MAX_PROPERTIES = "maxProperties";
     String MAXIMUM = "maximum";
+    String MEDIA_TYPES = "mediaTypes";
     String MIN_CONTAINS = "minContains";
     String MIN_ITEMS = "minItems";
     String MIN_LENGTH = "minLength";

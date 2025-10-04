@@ -66,6 +66,10 @@ public class Components extends Properties implements Extensions {
         return getMapObjectsOrEmpty (PATH_ITEMS, PathItem.class);
     }
 
+    public Map<String, MediaType> getMediaTypes () {
+        return getMapObjectsOrEmpty (MEDIA_TYPES, MediaType.class);
+    }
+
     @Override
     public Map<String, @Nullable Object> getExtensions () {
         return super.getExtensions ();
