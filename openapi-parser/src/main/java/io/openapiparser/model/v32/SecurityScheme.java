@@ -7,10 +7,13 @@ package io.openapiparser.model.v32;
 
 import io.openapiparser.Context;
 import io.openapiparser.Properties;
+import io.openapiparser.support.Required;
 import io.openapiprocessor.jsonschema.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
+
+import static io.openapiparser.Keywords.*;
 
 /**
  * the <em>Security Scheme</em> object.
@@ -24,6 +27,51 @@ public class SecurityScheme extends Properties implements Extensions {
 
     public SecurityScheme (Context context, Bucket bucket) {
         super (context, bucket);
+    }
+
+    @Required
+    public String getType () {
+        return getStringOrThrow (TYPE);
+    }
+
+    public @Nullable String getDescription () {
+        return getStringOrNull (DESCRIPTION);
+    }
+
+    @Required
+    public String getName () {
+        return getStringOrThrow (NAME);
+    }
+
+    @Required
+    public String getIn () {
+        return getStringOrThrow (IN);
+    }
+
+    @Required
+    public String getScheme () {
+        return getStringOrThrow (SCHEME);
+    }
+
+    public @Nullable String getBearerFormat () {
+        return getStringOrNull (BEARER_FORMAT);
+    }
+
+    public OAuthFlows getFlows () {
+        return getObjectOrThrow(FLOWS, OAuthFlows.class);
+    }
+
+    @Required
+    public String getOpenIdConnectUrl () {
+        return getStringOrThrow (OPENID_CONNECT_URL);
+    }
+
+    public @Nullable String getOauth2MetadataUrl() {
+        return getStringOrNull (OAUTH2_METADATA_URL);
+    }
+
+    public boolean getDeprecated() {
+        return getBooleanOrFalse(DEPRECATED);
     }
 
     @Override

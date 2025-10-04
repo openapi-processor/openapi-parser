@@ -102,3 +102,7 @@ fun tag(content: String = "{}"): Tag {
 fun xml(content: String = "{}"): Xml {
     return buildObject(Xml::class.java, content)
 }
+
+fun securityScheme(content: String = "{}"): SecurityScheme {
+    return buildObject(SecurityScheme::class.java, content)
+}
