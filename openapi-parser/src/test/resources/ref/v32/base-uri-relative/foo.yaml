@@ -1,0 +1,22 @@
+openapi: 3.2.0
+$self: /api/shared/foo
+info:
+  title: Shared components for all APIs
+  version: 1.0
+components:
+  requestBodies:
+    Foo:
+      content:
+        application/json:
+          schema:
+            $ref: ../schemas/foo
+  schemas:
+    Foo:
+      $id: /api/schemas/foo
+      type: object
+      properties:
+        bar:
+          $ref: bar
+    Bar:
+      $id: /api/schemas/bar
+      type: string

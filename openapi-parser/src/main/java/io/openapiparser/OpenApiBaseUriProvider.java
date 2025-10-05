@@ -27,7 +27,7 @@ public class OpenApiBaseUriProvider extends JsonBaseUriProvider {
 
         Object self = object.get(Keywords.SELF);
         if (Types.isString(self)) {
-            return Uris.createUri(Types.asString(self));
+            return Uris.resolve(documentUri, Types.asString(self));
         }
 
         return super.get(documentUri, document, version);

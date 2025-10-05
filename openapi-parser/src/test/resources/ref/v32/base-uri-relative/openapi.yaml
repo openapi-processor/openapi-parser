@@ -1,0 +1,10 @@
+openapi: 3.2.0
+$self: /api/openapi
+info:
+  title: Example API
+  version: 1.0
+paths:
+  /foo:
+    get:
+      requestBody:
+        $ref: "shared/foo#/components/requestBodies/Foo"
