@@ -21,7 +21,7 @@ class OpenApiParserSpec: StringSpec({
 
         val result = parser.parse(URI("file:///openapi.yaml"))
 
-        result.version shouldBe OpenApiResult.Version.V30
+        result.version shouldBe OpenApiVersion.V30
     }
 
     "detects openapi 3.1" {
@@ -33,6 +33,6 @@ class OpenApiParserSpec: StringSpec({
 
         val result = parser.parse(URI("file:///openapi.yaml"))
 
-        result.version shouldBe OpenApiResult.Version.V31
+        result.version shouldBe OpenApiVersion.V31
     }
 })

@@ -44,8 +44,8 @@ public class OpenApiResult31 implements OpenApiResult {
     }
 
     @Override
-    public Version getVersion () {
-        return Version.V31;
+    public OpenApiVersion getVersion () {
+        return OpenApiVersion.V31;
     }
 
     @SuppressWarnings ("unchecked")

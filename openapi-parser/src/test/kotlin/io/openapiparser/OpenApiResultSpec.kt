@@ -27,7 +27,7 @@ class OpenApiResultSpec: StringSpec({
     "should have version 30" {
         val result = OpenApiResult30(mockk<Context>(), Bucket.empty(), DocumentStore())
 
-        result.version shouldBe OpenApiResult.Version.V30
+        result.version shouldBe OpenApiVersion.V30
     }
 
     "should return api 30" {
@@ -47,7 +47,7 @@ class OpenApiResultSpec: StringSpec({
     "should have version 31" {
         val result = OpenApiResult31(mockk<Context>(), Bucket.empty(), DocumentStore())
 
-        result.version shouldBe OpenApiResult.Version.V31
+        result.version shouldBe OpenApiVersion.V31
     }
 
     "should throw if model type does not match api version 31" {

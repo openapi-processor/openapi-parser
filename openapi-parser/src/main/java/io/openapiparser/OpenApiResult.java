@@ -20,14 +20,12 @@ import java.util.Map;
  */
 public interface OpenApiResult {
 
-    enum Version { V30, V31, V32 }
-
     /**
-     * get the OpenAPI {@link Version} of the OpenAPI description.
+     * get the OpenAPI {@link OpenApiVersion} of the OpenAPI description.
      *
-     * @return the {@link Version}
+     * @return the {@link OpenApiVersion}
      */
-    Version getVersion ();
+    OpenApiVersion getVersion ();
 
     /**
      * get the OpenAPI model. {@code T} must be
