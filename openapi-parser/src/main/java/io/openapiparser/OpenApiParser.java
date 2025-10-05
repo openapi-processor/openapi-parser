@@ -5,12 +5,10 @@
 
 package io.openapiparser;
 
-import io.openapiprocessor.jsonschema.converter.StringNotNullConverter;
 import io.openapiprocessor.jsonschema.schema.*;
 
 import java.net.URI;
 
-import static io.openapiparser.Keywords.OPENAPI;
 import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 
 public class OpenApiParser {
@@ -47,20 +45,19 @@ public class OpenApiParser {
     }
 
     private OpenApiResult parseVersion(URI baseUri, Object document) {
-        String version = getVersion(baseUri, document);
+        OpenApiVersion version = OpenApiVersionParser.parseVersion(document);
 
-        if (isVersion30(version)) {
+        if (version == OpenApiVersion.V30) {
             return parse30(baseUri, document);
 
-        } else if (isVersion31(version)) {
+        } else if (version == OpenApiVersion.V31) {
             return parse31(baseUri, document);
 
-        } else if (isVersion32(version)) {
+        } else if (version == OpenApiVersion.V32) {
             return parse32(baseUri, document);
-
-        } else {
-            throw new UnknownVersionException(version);
         }
+
+        throw new RuntimeException("failed to parser OpenAPI version!");
     }
 
     private OpenApiResult32 parse32(URI baseUri, Object document) {
@@ -102,27 +99,5 @@ public class OpenApiParser {
                 new Context(result.getScope(), result.getRegistry()),
                 nonNull(Bucket.createBucket(result.getScope(), document)),
                 documents);
-    }
-
-    private String getVersion(URI baseUri, Object document) {
-        Scope scope = Scope.createScope(baseUri, document, SchemaVersion.getLatest());
-        Bucket api = nonNull(Bucket.createBucket(scope, document));
-        return  nonNull(api.convert (OPENAPI, new StringNotNullConverter ()));
-    }
-
-    private boolean isVersion30(String version) {
-        return checkVersion (version, "3.0");
-    }
-
-    private boolean isVersion31(String version) {
-        return checkVersion (version, "3.1");
-    }
-
-    private boolean isVersion32(String version) {
-        return checkVersion (version, "3.2");
-    }
-
-    private boolean checkVersion (String version, String prefix) {
-        return version.startsWith (prefix);
     }
 }
