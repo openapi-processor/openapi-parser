@@ -266,10 +266,7 @@ public class SchemaStore {
             throw new RuntimeException ();
         }
 
-        if (!isObject(document))
-            return null;
-
-        return asObject(document);
+        return asObjectOrNull(document);
     }
 
     private Vocabularies getVocabularies (Map<String, @Nullable Object> document, SchemaVersion version) {
@@ -277,7 +274,7 @@ public class SchemaStore {
         if (!isObject(vocabularyValue))
             return Vocabularies.ALL;
 
-        Map<String, Object> vocabularyObject = (Map<String, Object>)asObject(vocabularyValue);
+        Map<String, Object> vocabularyObject = asObject(vocabularyValue);
 
         Map<URI, Boolean> vocabularies = new LinkedHashMap<> ();
         vocabularyObject.forEach ((propKey, propValue) -> {
