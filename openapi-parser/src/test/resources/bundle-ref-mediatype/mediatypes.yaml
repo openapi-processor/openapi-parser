@@ -1,0 +1,11 @@
+Foo:
+  type: object
+  properties:
+    foo:
+      type: string
+
+Bar:
+  type: object
+  properties:
+    bar:
+      type: string

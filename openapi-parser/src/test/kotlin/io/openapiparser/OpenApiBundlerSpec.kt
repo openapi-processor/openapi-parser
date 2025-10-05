@@ -44,6 +44,14 @@ class OpenApiBundlerSpec : FreeSpec({
         return Bucket.createBucket(result.scope, bundle)!!
     }
 
+    fun bundle32(result: ResolverResult): Bucket {
+        val context = Context(result.scope, result.registry)
+        val bucket = Bucket(result.scope, asObject(result.document))
+        val api = OpenApiResult32(context, bucket, result.documents)
+        val bundle = api.bundle()
+        return Bucket.createBucket(result.scope, bundle)!!
+    }
+
     fun getObject(bucket: Bucket, jsonPointer: String): Map<String, Any?> {
         return asObject(bucket.getRawValue(from(jsonPointer))!!.value)
     }
@@ -53,7 +61,8 @@ class OpenApiBundlerSpec : FreeSpec({
     withData(
         mapOf(
             $$"bundle handles $ref loop, 30" to Data("/bundle-ref-loop/openapi30.yaml", ::bundle30),
-            $$"bundle handles $ref loop, 31" to Data("/bundle-ref-loop/openapi31.yaml", ::bundle31)
+            $$"bundle handles $ref loop, 31" to Data("/bundle-ref-loop/openapi31.yaml", ::bundle31),
+            $$"bundle handles $ref loop, 32" to Data("/bundle-ref-loop/openapi32.yaml", ::bundle32)
         )
     ) { (api, bundle) ->
         val result = resolve(api)
@@ -69,7 +78,8 @@ class OpenApiBundlerSpec : FreeSpec({
     withData(
         mapOf(
             $$"bundle schema $ref, 30" to Data("/bundle-ref-schema/openapi30.yaml", ::bundle30),
-            $$"bundle schema $ref, 31" to Data("/bundle-ref-schema/openapi31.yaml", ::bundle31)
+            $$"bundle schema $ref, 31" to Data("/bundle-ref-schema/openapi31.yaml", ::bundle31),
+            $$"bundle schema $ref, 32" to Data("/bundle-ref-schema/openapi32.yaml", ::bundle32)
         )
     ) { (api, bundle) ->
         val result = resolve(api)
@@ -85,7 +95,8 @@ class OpenApiBundlerSpec : FreeSpec({
     withData(
         mapOf(
             $$"bundle response $ref, 30" to Data("/bundle-ref-response/openapi30.yaml", ::bundle30),
-            $$"bundle response $ref, 31" to Data("/bundle-ref-response/openapi31.yaml", ::bundle31)
+            $$"bundle response $ref, 31" to Data("/bundle-ref-response/openapi31.yaml", ::bundle31),
+            $$"bundle response $ref, 32" to Data("/bundle-ref-response/openapi32.yaml", ::bundle32)
         )
     ) { (api, bundle) ->
         val result = resolve(api)
@@ -102,7 +113,8 @@ class OpenApiBundlerSpec : FreeSpec({
     withData(
         mapOf(
             $$"bundle parameter $ref, 30" to Data("/bundle-ref-parameter/openapi30.yaml", ::bundle30),
-            $$"bundle parameter $ref, 31" to Data("/bundle-ref-parameter/openapi31.yaml", ::bundle31)
+            $$"bundle parameter $ref, 31" to Data("/bundle-ref-parameter/openapi31.yaml", ::bundle31),
+            $$"bundle parameter $ref, 32" to Data("/bundle-ref-parameter/openapi32.yaml", ::bundle32)
         )
     ) { (api, bundle) ->
         val result = resolve(api)
@@ -119,7 +131,8 @@ class OpenApiBundlerSpec : FreeSpec({
     withData(
         mapOf(
             $$"bundle example $ref, 30" to Data("/bundle-ref-example/openapi30.yaml", ::bundle30),
-            $$"bundle example $ref, 31" to Data("/bundle-ref-example/openapi31.yaml", ::bundle31)
+            $$"bundle example $ref, 31" to Data("/bundle-ref-example/openapi31.yaml", ::bundle31),
+            $$"bundle example $ref, 32" to Data("/bundle-ref-example/openapi32.yaml", ::bundle32)
         )
     ) { (api, bundle) ->
         val result = resolve(api)
@@ -136,7 +149,8 @@ class OpenApiBundlerSpec : FreeSpec({
     withData(
         mapOf(
             $$"bundle request body $ref, 30" to Data("/bundle-ref-request-body/openapi30.yaml", ::bundle30),
-            $$"bundle request body $ref, 31" to Data("/bundle-ref-request-body/openapi31.yaml", ::bundle31)
+            $$"bundle request body $ref, 31" to Data("/bundle-ref-request-body/openapi31.yaml", ::bundle31),
+            $$"bundle request body $ref, 32" to Data("/bundle-ref-request-body/openapi32.yaml", ::bundle32)
         )
     ) { (api, bundle) ->
         val result = resolve(api)
@@ -153,7 +167,8 @@ class OpenApiBundlerSpec : FreeSpec({
     withData(
         mapOf(
             $$"bundle header $ref, 30" to Data("/bundle-ref-header/openapi30.yaml", ::bundle30),
-            $$"bundle header $ref, 31" to Data("/bundle-ref-header/openapi31.yaml", ::bundle31)
+            $$"bundle header $ref, 31" to Data("/bundle-ref-header/openapi31.yaml", ::bundle31),
+            $$"bundle header $ref, 32" to Data("/bundle-ref-header/openapi32.yaml", ::bundle32)
         )
     ) { (api, bundle) ->
         val result = resolve(api)
@@ -170,7 +185,8 @@ class OpenApiBundlerSpec : FreeSpec({
     withData(
         mapOf(
             $$"bundle security scheme $ref, 30" to Data("/bundle-ref-security-scheme/openapi30.yaml", ::bundle30),
-            $$"bundle security scheme $ref, 31" to Data("/bundle-ref-security-scheme/openapi31.yaml", ::bundle31)
+            $$"bundle security scheme $ref, 31" to Data("/bundle-ref-security-scheme/openapi31.yaml", ::bundle31),
+            $$"bundle security scheme $ref, 32" to Data("/bundle-ref-security-scheme/openapi32.yaml", ::bundle32)
         )
     ) { (api, bundle) ->
         val result = resolve(api)
@@ -184,7 +200,8 @@ class OpenApiBundlerSpec : FreeSpec({
     withData(
         mapOf(
             $$"bundle link $ref, 30" to Data("/bundle-ref-link/openapi30.yaml", ::bundle30),
-            $$"bundle link $ref, 31" to Data("/bundle-ref-link/openapi31.yaml", ::bundle31)
+            $$"bundle link $ref, 31" to Data("/bundle-ref-link/openapi31.yaml", ::bundle31),
+            $$"bundle link $ref, 32" to Data("/bundle-ref-link/openapi32.yaml", ::bundle32)
         )
     ) { (api, bundle) ->
         val result = resolve(api)
@@ -201,13 +218,14 @@ class OpenApiBundlerSpec : FreeSpec({
     withData(
         mapOf(
             $$"bundle callback $ref, 30" to Data("/bundle-ref-callback/openapi30.yaml", ::bundle30),
-            $$"bundle callback $ref, 31" to Data("/bundle-ref-callback/openapi31.yaml", ::bundle31)
+            $$"bundle callback $ref, 31" to Data("/bundle-ref-callback/openapi31.yaml", ::bundle31),
+            $$"bundle callback $ref, 32" to Data("/bundle-ref-callback/openapi32.yaml", ::bundle32)
         )
     ) { (api, bundle) ->
         val result = resolve(api)
         val bundled = bundle(result)
 
-        val ref = getObject(bundled, "/paths/~1foo/get/callbacks/\$url")
+        val ref = getObject(bundled, $$"/paths/~1foo/get/callbacks/$url")
         ref.size shouldBe 1
         ref[$$"$ref"].shouldBe("#/components/callbacks/Foo")
 
@@ -234,7 +252,8 @@ class OpenApiBundlerSpec : FreeSpec({
 
     withData(
         mapOf(
-            $$"bundle path $ref, 31" to Data("/bundle-ref-path-item/openapi31.yaml", ::bundle31)
+            $$"bundle path $ref, 31" to Data("/bundle-ref-path-item/openapi31.yaml", ::bundle31),
+            $$"bundle path $ref, 32" to Data("/bundle-ref-path-item/openapi32.yaml", ::bundle32)
         )
     ) { (api, bundle) ->
         val result = resolve(api)
@@ -281,7 +300,8 @@ class OpenApiBundlerSpec : FreeSpec({
 
     withData(
         mapOf(
-            $$"bundle nested $ref, 31" to Data("/bundle-ref-nested/openapi31.yaml", ::bundle31)
+            $$"bundle nested $ref, 31" to Data("/bundle-ref-nested/openapi31.yaml", ::bundle31),
+            $$"bundle nested $ref, 32" to Data("/bundle-ref-nested/openapi32.yaml", ::bundle32)
         )
     ) { (api, bundle) ->
         val result = resolve(api)
@@ -312,7 +332,8 @@ class OpenApiBundlerSpec : FreeSpec({
     withData(
         mapOf(
             "does not override existing component, 30" to Data("/bundle-ref-components/openapi30.yaml", ::bundle30),
-            "does not override existing component, 31" to Data("/bundle-ref-components/openapi31.yaml", ::bundle31)
+            "does not override existing component, 31" to Data("/bundle-ref-components/openapi31.yaml", ::bundle31),
+            "does not override existing component, 32" to Data("/bundle-ref-components/openapi32.yaml", ::bundle32)
         )
     ) { (api, bundle) ->
         val result = resolve(api)
@@ -323,6 +344,23 @@ class OpenApiBundlerSpec : FreeSpec({
 
         val existing = bundled.getRawValue(from("/components/schemas/Bar"))
         existing.shouldNotBeNull()
+    }
+
+    withData(
+        mapOf(
+            $$"bundle media type $ref, 32" to Data("/bundle-ref-mediatype/openapi32.yaml", ::bundle32)
+        )
+    ) { (api, bundle) ->
+        val result = resolve(api)
+        val bundled = bundle(result)
+
+        val requestBody = getObject(bundled, "/paths/~1foo/get/requestBody/content/application~1json")
+        requestBody[$$"$ref"].shouldBe("#/components/mediaTypes/Foo")
+        getObject(bundled, "/components/mediaTypes/Foo").shouldNotBeNull()
+
+        val response = getObject(bundled, "/paths/~1foo/get/responses/200/content/application~1json")
+        response[$$"$ref"].shouldBe("#/components/mediaTypes/Bar")
+        getObject(bundled, "/components/mediaTypes/Bar").shouldNotBeNull()
     }
 
     // should not modify in-document refs

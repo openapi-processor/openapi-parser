@@ -13,6 +13,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.net.URI;
 import java.util.*;
 
+import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 import static io.openapiprocessor.jsonschema.support.Null.requiresNonNull;
 import static io.openapiprocessor.jsonschema.support.Types.*;
 import static io.openapiprocessor.jsonschema.schema.Scope.createScope;
@@ -38,16 +39,16 @@ public class OpenApiBundler {
     private final Map<String, @Nullable Object> links = new LinkedHashMap<> ();
     private final Map<String, @Nullable Object> callbacks = new LinkedHashMap<> ();
     private final Map<String, @Nullable Object> pathItems = new LinkedHashMap<> ();
+    private final Map<String, @Nullable Object> mediaTypes = new LinkedHashMap<> ();
 
     public OpenApiBundler (Context context, DocumentStore documents, Bucket root) {
         this.context = context;
         this.documents = documents.copy ();
         this.root = root;
         this.rootDocumentUri = root.getScope ().getDocumentUri ();
-        this.rootDocument = documents.get (rootDocumentUri);
+        this.rootDocument = nonNull(documents.get (rootDocumentUri));
         this.version = OpenApiVersionParser.parseVersion(rootDocument);
     }
-
 
     public Map<String, @Nullable Object> bundle () {
         Bucket bundled = createBucket(root.getScope(), rootDocument, root.getLocation());
@@ -84,6 +85,7 @@ public class OpenApiBundler {
         mergeMap (components, "links", links);
         mergeMap (components, "callbacks", callbacks);
         mergeMap (components, "pathItems", pathItems);
+        mergeMap (components, "mediaTypes", mediaTypes);
     }
 
     private void mergeMap (
@@ -197,6 +199,10 @@ public class OpenApiBundler {
         } else if (isCallbacksRef (location) && external) {
             bundleCallback (bucketValues, refName, refValue);
 
+        } else if(isMediaTypeRef(location) && external) {
+            if(version == OpenApiVersion.V32) {
+                bundleMediaType(bucketValues, refName, refValue);
+            }
         } else if (isPathRef (location) && external) {
             if(version == OpenApiVersion.V30) {
                 result = bundlePathItem30(bucketValues, refValue);
@@ -289,6 +295,11 @@ public class OpenApiBundler {
             rawValues.remove (Keywords.REF);
             rawValues.putAll (replacement);
         };
+    }
+
+    private void bundleMediaType (Map<String, @Nullable Object> rawValues, String refName, RawValue refValue) {
+        mediaTypes.put (refName, refValue.getValue ());
+        rawValues.put (Keywords.REF, createRefPointer ("mediaTypes", refName));
     }
 
     private static RawValue getRefValue (Bucket documentBucket, JsonPointer refPointer) {
@@ -466,5 +477,13 @@ public class OpenApiBundler {
         return tokens.size () == 3
             && tokens.get (0).equals ("paths")
             && tokens.get (2).equals (Keywords.REF);
+    }
+
+    private boolean isMediaTypeRef (JsonPointer location) {
+        // check for /**/content/*/$ref
+        List<String> tokens = location.getTokens ();
+        return tokens.size () > 3
+            && tokens.get (tokens.size () - 3).equals ("content")
+            && tokens.get (tokens.size () - 1).equals (Keywords.REF);
     }
 }

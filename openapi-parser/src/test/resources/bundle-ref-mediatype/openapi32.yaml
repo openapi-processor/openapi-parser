@@ -1,0 +1,20 @@
+openapi: 3.2.0
+info:
+  title: test media type $ref bundling
+  version: 1.0.0
+
+paths:
+
+  /foo:
+    get:
+      requestBody:
+        description: with media type ref
+        content:
+          application/json:
+            $ref: 'mediatypes.yaml#/Foo'
+      responses:
+        '200':
+          description: with media type ref
+          content:
+            application/json:
+              $ref: 'mediatypes.yaml#/Bar'
