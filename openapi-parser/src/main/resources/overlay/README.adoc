@@ -1,0 +1,12 @@
+:overlay: https://learn.openapis.org/overlay/
+:license: https://github.com/OAI/Overlay-Specification/blob/main/LICENSE
+
+= OpenAPI Overlay
+
+this folder contains copies of the latest link:{overlay}[OpenAPI Overlay] JSON Schemas:
+
+** ** https://github.com/OAI/OpenAPI-Specification/tree/gh-pages/overlay/1.0
+
+== License
+
+link:{license}[OpenAPI License]

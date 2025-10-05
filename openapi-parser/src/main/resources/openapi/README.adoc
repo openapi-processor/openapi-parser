@@ -1,0 +1,14 @@
+:openapi: https://www.openapis.org/
+:license: https://github.com/OAI/OpenAPI-Specification/blob/main/LICENSE
+
+= OpenAPI
+
+this folder contains copies of the latest link:{openapi}[OpenAPI] JSON Schema files:
+
+** https://github.com/OAI/OpenAPI-Specification/tree/gh-pages/oas/3.2
+** https://github.com/OAI/OpenAPI-Specification/tree/gh-pages/oas/3.1
+** https://github.com/OAI/OpenAPI-Specification/tree/gh-pages/oas/3.0
+
+== License
+
+link:{license}[OpenAPI License]
