@@ -16,6 +16,8 @@ import io.openapiprocessor.jsonschema.reader.UriReader
 import io.openapiprocessor.jsonschema.schema.JsonPointer.from
 import io.openapiprocessor.snakeyaml.SnakeYamlConverter
 import io.openapiprocessor.jsonschema.schema.*
+import io.openapiprocessor.snakeyaml.SnakeYamlWriter
+import java.io.StringWriter
 
 class OpenApiBundlerSpec : FreeSpec({
 
@@ -216,11 +218,14 @@ class OpenApiBundlerSpec : FreeSpec({
     withData(
         mapOf(
             $$"bundle path $ref, 30" to Data("/bundle-ref-path-item/openapi30.yaml", ::bundle30),
-            $$"bundle path $ref, 31" to Data("/bundle-ref-path-item/openapi31.yaml", ::bundle31)
         )
     ) { (api, bundle) ->
         val result = resolve(api)
         val bundled = bundle(result)
+
+        val out = StringWriter()
+        val writer = SnakeYamlWriter(out)
+        writer.write(bundled.rawValues)
 
         val pathItem = getObject(bundled, "/paths/~1foo")
         pathItem.containsKey(Keywords.REF).shouldBeFalse()
@@ -229,12 +234,35 @@ class OpenApiBundlerSpec : FreeSpec({
 
     withData(
         mapOf(
-            $$"bundle nested $ref, 30" to Data("/bundle-ref-nested/openapi30.yaml", ::bundle30),
-            $$"bundle nested $ref, 31" to Data("/bundle-ref-nested/openapi31.yaml", ::bundle31)
+            $$"bundle path $ref, 31" to Data("/bundle-ref-path-item/openapi31.yaml", ::bundle31)
         )
     ) { (api, bundle) ->
         val result = resolve(api)
         val bundled = bundle(result)
+
+        val out = StringWriter()
+        val writer = SnakeYamlWriter(out)
+        writer.write(bundled.rawValues)
+
+        val ref = getObject(bundled, "/paths/~1foo")
+        ref.size shouldBe 1
+        ref[$$"$ref"].shouldBe("#/components/pathItems/~1bundle-ref-path-item~1foo.api.yaml")
+
+        val component = getObject(bundled, "/components/pathItems/~1bundle-ref-path-item~1foo.api.yaml")
+        component.shouldNotBeNull()
+    }
+
+    withData(
+        mapOf(
+            $$"bundle nested $ref, 30" to Data("/bundle-ref-nested/openapi30.yaml", ::bundle30)
+        )
+    ) { (api, bundle) ->
+        val result = resolve(api)
+        val bundled = bundle(result)
+
+        val out = StringWriter()
+        val writer = SnakeYamlWriter(out)
+        writer.write(bundled.rawValues)
 
         val pathItem = getObject(bundled, "/paths/~1foo")
         pathItem.containsKey(Keywords.REF).shouldBeFalse()
@@ -244,6 +272,36 @@ class OpenApiBundlerSpec : FreeSpec({
         ref[$$"$ref"].shouldBe("#/components/schemas/Bar")
         val component = bundled.getRawValue(from("/components/schemas/Bar"))
         component.shouldNotBeNull()
+
+        val refNested = getObject(bundled, "/components/schemas/Bar/properties/bar")
+        refNested[$$"$ref"].shouldBe("#/components/schemas/Bar2")
+        val componentNested = bundled.getRawValue(from("/components/schemas/Bar2"))
+        componentNested.shouldNotBeNull()
+    }
+
+    withData(
+        mapOf(
+            $$"bundle nested $ref, 31" to Data("/bundle-ref-nested/openapi31.yaml", ::bundle31)
+        )
+    ) { (api, bundle) ->
+        val result = resolve(api)
+        val bundled = bundle(result)
+
+        val out = StringWriter()
+        val writer = SnakeYamlWriter(out)
+        writer.write(bundled.rawValues)
+
+        val ref = getObject(bundled, "/paths/~1foo")
+        ref.size shouldBe 1
+        ref[$$"$ref"].shouldBe("#/components/pathItems/~1bundle-ref-nested~1foo.api.yaml")
+
+        val component = getObject(bundled, "/components/pathItems/~1bundle-ref-nested~1foo.api.yaml")
+        component.shouldNotBeNull()
+
+        val barRef = getObject(bundled, "/components/pathItems/~1bundle-ref-nested~1foo.api.yaml/get/responses/200/content/application~1json/schema")
+        barRef[$$"$ref"].shouldBe("#/components/schemas/Bar")
+        val barComponent = bundled.getRawValue(from("/components/schemas/Bar"))
+        barComponent.shouldNotBeNull()
 
         val refNested = getObject(bundled, "/components/schemas/Bar/properties/bar")
         refNested[$$"$ref"].shouldBe("#/components/schemas/Bar2")

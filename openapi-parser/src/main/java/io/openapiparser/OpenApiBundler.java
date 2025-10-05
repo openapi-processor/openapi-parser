@@ -24,6 +24,9 @@ public class OpenApiBundler {
     private final DocumentStore documents;
     private final Bucket root;
     private final URI rootDocumentUri;
+    private final Object rootDocument;
+    private final OpenApiVersion version;
+
 
     private final Map<String, @Nullable Object> schemas = new LinkedHashMap<> ();
     private final Map<String, @Nullable Object> responses = new LinkedHashMap<> ();
@@ -34,20 +37,20 @@ public class OpenApiBundler {
     private final Map<String, @Nullable Object> securitySchemes = new LinkedHashMap<> ();
     private final Map<String, @Nullable Object> links = new LinkedHashMap<> ();
     private final Map<String, @Nullable Object> callbacks = new LinkedHashMap<> ();
-    private final Map<String, @Nullable Object> paths = new LinkedHashMap<> ();
+    private final Map<String, @Nullable Object> pathItems = new LinkedHashMap<> ();
 
     public OpenApiBundler (Context context, DocumentStore documents, Bucket root) {
         this.context = context;
         this.documents = documents.copy ();
         this.root = root;
         this.rootDocumentUri = root.getScope ().getDocumentUri ();
+        this.rootDocument = documents.get (rootDocumentUri);
+        this.version = OpenApiVersionParser.parseVersion(rootDocument);
     }
 
-    public Map<String, @Nullable Object> bundle () {
-        URI documentUri = root.getScope ().getDocumentUri ();
-        Object document = documents.get (documentUri);
 
-        Bucket bundled = createBucket(root.getScope(), document, root.getLocation());
+    public Map<String, @Nullable Object> bundle () {
+        Bucket bundled = createBucket(root.getScope(), rootDocument, root.getLocation());
         walkBucket (bundled);
 
         Map<String, @Nullable Object> rawValues = bundled.getRawValues ();
@@ -80,7 +83,7 @@ public class OpenApiBundler {
         mergeMap (components, "securitySchemes", securitySchemes);
         mergeMap (components, "links", links);
         mergeMap (components, "callbacks", callbacks);
-        mergeMap (components, "paths", paths);
+        mergeMap (components, "pathItems", pathItems);
     }
 
     private void mergeMap (
@@ -160,6 +163,9 @@ public class OpenApiBundler {
 
         JsonPointer refPointer = reference.getPointer ();
         String refName = refPointer.tail ();
+        if (refName.isEmpty()) {
+            refName = documentUri.getPath();
+        }
         RawValue refValue = getRefValue (documentBucket, refPointer);
         Bucket refBucket = getRefBucket (refPointer, refValue);
 
@@ -192,7 +198,11 @@ public class OpenApiBundler {
             bundleCallback (bucketValues, refName, refValue);
 
         } else if (isPathRef (location) && external) {
-            result = bundlePath30 (bucketValues, refValue);
+            if(version == OpenApiVersion.V30) {
+                result = bundlePathItem30(bucketValues, refValue);
+            } else {
+                bundlePathItem(bucketValues, refName, refValue);
+            }
         }
 
         // walk unseen ref
@@ -259,7 +269,12 @@ public class OpenApiBundler {
         rawValues.put (Keywords.REF, createRefPointer ("callbacks", refName));
     }
 
-    private Runnable bundlePath30 (Map<String, @Nullable Object> rawValues, RawValue refValue) {
+    private void bundlePathItem (Map<String, @Nullable Object> rawValues, String refName, RawValue refValue) {
+        pathItems.put (refName, refValue.getValue ());
+        rawValues.put (Keywords.REF, createRefPointer ("pathItems", refName));
+    }
+
+    private Runnable bundlePathItem30(Map<String, @Nullable Object> rawValues, RawValue refValue) {
         // OpenAPI 3.0 has no /components/paths => inline it
 
         Map<String, @Nullable Object> replacement = asObject (refValue.getValue ());
@@ -312,7 +327,7 @@ public class OpenApiBundler {
     }
 
     private String createRefPointer (String type, String refName) {
-        return String.format ("#/components/%s/%s", type, refName);
+        return String.format ("#/components/%s/%s", type, JsonPointerSupport.encode(refName));
     }
 
     private void walkSchema (Scope currentScope, Object value, JsonPointer location) {
