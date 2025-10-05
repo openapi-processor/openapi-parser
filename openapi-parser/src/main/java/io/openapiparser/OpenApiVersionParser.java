@@ -19,7 +19,7 @@ public class OpenApiVersionParser {
         String version = getVersion(document);
 
         if (isVersion30(version)) {
-            return OpenApiVersion.V31;
+            return OpenApiVersion.V30;
 
         } else if (isVersion31(version)) {
             return OpenApiVersion.V31;
