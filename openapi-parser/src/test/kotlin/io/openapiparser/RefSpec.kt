@@ -7,6 +7,7 @@ package io.openapiparser
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import io.openapiparser.support.ApiBuilder
 import io.openapiparser.support.getParameters
@@ -27,6 +28,30 @@ class RefSpec: StringSpec({
         ref.type shouldBe "object"
         ref.properties.size shouldBe 1
         ref.properties["bar"]!!.type shouldBe "string"
+    }
+
+    "parses ref into another file, v31" {
+        val api = ApiBuilder().buildOpenApi31("/ref/v3x/ref-into-another-file/openapi.yaml")
+
+        val schema = api.getResponseSchema("/foo", "200", "application/json")
+        schema.ref shouldBe "foo.yaml#/Foo"
+
+        val ref = schema.refObject
+        ref.type shouldContainExactly listOf("object")
+        ref.properties.size shouldBe 1
+        ref.properties["bar"]!!.type shouldContainExactly listOf("string")
+    }
+
+    "parses ref into another file, v32" {
+        val api = ApiBuilder().buildOpenApi32("/ref/v3x/ref-into-another-file/openapi.yaml")
+
+        val schema = api.getResponseSchema("/foo", "200", "application/json")
+        schema.ref shouldBe "foo.yaml#/Foo"
+
+        val ref = schema.refObject
+        ref.type shouldContainExactly listOf("object")
+        ref.properties.size shouldBe 1
+        ref.properties["bar"]!!.type shouldContainExactly listOf("string")
     }
 
     "parses ref array items with nested ref" {
