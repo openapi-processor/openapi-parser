@@ -5,12 +5,14 @@
 
 package io.openapiparser
 
+import io.kotest.assertions.throwables.shouldNotThrowAny
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.datatest.withData
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import io.openapiprocessor.jackson.JacksonConverter
 import io.openapiprocessor.jsonschema.support.Types.asObject
 import io.openapiprocessor.jsonschema.reader.UriReader
 import io.openapiprocessor.jsonschema.schema.JsonPointer.from
@@ -57,6 +59,38 @@ class OpenApiBundlerSpec : FreeSpec({
     }
 
     data class Data(val api: String, val bundle: (result: ResolverResult) -> Bucket)
+
+    "do not walk array on simple type" - {
+        val context = Context(Scope.empty(), ReferenceRegistry())
+
+        val converter = JacksonConverter()
+        val document = converter.convert("""
+                    openapi: 3.0.2
+                    info:
+                      title: do not walk tags
+                      version: 1.0.0
+        
+                    paths:
+                      /foo:
+                        get:
+                          tags:
+                            - a tag
+                          responses:
+                            '204':
+                              description: none
+                    """.trimIndent()
+                )
+
+        val documents = DocumentStore()
+        val scope = Scope.empty()
+        documents.addId(scope.documentUri, document)
+
+        val bucket = Bucket.createBucket(scope, document)
+
+        shouldNotThrowAny {
+            OpenApiBundler(context, documents, bucket!!).bundle()
+        }
+    }
 
     withData(
         mapOf(

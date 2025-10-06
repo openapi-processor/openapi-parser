@@ -8,6 +8,7 @@ package io.openapiparser;
 import io.openapiprocessor.jsonschema.schema.Keyword;
 import io.openapiprocessor.jsonschema.schema.Keywords;
 import io.openapiprocessor.jsonschema.schema.*;
+import io.openapiprocessor.jsonschema.support.Types;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.net.URI;
@@ -360,6 +361,10 @@ public class OpenApiBundler {
         int index = 0;
         for (Object item : items) {
             JsonPointer itemLocation = location.append (index);
+            if (!Types.isObject (item)) {
+                continue;
+            }
+
             walkSchema (currentScope, item, itemLocation);
             index++;
         }
