@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import java.net.URI;
 import java.util.*;
 
+import static io.openapiprocessor.jsonschema.support.Null.nonNull;
 import static io.openapiprocessor.jsonschema.support.Types.*;
 import static io.openapiprocessor.jsonschema.support.Uris.createUri;
 
@@ -274,11 +275,11 @@ public class SchemaStore {
         if (!isObject(vocabularyValue))
             return Vocabularies.ALL;
 
-        Map<String, Object> vocabularyObject = asObject(vocabularyValue);
+        @Nullable Map<String, @Nullable Object> vocabularyObject = asObject(vocabularyValue);
 
         Map<URI, Boolean> vocabularies = new LinkedHashMap<> ();
         vocabularyObject.forEach ((propKey, propValue) -> {
-            vocabularies.put (createUri (propKey), asBoolean (propValue));
+            vocabularies.put (createUri (propKey), asBoolean (nonNull(propValue)));
         });
 
         return Vocabularies.create (vocabularies, version);
