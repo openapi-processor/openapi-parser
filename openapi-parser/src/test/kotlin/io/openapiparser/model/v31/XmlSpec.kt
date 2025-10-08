@@ -13,6 +13,7 @@ import io.kotest.matchers.shouldBe
 import io.openapiparser.model.v31.xml as xml31
 import io.openapiparser.model.v32.xml as xml32
 
+@Suppress("DEPRECATION")
 class XmlSpec: StringSpec({
 
     "gets xml name" {
