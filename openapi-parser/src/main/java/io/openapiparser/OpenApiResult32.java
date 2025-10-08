@@ -5,7 +5,7 @@
 
 package io.openapiparser;
 
-import io.openapiparser.model.v31.OpenApi;
+import io.openapiparser.model.v32.OpenApi;
 import io.openapiprocessor.interfaces.Writer;
 import io.openapiprocessor.jsonschema.ouput.OutputConverter;
 import io.openapiprocessor.jsonschema.ouput.OutputUnit;
