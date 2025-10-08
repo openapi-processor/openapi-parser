@@ -36,7 +36,7 @@ public class Discriminator extends Properties implements Extensions {
         return getMapStringsOrEmpty (MAPPING);
     }
 
-    public String getDefaultMapping () {
+    public @Nullable String getDefaultMapping () {
         return getStringOrNull (DEFAULT_MAPPING);
     }
 
