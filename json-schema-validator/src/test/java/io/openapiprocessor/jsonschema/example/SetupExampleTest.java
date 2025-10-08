@@ -13,6 +13,7 @@ import io.openapiprocessor.jsonschema.validator.steps.ValidationStep;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
+import java.util.Collection;
 
 import static io.openapiprocessor.jsonschema.support.Uris.createUri;
 
@@ -81,10 +82,11 @@ public class SetupExampleTest {
         boolean valid = result.isValid ();
 
         // 7. print errors with error location
-        if (!valid && result.getErrors () != null) {
+        Collection<OutputUnit> errors = result.getErrors();
+        if (!valid && errors != null) {
             System.out.println ("validation failed!");
 
-            for (OutputUnit error : result.getErrors ()) {
+            for (OutputUnit error : errors) {
                 String schemaLocation = error.getAbsoluteKeywordLocation ();
                 schemaLocation = schemaLocation.substring (schemaLocation.indexOf ('#'));
 
