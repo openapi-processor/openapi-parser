@@ -18,51 +18,11 @@ public class ValidationMessage {
     private final JsonSchema schema;
     private final JsonInstance instance;
 
-    @Deprecated
-    private Collection<ValidationMessage> nestedMessage = Collections.emptyList ();
-
     public ValidationMessage (JsonSchema schema, JsonInstance instance, String property, String text) {
         this.property = property;
         this.text = text;
         this.schema = schema;
         this.instance = instance;
-    }
-
-    @Deprecated // no nested messages anymore
-    public ValidationMessage (
-        JsonSchema schema,
-        JsonInstance instance,
-        String property,
-        String text,
-        Collection<ValidationMessage> nestedMessage
-    ) {
-        this.property = property;
-        this.text = text;
-        this.schema = schema;
-        this.instance = instance;
-        this.nestedMessage = nestedMessage;
-    }
-
-    @Deprecated // use overload with property
-    public ValidationMessage (JsonSchema schema, JsonInstance instance, String text) {
-        this.property = "n/a";
-        this.text = text;
-        this.schema = schema;
-        this.instance = instance;
-    }
-
-    @Deprecated // no nested messages anymore
-    public ValidationMessage (
-        JsonSchema schema,
-        JsonInstance instance,
-        String text,
-        Collection<ValidationMessage> nestedMessage
-    ) {
-        this.property = "n/a";
-        this.text = text;
-        this.schema = schema;
-        this.instance = instance;
-        this.nestedMessage = nestedMessage;
     }
 
     public String getSchemaScope () {
@@ -83,16 +43,6 @@ public class ValidationMessage {
 
     public String getText () {
         return text;
-    }
-
-    @Deprecated
-    public boolean hasNestedMessages () {
-        return ! nestedMessage.isEmpty ();
-    }
-
-    @Deprecated
-    public Collection<ValidationMessage> getNestedMessages () {
-        return nestedMessage;
     }
 
     @Override
