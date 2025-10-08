@@ -47,7 +47,7 @@ public class OpenApiBundler {
         this.documents = documents.copy ();
         this.root = root;
         this.rootDocumentUri = root.getScope ().getDocumentUri ();
-        this.rootDocument = nonNull(documents.get (rootDocumentUri));
+        this.rootDocument = nonNull(this.documents.get (rootDocumentUri));
         this.version = OpenApiVersionParser.parseVersion(rootDocument);
     }
 
