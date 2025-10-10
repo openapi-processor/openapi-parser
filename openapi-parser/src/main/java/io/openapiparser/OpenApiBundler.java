@@ -345,8 +345,11 @@ public class OpenApiBundler {
     }
 
     private String toComponentKey(String refName) {
-        // /component/*/key pattern does not allow '/'
-        return refName.replace("/", "--");
+        // /component/*/key pattern does not allow '/{}'
+        return refName
+                .replace("/", "--")
+                .replace('{', '-')
+                .replace('}', '-');
     }
 
     private void walkSchema (Scope currentScope, Object value, JsonPointer location) {
