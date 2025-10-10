@@ -169,6 +169,8 @@ public class OpenApiBundler {
         if (refName.isEmpty()) {
             refName = documentUri.getPath();
         }
+        refName = toComponentKey(refName);
+
         RawValue refValue = getRefValue (documentBucket, refPointer);
         Bucket refBucket = getRefBucket (refPointer, refValue);
 
@@ -339,7 +341,12 @@ public class OpenApiBundler {
     }
 
     private String createRefPointer (String type, String refName) {
-        return String.format ("#/components/%s/%s", type, JsonPointerSupport.encode(refName));
+        return String.format ("#/components/%s/%s", type, refName);
+    }
+
+    private String toComponentKey(String refName) {
+        // /component/*/key pattern does not allow '/'
+        return refName.replace("/", "--");
     }
 
     private void walkSchema (Scope currentScope, Object value, JsonPointer location) {

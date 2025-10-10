@@ -299,9 +299,9 @@ class OpenApiBundlerSpec : FreeSpec({
 
         val ref = getObject(bundled, "/paths/~1foo")
         ref.size shouldBe 1
-        ref[$$"$ref"].shouldBe("#/components/pathItems/~1bundle-ref-path-item~1foo.api.yaml")
+        ref[$$"$ref"].shouldBe("#/components/pathItems/--bundle-ref-path-item--foo.api.yaml")
 
-        val component = getObject(bundled, "/components/pathItems/~1bundle-ref-path-item~1foo.api.yaml")
+        val component = getObject(bundled, "/components/pathItems/--bundle-ref-path-item--foo.api.yaml")
         component.shouldNotBeNull()
     }
 
@@ -347,12 +347,12 @@ class OpenApiBundlerSpec : FreeSpec({
 
         val ref = getObject(bundled, "/paths/~1foo")
         ref.size shouldBe 1
-        ref[$$"$ref"].shouldBe("#/components/pathItems/~1bundle-ref-nested~1foo.api.yaml")
+        ref[$$"$ref"].shouldBe("#/components/pathItems/--bundle-ref-nested--foo.api.yaml")
 
-        val component = getObject(bundled, "/components/pathItems/~1bundle-ref-nested~1foo.api.yaml")
+        val component = getObject(bundled, "/components/pathItems/--bundle-ref-nested--foo.api.yaml")
         component.shouldNotBeNull()
 
-        val barRef = getObject(bundled, "/components/pathItems/~1bundle-ref-nested~1foo.api.yaml/get/responses/200/content/application~1json/schema")
+        val barRef = getObject(bundled, "/components/pathItems/--bundle-ref-nested--foo.api.yaml/get/responses/200/content/application~1json/schema")
         barRef[$$"$ref"].shouldBe("#/components/schemas/Bar")
         val barComponent = bundled.getRawValue(from("/components/schemas/Bar"))
         barComponent.shouldNotBeNull()
@@ -397,6 +397,5 @@ class OpenApiBundlerSpec : FreeSpec({
         getObject(bundled, "/components/mediaTypes/Bar").shouldNotBeNull()
     }
 
-    // should not modify in-document refs
-    // conflict if name of bundled component is already used
+   // conflict if name of bundled component is already used
 })
