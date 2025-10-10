@@ -8,14 +8,11 @@ package io.openapiparser
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.openapiparser.model.v31.OpenApi
-import io.openapiprocessor.jackson.JacksonJsonWriter
 import io.openapiprocessor.jackson.JacksonYamlWriter
 import io.openapiprocessor.jsonschema.reader.UriReader
 import io.openapiprocessor.jsonschema.schema.DocumentLoader
 import io.openapiprocessor.jsonschema.schema.DocumentStore
 import io.openapiprocessor.snakeyaml.SnakeYamlConverter
-import io.openapiprocessor.snakeyaml.SnakeYamlWriter
-import java.io.FileWriter
 import java.io.StringWriter
 import java.net.URI
 
@@ -66,7 +63,7 @@ class BundleSpec : StringSpec({
         //val bundledResult = bundledParser.parse(URI.create("/bundled/openapi.yaml"), bundled)
 
         val api = bundledResult.getModel(OpenApi::class.java)
-        val summary = api.info.summary
+        api.info.summary
 
         // write the bundled OpenAPI document. Use the alternative constructor to configure the
         // jackson, snake yaml specific formatting.
