@@ -48,7 +48,7 @@ link:{all-ci}[image:{all-ci-badge}[]]
 === link:{parser}[openapi-parser]
 
 link:{central-search}[image:{parser-central-badge}[]]
-image:https://img.shields.io/badge/OpenAPI-3.1%2C_3.0-%2300c000?label=OpenAPI[Static Badge]
+image:https://img.shields.io/badge/OpenAPI-3.2%2C_3.1%2C_3.0-%2300c000?label=OpenAPI[Static Badge]
 
 the link:{openapi}[OpenAPI] parser.
 
