@@ -38,12 +38,12 @@ public interface OpenApiResult {
      *
      * @param api class of the OpenAPI model
      * @param <T> OpenAPI model type
-     * @return OpenAPI model
+     * @return the OpenAPI model.
      */
     <T> T getModel (Class<T> api);
 
     /**
-     * Bundle the document, i.e. merge a multi-file document into a single file document. The bundled document has to
+     * Bundle the document, i.e. merge a multi-file document into a single-file document. The bundled document has to
      * be parsed to navigate its OpenAPI model.
      *
      * @return a raw bundled copy of the OpenAPI document.
@@ -56,7 +56,7 @@ public interface OpenApiResult {
      * can be used to create a single file document.
      *
      * @param writer the target writer
-     * @throws IOException if writing failed
+     * @throws IOException if writing failed.
      */
     @Experimental
     void write(Writer writer) throws IOException;
@@ -77,7 +77,7 @@ public interface OpenApiResult {
      *
      * @param validator json schema validator
      * @param schemaStore json schema store
-     * @return true if valid, else false
+     * @return true if valid, else false.
      */
     boolean validate (Validator validator, SchemaStore schemaStore);
 
