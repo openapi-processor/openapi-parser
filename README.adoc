@@ -29,10 +29,11 @@ It is usable, it is used as the internal openapi parser/validator by openapi-pro
 a Java 11 based link:{openapi}[OpenAPI] 3.2, 3.1, 3.0 parser with validation and pluggable document reader & json/yaml converter.
 
 * parse OpenAPI 3.2, 3.1 & 3.0
-* validate OpenAPI 3.2, 3.1 & 3.0 (json schema validation, can follow $ref's in the OpenAPI document)
+* validate OpenAPI 3.2, 3.1 & 3.0 (JSON schema validation, can follow $ref's in the OpenAPI document)
 * separate apis for OpenAPI 3.2, 3.1 & 3.0
 * easily get resolved $ref object
 * bundle & write (single file) OpenAPI document
+* apply overlay to (bundled) OpenAPI document (experimental)
 * minimal dependencies
 * pluggable document reader
 * pluggable json/yaml converter

@@ -2,6 +2,7 @@
 :overlay: https://spec.openapis.org/overlay/v1.0.0.html
 :converter-jackson: https://github.com/openapi-processor/openapi-parser/tree/master/io-jackson
 :converter-snakeyaml: https://github.com/openapi-processor/openapi-parser/tree/master/io-snakeyaml
+:sample: https://github.com/openapi-processor/openapi-parser/blob/master/openapi-parser/src/test/java/io/openapiparser/samples/ParserSampleTest.java
 
 **work in progress**
 
@@ -14,17 +15,16 @@ source code gifts (i.e. pull requests) are welcome :-)
 
 == openapi-parser & validator
 
-a Java 11 based link:{openapi}[OpenAPI] 3.0.x & 3.1 parser with validation and pluggable document reader & json/yaml converter.
+a Java 11 based link:{openapi}[OpenAPI] 3.2, 3.1 & 3.0 parser with validation, bundling & overlay support and pluggable document reader & json/yaml converter.
 
-* parse OpenAPI 3.0.x & 3.1
-* validate OpenAPI 3.0.x & 3.1 (handles $ref's in the OpenAPI document)
+* parse OpenAPI 3.2, 3.1 & 3.0
+* validate OpenAPI 3.2, 3.1 & 3.0 (JSON schema validation, can follow $ref's in the OpenAPI document)
 ** JSON schema draft-4 validation of OpenAPI 3.0
-** JSON schema draft-2020-12 validation of OpenAPI 3.1
-* separate apis for OpenAPI 3.0 & 3.1
+** JSON schema draft-2020-12 validation of OpenAPI 3.2, 3.1
+* separate apis for OpenAPI 3.2, 3.1 & 3.0
 * easily get resolved $ref object
-* bundle multi-file OpenAPI documents (experimental)
-* write bundled single-file OpenAPI document (json or yaml) (experimental)
-// * apply link:{overlay}[Overlays] (experimental)
+* bundle & write (single file) OpenAPI document
+* apply overlay to (bundled) OpenAPI document (experimental)
 * minimal dependencies
 * pluggable document reader
 * pluggable json/yaml converter
@@ -38,7 +38,7 @@ the parser tries to provide a *user-friendly* api in the sense that it
 * throws if *required* properties are not set
 * it is *read only*
 * it resolves `$ref` objects, i.e. $ref objects have a `getRefObject()`
-* it is very close to the specification (OpenAPI 3.0 & 3.1)
+* it is very close to the specification (OpenAPI 3.2, 3.1 & 3.0)
 
 Drawback is, that with the current api it is not possible (for some properties) to detect if a property is set in the OpenAPI description or if it is not given.
 
@@ -80,83 +80,21 @@ For example the `required` property of a `parameter` has a `false` default value
 
 === yaml/json converter
 
-the *parser* is internally using `Map<String, Object>` to represent the OpenAPI object tree to be independent of a specific yaml/json parser. It will work with any yaml/json parser that is able to convert an OpenAPI yaml or json to a `Map<String, Object>` object tree.
+the *parser* is internally using `Map<String, Object>` to represent the OpenAPI object tree to be independent of a specific yaml/json parser. It will work with any yaml/json parser that is able to convert an OpenAPI YAML or JSON to a `Map<String, Object>` object tree.
 
 link:{converter-jackson}[`io-jackson`] provides a default implementation that is based on jackson.
 
 == usage
 
-code example for parsing an OpenAPI yaml file and running the JSON Schema validation.
+=== current api (since 2023.3)
 
-=== 2023.3 api (current)
+this removes the `Resolver` from the previous (i.e. 2023.2) setup at step 2.
 
-this removes the `Resolver` from the previous (i.e 2023.2) setup at step 2.
+The following link:{sample}[sample code] shows the usage of the current api.
 
 [source,java]
 ----
-package io.openapiparser;
-
-import io.openapiparser.model.v30.OpenApi;
-import io.openapiparser.model.v30.PathItem;
-import io.openapiprocessor.interfaces.Converter;
-import io.openapiprocessor.interfaces.Reader;
-import io.openapiprocessor.jsonschema.reader.UriReader;
-import io.openapiprocessor.jsonschema.schema.*;
-import io.openapiprocessor.jsonschema.validator.Validator;
-import io.openapiprocessor.jsonschema.validator.ValidatorSettings;
-import io.openapiprocessor.snakeyaml.SnakeYamlConverter;
-import org.junit.jupiter.api.Test;
-
-import java.util.Collection;
-
-public class SetupExampleTest {
-
-    //@Test
-    void parseAndValidate () {
-        // 1. create a document loader.
-        // It loads a document by uri and converts it to a Map<String, Object>
-        // object tree that represents the OpenAPI document. The parser
-        // operates on that Object tree which makes it independent of the
-        // object mapper (e.g. jackson, snakeyaml etc.).
-        // Both (Reader and Converter) have a very simple interface which makes
-        // it easy to implement your own.
-        Reader reader = new UriReader ();
-        Converter converter = new SnakeYamlConverter ();
-        // Converter converter = new JacksonConverter ();
-        DocumentLoader loader = new DocumentLoader (reader, converter);
-
-        // 2. create a parser.
-        DocumentStore documents = new DocumentStore ();
-        OpenApiParser parser = new OpenApiParser (documents, loader);
-
-        // 3. parse the OpenAPI from resource or url.
-        // here it loads an OpenAPI document from a resource file, but URI works too.
-        OpenApiResult result = parser.parse ("openapi.yaml");
-
-        // 4. get the API model from the result to navigate the OpenAPI document.
-        // OpenAPI 3.1.x with model.v31.OpenAPI import
-        OpenApi model = result.getModel (OpenApi.class);
-
-        // 5. navigate the model
-        PathItem pathItem = model.getPaths ().getPathItem ("/foo");
-
-        // 6. create Validator to validate the OpenAPI schema.
-        SchemaStore store = new SchemaStore (loader);
-        ValidatorSettings settings = new ValidatorSettings ();
-        Validator validator = new Validator (settings);
-
-        // 7. validate the OpenAPI schema.
-        boolean valid = result.validate (validator, store);
-
-        // 8. print validation errors
-        Collection<ValidationError> errors = result.getValidationErrors ();
-        ValidationErrorTextBuilder builder = new ValidationErrorTextBuilder ();
-
-        for (ValidationError error : errors) {
-            System.out.println (builder.getText(error));
-        }
-    }
-}
+include::src/test/java/io/openapiparser/samples/ParserSampleTest.java[]
 ----
 
 === 2023.2 api (obsolete)
