@@ -1,0 +1,14 @@
+openapi: 3.2.0
+info:
+  title: simple sample
+  version: 1.0.0
+paths:
+  /foo:
+    get:
+      responses:
+        "200":
+          description: the foo result
+          content:
+            application/json:
+              schema:
+                $ref: "Foo.yaml"
