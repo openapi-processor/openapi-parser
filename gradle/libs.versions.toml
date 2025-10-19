@@ -46,4 +46,4 @@ plugin-updates = { module = "com.github.ben-manes:gradle-versions-plugin", versi
 [plugins]
 checker = { id = "org.checkerframework", version.ref = "checkerp" }
 jacoco = { id = "org.barfuin.gradle.jacocolog", version = "3.1.0" }
-sonar = { id = "org.sonarqube", version =  "6.3.1.5724" }
+sonar = { id = "org.sonarqube", version =  "7.0.0.6105" }
