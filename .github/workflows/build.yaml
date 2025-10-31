@@ -70,7 +70,7 @@ jobs:
         ./gradlew check --warning-mode all
 
     - name: archive test results
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       if: always()
       with:
         name: test-results-${{ matrix.os }}
@@ -160,7 +160,7 @@ jobs:
         ./gradlew -Dorg.gradle.jvmargs="-Xmx1024m -XX:MaxMetaspaceSize=400m" :openapi-parser:sonar --stacktrace
 
     - name: archive test results
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       if: always()
       with:
         name: test-results
