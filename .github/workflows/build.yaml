@@ -27,7 +27,7 @@ jobs:
         uses: Homebrew/actions/setup-homebrew@master
 
       - name: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: install dasel
         run: |
@@ -50,7 +50,7 @@ jobs:
 
     steps:
     - name: checkout
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         submodules: true
 
@@ -85,7 +85,7 @@ jobs:
 
     steps:
     - name: checkout
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
 
     - name: set up jdk
       uses: actions/setup-java@v5
@@ -116,7 +116,7 @@ jobs:
 
     steps:
     - name: checkout
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         fetch-depth: 0
         submodules: true
