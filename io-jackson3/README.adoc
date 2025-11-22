@@ -1,0 +1,9 @@
+:interfaces: https://github.com/openapi-processor/openapi-parser/tree/master/io-interfaces
+:converter: https://github.com/openapi-processor/openapi-parser/blob/master/io-interfaces/src/main/java/io/openapiprocessor/interfaces/Converter.java
+:jackson: https://github.com/FasterXML/jackson
+
+== openapi-parser-jackson
+
+link:{converter}[`Converter`] implementation based on link:{jackson}[Jackson 3].
+
+It does convert json and yaml OpenAPI documents.
