@@ -10,11 +10,22 @@ package io.openapiprocessor.interfaces;
  */
 public class ConverterException extends Exception {
 
+    /**
+     * create a ConverterException.
+     *
+     * @param message an error message.
+     */
     public ConverterException (String message) {
         super(message);
     }
 
-    public ConverterException (String message, Exception e) {
-        super(message, e);
+    /**
+     * create a ConverterException.
+     *
+     * @param message an error message.
+     * @param ex the original exception.
+     */
+    public ConverterException (String message, Exception ex) {
+        super(message, ex);
     }
 }
