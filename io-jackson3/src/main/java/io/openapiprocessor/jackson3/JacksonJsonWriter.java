@@ -12,10 +12,18 @@ import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
+/**
+ * Jackson 3 JSON writer implementation.
+ */
 public class JacksonJsonWriter implements Writer {
     private final java.io.Writer writer;
     private final ObjectMapper mapper;
 
+    /**
+     * create a Jackson writer.
+     *
+     * @param writer the target writer.
+     */
     public JacksonJsonWriter(java.io.Writer writer) {
         this.writer = writer;
 
@@ -25,6 +33,12 @@ public class JacksonJsonWriter implements Writer {
         mapper = new ObjectMapper(json);
     }
 
+    /**
+     * create a Jackson writer.
+     *
+     * @param writer the target writer.
+     * @param json a JSON factory.
+     */
     public JacksonJsonWriter(java.io.Writer writer, JsonFactory json) {
         this.writer = writer;
         mapper = new ObjectMapper(json);
