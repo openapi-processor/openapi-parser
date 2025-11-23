@@ -12,6 +12,7 @@ dependencies {
         api(project(":openapi-parser"))
         api(project(":json-schema-validator"))
         api(project(":io-jackson"))
+        api(project(":io-jackson3"))
         api(project(":io-snakeyaml"))
         api(project(":io-interfaces"))
     }
