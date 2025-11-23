@@ -85,6 +85,7 @@ class ParameterSpec: StringSpec({
         parameter32().deprecated.shouldBeFalse()
     }
 
+    @Suppress("DEPRECATION")
     "gets parameter allowEmptyValue" {
         parameter30("allowEmptyValue: true").allowEmptyValue.shouldBeTrue()
         parameter30("allowEmptyValue: false").allowEmptyValue.shouldBeFalse()
@@ -94,6 +95,7 @@ class ParameterSpec: StringSpec({
         parameter32("allowEmptyValue: false").allowEmptyValue.shouldBeFalse()
     }
 
+    @Suppress("DEPRECATION")
     "gets parameter allowEmptyValue is false if missing" {
         parameter30().allowEmptyValue.shouldBeFalse()
         parameter31().allowEmptyValue.shouldBeFalse()
