@@ -23,6 +23,9 @@ java {
     withJavadocJar()
     withSourcesJar()
 
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(libs.versions.build.jdk.get()))
     }
