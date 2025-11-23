@@ -38,7 +38,7 @@ public class SetupExampleTest {
         // several register() methods and convenience functions to register json
         // schema draft versions (e.g. 2029-09 etc.). Here the store will
         // download the schema and meta schema from the given uri.
-        URI schemaUri = createUri ("https://openapiprocessor.io/schemas/mapping/mapping-v4.json");
+        URI schemaUri = createUri ("https://openapiprocessor.io/schemas/mapping/mapping-v15.json");
         SchemaStore store = new SchemaStore (loader);
         //store.registerDraft7();
         store.register(schemaUri);
@@ -54,7 +54,7 @@ public class SetupExampleTest {
         JsonInstance instance = new JsonInstance (converter.convert (
             "## simple mapping file\n" +
                 "\n" +
-                "openapi-processor-mapping: v4\n" +
+                "openapi-processor-mapping: v15\n" +
                 "options:\n" +
                 "  package-name: io.openapiprocessor.generated\n" +
                 "  bean-validation: jakarta\n" +
