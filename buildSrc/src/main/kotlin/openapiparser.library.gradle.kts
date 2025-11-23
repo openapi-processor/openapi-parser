@@ -68,7 +68,11 @@ tasks.named<JacocoReport>("jacocoTestReport") {
 configure<org.checkerframework.gradle.plugin.CheckerFrameworkExtension> {
 //    skipCheckerFramework = true
 //    excludeTests = true
-    extraJavacArgs = listOf("-Awarns")
+
+    extraJavacArgs = listOf(
+        "-Awarns",
+        "--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED"
+    )
 
     checkers = listOf(
         "org.checkerframework.checker.nullness.NullnessChecker",

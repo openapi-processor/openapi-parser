@@ -1,7 +1,7 @@
 [versions]
 openapiparser = "2025.6-SNAPSHOT"
 
-build-jdk = "11"
+build-jdk = "17"
 test-jdk = "17"
 build-plugins = "2025.9"
 
