@@ -31,6 +31,13 @@ java {
     }
 }
 
+tasks.javadoc {
+    options {
+        // don't report missing Javadoc warnings
+        (this as CoreJavadocOptions).addBooleanOption("Xdoclint:-missing", true)
+    }
+}
+
 kotlin {
     jvmToolchain(libs.versions.build.jdk.get().toInt())
 
