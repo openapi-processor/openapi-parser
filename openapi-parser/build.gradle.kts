@@ -32,7 +32,7 @@ publishing {
         getByName<MavenPublication>("openapiparser") {
             pom {
 //                name.set("openapi-parser")
-                description = "OpenAPI 3.0/3.1 parser"
+                description = "OpenAPI 3.2 - 3.0 parser"
             }
         }
     }
