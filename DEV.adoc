@@ -3,3 +3,19 @@
 == dependencies
 
  ../gradlew dependencyInsight --dependency org.slf4j:slf4j-api --configuration testRuntimeClasspath
+
+== Java
+
+|===
+|Java | Class
+
+|11
+|55
+
+|17
+|61
+
+|21
+|65
+
+|===
