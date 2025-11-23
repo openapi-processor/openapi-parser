@@ -2,7 +2,7 @@
 :converter: https://github.com/openapi-processor/openapi-parser/blob/master/io-interfaces/src/main/java/io/openapiprocessor/interfaces/Converter.java
 :jackson: https://github.com/FasterXML/jackson
 
-== openapi-parser-jackson
+== openapi-parser-jackson3
 
 link:{converter}[`Converter`] implementation based on link:{jackson}[Jackson 3].
 
