@@ -27,6 +27,9 @@ public class JacksonConverter implements Converter {
     private final ObjectMapper json;
     private final ObjectMapper yaml;
 
+    /**
+     * create a JacksonConverter.
+     */
     public JacksonConverter () {
         json = JsonMapper.builder ()
             .disable (MapperFeature.USE_ANNOTATIONS)

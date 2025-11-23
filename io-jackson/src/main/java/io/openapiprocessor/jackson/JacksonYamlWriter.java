@@ -12,10 +12,18 @@ import io.openapiprocessor.interfaces.Writer;
 
 import java.io.IOException;
 
+/**
+ * Jackson 2 YAML writer implementation.
+ */
 public class JacksonYamlWriter implements Writer {
     private final java.io.Writer writer;
     private final ObjectMapper mapper;
 
+    /**
+     * create a Jackson writer.
+     *
+     * @param writer the target writer.
+     */
     public JacksonYamlWriter(java.io.Writer writer) {
         this.writer = writer;
 
@@ -27,6 +35,12 @@ public class JacksonYamlWriter implements Writer {
         mapper = new ObjectMapper(yaml);
     }
 
+    /**
+     * create a Jackson writer.
+     *
+     * @param writer the target writer.
+     * @param yaml a YAML factory.
+     */
     public JacksonYamlWriter(java.io.Writer writer, YAMLFactory yaml) {
         this.writer = writer;
         mapper = new ObjectMapper(yaml);
