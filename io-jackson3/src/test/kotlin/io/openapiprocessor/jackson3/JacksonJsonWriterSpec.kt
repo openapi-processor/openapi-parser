@@ -3,15 +3,15 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiprocessor.jackson
+package io.openapiprocessor.jackson3
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import java.io.StringWriter
 
-class JacksonYamlWriterSpec : StringSpec({
+class JacksonJsonWriterSpec : StringSpec({
 
-    "writes document to yaml" {
+    "writes document to json" {
         val document = mapOf<String, Any>(
             "openapi" to "3.1.0",
             "info" to mapOf(
@@ -26,21 +26,29 @@ class JacksonYamlWriterSpec : StringSpec({
                             ))))))
 
         val out = StringWriter()
-        val writer = JacksonYamlWriter(out)
+        val writer = JacksonJsonWriter(out)
         writer.write(document)
 
         out.toString() shouldBe """
-            openapi: 3.1.0
-            info:
-              title: this is a title
-              version: 1.0
-            paths:
-              /foo:
-                get:
-                  responses:
-                    "204":
-                      description: this is a description
-
+            {
+              "openapi" : "3.1.0",
+              "info" : {
+                "title" : "this is a title",
+                "version" : "1.0"
+              },
+              "paths" : {
+                "/foo" : {
+                  "get" : {
+                    "responses" : {
+                      "204" : {
+                        "description" : "this is a description"
+                      }
+                    }
+                  }
+                }
+              }
+            }
         """.trimIndent()
+           .replace("\n", System.lineSeparator())
     }
 })

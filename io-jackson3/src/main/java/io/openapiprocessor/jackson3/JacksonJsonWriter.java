@@ -3,33 +3,31 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiprocessor.jackson;
+package io.openapiprocessor.jackson3;
+
 
 import io.openapiprocessor.interfaces.Writer;
+import tools.jackson.core.json.JsonFactory;
 import tools.jackson.databind.ObjectMapper;
-import tools.jackson.dataformat.yaml.YAMLFactory;
-import tools.jackson.dataformat.yaml.YAMLWriteFeature;
 
 import java.io.IOException;
 
-public class JacksonYamlWriter implements Writer {
+public class JacksonJsonWriter implements Writer {
     private final java.io.Writer writer;
     private final ObjectMapper mapper;
 
-    public JacksonYamlWriter(java.io.Writer writer) {
+    public JacksonJsonWriter(java.io.Writer writer) {
         this.writer = writer;
 
-        YAMLFactory yaml = YAMLFactory.builder()
-                .disable(YAMLWriteFeature.WRITE_DOC_START_MARKER)
-                .enable(YAMLWriteFeature.MINIMIZE_QUOTES)
+        JsonFactory json = JsonFactory.builder()
                 .build();
 
-        mapper = new ObjectMapper(yaml);
+        mapper = new ObjectMapper(json);
     }
 
-    public JacksonYamlWriter(java.io.Writer writer, YAMLFactory yaml) {
+    public JacksonJsonWriter(java.io.Writer writer, JsonFactory json) {
         this.writer = writer;
-        mapper = new ObjectMapper(yaml);
+        mapper = new ObjectMapper(json);
     }
 
     @Override

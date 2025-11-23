@@ -3,9 +3,9 @@
  * PDX-License-Identifier: Apache-2.0
  */
 
-package io.openapiprocessor.jackson.support
+package io.openapiprocessor.jackson3.support
 
-import io.openapiprocessor.jackson.JacksonConverter
+import io.openapiprocessor.jackson3.JacksonConverter
 
 @Suppress("UNCHECKED_CAST")
 fun JacksonConverter.convertToMap(api: String): Map<String, Any> {
