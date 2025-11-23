@@ -74,7 +74,6 @@ tasks.named<JacocoReport>("jacocoTestReport") {
     }
 }
 
-
 configure<org.checkerframework.gradle.plugin.CheckerFrameworkExtension> {
 //    skipCheckerFramework = true
 //    excludeTests = true
@@ -127,9 +126,6 @@ tasks.withType<Test>().configureEach {
     finalizedBy(tasks.named("jacocoTestReport"))
 }
 
-
-
-
 fun String.isNonStable(): Boolean {
     val nonStable = listOf(
         ".M[0-9]+$",
@@ -151,18 +147,3 @@ fun String.isNonStable(): Boolean {
 val ignore = listOf(
     "org.checkerframework:jdk8"
 )
-
-/*
-configure<CheckerFrameworkExtension> {
-    skipCheckerFramework = true
-    excludeTests = true
-    extraJavacArgs = listOf("-Awarns")
-
-    checkers = listOf(
-        "org.checkerframework.checker.nullness.NullnessChecker",
-//        "org.checkerframework.checker.interning.InterningChecker",
-//        "org.checkerframework.checker.resourceleak.ResourceLeakChecker",
-//        "org.checkerframework.checker.index.IndexChecker"
-    )
-}
- */
