@@ -20,7 +20,7 @@ checkerq = { module = "org.checkerframework:checker-qual", version.ref = "checke
 slf4j = "org.slf4j:slf4j-api:2.0.17"
 logback = "ch.qos.logback:logback-classic:1.5.21"
 
-jackson3-bom = "tools.jackson:jackson-bom:3.0.1"
+jackson3-bom = "tools.jackson:jackson-bom:3.0.2"
 jackson3-databind = { module = "tools.jackson.core:jackson-databind" }
 jackson3-yaml = { module = "tools.jackson.dataformat:jackson-dataformat-yaml" }
 jackson3-kotlin = { module = "tools.jackson.module:jackson-module-kotlin" }
