@@ -299,9 +299,9 @@ class OpenApiBundlerSpec : FreeSpec({
 
         val ref = getObject(bundled, "/paths/~1foo")
         ref.size shouldBe 1
-        ref[$$"$ref"].shouldBe("#/components/pathItems/--bundle-ref-path-item--foo.api.yaml")
+        ref[$$"$ref"].shouldBe("#/components/pathItems/_bundle-ref-path-item_foo.api.yaml")
 
-        val component = getObject(bundled, "/components/pathItems/--bundle-ref-path-item--foo.api.yaml")
+        val component = getObject(bundled, "/components/pathItems/_bundle-ref-path-item_foo.api.yaml")
         component.shouldNotBeNull()
     }
 
@@ -347,12 +347,12 @@ class OpenApiBundlerSpec : FreeSpec({
 
         val ref = getObject(bundled, "/paths/~1foo")
         ref.size shouldBe 1
-        ref[$$"$ref"].shouldBe("#/components/pathItems/--bundle-ref-nested--foo.api.yaml")
+        ref[$$"$ref"].shouldBe("#/components/pathItems/_bundle-ref-nested_foo.api.yaml")
 
-        val component = getObject(bundled, "/components/pathItems/--bundle-ref-nested--foo.api.yaml")
+        val component = getObject(bundled, "/components/pathItems/_bundle-ref-nested_foo.api.yaml")
         component.shouldNotBeNull()
 
-        val barRef = getObject(bundled, "/components/pathItems/--bundle-ref-nested--foo.api.yaml/get/responses/200/content/application~1json/schema")
+        val barRef = getObject(bundled, "/components/pathItems/_bundle-ref-nested_foo.api.yaml/get/responses/200/content/application~1json/schema")
         barRef[$$"$ref"].shouldBe("#/components/schemas/Bar")
         val barComponent = bundled.getRawValue(from("/components/schemas/Bar"))
         barComponent.shouldNotBeNull()
