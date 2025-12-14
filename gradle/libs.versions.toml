@@ -3,7 +3,7 @@ openapiparser = "2025.6-SNAPSHOT"
 
 build-jdk = "17"
 test-jdk = "17"
-build-plugins = "2025.10"
+build-plugins = "2025.11"
 
 # using the embedded kotlin version of gradle to avoid mixed versions
 kotlin = "2.2.21"
