@@ -106,7 +106,7 @@ jobs:
         PUBLISH_USER: ${{ secrets.PUBLISH_USER }}
         PUBLISH_KEY: ${{ secrets.PUBLISH_KEY }}
       run: |
-        ./gradlew publishAllToMavenCentral --stacktrace
+        ./gradlew publishToMavenCentral --stacktrace
 
   sonar:
     needs: [test]
