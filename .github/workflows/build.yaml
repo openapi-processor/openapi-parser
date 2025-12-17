@@ -31,12 +31,12 @@ jobs:
 
       - name: install dasel
         run: |
-          brew install dasel@2.8.1
+          brew install dasel
           cat $GITHUB_ENV
 
       - name: extract version
         run: |
-          version=`dasel -r toml -f gradle/libs.versions.toml versions.openapiparser`
+          version=`cat gradle/libs.versions.toml | dasel -i toml 'versions.openapiparser'`
           echo "BUILD_VERSION=${version#projectVersion=}" >> $GITHUB_ENV
           cat $GITHUB_ENV
 
