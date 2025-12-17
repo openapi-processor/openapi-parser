@@ -31,7 +31,7 @@ jobs:
 
       - name: install dasel
         run: |
-          brew install dasel@3
+          brew install dasel
           cat $GITHUB_ENV
 
       - name: extract version
