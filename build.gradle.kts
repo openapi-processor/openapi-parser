@@ -18,6 +18,7 @@ tasks.named("build") {
 }
 
 publishingCentral {
+    aggregateSubProjects = true
     stagingDir = layout.buildDirectory.dir("staging")
     deploymentDir = layout.buildDirectory.dir("deployment")
     deploymentName = "parser"
