@@ -16,6 +16,7 @@ dependencies {
     testImplementation(libs.jackson.databind)
     testImplementation(libs.jackson.yaml)
     testImplementation(libs.jackson.kotlin)
+    testImplementation(libs.classgraph)
     testImplementation(libs.logback)
 
     constraints {
