@@ -7,7 +7,7 @@ build-plugins = "2026.1"
 
 # using the embedded kotlin version of Gradle to avoid mixed versions
 kotlin = "2.2.21"
-checker = "3.52.1"
+checker = "3.53.0"
 checkerp = "0.6.61"
 jacoco = "0.8.11"
 updates = "0.52.0"
