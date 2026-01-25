@@ -32,7 +32,7 @@ jackson-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin"
 snakeyaml = "org.yaml:snakeyaml:2.5"
 jsonpath = "com.jayway.jsonpath:json-path:2.10.0"
 
-kotest-bom = "io.kotest:kotest-bom:6.0.7"
+kotest-bom = "io.kotest:kotest-bom:6.1.1"
 kotest-runner = { module = "io.kotest:kotest-runner-junit5" }
 kotest-table = { module = "io.kotest:kotest-assertions-table" }
 mockk = "io.mockk:mockk:1.14.7"
