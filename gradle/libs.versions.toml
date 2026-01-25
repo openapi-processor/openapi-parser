@@ -11,7 +11,6 @@ checker = "3.53.0"
 checkerp = "0.6.61"
 jacoco = "0.8.11"
 updates = "0.52.0"
-junit = "5.13.4"
 
 [libraries]
 checker = { module = "org.checkerframework:checker", version.ref = "checker" }
