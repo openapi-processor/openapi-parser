@@ -11,3 +11,5 @@ updates:
     schedule:
       interval: "weekly"
       day: friday
+    ignore:
+      - dependency-name: org.jetbrains.kotlin:*
