@@ -10,4 +10,5 @@ dependencies {
     implementation(libs.plugin.checker)
     implementation(libs.plugin.updates)
     implementation(libs.plugin.build)
+    implementation(libs.plugin.jacocolog)
 }

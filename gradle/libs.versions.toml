@@ -10,6 +10,7 @@ kotlin = "2.2.21"
 checker = "3.53.0"
 checkerp = "0.6.61"
 jacoco = "0.8.11"
+jacocolog = "4.0.1"
 updates = "0.52.0"
 
 [libraries]
@@ -43,6 +44,8 @@ plugin-build = { module = "io.openapiprocessor:build-plugins", version.ref = "bu
 plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 plugin-checker = { module = "org.checkerframework:checkerframework-gradle-plugin", version.ref = "checkerp" }
 plugin-updates = { module = "com.github.ben-manes:gradle-versions-plugin", version.ref = "updates" }
+plugin-jacocolog = { module = "org.barfuin.gradle.jacocolog:org.barfuin.gradle.jacocolog.gradle.plugin", version.ref = "jacocolog" }
+
 
 [bundles]
 #jackson = ["jackson-databind", "jackson-yaml", "jackson-kotlin" ]
@@ -50,5 +53,5 @@ plugin-updates = { module = "com.github.ben-manes:gradle-versions-plugin", versi
 
 [plugins]
 checker = { id = "org.checkerframework", version.ref = "checkerp" }
-jacoco = { id = "org.barfuin.gradle.jacocolog", version = "3.1.0" }
+jacoco = { id = "org.barfuin.gradle.jacocolog", version = "4.0.1" }
 sonar = { id = "org.sonarqube", version =  "7.2.2.6593" }
