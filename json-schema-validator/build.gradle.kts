@@ -25,22 +25,13 @@ dependencies {
     }
 }
 
-val generateTestManifest by tasks.registering {
-    val resourceDir = layout.projectDirectory.dir("src/test/resources/suites/JSON-Schema-Test-Suite/tests")
-    inputs.dir(resourceDir)
-    outputs.dir(temporaryDir)
+val generateTestManifest by tasks.registering(GenerateManifestTask::class) {
+    val resourcesPath = "src/test/resources"
+    val testsPath = "$resourcesPath/suites/JSON-Schema-Test-Suite/tests"
 
-    val tests = resourceDir.asFileTree
-
-    doLast {
-        val paths = tests
-            .map { file -> "/" + file.relativeTo(layout.projectDirectory.dir("src/test/resources").asFile).path }
-            .sortedWith (compareBy<String> { path -> path.count { it.toString() == "/" } }.thenBy { path -> path })
-        val outputDir = File(temporaryDir, "suites")
-        outputDir.mkdirs()
-        val outputFile = File(outputDir, "JSON-Schema-Test-Suite.txt")
-        outputFile.writeText(paths.joinToString("\n"))
-    }
+    baseResourcesDir.set(layout.projectDirectory.dir(resourcesPath))
+    testFiles.from(layout.projectDirectory.dir(testsPath).asFileTree)
+    outputDir.set(temporaryDir)
 }
 
 sourceSets {
