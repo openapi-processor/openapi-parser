@@ -6,7 +6,6 @@ import org.gradle.kotlin.dsl.withType
 
 plugins {
     `java-library`
-    jacoco
     kotlin
     id("org.checkerframework")
     id("com.github.ben-manes.versions")
@@ -59,19 +58,6 @@ repositories {
 dependencies {
     checkerFramework(libs.checker)
     compileOnly(libs.checkerq)
-}
-
-jacoco {
-    toolVersion = libs.versions.jacoco.get()
-}
-
-tasks.named<JacocoReport>("jacocoTestReport") {
-    reports {
-        xml.required.set(true)
-        csv.required.set(false)
-        html.required.set(false)
-        //html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
-    }
 }
 
 configure<org.checkerframework.gradle.plugin.CheckerFrameworkExtension> {

@@ -4,6 +4,7 @@ import org.gradle.accessors.dm.LibrariesForLibs
 
 plugins {
     java
+    jacoco
     groovy
     kotlin
 }
@@ -25,4 +26,17 @@ dependencies {
     testImplementation(libs.kotest.table)
     testImplementation(libs.mockk)
     testCompileOnly(libs.checkerq)
+}
+
+jacoco {
+    toolVersion = libs.versions.jacoco.get()
+}
+
+tasks.named<JacocoReport>("jacocoTestReport") {
+    reports {
+        xml.required.set(true)
+        csv.required.set(false)
+        html.required.set(false)
+        //html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
+    }
 }
