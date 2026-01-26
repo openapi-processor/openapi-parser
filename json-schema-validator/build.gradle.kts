@@ -25,6 +25,32 @@ dependencies {
     }
 }
 
+val generateTestManifest by tasks.registering {
+    val resourceDir = layout.projectDirectory.dir("src/test/resources/suites/JSON-Schema-Test-Suite/tests")
+    inputs.dir(resourceDir)
+    outputs.dir(temporaryDir)
+
+    val tests = resourceDir.asFileTree
+
+    doLast {
+        val paths = tests
+            .map { file -> "/" + file.relativeTo(layout.projectDirectory.dir("src/test/resources").asFile).path }
+            .sortedWith (compareBy<String> { path -> path.count { it.toString() == "/" } }.thenBy { path -> path })
+        val outputDir = File(temporaryDir, "suites")
+        outputDir.mkdirs()
+        val outputFile = File(outputDir, "JSON-Schema-Test-Suite.txt")
+        outputFile.writeText(paths.joinToString("\n"))
+    }
+}
+
+sourceSets {
+  test {
+    resources {
+      srcDir(generateTestManifest.map { it.temporaryDir })
+    }
+  }
+}
+
 publishing {
     publications {
         getByName<MavenPublication>("openapiparser") {

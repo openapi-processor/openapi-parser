@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.KotlinModule
-import io.github.classgraph.ClassGraph
 import io.kotest.core.spec.style.freeSpec
 import io.kotest.matchers.shouldBe
 import io.openapiprocessor.jackson.JacksonConverter
@@ -108,119 +107,69 @@ fun draftSpec(
         return JsonInstance(JsonPointer.empty(), instance)
     }
 
-//    fun createTestName(testPath: Path): String {
-//        val path = testPath.toAbsolutePath().toString()
-//        val draftPathIndex = path.indexOf(draftPath)
-//        return path.substring(draftPathIndex + draftPath.length + 1)
-//    }
-
     fun getTestName(testPath: String): String {
         val nameIdx = testPath.indexOfLast { it == File.separatorChar }
         val name = testPath.substring(nameIdx + 1)
         return name
     }
 
-    val scan = ClassGraph()
-        .acceptPaths(draftPath)
-        .scan()
+    fun getTestName(testPath: String, prefix: String): String {
+        val name = testPath.substring(prefix.length + 1)
+        return name
+    }
 
-        scan.use { scanResult ->
-            scanResult.allResources
-                .filter { res -> !excludes.contains(getTestName(res.path)) }
-                .forEachByteArrayThrowingIOException { resource, content ->
-                    getTestName(resource.path) - {
-                        val suites = loadSuites(content)
+    val testSuite = Validator::class.java.getResourceAsStream("/suites/JSON-Schema-Test-Suite.txt")!!
+        .bufferedReader()
+        .readLines()
+        .filter { it.startsWith(draftPath) }
+        .filter { it -> !excludes.contains(getTestName(it)) }
 
-                        for (suite in suites) {
-                            suite.description - {
-                                val schema = createSchema(suite.schema)
+    testSuite.forEach { resourcePath ->
+        val content = Validator::class.java.getResourceAsStream(resourcePath)?.readAllBytes()!!
 
-                                val tests = suite.tests
-                                    .filter { t -> !excludes.contains(t.description) }
+        getTestName(resourcePath, draftPath) - {
+            val suites = loadSuites(content)
 
-                                for (test in tests) {
-                                    test.description {
-                                        var currentSettings = ValidatorSettings(settings)
-                                        val modifier = settingsModifier[test.description]
-                                        if(modifier != null) {
-                                            currentSettings = modifier(currentSettings)
-                                        }
+            for (suite in suites) {
+                suite.description - {
+                    val schema = createSchema(suite.schema)
 
-                                        val instance = createInstance(test.data)
+                    val tests = suite.tests
+                        .filter { t -> !excludes.contains(t.description) }
 
-                                        // act
-                                        val validator = Validator(currentSettings)
-                                        val step = validator.validate(schema, instance)
+                    for (test in tests) {
+                        println(test.description)
 
-                                        // output
-                                        val converter = OutputConverter(Output.VERBOSE)
-                                        val output = converter.convert(step)
-
-                                        val mapper = ObjectMapper()
-                                        mapper.enable(SerializationFeature.INDENT_OUTPUT)
-                                        mapper.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL)
-                                        println(mapper.writeValueAsString(output))
-
-                                        // check valid
-                                        step.isValid.shouldBe(test.valid)
-                                    }
-                                }
+                        test.description {
+                            var currentSettings = ValidatorSettings(settings)
+                            val modifier = settingsModifier[test.description]
+                            if(modifier != null) {
+                                currentSettings = modifier(currentSettings)
                             }
-                        }
 
+                            val instance = createInstance(test.data)
+
+                            // act
+                            val validator = Validator(currentSettings)
+                            val step = validator.validate(schema, instance)
+
+                            // output
+                            val converter = OutputConverter(Output.VERBOSE)
+                            val output = converter.convert(step)
+
+                            val mapper = ObjectMapper()
+                            mapper.enable(SerializationFeature.INDENT_OUTPUT)
+                            mapper.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL)
+                            println(mapper.writeValueAsString(output))
+
+                            // check valid
+                            step.isValid.shouldBe(test.valid)
+                        }
                     }
                 }
+            }
         }
-
-
-    scan.close()
-
-
-//    Files.walk(root)
-//        .filter { path -> !Files.isDirectory(path) }
-//        .filter { path -> !excludes.contains(path.name) }
-//        .forEach { path ->
-//            createTestName(path) - {
-//                val suites = loadSuites(path)
-//
-//                for (suite in suites) {
-//                    suite.description - {
-//                        val schema = createSchema(suite.schema)
-//
-//                        val tests = suite.tests
-//                            .filter { t -> !excludes.contains(t.description) }
-//
-//                        for (test in tests) {
-//                            test.description {
-//                                var currentSettings = ValidatorSettings(settings)
-//                                val modifier = settingsModifier[test.description]
-//                                if(modifier != null) {
-//                                    currentSettings = modifier(currentSettings)
-//                                }
-//
-//                                val instance = createInstance(test.data)
-//
-//                                // act
-//                                val validator = Validator(currentSettings)
-//                                val step = validator.validate(schema, instance)
-//
-//                                // output
-//                                val converter = OutputConverter(Output.VERBOSE)
-//                                val output = converter.convert(step)
-//
-//                                val mapper = ObjectMapper()
-//                                mapper.enable(SerializationFeature.INDENT_OUTPUT)
-//                                mapper.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL)
-//                                println(mapper.writeValueAsString(output))
-//
-//                                // check valid
-//                                step.isValid.shouldBe(test.valid)
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
+    }
 }
 
 class Exclude(val test: String)
