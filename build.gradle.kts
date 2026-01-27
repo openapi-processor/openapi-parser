@@ -1,6 +1,5 @@
 plugins {
     base
-    alias(libs.plugins.jacoco)
     id("io.openapiprocessor.build.plugin.publish")
 }
 
