@@ -1,5 +1,7 @@
 plugins {
     base
+    alias(libs.plugins.jacoco)
+    id("test-report-aggregation")
     id("io.openapiprocessor.build.plugin.publish")
 }
 
@@ -11,9 +13,12 @@ repositories {
     mavenCentral()
 }
 
-// check
-tasks.named("build") {
-    dependsOn ("jacocoLogAggregatedCoverage")
+dependencies {
+    testReportAggregation(project(":io-jackson"))
+    testReportAggregation(project(":io-jackson3"))
+    testReportAggregation(project(":io-snakeyaml"))
+    testReportAggregation(project(":json-schema-validator"))
+    testReportAggregation(project(":openapi-parser"))
 }
 
 publishingCentral {
