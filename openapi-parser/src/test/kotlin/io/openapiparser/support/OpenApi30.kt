@@ -12,7 +12,7 @@ import io.openapiparser.model.v30.Responses as Responses30
 import io.openapiparser.model.v30.Schema as Schema30
 
 fun OpenApi30.getResponseSchema(path: String, status: String, media: String): Schema30 {
-    val pathItem = paths?.getPathItem(path)
+    val pathItem = paths.getPathItem(path)
     pathItem.shouldNotBeNull()
 
     val operation = pathItem.get
@@ -31,7 +31,7 @@ fun OpenApi30.getResponseSchema(path: String, status: String, media: String): Sc
 }
 
 fun OpenApi30.getParameters(path: String): Collection<Parameter30> {
-    val pathItem = paths?.getPathItem(path)
+    val pathItem = paths.getPathItem(path)
     pathItem.shouldNotBeNull()
 
     val operation = pathItem.get
@@ -41,7 +41,7 @@ fun OpenApi30.getParameters(path: String): Collection<Parameter30> {
 }
 
 fun OpenApi30.getResponses(path: String): Responses30 {
-    val pathItem = paths?.getPathItem(path)
+    val pathItem = paths.getPathItem(path)
     pathItem.shouldNotBeNull()
 
     val operation = pathItem.get
@@ -49,4 +49,3 @@ fun OpenApi30.getResponses(path: String): Responses30 {
 
     return operation.responses
 }
-

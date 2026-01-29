@@ -21,7 +21,7 @@ class SelfRefSpec: StringSpec({
 
         val responseBody = api.getResponseBody("/foo").refObject
 
-        val foo = responseBody.content["application/json"]!!.schema!!.refObject!!
+        val foo = responseBody.content["application/json"]!!.schema!!.refObject
         foo.type shouldContainExactly listOf("object")
         foo.getRawValue($$"$id")!!.shouldBeEqual("https://example.com/api/schemas/foo")
 
@@ -38,7 +38,7 @@ class SelfRefSpec: StringSpec({
 
         val responseBody = api.getResponseBody("/foo").refObject
 
-        val foo = responseBody.content["application/json"]!!.schema!!.refObject!!
+        val foo = responseBody.content["application/json"]!!.schema!!.refObject
         foo.type shouldContainExactly listOf("object")
         foo.getRawValue($$"$id")!!.shouldBeEqual("/api/schemas/foo")
 

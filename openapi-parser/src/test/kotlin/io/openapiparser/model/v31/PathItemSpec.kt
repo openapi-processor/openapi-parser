@@ -38,21 +38,21 @@ class PathItemSpec : StringSpec({
             """.trimIndent())
             .buildOpenApi31()
 
-        val path = api.paths?.getPathItem("/foo")
-        path?.isRef?.shouldBeFalse()
-        path?.summary shouldBe "a summary"
-        path?.get.shouldNotBeNull()
-        path?.put.shouldNotBeNull()
-        path?.post.shouldNotBeNull()
-        path?.delete.shouldNotBeNull()
-        path?.options.shouldNotBeNull()
-        path?.head.shouldNotBeNull()
-        path?.patch.shouldNotBeNull()
-        path?.trace.shouldNotBeNull()
-        path?.servers.shouldNotBeNull()
-        path?.servers?.size shouldBe 2
-        path?.parameters.shouldNotBeNull()
-        path?.parameters?.size shouldBe 2
+        val path = api.paths?.getPathItem("/foo")!!
+        path.isRef.shouldBeFalse()
+        path.summary shouldBe "a summary"
+        path.get.shouldNotBeNull()
+        path.put.shouldNotBeNull()
+        path.post.shouldNotBeNull()
+        path.delete.shouldNotBeNull()
+        path.options.shouldNotBeNull()
+        path.head.shouldNotBeNull()
+        path.patch.shouldNotBeNull()
+        path.trace.shouldNotBeNull()
+        path.servers.shouldNotBeNull()
+        path.servers?.size shouldBe 2
+        path.parameters.shouldNotBeNull()
+        path.parameters?.size shouldBe 2
     }
 
     "gets path item parameters with \$ref" {
