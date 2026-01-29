@@ -1,6 +1,6 @@
 plugins {
     base
-    alias(libs.plugins.jacoco)
+    alias(libs.plugins.jacocolog)
     id("test-report-aggregation")
     id("io.openapiprocessor.build.plugin.publish")
 }

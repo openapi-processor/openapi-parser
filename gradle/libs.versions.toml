@@ -52,5 +52,5 @@ plugin-jacocolog = { module = "org.barfuin.gradle.jacocolog:org.barfuin.gradle.j
 
 [plugins]
 checker = { id = "org.checkerframework", version.ref = "checkerp" }
-jacoco = { id = "org.barfuin.gradle.jacocolog" }
+jacocolog = { id = "org.barfuin.gradle.jacocolog" }
 sonar = { id = "org.sonarqube", version =  "7.2.2.6593" }
