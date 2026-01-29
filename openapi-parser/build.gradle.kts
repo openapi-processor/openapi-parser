@@ -20,11 +20,6 @@ dependencies {
     testImplementation(libs.jackson.kotlin)
     testImplementation(libs.jsonpath)
     testImplementation(libs.logback)
-
-    constraints {
-        implementation(libs.slf4j) { because("avoid multiple versions") }
-        testImplementation(libs.slf4j) { because("avoid multiple versions") }
-    }
 }
 
 publishing {
@@ -45,12 +40,4 @@ sonar {
     property("sonar.host.url", "https://sonarcloud.io")
 //    property("sonar.coverage.jacoco.xmlReportPaths", "$buildDir/reports/jacoco/test/jacocoTestReport.xml")
   }
-}
-
-tasks {
-    // groovy tests depend on kotlin tests
-//    compileTestGroovy {
-//        dependsOn(compileTestKotlin)
-//        classpath += files(compileTestKotlin)
-//    }
 }
