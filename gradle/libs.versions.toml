@@ -37,7 +37,6 @@ kotest-bom = "io.kotest:kotest-bom:6.1.1"
 kotest-runner = { module = "io.kotest:kotest-runner-junit5" }
 kotest-table = { module = "io.kotest:kotest-assertions-table" }
 mockk = "io.mockk:mockk:1.14.7"
-classgraph = "io.github.classgraph:classgraph:4.8.165"
 
 # for buildSrc convention plugins
 plugin-build = { module = "io.openapiprocessor:build-plugins", version.ref = "build-plugins" }
