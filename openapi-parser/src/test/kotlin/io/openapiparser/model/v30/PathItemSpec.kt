@@ -50,9 +50,9 @@ class PathItemSpec : StringSpec({
         path.patch.shouldNotBeNull()
         path.trace.shouldNotBeNull()
         path.servers.shouldNotBeNull()
-        path.servers?.size shouldBe 2
+        path.servers.size shouldBe 2
         path.parameters.shouldNotBeNull()
-        path.parameters?.size shouldBe 2
+        path.parameters.size shouldBe 2
     }
 
     "gets path item parameters with \$ref" {
