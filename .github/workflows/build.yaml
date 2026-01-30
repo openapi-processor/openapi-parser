@@ -106,7 +106,7 @@ jobs:
         PUBLISH_USER: ${{ secrets.PUBLISH_USER }}
         PUBLISH_KEY: ${{ secrets.PUBLISH_KEY }}
       run: |
-        ./gradlew publishToMavenCentral --stacktrace
+        ./gradlew publishToMavenCentral --stacktrace -Dorg.gradle.configuration-cache.read-only=true
 
   sonar:
     needs: [test]
@@ -143,21 +143,21 @@ jobs:
 
     - name: run tests
       run: |
-        ./gradlew check --warning-mode all
+        ./gradlew check --warning-mode all -Dorg.gradle.configuration-cache.read-only=true
 
     - name: run sonar validator
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: |
-        ./gradlew -Dorg.gradle.jvmargs="-Xmx1024m -XX:MaxMetaspaceSize=400m" :json-schema-validator:sonar --stacktrace
+        ./gradlew -Dorg.gradle.jvmargs="-Xmx1024m -XX:MaxMetaspaceSize=400m" :json-schema-validator:sonar --stacktrace -Dorg.gradle.configuration-cache.read-only=true
 
     - name: run sonar parser
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: |
-        ./gradlew -Dorg.gradle.jvmargs="-Xmx1024m -XX:MaxMetaspaceSize=400m" :openapi-parser:sonar --stacktrace
+        ./gradlew -Dorg.gradle.jvmargs="-Xmx1024m -XX:MaxMetaspaceSize=400m" :openapi-parser:sonar --stacktrace -Dorg.gradle.configuration-cache.read-only=true
 
     - name: archive test results
       uses: actions/upload-artifact@v6
