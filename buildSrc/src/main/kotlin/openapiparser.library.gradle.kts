@@ -57,7 +57,7 @@ repositories {
 
 dependencies {
     checkerFramework(libs.checker)
-    compileOnly(libs.checkerq)
+    api(libs.checkerq)
 }
 
 configure<org.checkerframework.gradle.plugin.CheckerFrameworkExtension> {
