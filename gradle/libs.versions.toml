@@ -31,7 +31,7 @@ jackson-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-y
 jackson-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin" }
 
 snakeyaml = "org.yaml:snakeyaml:2.5"
-jsonpath = "com.jayway.jsonpath:json-path:2.10.0"
+jsonpath = "com.jayway.jsonpath:json-path:3.0.0"
 
 kotest-bom = "io.kotest:kotest-bom:6.1.4"
 kotest-runner = { module = "io.kotest:kotest-runner-junit5" }
