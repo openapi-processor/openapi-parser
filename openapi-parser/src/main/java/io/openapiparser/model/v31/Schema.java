@@ -156,7 +156,14 @@ public class Schema extends Properties implements Reference, Extensions {
      *
      * @return additional properties or null if missing
      */
-    public @Nullable Schema getAdditionalProperties () {
+    public @Nullable Object getAdditionalProperties () {
+        final Object value = getRawValue (ADDITIONAL_PROPERTIES);
+        if (value == null)
+            return null;
+
+        if (value instanceof Boolean)
+            return getBooleanOrNull (ADDITIONAL_PROPERTIES);
+
         return getObjectOrNull (ADDITIONAL_PROPERTIES, Schema.class);
     }
 
