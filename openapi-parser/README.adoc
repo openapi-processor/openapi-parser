@@ -6,14 +6,14 @@
 
 **work in progress**
 
-It is usable, but has the following limitations at the moment:
+It is usable but has the following limitations at the moment:
 
 * it does support most but not all OpenAPI object properties
 * minimal documentation (just this README)
 
-source code gifts (i.e. pull requests) are welcome :-)
+source code gifts (i.e., pull requests) are welcome :-)
 
-== openapi-parser & validator
+== openapi-parser and validator
 
 a Java 11 based link:{openapi}[OpenAPI] 3.2, 3.1 & 3.0 parser with validation, bundling & overlay support and pluggable document reader & json/yaml converter.
 
@@ -23,8 +23,9 @@ a Java 11 based link:{openapi}[OpenAPI] 3.2, 3.1 & 3.0 parser with validation, b
 ** JSON schema draft-2020-12 validation of OpenAPI 3.2, 3.1
 * separate apis for OpenAPI 3.2, 3.1 & 3.0
 * easily get resolved $ref object
-* bundle & write (single file) OpenAPI document
-* apply overlay to (bundled) OpenAPI document (experimental)
+* bundle and write (a single file) OpenAPI document
+* apply overlay to (a bundled) OpenAPI document (experimental)
+** requires `com.jayway.jsonpath:json-path:2.10.0` or newer
 * minimal dependencies
 * pluggable document reader
 * pluggable json/yaml converter
@@ -36,11 +37,11 @@ the parser tries to provide a *user-friendly* api in the sense that it
 
 * minimizes *null* values where possible
 * throws if *required* properties are not set
-* it is *read only*
-* it resolves `$ref` objects, i.e. $ref objects have a `getRefObject()`
+* it is *read-only*
+* it resolves `$ref` objects, i.e., $ref objects have a `getRefObject()`
 * it is very close to the specification (OpenAPI 3.2, 3.1 & 3.0)
 
-Drawback is, that with the current api it is not possible (for some properties) to detect if a property is set in the OpenAPI description or if it is not given.
+The drawback is that with the current api it is not possible (for some properties) to detect if a property is set in the OpenAPI description or if it is not given.
 
 === raw api
 
@@ -73,22 +74,22 @@ or to create a new api `model.v30r.OpenApi` with a `@Nullable` signature
 
 Minimizing null values means that
 
-- for a missing/optional array properties it will return an empty collection
-- for other missing/optional properties it will return the default value if any is specified by the OpenAPI specification
+- for a missing/optional array property, it will return an empty collection
+- for other missing/optional properties, it will return the default value if any is specified by the OpenAPI specification
 
-For example the `required` property of a `parameter` has a `false` default value and the api will return false in case `required` is not explicitly set in the OpenAPI description.
+For example, the `required` property of a `parameter` has a `false` default value and the api will return false in case `required` is not explicitly set in the OpenAPI description.
 
 === yaml/json converter
 
-the *parser* is internally using `Map<String, Object>` to represent the OpenAPI object tree to be independent of a specific yaml/json parser. It will work with any yaml/json parser that is able to convert an OpenAPI YAML or JSON to a `Map<String, Object>` object tree.
+The *parser* is internally using `Map<String, Object>` to represent the OpenAPI object tree to be independent of a specific yaml/json parser. It will work with any yaml/json parser that is able to convert an OpenAPI YAML or JSON to a `Map<String, Object>` object tree.
 
-link:{converter-jackson}[`io-jackson`] provides a default implementation that is based on jackson.
+link:{converter-jackson}[`io-jackson`] provides a default implementation based on jackson.
 
 == usage
 
 === current api (since 2023.3)
 
-this removes the `Resolver` from the previous (i.e. 2023.2) setup at step 2.
+this removes the `Resolver` from the previous (i.e., 2023.2) setup at step 2.
 
 The following link:{sample}[sample code] shows the usage of the current api.
 
