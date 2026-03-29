@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jacocolog)
     id("test-report-aggregation")
     id("io.openapiprocessor.build.plugin.publish")
+    id("io.openapiprocessor.build.plugin.bump")
 }
 
 group = "io.openapiprocessor"
@@ -26,4 +27,10 @@ publishingCentral {
     stagingDir = layout.buildDirectory.dir("staging")
     deploymentDir = layout.buildDirectory.dir("deployment")
     deploymentName = "parser"
+}
+
+bump {
+   toml = layout.projectDirectory.file("./gradle/libs.versions.toml")
+   sectionKey = "versions"
+   versionKey = "openapiparser"
 }
