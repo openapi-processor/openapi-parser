@@ -3,6 +3,7 @@ plugins {
     id("openapiparser.library")
     id("openapiparser.publish")
     alias(libs.plugins.sonar)
+    alias(libs.plugins.modernizer)
 }
 
 dependencies {
@@ -45,6 +46,10 @@ publishing {
             }
         }
     }
+}
+
+modernizer {
+    includeTestClasses = true
 }
 
 sonar {
