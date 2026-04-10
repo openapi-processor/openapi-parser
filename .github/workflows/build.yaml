@@ -120,7 +120,7 @@ jobs:
         ./gradlew publishToMavenCentral --stacktrace -Dorg.gradle.configuration-cache.read-only=true
 
   sonar:
-    needs: [test]
+    needs: [publish]
     name: sonar
 
     runs-on: ubuntu-latest
