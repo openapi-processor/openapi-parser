@@ -77,7 +77,7 @@ jobs:
         path: '*/build/reports'
 
   check-publish:
-    needs: [test]
+    needs: [version, test]
     name: check publish
 
     runs-on: ubuntu-latest
