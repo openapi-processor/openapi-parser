@@ -113,7 +113,7 @@ jobs:
 #      - run: echo "should publish ..."
 
   publish:
-    needs: [check-publish]
+    needs: [check-publish, test]
     name: publish snapshot
 
     runs-on: ubuntu-latest
