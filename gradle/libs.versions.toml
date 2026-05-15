@@ -17,7 +17,7 @@ updates = "0.52.0"
 checker = { module = "org.checkerframework:checker", version.ref = "checker" }
 checkerq = { module = "org.checkerframework:checker-qual", version.ref = "checker" }
 
-slf4j = "org.slf4j:slf4j-api:2.0.17"
+slf4j = "org.slf4j:slf4j-api:2.0.18"
 logback = "ch.qos.logback:logback-classic:1.5.32"
 
 jackson3-bom = "tools.jackson:jackson-bom:3.1.3"
