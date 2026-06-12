@@ -54,4 +54,4 @@ plugin-jacocolog = { module = "org.barfuin.gradle.jacocolog:org.barfuin.gradle.j
 checker = { id = "org.checkerframework", version.ref = "checkerp" }
 jacocolog = { id = "org.barfuin.gradle.jacocolog" }
 sonar = { id = "org.sonarqube", version = "7.3.1.8318" }
-modernizer = { id = "com.github.andygoossens.modernizer", version = "1.13.0" }
+modernizer = { id = "com.github.andygoossens.modernizer", version = "1.14.0" }
