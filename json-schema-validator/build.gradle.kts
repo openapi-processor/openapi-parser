@@ -20,7 +20,8 @@ dependencies {
     testImplementation(libs.logback)
 }
 
-val generateTestManifest by tasks.registering(GenerateManifestTask::class) {
+val generateTestManifest = tasks.register<GenerateManifestTask>("generateTestManifest") {
+    description = "Generates the test manifest for the JSON Schema Test Suite"
     val resourcesPath = "src/test/resources"
     val testsPath = "$resourcesPath/suites/JSON-Schema-Test-Suite/tests"
 
