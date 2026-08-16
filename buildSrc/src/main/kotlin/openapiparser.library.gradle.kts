@@ -8,7 +8,7 @@ plugins {
     `java-library`
     kotlin
     id("org.checkerframework")
-    id("com.github.ben-manes.versions")
+    id("io.github.ben-manes.versions")
 }
 
 // see buildSrc/build.gradle.kts
@@ -77,17 +77,19 @@ configure<org.checkerframework.gradle.plugin.CheckerFrameworkExtension> {
     )
 }
 
-tasks.withType<DependencyUpdatesTask> {
+tasks.named<DependencyUpdatesTask>("dependencyUpdates") {
     rejectVersionIf {
         println("candidate: $candidate stable: ${!candidate.version.isNonStable()}")
         candidate.version.isNonStable()
     }
 
+    val projectPath = project.path
+
     outputFormatter {
         exceeded.dependencies.removeIf { d -> ignore.contains("${d.group}:${d.name}") }
 
         val plainTextReporter = PlainTextReporter(
-            project,
+            projectPath,
             revision,
             gradleReleaseChannel
         )

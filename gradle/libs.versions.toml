@@ -11,7 +11,7 @@ checker = "4.2.2"
 checkerp = "0.6.61"
 jacoco = "0.8.11"
 jacocolog = "4.0.1"
-updates = "0.52.0"
+updates = "0.55.0"
 
 [libraries]
 checker = { module = "org.checkerframework:checker", version.ref = "checker" }
@@ -42,7 +42,7 @@ mockk = "io.mockk:mockk:1.14.11"
 plugin-build = { module = "io.openapiprocessor:build-plugins", version.ref = "build-plugins" }
 plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 plugin-checker = { module = "org.checkerframework:checkerframework-gradle-plugin", version.ref = "checkerp" }
-plugin-updates = { module = "com.github.ben-manes:gradle-versions-plugin", version.ref = "updates" }
+plugin-updates = { module = "io.github.ben-manes:gradle-versions-plugin", version.ref = "updates" }
 plugin-jacocolog = { module = "org.barfuin.gradle.jacocolog:org.barfuin.gradle.jacocolog.gradle.plugin", version.ref = "jacocolog" }
 
 
