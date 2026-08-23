@@ -29,7 +29,7 @@ public class MapObjectsOrEmptyConverter<T> implements PropertyConverter<Map<Stri
     public @Nullable Map<String, T> convert (String name,@Nullable Object value, String location) {
         Map<String, @Nullable Object> properties = convertMapOrNull (location, value);
         if (properties == null)
-            return Collections.emptyMap ();
+            return Map.of();
 
         return converter.convert (properties, location);
     }

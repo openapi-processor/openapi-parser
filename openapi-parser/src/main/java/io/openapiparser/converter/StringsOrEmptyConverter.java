@@ -21,7 +21,7 @@ public class StringsOrEmptyConverter implements PropertyConverter<Collection<Str
     public Collection<String> convert (String name, @Nullable Object value, String location) {
         Collection<?> values = convertOrNull (location, value, Collection.class);
         if (values == null)
-            return Collections.emptyList ();
+            return List.of();
 
         return Collections.unmodifiableCollection (asStrings (values));
     }

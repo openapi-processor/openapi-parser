@@ -3,6 +3,7 @@ plugins {
     id("openapiparser.library")
     id("openapiparser.publish")
     alias(build.plugins.sonar)
+    alias(build.plugins.modernizer)
 }
 
 dependencies {
@@ -32,6 +33,17 @@ publishing {
         }
     }
 }
+
+modernizer {
+    javaVersion = "11"
+    includeTestClasses = true
+
+    ignoreClassNamePatterns = setOf(
+        ".*ParserSampleTest"
+    )
+}
+
+
 
 sonar {
   properties {

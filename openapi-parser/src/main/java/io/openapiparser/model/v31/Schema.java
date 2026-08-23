@@ -187,9 +187,9 @@ public class Schema extends Properties implements Reference, Extensions {
     public Collection<String> getType () {
         final Object value = getRawValue (TYPE);
         if (value == null) {
-            return Collections.emptyList ();
+            return List.of();
         } else if (value instanceof String) {
-            return Collections.singletonList (getStringOrThrow (TYPE));
+            return List.of(getStringOrThrow (TYPE));
         } else if (value instanceof Collection) {
             Collection<String> types = getStringsOrEmpty (TYPE);
             return types.stream ()

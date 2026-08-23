@@ -31,7 +31,7 @@ public class ObjectsOrEmptyConverter<T> implements PropertyConverter<Collection<
     public @Nullable Collection<T> convert (String name, @Nullable Object value, String location) {
         Collection<@NonNull ?> objects = convertOrNull (location, value, Collection.class);
         if (objects == null)
-            return Collections.emptyList ();
+            return List.of();
 
         JsonPointer parentPointer = JsonPointer.from (location);
 

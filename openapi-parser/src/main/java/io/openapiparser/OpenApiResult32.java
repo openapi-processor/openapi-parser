@@ -93,7 +93,7 @@ public class OpenApiResult32 implements OpenApiResult {
             OutputUnit output = converter.convert (result);
 
             if (output.isValid ()) {
-                validationErrors = Collections.emptyList ();
+                validationErrors = List.of();
                 return true;
             }
 

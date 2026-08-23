@@ -59,7 +59,7 @@ public class OverlayResult10 implements OverlayResult {
             OutputUnit output = converter.convert (result);
 
             if (output.isValid ()) {
-                validationErrors = Collections.emptyList ();
+                validationErrors = List.of();
                 return true;
             }
 

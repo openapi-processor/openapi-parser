@@ -11,10 +11,7 @@ import io.openapiprocessor.jsonschema.converter.NoValueException;
 import io.openapiprocessor.jsonschema.schema.Bucket;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static io.openapiparser.Keywords.*;
@@ -190,9 +187,9 @@ public class Schema extends Properties implements Reference, Extensions {
     public Collection<String> getType () {
         final Object value = getRawValue (TYPE);
         if (value == null) {
-            return Collections.emptyList ();
+            return List.of();
         } else if (value instanceof String) {
-            return Collections.singletonList (getStringOrThrow (TYPE));
+            return List.of(getStringOrThrow(TYPE));
         } else if (value instanceof Collection) {
             Collection<String> types = getStringsOrEmpty (TYPE);
             return types.stream ()

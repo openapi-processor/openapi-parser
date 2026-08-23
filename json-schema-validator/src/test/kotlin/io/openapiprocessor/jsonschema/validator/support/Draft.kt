@@ -20,7 +20,6 @@ import io.openapiprocessor.jsonschema.validator.ValidatorSettings
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
 
 
 /**
@@ -38,7 +37,7 @@ fun draftSpec(
 
 //    val draftStream = Validator::class.java.getResourceAsStream(draftPath)
     val draft = Validator::class.java.getResource(draftPath)
-    val root = Paths.get(draft!!.toURI())
+    val root = Path.of(draft!!.toURI())
 
     val excludes = extras
         .filterIsInstance<Exclude>()
