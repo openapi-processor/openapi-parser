@@ -31,6 +31,10 @@ dependencies {
     testCompileOnly(libs.checkerq)
 }
 
+tasks.withType<Test>().configureEach {
+    jvmArgs("-Xshare:off")
+}
+
 jacoco {
     toolVersion = build.versions.jacoco.get()
 }
