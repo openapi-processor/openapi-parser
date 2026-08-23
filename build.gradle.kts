@@ -1,18 +1,15 @@
 plugins {
     base
-    alias(libs.plugins.jacocolog)
+    alias(build.plugins.kotlin.jvm) apply false
+    alias(build.plugins.openapiprocessor.publish)
+    alias(build.plugins.openapiprocessor.bump)
+//    alias(build.plugins.jacocolog)
     id("test-report-aggregation")
-    id("io.openapiprocessor.build.plugin.publish")
-    id("io.openapiprocessor.build.plugin.bump")
 }
 
 group = "io.openapiprocessor"
 version = libs.versions.openapiparser.get()
 println("version: $version")
-
-repositories {
-    mavenCentral()
-}
 
 dependencies {
     testReportAggregation(project(":io-jackson"))

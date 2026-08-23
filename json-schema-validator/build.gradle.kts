@@ -2,8 +2,8 @@ plugins {
     id("openapiparser.test")
     id("openapiparser.library")
     id("openapiparser.publish")
-    alias(libs.plugins.sonar)
-    alias(libs.plugins.modernizer)
+    alias(build.plugins.sonar)
+    alias(build.plugins.modernizer)
 }
 
 dependencies {

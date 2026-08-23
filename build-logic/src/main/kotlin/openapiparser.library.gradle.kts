@@ -1,18 +1,20 @@
 import com.github.benmanes.gradle.versions.reporter.PlainTextReporter
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.gradle.accessors.dm.LibrariesForLibs
+import org.gradle.accessors.dm.LibrariesForBuild
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.kotlin.dsl.withType
 
 plugins {
-    `java-library`
     kotlin
+    `java-library`
     id("org.checkerframework")
     id("io.github.ben-manes.versions")
 }
 
-// see buildSrc/build.gradle.kts
+// see build.gradle.kts
 val libs = the<LibrariesForLibs>()
+val build = the<LibrariesForBuild>()
 
 group = "io.openapiprocessor"
 version = libs.versions.openapiparser.get()
@@ -26,7 +28,7 @@ java {
     targetCompatibility = JavaVersion.VERSION_11
 
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(libs.versions.build.jdk.get()))
+        languageVersion.set(JavaLanguageVersion.of(build.versions.build.jdk.get()))
     }
 }
 
@@ -38,7 +40,7 @@ tasks.javadoc {
 }
 
 kotlin {
-    jvmToolchain(libs.versions.build.jdk.get().toInt())
+    jvmToolchain(build.versions.build.jdk.get().toInt())
 
     compilerOptions {
         freeCompilerArgs.add("-Xannotation-default-target=param-property")
@@ -108,7 +110,7 @@ tasks.withType<Test>().configureEach {
     ))
 
     javaLauncher.set(javaToolchains.launcherFor {
-        languageVersion.set(JavaLanguageVersion.of(libs.versions.test.jdk.get()))
+        languageVersion.set(JavaLanguageVersion.of(build.versions.test.jdk.get()))
     })
 
     finalizedBy(tasks.named("jacocoTestReport"))

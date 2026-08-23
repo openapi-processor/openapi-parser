@@ -1,6 +1,7 @@
 @file:Suppress("UnstableApiUsage", "UNUSED_VARIABLE")
 
 import org.gradle.accessors.dm.LibrariesForLibs
+import org.gradle.accessors.dm.LibrariesForBuild
 
 plugins {
     java
@@ -12,6 +13,7 @@ plugins {
 
 // see buildSrc/build.gradle.kts
 val libs = the<LibrariesForLibs>()
+val build = the<LibrariesForBuild>()
 
 testing {
     suites {
@@ -30,7 +32,7 @@ dependencies {
 }
 
 jacoco {
-    toolVersion = libs.versions.jacoco.get()
+    toolVersion = build.versions.jacoco.get()
 }
 
 tasks.named<JacocoReport>("jacocoTestReport") {

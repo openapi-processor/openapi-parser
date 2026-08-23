@@ -2,7 +2,7 @@ plugins {
     id("openapiparser.test")
     id("openapiparser.library")
     id("openapiparser.publish")
-    alias(libs.plugins.sonar)
+    alias(build.plugins.sonar)
 }
 
 dependencies {

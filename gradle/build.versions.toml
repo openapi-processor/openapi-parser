@@ -1,0 +1,32 @@
+# plugins used by the build and the convention plugins
+
+[versions]
+build-plugins = "2026.7"
+
+build-jdk = "17"
+test-jdk = "17"
+
+# using the embedded kotlin version of Gradle to avoid mixed versions
+kotlin = "2.3.0"
+
+checker = "0.6.61"
+jacoco = "0.8.11"
+jacocolog = "4.0.1"
+updates = "0.55.0"
+
+[libraries]
+plugin-build = { module = "io.openapiprocessor:build-plugins", version.ref = "build-plugins" }
+plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+plugin-checker = { module = "org.checkerframework:checkerframework-gradle-plugin", version.ref = "checker" }
+plugin-updates = { module = "io.github.ben-manes:gradle-versions-plugin", version.ref = "updates" }
+plugin-jacocolog = { module = "org.barfuin.gradle.jacocolog:org.barfuin.gradle.jacocolog.gradle.plugin", version.ref = "jacocolog" }
+
+[plugins]
+openapiprocessor-publish = { id = "io.openapiprocessor.build.plugin.publish", version.ref = "build-plugins" }
+openapiprocessor-bump = { id = "io.openapiprocessor.build.plugin.bump", version.ref = "build-plugins" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+modernizer = { id = "com.github.andygoossens.modernizer", version = "1.15.0" }
+jacocolog = { id = "org.barfuin.gradle.jacocolog" }
+updates = { id = "io.github.ben-manes.versions", version.ref = "updates" }
+checker = { id = "org.checkerframework", version.ref = "checker" }
+sonar = { id = "org.sonarqube", version = "7.4.0.8496" }

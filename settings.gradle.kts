@@ -1,5 +1,25 @@
 rootProject.name = "openapi-parser"
 
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+    }
+    includeBuild("build-logic")
+}
+
+dependencyResolutionManagement {
+    versionCatalogs {
+        create("build") {
+            from(files("./gradle/build.versions.toml"))
+        }
+    }
+}
+
+plugins {
+    id("io.github.ben-manes.versions.settings") version "0.56.0"
+}
+
 include("openapi-parser")
 include("openapi-parser-bom")
 include("json-schema-validator")

@@ -1,6 +1,6 @@
 plugins {
-    `maven-publish`
     signing
+    `maven-publish`
    id("io.openapiprocessor.build.plugin.publish")
 }
 
