@@ -1,9 +1,6 @@
 [versions]
 openapiparser = "2026.3-SNAPSHOT"
 
-#build-jdk = "17"
-#test-jdk = "17"
-
 checker = "4.2.2"
 
 [libraries]
