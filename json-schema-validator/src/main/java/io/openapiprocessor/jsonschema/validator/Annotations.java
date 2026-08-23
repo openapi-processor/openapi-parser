@@ -6,10 +6,10 @@
 package io.openapiprocessor.jsonschema.validator;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
 public interface Annotations {
     default Collection<Annotation> getAnnotations (String keyword) {
-        return Collections.emptyList ();
+        return List.of();
     }
 }

@@ -28,7 +28,7 @@ public class Bucket {
     private final Map<String, @Nullable Object> properties;
 
     public static Bucket empty() {
-        return createBucket(Scope.empty(), Collections.emptyMap());
+        return createBucket(Scope.empty(), Map.of());
     }
 
     public static @Nullable Bucket createBucket(Scope scope, @Nullable Object source) {

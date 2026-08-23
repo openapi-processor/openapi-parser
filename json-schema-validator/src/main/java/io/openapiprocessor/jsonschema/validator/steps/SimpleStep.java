@@ -34,7 +34,7 @@ public abstract class SimpleStep implements ValidationStep {
 
     @Override
     public Collection<ValidationStep> getSteps () {
-        return Collections.emptyList ();
+        return List.of();
     }
 
     @Override

@@ -68,9 +68,9 @@ public class ItemsStep implements ValidationStep {
     public Collection<Annotation> getAnnotations (/*@Nullable*/ String keyword) {
         Annotation annotation = annotations.get (keyword);
         if (annotation == null)
-            return Collections.emptyList ();
+            return List.of();
         else
-            return Collections.singletonList (annotation);
+            return List.of(annotation);
     }
 
     public void addAnnotation (Object value) {

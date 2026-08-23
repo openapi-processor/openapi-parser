@@ -50,6 +50,7 @@ publishing {
 }
 
 modernizer {
+    javaVersion = "11"
     includeTestClasses = true
 }
 

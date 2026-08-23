@@ -26,7 +26,7 @@ public class JsonSchemas {
      */
     public JsonSchemas () {
         kind = Kind.EMPTY;
-        schemas = Collections.emptyList ();
+        schemas = List.of();
         size = 0;
     }
 
@@ -38,10 +38,10 @@ public class JsonSchemas {
     public JsonSchemas (@Nullable JsonSchema schema) {
         if (schema == null) {
             kind = Kind.NULL;
-            schemas = Collections.emptyList ();
+            schemas = List.of();
         } else {
             kind = Kind.SINGLE;
-            schemas = Collections.singletonList (schema);
+            schemas = List.of(schema);
         }
         size = 1;
     }

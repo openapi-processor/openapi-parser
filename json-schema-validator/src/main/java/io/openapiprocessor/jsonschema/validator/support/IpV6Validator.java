@@ -52,7 +52,7 @@ public class IpV6Validator {
         int lastZeroShortcut = ip.lastIndexOf ("::");
 
         if (firstZeroShortcut != lastZeroShortcut) {
-            return Collections.emptyList ();
+            return List.of();
         }
 
         List<String> octets = new ArrayList<> ();
@@ -61,13 +61,13 @@ public class IpV6Validator {
         // single colon at start
         int firstColon = ip.indexOf (":");
         if (firstColon == 0 && firstColon != firstZeroShortcut) {
-            return Collections.emptyList ();
+            return List.of();
         }
 
         // single colon at end
         int lastColon = ip.lastIndexOf (":");
-        if (lastColon == ip.length () && lastColon != lastZeroShortcut + 1) {
-            return Collections.emptyList ();
+        if (lastColon == ip.length() - 1 && lastColon != lastZeroShortcut + 1) {
+            return List.of();
         }
 
         String lastPart = parts.get (parts.size () - 1);

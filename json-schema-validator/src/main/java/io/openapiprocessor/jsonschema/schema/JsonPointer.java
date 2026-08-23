@@ -48,13 +48,13 @@ public class JsonPointer {
 
     private JsonPointer () {
         pointer = null;
-        tokens = Collections.emptyList ();
+        tokens = List.of();
     }
 
     private JsonPointer(String jsonPointer) {
         if (jsonPointer.isEmpty ()) {
             this.pointer = null;
-            this.tokens = Collections.emptyList ();
+            this.tokens = List.of();
             return;
         }
 

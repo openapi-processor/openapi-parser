@@ -70,13 +70,13 @@ public class PropertiesStep implements ValidationStep {
     @Override
     public Collection<Annotation> getAnnotations (@Nullable String keyword) {
         if (keyword == null)
-            return Collections.emptyList ();
+            return List.of();
 
         Annotation annotation = annotations.get (keyword);
         if (annotation == null)
-            return Collections.emptyList ();
+            return List.of();
 
-        return Collections.singletonList (annotation);
+        return List.of(annotation);
     }
 
     @Override

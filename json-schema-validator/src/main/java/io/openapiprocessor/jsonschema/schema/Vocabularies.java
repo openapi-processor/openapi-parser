@@ -29,7 +29,7 @@ public class Vocabularies {
     private State validation = State.REQUIRED;
 
     private Vocabularies () {
-        this.vocabularies = Collections.emptyMap ();
+        this.vocabularies = Map.of();
         this.version = SchemaVersion.getLatest ();
     }
 

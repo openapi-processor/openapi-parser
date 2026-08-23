@@ -235,7 +235,7 @@ public class JsonSchemaObject implements JsonSchema {
     public Collection<JsonSchema> getPrefixItems () {
         Collection<JsonSchema> prefixItems = getJsonSchemasOf (PREFIX_ITEMS);
         if (prefixItems == null)
-            return Collections.emptyList ();
+            return List.of();
 
         return prefixItems;
     }
@@ -336,7 +336,7 @@ public class JsonSchemaObject implements JsonSchema {
     public Map<String, JsonSchema> getProperties () {
         Map<String, JsonSchema> properties = schemaObject.convert (PROPERTIES, new MapJsonSchemasConverter (context));
         if (properties == null)
-            return emptyMap ();
+            return Map.of();
 
         return properties;
     }
@@ -348,7 +348,7 @@ public class JsonSchemaObject implements JsonSchema {
             PATTERN_PROPERTIES, new MapJsonSchemasConverter (context));
 
         if (patternProperties == null) {
-            return emptyMap ();
+            return Map.of();
         }
 
         return patternProperties;
@@ -393,7 +393,7 @@ public class JsonSchemaObject implements JsonSchema {
     public Collection<JsonInstance> getEnum () {
         Object raw = schemaObject.getRawValue (ENUM);
         if (raw == null)
-            return  Collections.emptyList ();
+            return  List.of();
 
         else if (raw instanceof Collection) {
             List<JsonInstance> instances = new ArrayList<> ();
@@ -426,12 +426,12 @@ public class JsonSchemaObject implements JsonSchema {
     public Collection<String> getType () {
         boolean exists = schemaObject.hasProperty (TYPE);
         if (!exists)
-            return Collections.emptyList ();
+            return List.of();
 
         Object raw = schemaObject.getRawValue (TYPE);
         if (raw instanceof String) {
             String type = Types.convert ("", raw, String.class);
-            return Collections.singletonList (type);
+            return List.of(type);
         }
 
         else if (raw instanceof Collection) {
@@ -446,7 +446,7 @@ public class JsonSchemaObject implements JsonSchema {
     public Collection<JsonSchema> getAllOf () {
         Collection<JsonSchema> allOf = getJsonSchemasOf (ALL_OF);
         if (allOf == null)
-            return Collections.emptyList ();
+            return List.of();
 
         return allOf;
     }
@@ -455,7 +455,7 @@ public class JsonSchemaObject implements JsonSchema {
     public Collection<JsonSchema> getAnyOf () {
         Collection<JsonSchema> anyOf = getJsonSchemasOf (ANY_OF);
         if (anyOf == null)
-            return Collections.emptyList ();
+            return List.of();
 
         return anyOf;
     }
@@ -464,7 +464,7 @@ public class JsonSchemaObject implements JsonSchema {
     public Collection<JsonSchema> getOneOf () {
         Collection<JsonSchema> oneOf = getJsonSchemasOf (ONE_OF);
         if (oneOf == null)
-            return Collections.emptyList ();
+            return List.of();
 
         return oneOf;
     }

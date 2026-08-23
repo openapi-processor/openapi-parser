@@ -124,7 +124,7 @@ public interface JsonSchema {
     }
 
     default Collection<JsonSchema> getPrefixItems () {
-        return Collections.emptyList ();
+        return List.of();
     }
 
     default JsonSchemas getItems () {
@@ -176,11 +176,11 @@ public interface JsonSchema {
     }
 
     default Map<String, JsonSchema> getProperties () {
-        return Collections.emptyMap ();
+        return Map.of();
     }
 
     default Map<String, JsonSchema> getPatternProperties () {
-        return Collections.emptyMap ();
+        return Map.of();
     }
 
     default @Nullable JsonSchema getAdditionalProperties () {
@@ -210,7 +210,7 @@ public interface JsonSchema {
     }
 
     default Collection<JsonInstance> getEnum () {
-        return Collections.emptyList ();
+        return List.of();
     }
 
     default @Nullable JsonInstance getConst () {
@@ -218,19 +218,19 @@ public interface JsonSchema {
     }
 
     default Collection<String> getType () {
-        return Collections.emptyList ();
+        return List.of();
     }
 
     default Collection<JsonSchema> getAllOf () {
-        return Collections.emptyList ();
+        return List.of();
     }
 
     default Collection<JsonSchema> getAnyOf () {
-        return Collections.emptyList ();
+        return List.of();
     }
 
     default Collection<JsonSchema> getOneOf () {
-        return Collections.emptyList ();
+        return List.of();
     }
 
     default @Nullable JsonSchema getNot () {
