@@ -26,8 +26,9 @@ It is usable, it is used as the internal openapi parser/validator by openapi-pro
 
 == openapi-parser and validator
 
-a Java 11 based link:{openapi}[OpenAPI] 3.2, 3.1, 3.0 parser with validation and pluggable document reader & json/yaml converter.
+A link:{openapi}[OpenAPI] 3.2, 3.1, 3.0 parser with validation and pluggable document reader & json/yaml converter.
 
+* requires JDK 17+
 * parse OpenAPI 3.2, 3.1 & 3.0
 * validate OpenAPI 3.2, 3.1 & 3.0 (JSON schema validation, can follow $ref's in the OpenAPI document)
 ** JSON schema draft-4 validation of OpenAPI 3.0

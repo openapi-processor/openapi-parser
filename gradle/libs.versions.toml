@@ -1,8 +1,7 @@
 [versions]
 openapiparser = "2026.3-SNAPSHOT"
 
-#checker = "4.2.2" requires jdk 17
-checker = "3.55.1
+checker = "4.2.2"
 
 [libraries]
 checker = { module = "org.checkerframework:checker", version.ref = "checker" }

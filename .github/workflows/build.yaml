@@ -83,7 +83,7 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: |
-          11
+          17
           21
 
     - name: set up gradle
@@ -128,7 +128,7 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: |
-          11
+          17
           21
 
     - name: set up gradle
@@ -171,7 +171,7 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: |
-          11
+          17
           21
 
     - name: set up gradle
