@@ -3,8 +3,8 @@
 [versions]
 build-plugins = "2026.7"
 
-build-jdk = "17"
-test-jdk = "17"
+build-jdk = "21"
+test-jdk = "21"
 
 # using the embedded kotlin version of Gradle to avoid mixed versions
 kotlin = "2.3.0"
