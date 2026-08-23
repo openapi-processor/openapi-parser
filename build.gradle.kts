@@ -3,7 +3,7 @@ plugins {
     alias(build.plugins.kotlin.jvm) apply false
     alias(build.plugins.openapiprocessor.publish)
     alias(build.plugins.openapiprocessor.bump)
-//    alias(build.plugins.jacocolog)
+    id("openapiparser.versions")
     id("test-report-aggregation")
 }
 

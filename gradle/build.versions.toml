@@ -7,12 +7,12 @@ build-jdk = "21"
 test-jdk = "21"
 
 # using the embedded kotlin version of Gradle to avoid mixed versions
-kotlin = "2.3.0"
+kotlin = "2.4.0"
 
 checker = "0.6.61"
 jacoco = "0.8.11"
 jacocolog = "4.0.1"
-updates = "0.55.0"
+updates = "0.61.0"
 
 [libraries]
 plugin-build = { module = "io.openapiprocessor:build-plugins", version.ref = "build-plugins" }

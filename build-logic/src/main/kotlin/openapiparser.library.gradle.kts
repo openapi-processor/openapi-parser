@@ -1,15 +1,10 @@
-import com.github.benmanes.gradle.versions.reporter.PlainTextReporter
-import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.accessors.dm.LibrariesForBuild
-import org.gradle.jvm.toolchain.JavaLanguageVersion
-import org.gradle.kotlin.dsl.withType
+import org.gradle.accessors.dm.LibrariesForLibs
 
 plugins {
     kotlin
     `java-library`
     id("org.checkerframework")
-    id("io.github.ben-manes.versions")
 }
 
 // see build.gradle.kts
@@ -41,10 +36,6 @@ tasks.javadoc {
 
 kotlin {
     jvmToolchain(build.versions.build.jdk.get().toInt())
-
-    compilerOptions {
-        freeCompilerArgs.add("-Xannotation-default-target=param-property")
-    }
 }
 
 repositories {
@@ -79,26 +70,6 @@ configure<org.checkerframework.gradle.plugin.CheckerFrameworkExtension> {
     )
 }
 
-tasks.named<DependencyUpdatesTask>("dependencyUpdates") {
-    rejectVersionIf {
-        println("candidate: $candidate stable: ${!candidate.version.isNonStable()}")
-        candidate.version.isNonStable()
-    }
-
-    val projectPath = project.path
-
-    outputFormatter {
-        exceeded.dependencies.removeIf { d -> ignore.contains("${d.group}:${d.name}") }
-
-        val plainTextReporter = PlainTextReporter(
-            projectPath,
-            revision,
-            gradleReleaseChannel
-        )
-        plainTextReporter.write(System.out, this)
-    }
-}
-
 tasks.withType<Test>().configureEach {
     jvmArgs(listOf(
         "--add-exports", "jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED",
@@ -115,25 +86,3 @@ tasks.withType<Test>().configureEach {
 
     finalizedBy(tasks.named("jacocoTestReport"))
 }
-
-fun String.isNonStable(): Boolean {
-    val nonStable = listOf(
-        ".M[0-9]+$",
-        ".RC[0-9]*$",
-        ".alpha.?[0-9]+$",
-        ".beta.?[0-9]+$",
-    )
-
-    for (n in nonStable) {
-       if (this.contains("(?i)$n".toRegex())) {
-           //println("not stable: $this")
-           return true
-       }
-    }
-
-    return false
-}
-
-val ignore = listOf(
-    "org.checkerframework:jdk8"
-)
