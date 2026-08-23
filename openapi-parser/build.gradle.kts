@@ -46,10 +46,11 @@ modernizer {
 
 
 sonar {
-  properties {
-    property("sonar.projectKey", "openapi-processor_openapi-parser-openapi-parser")
-    property("sonar.organization", "openapi-processor")
-    property("sonar.host.url", "https://sonarcloud.io")
+    properties {
+        property("sonar.projectKey", "openapi-processor_openapi-parser-openapi-parser")
+        property("sonar.organization", "openapi-processor")
+        property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.scanner.skipJreProvisioning", "true")
 //    property("sonar.coverage.jacoco.xmlReportPaths", "$buildDir/reports/jacoco/test/jacocoTestReport.xml")
-  }
+    }
 }
