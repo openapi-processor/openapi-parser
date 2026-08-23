@@ -10,7 +10,7 @@ test-jdk = "21"
 kotlin = "2.4.0"
 
 checker = "0.6.61"
-jacoco = "0.8.11"
+jacoco = "0.8.15"
 jacocolog = "4.0.1"
 updates = "0.61.0"
 
