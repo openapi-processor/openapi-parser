@@ -20,7 +20,7 @@ jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind" }
 jackson-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml" }
 jackson-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin" }
 
-snakeyaml = "org.yaml:snakeyaml:2.6"
+snakeyaml = "org.yaml:snakeyaml:2.7"
 jsonpath = "com.jayway.jsonpath:json-path:3.0.0"
 
 kotest-bom = "io.kotest:kotest-bom:6.2.4"
