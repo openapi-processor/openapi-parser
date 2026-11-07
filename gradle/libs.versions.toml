@@ -1,7 +1,7 @@
 [versions]
 openapiparser = "2026.3-SNAPSHOT"
 
-checker = "4.3.1"
+checker = "4.4.0"
 
 [libraries]
 checker = { module = "org.checkerframework:checker", version.ref = "checker" }
