@@ -17,7 +17,7 @@ dependencyResolutionManagement {
 }
 
 plugins {
-    id("io.github.ben-manes.versions.settings") version("0.61.0")
+    id("io.github.ben-manes.versions.settings") version("0.67.0")
 }
 
 include("openapi-parser")

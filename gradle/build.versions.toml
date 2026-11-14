@@ -7,10 +7,11 @@ build-jdk = "17"
 test-jdk = "21"
 
 # using the embedded kotlin version of Gradle to avoid mixed versions
-kotlin = "2.4.0"
+# https://docs.gradle.org/current/userguide/compatibility.html#kotlin
+kotlin = "2.4.21"
 
 checker = "0.6.61"
-jacoco = "0.8.15"
+jacoco = "0.8.16"
 jacocolog = "4.0.1"
 updates = "0.61.0"
 
@@ -25,8 +26,8 @@ plugin-jacocolog = { module = "org.barfuin.gradle.jacocolog:org.barfuin.gradle.j
 openapiprocessor-publish = { id = "io.openapiprocessor.build.plugin.publish", version.ref = "build-plugins" }
 openapiprocessor-bump = { id = "io.openapiprocessor.build.plugin.bump", version.ref = "build-plugins" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-modernizer = { id = "com.github.andygoossens.modernizer", version = "1.15.0" }
+modernizer = { id = "io.github.andygoossens.modernizer", version = "2.0.0" }
 jacocolog = { id = "org.barfuin.gradle.jacocolog" }
 updates = { id = "io.github.ben-manes.versions", version.ref = "updates" }
 checker = { id = "org.checkerframework", version.ref = "checker" }
-sonar = { id = "org.sonarqube", version = "7.4.0.8496" }
+sonar = { id = "org.sonarqube", version = "7.6.0.18749" }
