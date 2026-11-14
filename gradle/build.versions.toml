@@ -10,7 +10,7 @@ test-jdk = "21"
 # https://docs.gradle.org/current/userguide/compatibility.html#kotlin
 kotlin = "2.4.21"
 
-checker = "0.6.61"
+checker = "1.0.2"
 jacoco = "0.8.16"
 jacocolog = "4.0.1"
 updates = "0.61.0"
@@ -18,7 +18,7 @@ updates = "0.61.0"
 [libraries]
 plugin-build = { module = "io.openapiprocessor:build-plugins", version.ref = "build-plugins" }
 plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-plugin-checker = { module = "org.checkerframework:checkerframework-gradle-plugin", version.ref = "checker" }
+plugin-checker = { module = "org.checkerframework:org.checkerframework.gradle.plugin", version.ref = "checker" }
 plugin-updates = { module = "io.github.ben-manes:gradle-versions-plugin", version.ref = "updates" }
 plugin-jacocolog = { module = "org.barfuin.gradle.jacocolog:org.barfuin.gradle.jacocolog.gradle.plugin", version.ref = "jacocolog" }
 

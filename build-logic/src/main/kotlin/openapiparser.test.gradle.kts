@@ -28,7 +28,6 @@ dependencies {
     testImplementation(libs.kotest.runner)
     testImplementation(libs.kotest.table)
     testImplementation(libs.mockk)
-    testCompileOnly(libs.checkerq)
 }
 
 tasks.withType<Test>().configureEach {

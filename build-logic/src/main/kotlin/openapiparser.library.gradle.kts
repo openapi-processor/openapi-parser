@@ -48,18 +48,16 @@ repositories {
     }
 }
 
-dependencies {
-    checkerFramework(libs.checker)
-    api(libs.checkerq)
+checkerFramework {
+  version = libs.versions.checker
 }
 
-configure<org.checkerframework.gradle.plugin.CheckerFrameworkExtension> {
+configure<org.checkerframework.plugin.gradle.CheckerFrameworkExtension> {
 //    skipCheckerFramework = true
 //    excludeTests = true
 
     extraJavacArgs = listOf(
-        "-Awarns",
-        "--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED"
+        "-Awarns"
     )
 
     checkers = listOf(
@@ -71,15 +69,6 @@ configure<org.checkerframework.gradle.plugin.CheckerFrameworkExtension> {
 }
 
 tasks.withType<Test>().configureEach {
-    jvmArgs(listOf(
-        "--add-exports", "jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED",
-        "--add-exports", "jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED",
-        "--add-exports", "jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED",
-        "--add-exports", "jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED",
-        "--add-exports", "jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED",
-        "--add-exports", "jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED"
-    ))
-
     javaLauncher.set(javaToolchains.launcherFor {
         languageVersion.set(JavaLanguageVersion.of(build.versions.test.jdk.get()))
     })
