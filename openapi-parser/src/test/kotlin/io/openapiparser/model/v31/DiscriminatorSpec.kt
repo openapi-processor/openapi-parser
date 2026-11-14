@@ -15,6 +15,6 @@ import io.openapiparser.model.v32.discriminator as discriminator32
  */
 class DiscriminatorSpec: StringSpec ({
 
-    include(testExtensions("discriminator", ::discriminator31) { it.extensions })
-    include(testExtensions("discriminator", ::discriminator32) { it.extensions })
+    include(testExtensions("discriminator31", ::discriminator31) { it.extensions })
+    include(testExtensions("discriminator32", ::discriminator32) { it.extensions })
 })
