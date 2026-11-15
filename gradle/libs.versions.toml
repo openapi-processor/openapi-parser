@@ -21,6 +21,8 @@ jackson-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin"
 snakeyaml = "org.yaml:snakeyaml:2.7"
 jsonpath = "com.jayway.jsonpath:json-path:3.0.0"
 
+checkerq = { module = "org.checkerframework:checker-qual", version.ref="checker" }
+
 kotest-bom = "io.kotest:kotest-bom:6.2.7"
 kotest-runner = { module = "io.kotest:kotest-runner-junit5" }
 kotest-table = { module = "io.kotest:kotest-assertions-table" }

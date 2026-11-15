@@ -7,6 +7,8 @@ plugins {
 }
 
 dependencies {
+    api(libs.checkerq)
+
     implementation(project(":io-interfaces"))
     implementation(libs.slf4j)
 
