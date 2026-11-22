@@ -10,6 +10,5 @@ dependencies {
     implementation(build.plugin.build)
     implementation(build.plugin.kotlin)
     implementation(build.plugin.checker)
-    implementation(build.plugin.updates)
     implementation(build.plugin.jacocolog)
 }

@@ -13,13 +13,11 @@ kotlin = "2.4.21"
 checker = "1.0.2"
 jacoco = "0.8.16"
 jacocolog = "4.0.1"
-updates = "0.61.0"
 
 [libraries]
 plugin-build = { module = "io.openapiprocessor:build-plugins", version.ref = "build-plugins" }
 plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 plugin-checker = { module = "org.checkerframework:org.checkerframework.gradle.plugin", version.ref = "checker" }
-plugin-updates = { module = "io.github.ben-manes:gradle-versions-plugin", version.ref = "updates" }
 plugin-jacocolog = { module = "org.barfuin.gradle.jacocolog:org.barfuin.gradle.jacocolog.gradle.plugin", version.ref = "jacocolog" }
 
 [plugins]
@@ -28,6 +26,5 @@ openapiprocessor-bump = { id = "io.openapiprocessor.build.plugin.bump", version.
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 modernizer = { id = "io.github.andygoossens.modernizer", version = "2.0.0" }
 jacocolog = { id = "org.barfuin.gradle.jacocolog" }
-updates = { id = "io.github.ben-manes.versions", version.ref = "updates" }
 checker = { id = "org.checkerframework", version.ref = "checker" }
 sonar = { id = "org.sonarqube", version = "7.6.0.18749" }
