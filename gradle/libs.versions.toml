@@ -1,5 +1,5 @@
 [versions]
-openapiparser = "2026.3-SNAPSHOT"
+openapiparser = "2027.1-SNAPSHOT"
 
 checker = "4.4.0"
 
